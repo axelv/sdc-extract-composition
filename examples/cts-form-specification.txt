@@ -1,0 +1,113 @@
+BHSC studie CTS
+_____________________________________________________________
+CTS Preop An	//blokje voor de anamnese van een pre-op consultatie
+
+HAND		{RECHTS|LINKS|RECHTS EN LINKS}
+klacht		{}
+		{}
+
+nachtelijke tintelingen 		{ja|neen}
+fijne motoriek 			{}
+
+Duur symptomen		{}
+Subjectief krachtsverlies		{ja|neen}
+
+Infiltraties 			{ja|neen} 	zo ja: aantal {}
+						tijdstip laatste	{} 
+ 
+
+Dominantie	{RE|LI} 
+Beroep		{}
+Hobby		{}
+
+Allergie		{|geen gekende}
+Roken		{ja|neen}	zo ja: aantal pakjaren	{}
+Diabetes	{ja|neen}	zo ja: type		{1|2}
+RA		{ja|neen}
+SKlijden	{ja|neen}  
+
+Relevante voorgaande handchirurgie	{}
+ 
+
+________________________________________________________________
+CTS Preop KO	//Klinisch onderzoek
+
+drukpijn 	{}
+
+			RE	LI
+Thenar atrofie 		{+|-}	{+|-} 
+Durkan 			{+|-} 	{+|-} 
+Tinel 			{+|-} 	{+|-} 
+Phalen 			{+|-} 	{+|-} 
+Reversed Phalen	{+|-} 	{+|-} 
+		
+ROM 	CPP 		{}	{} 
+	PDPP		{} 	{}
+
+				RE 	LI
+Kracht	/5	oppositie	{}	{}
+		FPL		{}	{}
+		FDP 2		{}	{} 
+kracht in kgF
+	Key pinch		{}	{} 	
+	Precision pinch 		{}	{}
+	Jamar 2			{}	{}
+
+Weber 2-pt discrim (rad/uln)	
+dig {1|2|3|4|5}	in mm		{/} 	{/} 
+
+Scratch collapse test 		{+|-}	{+|-} 
+
+Lacertus 			{+|-} 	{+|-} 	
+	
+ 
+
+________________________________________________________
+CTS Preop TO	//Technisch onderzoek
+
+EMG  Canterbury scale gr /6	{1|2|3|4|5|6}   (voor studie enkel gr 2 tot 4) 
+
+echo pols 	{nvt|inlet diameter}
+
+________________________________________________________
+CTS Postop An
+
+HAND		{RECHTS|LINKS} 
+
+pijn 		{}
+duur pijnstilling			{} d 
+
+tintelingen 			{verdwenen|verminderd|niet verminderd|toegenomen}
+nachtelijk wakker worden 	{niet meer|minder|nog steeds|meer}
+
+arbeidsongeschiktheid 	{nvt|1|2|3|4|5|6|7} {d|w} 
+hervating hobby's in dagen/weken na ingreep 	{} {d|w} 
+
+________________________________________________________
+CTS Postop KO
+
+
+litteken 			{}
+
+Pillar pain		{+|-}
+drukpijn localisatie	{}
+
+			RE	LI 
+ROM 	CPP 		{}	{} 
+	PDPP		{} 	{}
+ 				
+				RE	LI 
+Kracht	/5	oppositie	{}	{}
+		FPL		{}	{}
+		FDS 2		{}	{}	
+kracht in KgF
+	Precision pinch 		{}  	{}
+	Key pinch 		{} 	{}
+	Jamar 2			{} 	{}
+
+Weber 2-pt discrim (rad/uln)	
+dig {1|2|3|4|5}	in mm 		{/}  	{/}  
+
+Scratch collapse test 		{+|-}	{+|-} 
+
+Lacertus 			{+|-} 	{+|-} 

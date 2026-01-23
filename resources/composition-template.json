@@ -1,0 +1,86 @@
+{
+  "resourceType": "Composition",
+  "id": "cts-study-template",
+  "status": "final",
+  "type": {
+    "coding": [{
+      "system": "http://loinc.org",
+      "code": "11488-4",
+      "display": "Consultation note"
+    }]
+  },
+  "date": "2024-01-01",
+  "title": "BHSC studie CTS",
+  "section": [
+    {
+      "title": "CTS Preop An",
+      "code": {
+        "coding": [{
+          "system": "http://example.org/cts-sections",
+          "code": "preop-anamnesis",
+          "display": "Preoperative Anamnesis"
+        }]
+      },
+      "text": {
+        "status": "generated",
+        "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><dl><dt>HAND</dt><dd>{{hand}}</dd><dt>klacht</dt><dd>{{klacht}}</dd><dt>nachtelijke tintelingen</dt><dd>{{nachtelijke-tintelingen}}</dd><dt>fijne motoriek</dt><dd>{{fijne-motoriek}}</dd><dt>Duur symptomen</dt><dd>{{duur-symptomen}}</dd><dt>Subjectief krachtsverlies</dt><dd>{{subjectief-krachtsverlies}}</dd><dt>Infiltraties</dt><dd>{{infiltraties}}</dd><dt>Infiltraties aantal</dt><dd>{{infiltraties-aantal}}</dd><dt>Infiltraties tijdstip laatste</dt><dd>{{infiltraties-laatste}}</dd><dt>Dominantie</dt><dd>{{dominantie}}</dd><dt>Beroep</dt><dd>{{beroep}}</dd><dt>Hobby</dt><dd>{{hobby}}</dd><dt>Allergie</dt><dd>{{allergie}}</dd><dt>Roken</dt><dd>{{roken}}</dd><dt>Pakjaren</dt><dd>{{pakjaren}}</dd><dt>Diabetes</dt><dd>{{diabetes}}</dd><dt>Diabetes type</dt><dd>{{diabetes-type}}</dd><dt>RA</dt><dd>{{ra}}</dd><dt>SKlijden</dt><dd>{{sklijden}}</dd><dt>Relevante voorgaande handchirurgie</dt><dd>{{voorgaande-handchirurgie}}</dd></dl></div>"
+      }
+    },
+    {
+      "title": "CTS Preop KO",
+      "code": {
+        "coding": [{
+          "system": "http://example.org/cts-sections",
+          "code": "preop-clinical-exam",
+          "display": "Preoperative Clinical Examination"
+        }]
+      },
+      "text": {
+        "status": "generated",
+        "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><dl><dt>drukpijn</dt><dd>{{drukpijn}}</dd></dl><table><thead><tr><th></th><th>RE</th><th>LI</th></tr></thead><tbody><tr><td>Thenar atrofie</td><td>{{thenar-atrofie-re}}</td><td>{{thenar-atrofie-li}}</td></tr><tr><td>Durkan</td><td>{{durkan-re}}</td><td>{{durkan-li}}</td></tr><tr><td>Tinel</td><td>{{tinel-re}}</td><td>{{tinel-li}}</td></tr><tr><td>Phalen</td><td>{{phalen-re}}</td><td>{{phalen-li}}</td></tr><tr><td>Reversed Phalen</td><td>{{reversed-phalen-re}}</td><td>{{reversed-phalen-li}}</td></tr><tr><td>ROM CPP</td><td>{{rom-cpp-re}}</td><td>{{rom-cpp-li}}</td></tr><tr><td>ROM PDPP</td><td>{{rom-pdpp-re}}</td><td>{{rom-pdpp-li}}</td></tr><tr><td>Kracht oppositie /5</td><td>{{kracht-oppositie-re}}</td><td>{{kracht-oppositie-li}}</td></tr><tr><td>Kracht FPL /5</td><td>{{kracht-fpl-re}}</td><td>{{kracht-fpl-li}}</td></tr><tr><td>Kracht FDP 2 /5</td><td>{{kracht-fdp2-re}}</td><td>{{kracht-fdp2-li}}</td></tr><tr><td>Key pinch (kgF)</td><td>{{key-pinch-re}}</td><td>{{key-pinch-li}}</td></tr><tr><td>Precision pinch (kgF)</td><td>{{precision-pinch-re}}</td><td>{{precision-pinch-li}}</td></tr><tr><td>Jamar 2 (kgF)</td><td>{{jamar2-re}}</td><td>{{jamar2-li}}</td></tr></tbody></table><dl><dt>Weber 2-pt discrim dig</dt><dd>{{weber-dig}}</dd></dl><table><thead><tr><th>Weber 2-pt discrim (mm)</th><th>RE</th><th>LI</th></tr></thead><tbody><tr><td></td><td>{{weber-re}}</td><td>{{weber-li}}</td></tr><tr><td>Scratch collapse test</td><td>{{scratch-collapse-re}}</td><td>{{scratch-collapse-li}}</td></tr><tr><td>Lacertus</td><td>{{lacertus-re}}</td><td>{{lacertus-li}}</td></tr></tbody></table></div>"
+      }
+    },
+    {
+      "title": "CTS Preop TO",
+      "code": {
+        "coding": [{
+          "system": "http://example.org/cts-sections",
+          "code": "preop-technical-exam",
+          "display": "Preoperative Technical Examination"
+        }]
+      },
+      "text": {
+        "status": "generated",
+        "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><dl><dt>EMG Canterbury scale gr /6</dt><dd>{{emg-canterbury}}</dd><dt>echo pols</dt><dd>{{echo-pols}}</dd></dl></div>"
+      }
+    },
+    {
+      "title": "CTS Postop An",
+      "code": {
+        "coding": [{
+          "system": "http://example.org/cts-sections",
+          "code": "postop-anamnesis",
+          "display": "Postoperative Anamnesis"
+        }]
+      },
+      "text": {
+        "status": "generated",
+        "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><dl><dt>HAND</dt><dd>{{postop-hand}}</dd><dt>pijn</dt><dd>{{postop-pijn}}</dd><dt>duur pijnstilling</dt><dd>{{postop-duur-pijnstilling}} d</dd><dt>tintelingen</dt><dd>{{postop-tintelingen}}</dd><dt>nachtelijk wakker worden</dt><dd>{{postop-nachtelijk-wakker}}</dd><dt>arbeidsongeschiktheid</dt><dd>{{arbeidsongeschiktheid-waarde}} {{arbeidsongeschiktheid-eenheid}}</dd><dt>hervating hobby's</dt><dd>{{hervating-hobbys-waarde}} {{hervating-hobbys-eenheid}}</dd></dl></div>"
+      }
+    },
+    {
+      "title": "CTS Postop KO",
+      "code": {
+        "coding": [{
+          "system": "http://example.org/cts-sections",
+          "code": "postop-clinical-exam",
+          "display": "Postoperative Clinical Examination"
+        }]
+      },
+      "text": {
+        "status": "generated",
+        "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><dl><dt>litteken</dt><dd>{{litteken}}</dd><dt>Pillar pain</dt><dd>{{pillar-pain}}</dd><dt>drukpijn localisatie</dt><dd>{{postop-drukpijn-localisatie}}</dd></dl><table><thead><tr><th></th><th>RE</th><th>LI</th></tr></thead><tbody><tr><td>ROM CPP</td><td>{{postop-rom-cpp-re}}</td><td>{{postop-rom-cpp-li}}</td></tr><tr><td>ROM PDPP</td><td>{{postop-rom-pdpp-re}}</td><td>{{postop-rom-pdpp-li}}</td></tr><tr><td>Kracht oppositie /5</td><td>{{postop-kracht-oppositie-re}}</td><td>{{postop-kracht-oppositie-li}}</td></tr><tr><td>Kracht FPL /5</td><td>{{postop-kracht-fpl-re}}</td><td>{{postop-kracht-fpl-li}}</td></tr><tr><td>Kracht FDS 2 /5</td><td>{{postop-kracht-fds2-re}}</td><td>{{postop-kracht-fds2-li}}</td></tr><tr><td>Precision pinch (KgF)</td><td>{{postop-precision-pinch-re}}</td><td>{{postop-precision-pinch-li}}</td></tr><tr><td>Key pinch (KgF)</td><td>{{postop-key-pinch-re}}</td><td>{{postop-key-pinch-li}}</td></tr><tr><td>Jamar 2 (KgF)</td><td>{{postop-jamar2-re}}</td><td>{{postop-jamar2-li}}</td></tr></tbody></table><dl><dt>Weber 2-pt discrim dig</dt><dd>{{postop-weber-dig}}</dd></dl><table><thead><tr><th>Weber 2-pt discrim (mm)</th><th>RE</th><th>LI</th></tr></thead><tbody><tr><td></td><td>{{postop-weber-re}}</td><td>{{postop-weber-li}}</td></tr><tr><td>Scratch collapse test</td><td>{{postop-scratch-collapse-re}}</td><td>{{postop-scratch-collapse-li}}</td></tr><tr><td>Lacertus</td><td>{{postop-lacertus-re}}</td><td>{{postop-lacertus-li}}</td></tr></tbody></table></div>"
+      }
+    }
+  ]
+}

@@ -1,0 +1,493 @@
+{
+  "resourceType": "QuestionnaireResponse",
+  "id": "cts-study-response-example",
+  "status": "completed",
+  "authored": "2024-06-15T10:30:00Z",
+  "item": [
+    {
+      "linkId": "preop-an",
+      "text": "CTS Preop An",
+      "item": [
+        {
+          "linkId": "hand",
+          "text": "HAND",
+          "answer": [{ "valueString": "RECHTS" }]
+        },
+        {
+          "linkId": "klacht",
+          "text": "klacht",
+          "answer": [{ "valueString": "Tintelingen in duim, wijsvinger en middelvinger, vooral 's nachts" }]
+        },
+        {
+          "linkId": "nachtelijke-tintelingen",
+          "text": "nachtelijke tintelingen",
+          "answer": [{ "valueString": "ja" }]
+        },
+        {
+          "linkId": "fijne-motoriek",
+          "text": "fijne motoriek",
+          "answer": [{ "valueString": "Moeite met knopen dichtmaken" }]
+        },
+        {
+          "linkId": "duur-symptomen",
+          "text": "Duur symptomen",
+          "answer": [{ "valueString": "6 maanden" }]
+        },
+        {
+          "linkId": "subjectief-krachtsverlies",
+          "text": "Subjectief krachtsverlies",
+          "answer": [{ "valueString": "ja" }]
+        },
+        {
+          "linkId": "infiltraties",
+          "text": "Infiltraties",
+          "answer": [{ "valueString": "ja" }]
+        },
+        {
+          "linkId": "infiltraties-aantal",
+          "text": "Infiltraties aantal",
+          "answer": [{ "valueString": "2" }]
+        },
+        {
+          "linkId": "infiltraties-laatste",
+          "text": "Infiltraties tijdstip laatste",
+          "answer": [{ "valueString": "3 maanden geleden" }]
+        },
+        {
+          "linkId": "dominantie",
+          "text": "Dominantie",
+          "answer": [{ "valueString": "RE" }]
+        },
+        {
+          "linkId": "beroep",
+          "text": "Beroep",
+          "answer": [{ "valueString": "Administratief medewerker" }]
+        },
+        {
+          "linkId": "hobby",
+          "text": "Hobby",
+          "answer": [{ "valueString": "Tuinieren, breien" }]
+        },
+        {
+          "linkId": "allergie",
+          "text": "Allergie",
+          "answer": [{ "valueString": "geen gekende" }]
+        },
+        {
+          "linkId": "roken",
+          "text": "Roken",
+          "answer": [{ "valueString": "neen" }]
+        },
+        {
+          "linkId": "pakjaren",
+          "text": "Pakjaren",
+          "answer": [{ "valueString": "" }]
+        },
+        {
+          "linkId": "diabetes",
+          "text": "Diabetes",
+          "answer": [{ "valueString": "ja" }]
+        },
+        {
+          "linkId": "diabetes-type",
+          "text": "Diabetes type",
+          "answer": [{ "valueString": "2" }]
+        },
+        {
+          "linkId": "ra",
+          "text": "RA",
+          "answer": [{ "valueString": "neen" }]
+        },
+        {
+          "linkId": "sklijden",
+          "text": "SKlijden",
+          "answer": [{ "valueString": "neen" }]
+        },
+        {
+          "linkId": "voorgaande-handchirurgie",
+          "text": "Relevante voorgaande handchirurgie",
+          "answer": [{ "valueString": "Geen" }]
+        }
+      ]
+    },
+    {
+      "linkId": "preop-ko",
+      "text": "CTS Preop KO",
+      "item": [
+        {
+          "linkId": "drukpijn",
+          "text": "drukpijn",
+          "answer": [{ "valueString": "carpale tunnel" }]
+        },
+        {
+          "linkId": "thenar-atrofie-re",
+          "text": "Thenar atrofie RE",
+          "answer": [{ "valueString": "-" }]
+        },
+        {
+          "linkId": "thenar-atrofie-li",
+          "text": "Thenar atrofie LI",
+          "answer": [{ "valueString": "-" }]
+        },
+        {
+          "linkId": "durkan-re",
+          "text": "Durkan RE",
+          "answer": [{ "valueString": "+" }]
+        },
+        {
+          "linkId": "durkan-li",
+          "text": "Durkan LI",
+          "answer": [{ "valueString": "-" }]
+        },
+        {
+          "linkId": "tinel-re",
+          "text": "Tinel RE",
+          "answer": [{ "valueString": "+" }]
+        },
+        {
+          "linkId": "tinel-li",
+          "text": "Tinel LI",
+          "answer": [{ "valueString": "-" }]
+        },
+        {
+          "linkId": "phalen-re",
+          "text": "Phalen RE",
+          "answer": [{ "valueString": "+" }]
+        },
+        {
+          "linkId": "phalen-li",
+          "text": "Phalen LI",
+          "answer": [{ "valueString": "-" }]
+        },
+        {
+          "linkId": "reversed-phalen-re",
+          "text": "Reversed Phalen RE",
+          "answer": [{ "valueString": "-" }]
+        },
+        {
+          "linkId": "reversed-phalen-li",
+          "text": "Reversed Phalen LI",
+          "answer": [{ "valueString": "-" }]
+        },
+        {
+          "linkId": "rom-cpp-re",
+          "text": "ROM CPP RE",
+          "answer": [{ "valueString": "0" }]
+        },
+        {
+          "linkId": "rom-cpp-li",
+          "text": "ROM CPP LI",
+          "answer": [{ "valueString": "0" }]
+        },
+        {
+          "linkId": "rom-pdpp-re",
+          "text": "ROM PDPP RE",
+          "answer": [{ "valueString": "0" }]
+        },
+        {
+          "linkId": "rom-pdpp-li",
+          "text": "ROM PDPP LI",
+          "answer": [{ "valueString": "0" }]
+        },
+        {
+          "linkId": "kracht-oppositie-re",
+          "text": "Kracht oppositie RE",
+          "answer": [{ "valueString": "4" }]
+        },
+        {
+          "linkId": "kracht-oppositie-li",
+          "text": "Kracht oppositie LI",
+          "answer": [{ "valueString": "5" }]
+        },
+        {
+          "linkId": "kracht-fpl-re",
+          "text": "Kracht FPL RE",
+          "answer": [{ "valueString": "5" }]
+        },
+        {
+          "linkId": "kracht-fpl-li",
+          "text": "Kracht FPL LI",
+          "answer": [{ "valueString": "5" }]
+        },
+        {
+          "linkId": "kracht-fdp2-re",
+          "text": "Kracht FDP 2 RE",
+          "answer": [{ "valueString": "5" }]
+        },
+        {
+          "linkId": "kracht-fdp2-li",
+          "text": "Kracht FDP 2 LI",
+          "answer": [{ "valueString": "5" }]
+        },
+        {
+          "linkId": "key-pinch-re",
+          "text": "Key pinch RE",
+          "answer": [{ "valueString": "6.2" }]
+        },
+        {
+          "linkId": "key-pinch-li",
+          "text": "Key pinch LI",
+          "answer": [{ "valueString": "7.1" }]
+        },
+        {
+          "linkId": "precision-pinch-re",
+          "text": "Precision pinch RE",
+          "answer": [{ "valueString": "4.8" }]
+        },
+        {
+          "linkId": "precision-pinch-li",
+          "text": "Precision pinch LI",
+          "answer": [{ "valueString": "5.5" }]
+        },
+        {
+          "linkId": "jamar2-re",
+          "text": "Jamar 2 RE",
+          "answer": [{ "valueString": "28" }]
+        },
+        {
+          "linkId": "jamar2-li",
+          "text": "Jamar 2 LI",
+          "answer": [{ "valueString": "32" }]
+        },
+        {
+          "linkId": "weber-dig",
+          "text": "Weber 2-pt discrim dig",
+          "answer": [{ "valueString": "2" }]
+        },
+        {
+          "linkId": "weber-re",
+          "text": "Weber 2-pt discrim RE",
+          "answer": [{ "valueString": "5/4" }]
+        },
+        {
+          "linkId": "weber-li",
+          "text": "Weber 2-pt discrim LI",
+          "answer": [{ "valueString": "4/4" }]
+        },
+        {
+          "linkId": "scratch-collapse-re",
+          "text": "Scratch collapse test RE",
+          "answer": [{ "valueString": "+" }]
+        },
+        {
+          "linkId": "scratch-collapse-li",
+          "text": "Scratch collapse test LI",
+          "answer": [{ "valueString": "-" }]
+        },
+        {
+          "linkId": "lacertus-re",
+          "text": "Lacertus RE",
+          "answer": [{ "valueString": "-" }]
+        },
+        {
+          "linkId": "lacertus-li",
+          "text": "Lacertus LI",
+          "answer": [{ "valueString": "-" }]
+        }
+      ]
+    },
+    {
+      "linkId": "preop-to",
+      "text": "CTS Preop TO",
+      "item": [
+        {
+          "linkId": "emg-canterbury",
+          "text": "EMG Canterbury scale gr /6",
+          "answer": [{ "valueString": "3" }]
+        },
+        {
+          "linkId": "echo-pols",
+          "text": "echo pols",
+          "answer": [{ "valueString": "inlet diameter 12mm" }]
+        }
+      ]
+    },
+    {
+      "linkId": "postop-an",
+      "text": "CTS Postop An",
+      "item": [
+        {
+          "linkId": "postop-hand",
+          "text": "HAND",
+          "answer": [{ "valueString": "RECHTS" }]
+        },
+        {
+          "linkId": "postop-pijn",
+          "text": "pijn",
+          "answer": [{ "valueString": "Mild, goed te verdragen" }]
+        },
+        {
+          "linkId": "postop-duur-pijnstilling",
+          "text": "duur pijnstilling",
+          "answer": [{ "valueString": "3" }]
+        },
+        {
+          "linkId": "postop-tintelingen",
+          "text": "tintelingen",
+          "answer": [{ "valueString": "verminderd" }]
+        },
+        {
+          "linkId": "postop-nachtelijk-wakker",
+          "text": "nachtelijk wakker worden",
+          "answer": [{ "valueString": "niet meer" }]
+        },
+        {
+          "linkId": "arbeidsongeschiktheid-waarde",
+          "text": "arbeidsongeschiktheid waarde",
+          "answer": [{ "valueString": "2" }]
+        },
+        {
+          "linkId": "arbeidsongeschiktheid-eenheid",
+          "text": "arbeidsongeschiktheid eenheid",
+          "answer": [{ "valueString": "w" }]
+        },
+        {
+          "linkId": "hervating-hobbys-waarde",
+          "text": "hervating hobby's waarde",
+          "answer": [{ "valueString": "3" }]
+        },
+        {
+          "linkId": "hervating-hobbys-eenheid",
+          "text": "hervating hobby's eenheid",
+          "answer": [{ "valueString": "w" }]
+        }
+      ]
+    },
+    {
+      "linkId": "postop-ko",
+      "text": "CTS Postop KO",
+      "item": [
+        {
+          "linkId": "litteken",
+          "text": "litteken",
+          "answer": [{ "valueString": "Goed genezen, geen keloïd" }]
+        },
+        {
+          "linkId": "pillar-pain",
+          "text": "Pillar pain",
+          "answer": [{ "valueString": "-" }]
+        },
+        {
+          "linkId": "postop-drukpijn-localisatie",
+          "text": "drukpijn localisatie",
+          "answer": [{ "valueString": "Geen" }]
+        },
+        {
+          "linkId": "postop-rom-cpp-re",
+          "text": "ROM CPP RE",
+          "answer": [{ "valueString": "0" }]
+        },
+        {
+          "linkId": "postop-rom-cpp-li",
+          "text": "ROM CPP LI",
+          "answer": [{ "valueString": "0" }]
+        },
+        {
+          "linkId": "postop-rom-pdpp-re",
+          "text": "ROM PDPP RE",
+          "answer": [{ "valueString": "0" }]
+        },
+        {
+          "linkId": "postop-rom-pdpp-li",
+          "text": "ROM PDPP LI",
+          "answer": [{ "valueString": "0" }]
+        },
+        {
+          "linkId": "postop-kracht-oppositie-re",
+          "text": "Kracht oppositie RE",
+          "answer": [{ "valueString": "5" }]
+        },
+        {
+          "linkId": "postop-kracht-oppositie-li",
+          "text": "Kracht oppositie LI",
+          "answer": [{ "valueString": "5" }]
+        },
+        {
+          "linkId": "postop-kracht-fpl-re",
+          "text": "Kracht FPL RE",
+          "answer": [{ "valueString": "5" }]
+        },
+        {
+          "linkId": "postop-kracht-fpl-li",
+          "text": "Kracht FPL LI",
+          "answer": [{ "valueString": "5" }]
+        },
+        {
+          "linkId": "postop-kracht-fds2-re",
+          "text": "Kracht FDS 2 RE",
+          "answer": [{ "valueString": "5" }]
+        },
+        {
+          "linkId": "postop-kracht-fds2-li",
+          "text": "Kracht FDS 2 LI",
+          "answer": [{ "valueString": "5" }]
+        },
+        {
+          "linkId": "postop-precision-pinch-re",
+          "text": "Precision pinch RE",
+          "answer": [{ "valueString": "5.2" }]
+        },
+        {
+          "linkId": "postop-precision-pinch-li",
+          "text": "Precision pinch LI",
+          "answer": [{ "valueString": "5.5" }]
+        },
+        {
+          "linkId": "postop-key-pinch-re",
+          "text": "Key pinch RE",
+          "answer": [{ "valueString": "7.0" }]
+        },
+        {
+          "linkId": "postop-key-pinch-li",
+          "text": "Key pinch LI",
+          "answer": [{ "valueString": "7.1" }]
+        },
+        {
+          "linkId": "postop-jamar2-re",
+          "text": "Jamar 2 RE",
+          "answer": [{ "valueString": "30" }]
+        },
+        {
+          "linkId": "postop-jamar2-li",
+          "text": "Jamar 2 LI",
+          "answer": [{ "valueString": "32" }]
+        },
+        {
+          "linkId": "postop-weber-dig",
+          "text": "Weber 2-pt discrim dig",
+          "answer": [{ "valueString": "2" }]
+        },
+        {
+          "linkId": "postop-weber-re",
+          "text": "Weber 2-pt discrim RE",
+          "answer": [{ "valueString": "4/4" }]
+        },
+        {
+          "linkId": "postop-weber-li",
+          "text": "Weber 2-pt discrim LI",
+          "answer": [{ "valueString": "4/4" }]
+        },
+        {
+          "linkId": "postop-scratch-collapse-re",
+          "text": "Scratch collapse test RE",
+          "answer": [{ "valueString": "-" }]
+        },
+        {
+          "linkId": "postop-scratch-collapse-li",
+          "text": "Scratch collapse test LI",
+          "answer": [{ "valueString": "-" }]
+        },
+        {
+          "linkId": "postop-lacertus-re",
+          "text": "Lacertus RE",
+          "answer": [{ "valueString": "-" }]
+        },
+        {
+          "linkId": "postop-lacertus-li",
+          "text": "Lacertus LI",
+          "answer": [{ "valueString": "-" }]
+        }
+      ]
+    }
+  ]
+}
