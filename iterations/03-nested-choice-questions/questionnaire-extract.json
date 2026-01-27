@@ -55,6 +55,50 @@
             "status": "generated",
             "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><dl><dt>drukpijn</dt><dd>{{%context.item.where(linkId='drukpijn').answer.value}}</dd></dl><table><thead><tr><th></th><th>RE</th><th>LI</th></tr></thead><tbody><tr><td>Thenar atrofie</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='right').item.where(linkId='thenar-atrofie').answer.value}}</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='left').item.where(linkId='thenar-atrofie').answer.value}}</td></tr><tr><td>Durkan</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='right').item.where(linkId='durkan').answer.value}}</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='left').item.where(linkId='durkan').answer.value}}</td></tr><tr><td>Tinel</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='right').item.where(linkId='tinel').answer.value}}</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='left').item.where(linkId='tinel').answer.value}}</td></tr><tr><td>Phalen</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='right').item.where(linkId='phalen').answer.value}}</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='left').item.where(linkId='phalen').answer.value}}</td></tr><tr><td>Key pinch (kgF)</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='right').item.where(linkId='key-pinch').answer.value}}</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='left').item.where(linkId='key-pinch').answer.value}}</td></tr><tr><td>Precision pinch (kgF)</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='right').item.where(linkId='precision-pinch').answer.value}}</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='left').item.where(linkId='precision-pinch').answer.value}}</td></tr><tr><td>Jamar 2 (kgF)</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='right').item.where(linkId='jamar2').answer.value}}</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='left').item.where(linkId='jamar2').answer.value}}</td></tr></tbody></table><dl><dt>Weber 2-pt discrim dig</dt><dd>{{%context.item.where(linkId='weber-dig').answer.value}}</dd></dl></div>"
           }
+        },
+        {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+              "valueString": "%resource.item.where(linkId='postop-an')"
+            }
+          ],
+          "title": "CTS Postop An",
+          "code": {
+            "coding": [
+              {
+                "system": "http://example.org/cts-sections",
+                "code": "postop-anamnesis",
+                "display": "Postoperative Anamnesis"
+              }
+            ]
+          },
+          "text": {
+            "status": "generated",
+            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><dl><dt>HAND</dt><dd>{{%context.item.where(linkId='postop-hand').answer.value}}</dd><dt>pijn</dt><dd>{{%context.item.where(linkId='postop-pijn').answer.value}}</dd><dt>duur pijnstilling</dt><dd>{{%context.item.where(linkId='postop-duur-pijnstilling').answer.value}} d</dd><dt>tintelingen</dt><dd>{{%context.item.where(linkId='postop-tintelingen').answer.value}}</dd><dt>nachtelijk wakker worden</dt><dd>{{%context.item.where(linkId='postop-nachtelijk-wakker').answer.value}}</dd><dt>arbeidsongeschiktheid</dt><dd>{{%context.item.where(linkId='arbeidsongeschiktheid').item.where(linkId='waarde').answer.value}} {{%context.item.where(linkId='arbeidsongeschiktheid').item.where(linkId='eenheid').answer.value}}</dd><dt>hervating hobby's</dt><dd>{{%context.item.where(linkId='hervating-hobbys').item.where(linkId='waarde').answer.value}} {{%context.item.where(linkId='hervating-hobbys').item.where(linkId='eenheid').answer.value}}</dd></dl></div>"
+          }
+        },
+        {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+              "valueString": "%resource.item.where(linkId='postop-ko')"
+            }
+          ],
+          "title": "CTS Postop KO",
+          "code": {
+            "coding": [
+              {
+                "system": "http://example.org/cts-sections",
+                "code": "postop-clinical-exam",
+                "display": "Postoperative Clinical Examination"
+              }
+            ]
+          },
+          "text": {
+            "status": "generated",
+            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><dl><dt>litteken</dt><dd>{{%context.item.where(linkId='litteken').answer.value}}</dd><dt>Pillar pain</dt><dd>{{%context.item.where(linkId='pillar-pain').answer.value}}</dd><dt>drukpijn localisatie</dt><dd>{{%context.item.where(linkId='postop-drukpijn-localisatie').answer.value}}</dd></dl><table><thead><tr><th></th><th>RE</th><th>LI</th></tr></thead><tbody><tr><td>ROM CPP</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='right').item.where(linkId='postop-rom-cpp').answer.value}}</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='left').item.where(linkId='postop-rom-cpp').answer.value}}</td></tr><tr><td>ROM PDPP</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='right').item.where(linkId='postop-rom-pdpp').answer.value}}</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='left').item.where(linkId='postop-rom-pdpp').answer.value}}</td></tr><tr><td>Kracht oppositie /5</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='right').item.where(linkId='postop-kracht-oppositie').answer.value}}</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='left').item.where(linkId='postop-kracht-oppositie').answer.value}}</td></tr><tr><td>Kracht FPL /5</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='right').item.where(linkId='postop-kracht-fpl').answer.value}}</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='left').item.where(linkId='postop-kracht-fpl').answer.value}}</td></tr><tr><td>Kracht FDS 2 /5</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='right').item.where(linkId='postop-kracht-fds2').answer.value}}</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='left').item.where(linkId='postop-kracht-fds2').answer.value}}</td></tr><tr><td>Precision pinch (KgF)</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='right').item.where(linkId='postop-precision-pinch').answer.value}}</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='left').item.where(linkId='postop-precision-pinch').answer.value}}</td></tr><tr><td>Key pinch (KgF)</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='right').item.where(linkId='postop-key-pinch').answer.value}}</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='left').item.where(linkId='postop-key-pinch').answer.value}}</td></tr><tr><td>Jamar 2 (KgF)</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='right').item.where(linkId='postop-jamar2').answer.value}}</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='left').item.where(linkId='postop-jamar2').answer.value}}</td></tr></tbody></table><dl><dt>Weber 2-pt discrim dig</dt><dd>{{%context.item.where(linkId='postop-weber-dig').answer.value}}</dd></dl><table><thead><tr><th>Weber 2-pt discrim (mm)</th><th>RE</th><th>LI</th></tr></thead><tbody><tr><td></td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='right').item.where(linkId='postop-weber').answer.value}}</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='left').item.where(linkId='postop-weber').answer.value}}</td></tr><tr><td>Scratch collapse test</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='right').item.where(linkId='postop-scratch-collapse').answer.value}}</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='left').item.where(linkId='postop-scratch-collapse').answer.value}}</td></tr><tr><td>Lacertus</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='right').item.where(linkId='postop-lacertus').answer.value}}</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='left').item.where(linkId='postop-lacertus').answer.value}}</td></tr></tbody></table></div>"
+          }
         }
       ]
     }
@@ -111,6 +155,82 @@
           ]
         },
         { "linkId": "weber-dig", "text": "Weber 2-pt discrim dig", "type": "string" }
+      ]
+    },
+    {
+      "linkId": "postop-an",
+      "text": "CTS Postop An",
+      "type": "group",
+      "item": [
+        { "linkId": "postop-hand", "text": "HAND", "type": "string" },
+        { "linkId": "postop-pijn", "text": "pijn", "type": "string" },
+        { "linkId": "postop-duur-pijnstilling", "text": "duur pijnstilling", "type": "string" },
+        { "linkId": "postop-tintelingen", "text": "tintelingen", "type": "string" },
+        { "linkId": "postop-nachtelijk-wakker", "text": "nachtelijk wakker worden", "type": "string" },
+        {
+          "linkId": "arbeidsongeschiktheid",
+          "text": "arbeidsongeschiktheid",
+          "type": "group",
+          "item": [
+            { "linkId": "waarde", "text": "waarde", "type": "string" },
+            { "linkId": "eenheid", "text": "eenheid", "type": "string" }
+          ]
+        },
+        {
+          "linkId": "hervating-hobbys",
+          "text": "hervating hobby's",
+          "type": "group",
+          "item": [
+            { "linkId": "waarde", "text": "waarde", "type": "string" },
+            { "linkId": "eenheid", "text": "eenheid", "type": "string" }
+          ]
+        }
+      ]
+    },
+    {
+      "linkId": "postop-ko",
+      "text": "CTS Postop KO",
+      "type": "group",
+      "item": [
+        { "linkId": "litteken", "text": "litteken", "type": "string" },
+        { "linkId": "pillar-pain", "text": "Pillar pain", "type": "string" },
+        { "linkId": "postop-drukpijn-localisatie", "text": "drukpijn localisatie", "type": "string" },
+        {
+          "linkId": "laterality",
+          "text": "Laterality",
+          "type": "choice",
+          "repeats": true,
+          "answerOption": [
+            {
+              "valueCoding": {
+                "system": "http://example.org/laterality",
+                "code": "right",
+                "display": "Right"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://example.org/laterality",
+                "code": "left",
+                "display": "Left"
+              }
+            }
+          ],
+          "item": [
+            { "linkId": "postop-rom-cpp", "text": "ROM CPP", "type": "string" },
+            { "linkId": "postop-rom-pdpp", "text": "ROM PDPP", "type": "string" },
+            { "linkId": "postop-kracht-oppositie", "text": "Kracht oppositie /5", "type": "string" },
+            { "linkId": "postop-kracht-fpl", "text": "Kracht FPL /5", "type": "string" },
+            { "linkId": "postop-kracht-fds2", "text": "Kracht FDS 2 /5", "type": "string" },
+            { "linkId": "postop-precision-pinch", "text": "Precision pinch (KgF)", "type": "string" },
+            { "linkId": "postop-key-pinch", "text": "Key pinch (KgF)", "type": "string" },
+            { "linkId": "postop-jamar2", "text": "Jamar 2 (KgF)", "type": "string" },
+            { "linkId": "postop-weber", "text": "Weber 2-pt discrim (mm)", "type": "string" },
+            { "linkId": "postop-scratch-collapse", "text": "Scratch collapse test", "type": "string" },
+            { "linkId": "postop-lacertus", "text": "Lacertus", "type": "string" }
+          ]
+        },
+        { "linkId": "postop-weber-dig", "text": "Weber 2-pt discrim dig", "type": "string" }
       ]
     }
   ]

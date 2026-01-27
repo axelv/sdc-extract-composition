@@ -113,6 +113,229 @@
           "answer": [{ "valueString": "2" }]
         }
       ]
+    },
+    {
+      "linkId": "postop-an",
+      "text": "CTS Postop An",
+      "item": [
+        {
+          "linkId": "postop-hand",
+          "text": "HAND",
+          "answer": [{ "valueString": "RE" }]
+        },
+        {
+          "linkId": "postop-pijn",
+          "text": "pijn",
+          "answer": [{ "valueString": "nee" }]
+        },
+        {
+          "linkId": "postop-duur-pijnstilling",
+          "text": "duur pijnstilling",
+          "answer": [{ "valueString": "3" }]
+        },
+        {
+          "linkId": "postop-tintelingen",
+          "text": "tintelingen",
+          "answer": [{ "valueString": "nee" }]
+        },
+        {
+          "linkId": "postop-nachtelijk-wakker",
+          "text": "nachtelijk wakker worden",
+          "answer": [{ "valueString": "nee" }]
+        },
+        {
+          "linkId": "arbeidsongeschiktheid",
+          "text": "arbeidsongeschiktheid",
+          "item": [
+            {
+              "linkId": "waarde",
+              "text": "waarde",
+              "answer": [{ "valueString": "2" }]
+            },
+            {
+              "linkId": "eenheid",
+              "text": "eenheid",
+              "answer": [{ "valueString": "weken" }]
+            }
+          ]
+        },
+        {
+          "linkId": "hervating-hobbys",
+          "text": "hervating hobby's",
+          "item": [
+            {
+              "linkId": "waarde",
+              "text": "waarde",
+              "answer": [{ "valueString": "3" }]
+            },
+            {
+              "linkId": "eenheid",
+              "text": "eenheid",
+              "answer": [{ "valueString": "weken" }]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "linkId": "postop-ko",
+      "text": "CTS Postop KO",
+      "item": [
+        {
+          "linkId": "litteken",
+          "text": "litteken",
+          "answer": [{ "valueString": "goed genezen" }]
+        },
+        {
+          "linkId": "pillar-pain",
+          "text": "Pillar pain",
+          "answer": [{ "valueString": "-" }]
+        },
+        {
+          "linkId": "postop-drukpijn-localisatie",
+          "text": "drukpijn localisatie",
+          "answer": [{ "valueString": "geen" }]
+        },
+        {
+          "linkId": "laterality",
+          "text": "Laterality",
+          "answer": [
+            {
+              "valueCoding": {
+                "system": "http://example.org/laterality",
+                "code": "right",
+                "display": "Right"
+              },
+              "item": [
+                {
+                  "linkId": "postop-rom-cpp",
+                  "text": "ROM CPP",
+                  "answer": [{ "valueString": "normaal" }]
+                },
+                {
+                  "linkId": "postop-rom-pdpp",
+                  "text": "ROM PDPP",
+                  "answer": [{ "valueString": "normaal" }]
+                },
+                {
+                  "linkId": "postop-kracht-oppositie",
+                  "text": "Kracht oppositie /5",
+                  "answer": [{ "valueString": "5" }]
+                },
+                {
+                  "linkId": "postop-kracht-fpl",
+                  "text": "Kracht FPL /5",
+                  "answer": [{ "valueString": "5" }]
+                },
+                {
+                  "linkId": "postop-kracht-fds2",
+                  "text": "Kracht FDS 2 /5",
+                  "answer": [{ "valueString": "5" }]
+                },
+                {
+                  "linkId": "postop-precision-pinch",
+                  "text": "Precision pinch (KgF)",
+                  "answer": [{ "valueString": "5.2" }]
+                },
+                {
+                  "linkId": "postop-key-pinch",
+                  "text": "Key pinch (KgF)",
+                  "answer": [{ "valueString": "6.8" }]
+                },
+                {
+                  "linkId": "postop-jamar2",
+                  "text": "Jamar 2 (KgF)",
+                  "answer": [{ "valueString": "30" }]
+                },
+                {
+                  "linkId": "postop-weber",
+                  "text": "Weber 2-pt discrim (mm)",
+                  "answer": [{ "valueString": "4" }]
+                },
+                {
+                  "linkId": "postop-scratch-collapse",
+                  "text": "Scratch collapse test",
+                  "answer": [{ "valueString": "-" }]
+                },
+                {
+                  "linkId": "postop-lacertus",
+                  "text": "Lacertus",
+                  "answer": [{ "valueString": "-" }]
+                }
+              ]
+            },
+            {
+              "valueCoding": {
+                "system": "http://example.org/laterality",
+                "code": "left",
+                "display": "Left"
+              },
+              "item": [
+                {
+                  "linkId": "postop-rom-cpp",
+                  "text": "ROM CPP",
+                  "answer": [{ "valueString": "normaal" }]
+                },
+                {
+                  "linkId": "postop-rom-pdpp",
+                  "text": "ROM PDPP",
+                  "answer": [{ "valueString": "normaal" }]
+                },
+                {
+                  "linkId": "postop-kracht-oppositie",
+                  "text": "Kracht oppositie /5",
+                  "answer": [{ "valueString": "5" }]
+                },
+                {
+                  "linkId": "postop-kracht-fpl",
+                  "text": "Kracht FPL /5",
+                  "answer": [{ "valueString": "5" }]
+                },
+                {
+                  "linkId": "postop-kracht-fds2",
+                  "text": "Kracht FDS 2 /5",
+                  "answer": [{ "valueString": "5" }]
+                },
+                {
+                  "linkId": "postop-precision-pinch",
+                  "text": "Precision pinch (KgF)",
+                  "answer": [{ "valueString": "5.8" }]
+                },
+                {
+                  "linkId": "postop-key-pinch",
+                  "text": "Key pinch (KgF)",
+                  "answer": [{ "valueString": "7.5" }]
+                },
+                {
+                  "linkId": "postop-jamar2",
+                  "text": "Jamar 2 (KgF)",
+                  "answer": [{ "valueString": "34" }]
+                },
+                {
+                  "linkId": "postop-weber",
+                  "text": "Weber 2-pt discrim (mm)",
+                  "answer": [{ "valueString": "4" }]
+                },
+                {
+                  "linkId": "postop-scratch-collapse",
+                  "text": "Scratch collapse test",
+                  "answer": [{ "valueString": "-" }]
+                },
+                {
+                  "linkId": "postop-lacertus",
+                  "text": "Lacertus",
+                  "answer": [{ "valueString": "-" }]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "linkId": "postop-weber-dig",
+          "text": "Weber 2-pt discrim dig",
+          "answer": [{ "valueString": "2" }]
+        }
+      ]
     }
   ]
 }
