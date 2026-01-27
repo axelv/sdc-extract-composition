@@ -25,6 +25,8 @@ Transform clinical forms into FHIR Composition resources using SDC (Structured D
 | # | Name | Description |
 |---|------|-------------|
 | 01 | `liquid-template` | FHIR Liquid syntax with `{{ }}` FHIRPath expressions |
+| 02 | `nested-questionnaire` | Groups bilateral measurements under RE/LI sub-items |
+| 03 | `nested-choice-questions` | Uses choice question with nested items per laterality answer |
 
 ## Usage
 
