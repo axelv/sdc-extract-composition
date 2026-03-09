@@ -1,0 +1,170 @@
+{
+  "resourceType": "Questionnaire",
+  "id": "preop-assessment-repeating",
+  "meta": {
+    "profile": [
+      "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-extr-template"
+    ]
+  },
+  "url": "http://example.org/Questionnaire/preop-assessment-repeating",
+  "status": "active",
+  "title": "Preoperatieve Beoordeling (Repeating Group)",
+  "contained": [
+    {
+      "resourceType": "Composition",
+      "id": "composition-template",
+      "status": "final",
+      "type": {
+        "coding": [
+          {
+            "system": "http://loinc.org",
+            "code": "11488-4",
+            "display": "Consultation note"
+          }
+        ]
+      },
+      "date": "2024-01-01",
+      "_date": {
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractValue",
+            "valueString": "{{%resource.authored}}"
+          }
+        ]
+      },
+      "title": "Preoperatieve Beoordeling",
+      "section": [
+        {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+              "valueString": "%resource.item.where(linkId='patient-info')"
+            }
+          ],
+          "title": "Patiëntgegevens",
+          "text": {
+            "status": "generated",
+            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><dl><dt>Geboortedatum</dt><dd>{{%context.item.where(linkId='dob').answer.value}}</dd><dt>Geslacht</dt><dd>{{%context.item.where(linkId='gender').answer.value}}</dd><dt>Gewicht (kg)</dt><dd>{{%context.item.where(linkId='weight').answer.value}}</dd><dt>Lengte (cm)</dt><dd>{{%context.item.where(linkId='height').answer.value}}</dd></dl></div>"
+          }
+        },
+        {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+              "valueString": "%resource.item.where(linkId='med-list')"
+            }
+          ],
+          "title": "Medicatielijst",
+          "text": {
+            "status": "generated",
+            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table><thead><tr><th>Medicatie</th><th>Dosis</th><th>Frequentie</th><th>Toedieningsweg</th></tr></thead><tbody><!-- sections --></tbody></table></div>"
+          },
+          "section": [
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+                  "valueString": "%context.item.where(linkId='medication')"
+                }
+              ],
+              "text": {
+                "status": "generated",
+                "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><tr><td>{{%context.item.where(linkId='med-name').answer.value}}</td><td>{{%context.item.where(linkId='med-dose').answer.value}}</td><td>{{%context.item.where(linkId='med-frequency').answer.value}}</td><td>{{%context.item.where(linkId='med-route').answer.value}}</td></tr></div>"
+              }
+            }
+          ]
+        },
+        {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+              "valueString": "%resource.item.where(linkId='allergy-list')"
+            }
+          ],
+          "title": "Allergieën",
+          "text": {
+            "status": "generated",
+            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table><thead><tr><th>Allergeen</th><th>Reactie</th><th>Ernst</th></tr></thead><tbody><!-- sections --></tbody></table></div>"
+          },
+          "section": [
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+                  "valueString": "%context.item.where(linkId='allergy')"
+                }
+              ],
+              "text": {
+                "status": "generated",
+                "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><tr><td>{{%context.item.where(linkId='allergen').answer.value}}</td><td>{{%context.item.where(linkId='reaction').answer.value}}</td><td>{{%context.item.where(linkId='severity').answer.value}}</td></tr></div>"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "extension": [
+    {
+      "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtract",
+      "extension": [
+        {
+          "url": "template",
+          "valueReference": {
+            "reference": "#composition-template"
+          }
+        }
+      ]
+    }
+  ],
+  "item": [
+    {
+      "linkId": "patient-info",
+      "text": "Patiëntgegevens",
+      "type": "group",
+      "item": [
+        { "linkId": "dob", "text": "Geboortedatum", "type": "date" },
+        { "linkId": "gender", "text": "Geslacht", "type": "string" },
+        { "linkId": "weight", "text": "Gewicht (kg)", "type": "decimal" },
+        { "linkId": "height", "text": "Lengte (cm)", "type": "integer" }
+      ]
+    },
+    {
+      "linkId": "med-list",
+      "text": "Medicatielijst",
+      "type": "group",
+      "item": [
+        {
+          "linkId": "medication",
+          "text": "Medicatie",
+          "type": "group",
+          "repeats": true,
+          "item": [
+            { "linkId": "med-name", "text": "Naam", "type": "string" },
+            { "linkId": "med-dose", "text": "Dosis", "type": "string" },
+            { "linkId": "med-frequency", "text": "Frequentie", "type": "string" },
+            { "linkId": "med-route", "text": "Toedieningsweg", "type": "string" }
+          ]
+        }
+      ]
+    },
+    {
+      "linkId": "allergy-list",
+      "text": "Allergieën",
+      "type": "group",
+      "item": [
+        {
+          "linkId": "allergy",
+          "text": "Allergie",
+          "type": "group",
+          "repeats": true,
+          "item": [
+            { "linkId": "allergen", "text": "Allergeen", "type": "string" },
+            { "linkId": "reaction", "text": "Reactie", "type": "string" },
+            { "linkId": "severity", "text": "Ernst", "type": "string" }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "resourceType": "QuestionnaireResponse",
+  "id": "preop-assessment-repeating-example",
+  "status": "completed",
+  "authored": "2024-09-12T14:20:00Z",
+  "item": [
+    {
+      "linkId": "patient-info",
+      "text": "Patiëntgegevens",
+      "item": [
+        { "linkId": "dob", "text": "Geboortedatum", "answer": [{ "valueDate": "1958-03-22" }] },
+        { "linkId": "gender", "text": "Geslacht", "answer": [{ "valueString": "Vrouw" }] },
+        { "linkId": "weight", "text": "Gewicht (kg)", "answer": [{ "valueDecimal": 72.5 }] },
+        { "linkId": "height", "text": "Lengte (cm)", "answer": [{ "valueInteger": 165 }] }
+      ]
+    },
+    {
+      "linkId": "med-list",
+      "text": "Medicatielijst",
+      "item": [
+        {
+          "linkId": "medication",
+          "text": "Medicatie",
+          "item": [
+            { "linkId": "med-name", "text": "Naam", "answer": [{ "valueString": "Metformine" }] },
+            { "linkId": "med-dose", "text": "Dosis", "answer": [{ "valueString": "500 mg" }] },
+            { "linkId": "med-frequency", "text": "Frequentie", "answer": [{ "valueString": "2x/dag" }] },
+            { "linkId": "med-route", "text": "Toedieningsweg", "answer": [{ "valueString": "oraal" }] }
+          ]
+        },
+        {
+          "linkId": "medication",
+          "text": "Medicatie",
+          "item": [
+            { "linkId": "med-name", "text": "Naam", "answer": [{ "valueString": "Lisinopril" }] },
+            { "linkId": "med-dose", "text": "Dosis", "answer": [{ "valueString": "10 mg" }] },
+            { "linkId": "med-frequency", "text": "Frequentie", "answer": [{ "valueString": "1x/dag" }] },
+            { "linkId": "med-route", "text": "Toedieningsweg", "answer": [{ "valueString": "oraal" }] }
+          ]
+        },
+        {
+          "linkId": "medication",
+          "text": "Medicatie",
+          "item": [
+            { "linkId": "med-name", "text": "Naam", "answer": [{ "valueString": "Acetylsalicylzuur" }] },
+            { "linkId": "med-dose", "text": "Dosis", "answer": [{ "valueString": "100 mg" }] },
+            { "linkId": "med-frequency", "text": "Frequentie", "answer": [{ "valueString": "1x/dag" }] },
+            { "linkId": "med-route", "text": "Toedieningsweg", "answer": [{ "valueString": "oraal" }] }
+          ]
+        },
+        {
+          "linkId": "medication",
+          "text": "Medicatie",
+          "item": [
+            { "linkId": "med-name", "text": "Naam", "answer": [{ "valueString": "Omeprazol" }] },
+            { "linkId": "med-dose", "text": "Dosis", "answer": [{ "valueString": "20 mg" }] },
+            { "linkId": "med-frequency", "text": "Frequentie", "answer": [{ "valueString": "1x/dag" }] },
+            { "linkId": "med-route", "text": "Toedieningsweg", "answer": [{ "valueString": "oraal" }] }
+          ]
+        }
+      ]
+    },
+    {
+      "linkId": "allergy-list",
+      "text": "Allergieën",
+      "item": [
+        {
+          "linkId": "allergy",
+          "text": "Allergie",
+          "item": [
+            { "linkId": "allergen", "text": "Allergeen", "answer": [{ "valueString": "Penicilline" }] },
+            { "linkId": "reaction", "text": "Reactie", "answer": [{ "valueString": "Huiduitslag, urticaria" }] },
+            { "linkId": "severity", "text": "Ernst", "answer": [{ "valueString": "Matig" }] }
+          ]
+        },
+        {
+          "linkId": "allergy",
+          "text": "Allergie",
+          "item": [
+            { "linkId": "allergen", "text": "Allergeen", "answer": [{ "valueString": "Latex" }] },
+            { "linkId": "reaction", "text": "Reactie", "answer": [{ "valueString": "Contactdermatitis" }] },
+            { "linkId": "severity", "text": "Ernst", "answer": [{ "valueString": "Licht" }] }
+          ]
+        }
+      ]
+    }
+  ]
+}

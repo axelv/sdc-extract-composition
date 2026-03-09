@@ -12,7 +12,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from fhir_liquid import evaluate_fhirpath, render_template
+from fhir_liquid import combine_expression, evaluate_fhirpath_list, render_template
 
 HTML_TEMPLATE = """<!DOCTYPE html>
 <html lang="nl">
@@ -176,40 +176,96 @@ def load_composition(questionnaire: dict[str, Any]) -> dict[str, Any]:
     raise ValueError("No Composition found in Questionnaire.contained")
 
 
+SECTIONS_PLACEHOLDER = "<!-- sections -->"
+
+
+def _render_single(
+    section: dict[str, Any],
+    resource: dict[str, Any],
+    base: str | None,
+) -> str | None:
+    """Render one section instance with a resolved base path.
+
+    Evaluates the section's text.div template, then recursively processes
+    child sections and injects their HTML at the <!-- sections --> placeholder.
+    """
+    section_text = section.get("text", {}).get("div", "")
+    context = {"resource": resource}
+    if base:
+        context["base"] = base
+
+    rendered = render_template(section_text, context)
+    inner = extract_div_content(rendered)
+
+    # Recursively render child sections
+    child_parts = []
+    for child in section.get("section", []):
+        child_html = _render_section_content(child, resource, parent_base=base)
+        if child_html is not None:
+            child_parts.append(child_html)
+
+    if child_parts:
+        children_html = "\n".join(child_parts)
+        if SECTIONS_PLACEHOLDER in inner:
+            inner = inner.replace(SECTIONS_PLACEHOLDER, children_html)
+        else:
+            inner += "\n" + children_html
+
+    return inner
+
+
+def _render_section_content(
+    section: dict[str, Any],
+    resource: dict[str, Any],
+    parent_base: str | None = None,
+) -> str | None:
+    """Resolve a section's context and render it, cloning for multi-valued contexts.
+
+    When templateExtractContext resolves to N > 1 items, the section is
+    rendered N times with an indexed base path (effective_base[i]).
+    """
+    extensions = section.get("extension", [])
+    context_expr = get_extension_value(extensions, TEMPLATE_EXTRACT_CONTEXT_URL)
+
+    # Compute effective base by combining parent base with this section's context
+    if context_expr and parent_base:
+        effective_base = combine_expression(parent_base, context_expr)
+    elif context_expr:
+        effective_base = context_expr
+    else:
+        effective_base = parent_base
+
+    # Evaluate the effective base to check item count
+    if effective_base:
+        items = evaluate_fhirpath_list(effective_base, resource)
+        if not items:
+            return None
+        if len(items) > 1:
+            # Clone: render once per item with indexed base
+            parts = []
+            for i in range(len(items)):
+                indexed_base = f"{effective_base}[{i}]"
+                part = _render_single(section, resource, indexed_base)
+                if part is not None:
+                    parts.append(part)
+            return "\n".join(parts) if parts else None
+    # Single item or no base — render once
+    return _render_single(section, resource, effective_base)
+
+
 def render_section(
     section: dict[str, Any],
     resource: dict[str, Any],
 ) -> str | None:
-    """Render a single Composition section with FHIRPath expressions evaluated.
+    """Render a top-level Composition section, wrapped in <section><h2>...</h2>."""
+    content = _render_section_content(section, resource)
+    if content is None:
+        return None
 
-    Returns None if the section's templateExtractContext resolves to empty,
-    skipping the section from output.
-    """
     section_title = section.get("title", "Untitled")
-    section_text = section.get("text", {}).get("div", "")
-
-    # Get the templateExtractContext expression (base path for %context)
-    extensions = section.get("extension", [])
-    base_path = get_extension_value(extensions, TEMPLATE_EXTRACT_CONTEXT_URL)
-
-    # Skip section if context resolves to empty
-    if base_path:
-        context_result = evaluate_fhirpath(base_path, resource)
-        if not context_result:
-            return None
-
-    # Create context with base path for proper type resolution
-    context = {"resource": resource}
-    if base_path:
-        context["base"] = base_path
-
-    # Render the template with FHIRPath expressions
-    rendered_content = render_template(section_text, context)
-    inner_content = extract_div_content(rendered_content)
-
     return f"""    <section>
         <h2>{section_title}</h2>
-        {inner_content}
+        {content}
     </section>"""
 
 

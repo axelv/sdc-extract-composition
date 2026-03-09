@@ -33,6 +33,8 @@ from fhirpathpy.models import models as fhir_models
 __all__ = [
     "render_template",
     "evaluate_fhirpath",
+    "evaluate_fhirpath_list",
+    "combine_expression",
     "FHIRContext",
 ]
 
@@ -53,7 +55,7 @@ class FHIRContext(TypedDict, total=False):
     resource: Required[dict[str, Any]]  # Root FHIR resource with resourceType
 
 
-def _combine_expression(base: str, expression: str) -> str:
+def combine_expression(base: str, expression: str) -> str:
     """Combine a base path with an expression by replacing %context.
 
     Args:
@@ -93,7 +95,7 @@ def evaluate_fhirpath(
     """
     # If base is provided, combine it with the expression
     if base:
-        expression = _combine_expression(base, expression)
+        expression = combine_expression(base, expression)
 
     # fhirpathpy expects context keys WITHOUT the % prefix
     fhir_context: dict[str, Any] = {
@@ -106,6 +108,25 @@ def evaluate_fhirpath(
     if not result:
         return ""
     return result[0] if len(result) == 1 else result
+
+
+def evaluate_fhirpath_list(
+    expression: str,
+    resource: dict[str, Any],
+    base: str | None = None,
+) -> list[Any]:
+    """Evaluate a FHIRPath expression, always returning the raw list.
+
+    Unlike evaluate_fhirpath, this never unwraps single-item lists or
+    converts empty results to "". Useful for counting collection items.
+    """
+    if base:
+        expression = combine_expression(base, expression)
+
+    fhir_context: dict[str, Any] = {"resource": resource}
+    result = fhirpathpy.evaluate(resource, expression, fhir_context, R4_MODEL)
+    assert isinstance(result, list), "FHIRPath evaluation should return a list"
+    return result
 
 
 def _stringify(value: Any) -> str:
@@ -123,7 +144,7 @@ def render_template(
     template_source: str,
     context: FHIRContext,
 ) -> str:
-    """Render a template with FHIRPath expression support.
+    """Render a template by evaluating {{ FHIRPath }} expressions.
 
     Args:
         template_source: The template string containing FHIRPath expressions
@@ -137,7 +158,6 @@ def render_template(
     """
     resource = context["resource"]
     base = context.get("base")
-
     def replace_expression(match: re.Match[str]) -> str:
         expression = match.group(1).strip()
         result = evaluate_fhirpath(expression, resource, base)

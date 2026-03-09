@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preoperatieve Beoordeling</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 0.5cm 2.2cm;
+        }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.4;
+            font-size: 8pt;
+        }
+        h1 {
+            font-size: 12pt;
+            border-bottom: 1.5px solid #333;
+            padding-bottom: 0.3rem;
+            margin: 0.5rem 0;
+        }
+        h2 {
+            font-size: 9pt;
+            margin: 0.8rem 0 0.3rem;
+            padding-bottom: 0.2rem;
+            border-bottom: 1px solid #ddd;
+        }
+        dl {
+            display: grid;
+            grid-template-columns: minmax(120px, 1fr) 2fr;
+            gap: 0.1rem 0.8rem;
+            margin: 0.2rem 0;
+        }
+        dt {
+            font-weight: 600;
+            padding: 0.1rem 0;
+        }
+        dd {
+            margin: 0;
+            padding: 0.1rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        section {
+            margin: 1rem 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0.5rem 0;
+        }
+        th, td {
+            padding: 0.2rem 0.4rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background: #f5f5f5;
+            font-weight: 600;
+        }
+        thead th {
+            border-bottom: 2px solid #ccc;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 1.5px solid #333;
+            padding-bottom: 0.4rem;
+            margin-bottom: 0.5rem;
+        }
+        .lab-info {
+            font-size: 7pt;
+            color: #555;
+        }
+        .lab-info strong {
+            font-size: 8pt;
+            color: #111;
+        }
+        .report-meta {
+            font-size: 7pt;
+            text-align: right;
+            color: #555;
+        }
+        .report-meta strong {
+            color: #111;
+        }
+        footer {
+            margin-top: 1rem;
+            padding-top: 0.4rem;
+            border-top: 1.5px solid #333;
+        }
+        .attestation {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+            font-size: 7pt;
+        }
+        .attestation .signer {
+            padding-top: 0.2rem;
+        }
+        .attestation .signature-line {
+            margin-top: 1rem;
+            border-top: 1px solid #999;
+            padding-top: 0.15rem;
+            font-size: 6.5pt;
+            color: #666;
+        }
+        .attestation-note {
+            margin-top: 0.4rem;
+            font-size: 6pt;
+            color: #888;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Preoperatieve Beoordeling</h1>
+    <section>
+        <h2>Patiëntgegevens</h2>
+        <dl><dt>Geboortedatum</dt><dd>1958-03-22</dd><dt>Geslacht</dt><dd>Vrouw</dd><dt>Gewicht (kg)</dt><dd>72.5</dd><dt>Lengte (cm)</dt><dd>165</dd></dl>
+    </section>
+    <section>
+        <h2>Medicatielijst</h2>
+        <table><thead><tr><th>Medicatie</th><th>Dosis</th><th>Frequentie</th><th>Toedieningsweg</th></tr></thead><tbody><tr><td>Metformine</td><td>500 mg</td><td>2x/dag</td><td>oraal</td></tr>
+<tr><td>Lisinopril</td><td>10 mg</td><td>1x/dag</td><td>oraal</td></tr>
+<tr><td>Acetylsalicylzuur</td><td>100 mg</td><td>1x/dag</td><td>oraal</td></tr>
+<tr><td>Omeprazol</td><td>20 mg</td><td>1x/dag</td><td>oraal</td></tr></tbody></table>
+    </section>
+    <section>
+        <h2>Allergieën</h2>
+        <table><thead><tr><th>Allergeen</th><th>Reactie</th><th>Ernst</th></tr></thead><tbody><tr><td>Penicilline</td><td>Huiduitslag, urticaria</td><td>Matig</td></tr>
+<tr><td>Latex</td><td>Contactdermatitis</td><td>Licht</td></tr></tbody></table>
+    </section>
+
+</body>
+</html>
