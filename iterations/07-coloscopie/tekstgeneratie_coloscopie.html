@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tekstgeneratie coloscopie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fdfdfc;
+    --fg: #1a1a1a;
+    --muted: #6b6b6b;
+    --accent: #2d5a27;
+    --accent-light: #e8f0e6;
+    --cond-bg: #f4f1eb;
+    --cond-border: #d4cfc4;
+    --field-bg: #fff8e1;
+    --field-border: #e6d590;
+    --field-text: #8b6914;
+    --section-line: #d4cfc4;
+    --card-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Serif 4', Georgia, serif;
+    background: var(--bg);
+    color: var(--fg);
+    line-height: 1.7;
+    padding: 2rem 1rem;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  header {
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid var(--accent);
+  }
+
+  header h1 {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 600;
+    font-size: 1.6rem;
+    color: var(--accent);
+    letter-spacing: -0.01em;
+    margin-bottom: 0.25rem;
+  }
+
+  header .subtitle {
+    font-size: 0.9rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  /* Template output text */
+  .template-line {
+    margin-bottom: 0.6rem;
+  }
+
+  /* Placeholders / fields */
+  .field {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75em;
+    background: var(--field-bg);
+    border: 1px solid var(--field-border);
+    color: var(--field-text);
+    padding: 0.1em 0.4em;
+    border-radius: 3px;
+    white-space: nowrap;
+    position: relative;
+  }
+
+  .field[data-value]:hover::after {
+    content: attr(data-value);
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    background: var(--fg);
+    color: var(--bg);
+    font-size: 0.72rem;
+    font-style: normal;
+    padding: 0.3em 0.5em;
+    border-radius: 4px;
+    white-space: nowrap;
+    z-index: 10;
+    pointer-events: none;
+    margin-bottom: 4px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  }
+
+  .expression {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75em;
+    background: var(--field-bg);
+    border: 1px solid var(--field-border);
+    border-radius: 3px;
+    padding: 0.1em 0.4em;
+    white-space: nowrap;
+  }
+
+  .expression .expression-op,
+  .field .expression-op {
+    color: var(--muted);
+    font-size: 0.9em;
+  }
+
+  .expression .field {
+    border: none;
+    padding: 0;
+    border-radius: 0;
+    background: none;
+    font-size: inherit;
+  }
+
+  .field-unknown {
+    background: #fce4e4;
+    border-color: #e8a0a0;
+    color: #a03030;
+  }
+
+  /* Conditional blocks */
+  .cond-block {
+    background: var(--cond-bg);
+    border-left: 3px solid var(--cond-border);
+    border-radius: 0 4px 4px 0;
+    padding: 0.6rem 0.8rem;
+    margin: 0.5rem 0;
+    position: relative;
+  }
+
+  .cond-block .cond-block {
+    background: rgba(255,255,255,0.5);
+    border-left-color: #bab5a8;
+  }
+
+  .cond-block .cond-block .cond-block {
+    background: rgba(255,255,255,0.4);
+    border-left-color: #a8a299;
+  }
+
+  .cond-label {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    display: inline-block;
+    margin-bottom: 0.2rem;
+  }
+
+  .cond-expr {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--muted);
+    font-style: italic;
+    cursor: help;
+    position: relative;
+  }
+
+  .cond-expr[value]:hover::after {
+    content: attr(value);
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    background: var(--fg);
+    color: var(--bg);
+    font-size: 0.72rem;
+    font-style: normal;
+    padding: 0.3em 0.5em;
+    border-radius: 4px;
+    white-space: nowrap;
+    z-index: 10;
+    pointer-events: none;
+    margin-bottom: 4px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  }
+
+  /* Sections */
+  .section {
+    margin-bottom: 1.8rem;
+  }
+
+  .section-title {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: var(--fg);
+    border-bottom: 1px solid var(--section-line);
+    padding-bottom: 0.3rem;
+    margin-bottom: 0.8rem;
+  }
+
+  /* Repeating blocks */
+  .repeat-block {
+    background: var(--cond-bg);
+    border-left: 3px dashed var(--cond-border);
+    border-radius: 0 4px 4px 0;
+    padding: 1.2rem 0.8rem 0.6rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .repeat-block > .template-line:first-of-type,
+  .repeat-block > p:first-of-type {
+    margin-top: 0;
+  }
+
+  .repeat-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    background: var(--bg);
+    padding: 0 0.4em;
+    position: absolute;
+    top: -0.6em;
+    left: 0.6em;
+  }
+
+  /* Crohn segment blocks */
+  .segment-block {
+    margin-bottom: 1rem;
+  }
+
+  .segment-title {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--fg);
+    margin-bottom: 0.4rem;
+  }
+
+  /* Besluit */
+  .besluit-section {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--accent);
+  }
+
+  .besluit-title {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* Crohn detail list inside conditional */
+  .crohn-detail {
+    margin: 0.25rem 0;
+  }
+
+  footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--section-line);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+
+  @media (max-width: 600px) {
+    body { padding: 1rem 0.75rem; }
+    header h1 { font-size: 1.3rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Tekstgeneratie coloscopie</h1>
+  <div class="subtitle">Template voor gestructureerde verslaggeving</div>
+</header>
+
+<!--
+  Conventions:
+  - <span class="field">Antwoord op "X"</span>                              → renders the display value of field X (item.text)
+  - <span class="field" data-designation="Y">Antwoord op "X" | designation('Y')</span>   → renders an alternative designation "Y" of the same code
+  - <span class="expression"><span class="expression-op">', ' + </span><span class="field">Antwoord op "X"</span></span>   → optional fragment: disappears when X is empty, includes separator when present
+
+  Designation mappings:
+    Architectuur (data-designation="nl"):
+      Paris 0-Ip    → gesteelde
+      Paris 0-Is    → sessiele
+      Paris 0-Isp   → semisessiele
+      Paris 0-IIa   → vlakke
+      Paris 0-IIb   → vlakke
+      Paris 0-IIc   → vlakke
+      Paris 0-III   → ???
+
+    Device (data-designation="nl"):
+      coldsnare     → koude lusresectie
+      hotsnare      → warme lusresectie
+      biopsietang   → resectie met biopsietang
+
+    Vernauwing (data-designation="nl"):
+      geen                → geen vernauwingen
+      een-passeerbaar     → één passeerbare vernauwing
+      meerdere-passeerbaar → meerdere passeerbare vernauwingen
+      niet-passeerbaar    → niet passeerbare vernauwing aanwezig
+-->
+
+<!-- Procedure info -->
+<div class="section">
+  <p class="template-line">Coloscopie uitgevoerd op <span class="field" data-value="%resource.item.where(linkId='datum-procedure').answer.value">Antwoord op "Datum procedure"</span> door <span class="field" data-value="%resource.item.where(linkId='uitvoerende-arts').answer.value.display">Antwoord op "Uitvoerende arts"</span>.</p>
+
+  <div class="cond-block">
+    <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='verwijzer').answer.value.code = 'via-specialist-extern'">Verwijzer = via specialist extern</data>
+    <p class="template-line">Patiënt verwezen via <span class="field" data-value="%resource.item.where(linkId='verwijzend-ziekenhuis').answer.value.display">Antwoord op "Verwijzend ziekenhuis"</span>, <span class="field" data-value="%resource.item.where(linkId='verwijzende-specialist').answer.value.display">Antwoord op "Verwijzend specialist"</span>.</p>
+  </div>
+
+  <p class="template-line">Indicatie:
+    <span class="cond-label" style="margin-left:0.3rem;">als</span> <data class="cond-expr" value="%resource.item.where(linkId='urgentie').answer.value.code = 'ja'">Urgentie = Ja</data> Urgentie, <span class="field" data-value="%resource.item.where(linkId='indicatie').answer.value.display">Antwoord op "Indicatie"</span>
+  </p>
+</div>
+
+<!-- Sedatie -->
+<div class="section">
+  <div class="section-title">Sedatie &amp; medicatie</div>
+
+  <div class="cond-block">
+    <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='sedatie').answer.value.code = 'nee'">Sedatie = Nee</data>
+    <p class="template-line">Onderzoek zonder sedatie.</p>
+  </div>
+  <div class="cond-block">
+    <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='sedatie').answer.value.code = 'procedurele-sedatie'">Sedatie = Procedurele sedatie</data>
+    <p class="template-line">Onderzoek onder procedurele sedatie.</p>
+  </div>
+  <div class="cond-block">
+    <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='sedatie').answer.value.code = 'anesthesie'">Sedatie = Anesthesie</data>
+    <p class="template-line">Onderzoek onder anesthesie, uitgevoerd door <span class="field" data-value="%resource.item.where(linkId='anesthesist').answer.value.display">Antwoord op "Anesthesist"</span>.</p>
+  </div>
+
+  <div class="cond-block">
+    <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='bloedverdunners').answer.value.code != 'nee'">Bloedverdunners? ≠ Nee</data>
+    <p class="template-line">Patiënt onder <span class="field" data-value="%resource.item.where(linkId='bloedverdunners').answer.value.display">Antwoord op "Bloedverdunners?"</span>.</p>
+    <div class="cond-block">
+      <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='bloedverdunners').answer.item.where(linkId='herstarten-op').answer.value.exists()">Herstarten op = ingevuld</data>
+      <p class="template-line"><span class="field" data-value="%resource.item.where(linkId='bloedverdunners').answer.value.display">Antwoord op "Bloedverdunners?"</span> herstarten op: <span class="field" data-value="%resource.item.where(linkId='herstarten-op').answer.value">Antwoord op "Herstarten op"</span>.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Voorbereiding -->
+<div class="section">
+  <div class="section-title">Colonvoorbereiding</div>
+  <p class="template-line">Colonvoorbereiding: <span class="field" data-value="%resource.item.where(linkId='colonvoorbereiding').answer.value.display">Antwoord op "Colonvoorbereiding"</span></p>
+
+  <div class="cond-block">
+    <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='problemen-bij-voorbereiding').answer.value.code != 'geen'">Problemen bij voorbereiding ≠ geen</data>
+    <p class="template-line">Problemen bij voorbereiding: <span class="field" data-value="%resource.item.where(linkId='problemen-bij-voorbereiding').answer.value.display">Antwoord op "Problemen bij voorbereiding?"</span></p>
+  </div>
+
+  <p class="template-line">BBPS: <span class="field" data-value="%resource.item.where(linkId='boston-bowel-preparation-scale').answer.value">Antwoord op "Boston Bowel Preparation Scale"</span> /9, darmreiniging <span class="field" data-value="%resource.item.where(linkId='darmreiniging').answer.value.display">Antwoord op "Darmreiniging"</span></p>
+</div>
+
+<!-- Insertiediepte -->
+<div class="section">
+  <div class="section-title">Insertiediepte &amp; inspectie</div>
+
+  <p class="template-line">Insertiediepte: <span class="field" data-value="%resource.item.where(linkId='insertiediepte').answer.value.display">Antwoord op "Insertiediepte"</span>.</p>
+
+  <div class="cond-block">
+    <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='insertiediepte').answer.value.code != 'caecum' and %resource.item.where(linkId='insertiediepte').answer.value.code != 'terminale-ileum'">Insertiediepte ≠ caecum én ≠ terminale ileum</data>
+    <p class="template-line">Caecum niet bereikt omwille van <span class="field" data-value="%resource.item.where(linkId='oorzaak').answer.value.display">Antwoord op "Oorzaak"</span>.</p>
+  </div>
+
+  <p class="template-line">Terugtrektijd: <span class="field" data-value="%resource.item.where(linkId='terugtrektijd-min').answer.value">Antwoord op "terugtrektijd min"</span> min <span class="field" data-value="%resource.item.where(linkId='terugtrektijd-sec').answer.value">Antwoord op "terugtrektijd sec"</span> sec</p>
+  <p class="template-line">Retrovisie ascendens: <span class="field" data-value="%resource.item.where(linkId='retrovisie-ascendens').answer.value.display">Antwoord op "Retrovisie ascendens"</span></p>
+  <p class="template-line">Retrovisie rectum: <span class="field" data-value="%resource.item.where(linkId='retrovisie-rectum').answer.value.display">Antwoord op "Retrovisie rectum"</span></p>
+</div>
+
+<!-- Poliepen -->
+<div class="section">
+  <div class="section-title">Poliepen</div>
+
+  <div class="repeat-block">
+      <span class="repeat-label"><data class="cond-expr" value="%resource.item.where(linkId='poliep')">per poliep</data></span>
+
+      <p class="template-line">Ter hoogte van <span class="field" data-value="%resource.item.where(linkId='locatie').answer.value.display">Antwoord op "Locatie"</span> op <span class="field" data-value="%resource.item.where(linkId='afstand').answer.value">Antwoord op "Afstand"</span> cm <span class="field" data-designation="nl" data-value="%resource.item.where(linkId='architectuur').answer.value.display">Antwoord op "Architectuur" <span class="expression-op">|</span> designation('nl')</span> poliep van <span class="field" data-value="%resource.item.where(linkId='grootte').answer.value.display">Antwoord op "grootte"</span><span class="expression"><span class="expression-op">', ' + </span><span class="field" data-value="%resource.item.where(linkId='lst-type').answer.value.display">Antwoord op "LST type"</span></span> <span class="expression"><span class="expression-op">', ' + </span><span class="field" data-value="%resource.item.where(linkId='architectuur').answer.value.display">Antwoord op "Architectuur"</span></span> <span class="expression"><span class="expression-op">', ' + </span><span class="field" data-value="%resource.item.where(linkId='mucosaal-patroon').answer.value.display">Antwoord op "Mucosaal patroon"</span></span> <span class="expression"><span class="expression-op">', WASP ' + </span><span class="field" data-value="%resource.item.where(linkId='wasp').answer.value.display">Antwoord op "WASP"</span></span> <span class="expression"><span class="expression-op">', ' + </span><span class="field" data-value="%resource.item.where(linkId='jnet-type').answer.value.display">Antwoord op "JNET type"</span></span></p>
+
+      <!-- Resectie -->
+      <div class="cond-block">
+        <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='resectie').answer.value.code = 'ja'">Resectie = Ja</data>
+        <p class="template-line">waarvoor<span class="expression"><span class="expression-op"> 'lifting en vervolgens ' + </span><span class="field" data-value="%resource.item.where(linkId='lifting').answer.value.display">Antwoord op "Lifting"</span></span> <span class="field" data-designation="nl" data-value="%resource.item.where(linkId='device').answer.value.display">Antwoord op "Device" <span class="expression-op">|</span> designation('nl')</span> <span class="field" data-value="%resource.item.where(linkId='modaliteit').answer.value.display">Antwoord op "Modaliteit"</span>.</p>
+
+        <div class="cond-block">
+          <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='biopten').answer.value.code = 'ja'">Biopten? = Ja</data>
+          <p class="template-line">Biopten in potje # <span class="field" data-value="%resource.item.where(linkId='potje').answer.value">Antwoord op "Potje #"</span>.</p>
+        </div>
+
+        <div class="cond-block">
+          <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='recuperatie').answer.value.code = 'ja'">Recuperatie = Ja</data>
+          <p class="template-line">Recuperatie voor pathologie (potje # <span class="field" data-value="%resource.item.where(linkId='potje-2').answer.value">Antwoord op "Potje #"</span>).</p>
+        </div>
+        <div class="cond-block">
+          <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='recuperatie').answer.value.code = 'nee'">Recuperatie = Nee</data>
+          <p class="template-line">Geen recuperatie voor pathologie.</p>
+        </div>
+
+        <div class="cond-block">
+          <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='termale-ablatie-van-de-randen').answer.value.code = 'ja'">Termale ablatie van de randen = Ja</data>
+          <p class="template-line">Termale ablatie van de randen uitgevoerd.</p>
+        </div>
+
+        <div class="cond-block">
+          <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='nabloeding').answer.value.code = 'ja'">Nabloeding = Ja</data>
+          <p class="template-line">Ontstaan van bloeding na resectie</p>
+          <div class="cond-block">
+            <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='succesvolle-hemostase').answer.value.code = 'ja'">Succesvolle hemostase = Ja</data>
+            <p class="template-line">waarvoor succesvolle hemostase middels <span class="field" data-value="%resource.item.where(linkId='modaliteit-2').answer.value.display">Antwoord op "Modaliteit"</span></p>
+          </div>
+          <div class="cond-block">
+            <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='succesvolle-hemostase').answer.value.code = 'nee'">Succesvolle hemostase = Nee</data>
+            <p class="template-line">waarvoor poging tot hemostase niet succesvol ondanks <span class="field" data-value="%resource.item.where(linkId='modaliteit-2').answer.value.display">Antwoord op "Modaliteit"</span></p>
+          </div>
+        </div>
+
+        <div class="cond-block">
+          <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='markering').answer.value.code = 'ja'">Markering = Ja</data>
+          <p class="template-line">Aanbrengen van markering <span class="field" data-value="%resource.item.where(linkId='locatie-2').answer.value.display">Antwoord op "Locatie"</span> met <span class="field" data-value="%resource.item.where(linkId='modaliteit-3').answer.value.display">Antwoord op "Modaliteit"</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Divertikels -->
+<div class="section">
+  <div class="section-title">Divertikels</div>
+
+  <div class="cond-block">
+    <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='divertikels-2').answer.value.code = 'ja' and (%resource.item.where(linkId='locatie-3').answer.value.code = 'sigmoid' or %resource.item.where(linkId='locatie-3').answer.value.code = 'linker-colon')">Divertikels? = ja en locatie = sigmoïd of linker colon</data>
+    <p class="template-line">Divertikels ter hoogte van het <span class="field" data-value="%resource.item.where(linkId='locatie-3').answer.value.display">Antwoord op "Locatie"</span></p>
+  </div>
+  <div class="cond-block">
+    <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='divertikels-2').answer.value.code = 'ja' and %resource.item.where(linkId='locatie-3').answer.value.code = 'volledig-colon'">Divertikels? = ja en locatie = volledig colon</data>
+    <p class="template-line">Divertikels over het hele colonkader</p>
+  </div>
+</div>
+
+<!-- Stenose -->
+<div class="section">
+  <div class="section-title">Stenose &amp; inflammatie</div>
+
+  <div class="cond-block">
+    <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='stenoserend').answer.value.code = 'ja'">Stenoserend? = ja</data>
+    <p class="template-line">Stenoserend, <span class="field" data-value="%resource.item.where(linkId='te-passeren').answer.value.display">Antwoord op "Te passeren?"</span></p>
+  </div>
+
+  <div class="cond-block">
+    <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='tekenen-van-inflammatie').answer.value.exists()">Tekenen van inflammatie ≠ leeg</data>
+    <p class="template-line">Tekenen van inflammatie: <span class="field" data-value="%resource.item.where(linkId='tekenen-van-inflammatie').answer.value.display">Antwoord op "Tekenen van inflammatie"</span></p>
+  </div>
+</div>
+
+<!-- Carcinoom -->
+<div class="section">
+  <div class="section-title">Carcinoom</div>
+
+  <div class="cond-block">
+    <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='carcinoom-2').answer.value.code = 'nee-vermelden-in-brief'">Carcinoom? = Nee, vermelden in brief</data>
+    <p class="template-line">Geen carcinogene letsels gedetecteerd.</p>
+  </div>
+
+  <div class="cond-block">
+    <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='carcinoom-2').answer.value.code = 'ja'">Carcinoom? = Ja</data>
+    <p class="template-line"><span class="field" data-value="%resource.item.where(linkId='morfologie').answer.value.display">Antwoord op "Morfologie"</span> carcinoom ter hoogte van <span class="field" data-value="%resource.item.where(linkId='locatie-4').answer.value.display">Antwoord op "Locatie"</span>.</p>
+    <div class="cond-block">
+      <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='stenoserend-2').answer.value.code = 'ja'">Stenoserend? = ja</data>
+      <p class="template-line">Stenoserend, <span class="field" data-value="%resource.item.where(linkId='te-passeren-2').answer.value.display">Antwoord op "Te passeren?"</span></p>
+    </div>
+    <div class="cond-block">
+      <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='stenoserend-2').answer.value.code = 'nee'">Stenoserend? = nee</data>
+      <p class="template-line">Niet stenoserend.</p>
+    </div>
+    <div class="cond-block">
+      <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='biopten-2').answer.value.code = 'ja'">Biopten? = Ja</data>
+      <p class="template-line">Biopten in potje # <span class="field" data-value="%resource.item.where(linkId='potje-3').answer.value">Antwoord op "Potje #"</span>.</p>
+    </div>
+    <div class="cond-block">
+      <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='markering-2').answer.value.code = 'ja'">Markering = Ja</data>
+      <p class="template-line">Aanbrengen van markering <span class="field" data-value="%resource.item.where(linkId='locatie-5').answer.value.display">Antwoord op "Locatie"</span> met <span class="field" data-value="%resource.item.where(linkId='modaliteit-4').answer.value.display">Antwoord op "Modaliteit"</span></p>
+    </div>
+  </div>
+</div>
+
+<!-- Colitis ulcerosa -->
+<div class="section">
+  <div class="section-title">Colitis ulcerosa</div>
+
+  <div class="cond-block">
+    <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='colitis-ulcerosa-2').answer.value.code = 'ja'">Colitis ulcerosa = Ja</data>
+    <p class="template-line">Colitis ulcerosa met letsels ter hoogte van <span class="field" data-value="%resource.item.where(linkId='locatie-6').answer.value.display">Antwoord op "Locatie"</span></p>
+    <div class="cond-block">
+      <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='caecal-patch').answer.value.code = 'ja'">Caecal patch = Ja</data>
+      <p class="template-line">en caecal patch</p>
+    </div>
+    <p class="template-line">. Mayo score: <span class="field" data-value="%resource.item.where(linkId='mayo-score').answer.value.display">Antwoord op "Mayo score"</span>. Backwash ileitis <span class="field" data-value="%resource.item.where(linkId='backwash-ileitis').answer.value.display">Antwoord op "Backwash ileitis"</span></p>
+  </div>
+</div>
+
+<!-- Ziekte van Crohn -->
+<div class="section">
+  <div class="section-title">Ziekte van Crohn</div>
+
+  <div class="cond-block">
+    <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='group-2').answer.value.code = 'ja'">Ziekte van Crohn = Ja</data>
+
+    <!-- Segment template (repeated per segment) -->
+    <div class="segment-block" id="crohn-segments">
+
+      <!-- Ileum -->
+      <div class="segment-title">Ileum</div>
+      <div class="cond-block">
+        <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='ileum').answer.value.exists()">Status segment = gereseceerd / niet passeerbaar / niet onderzocht</data>
+        <p class="template-line"><span class="field" data-value="%resource.item.where(linkId='ileum').answer.value.display">Antwoord op "Status segment"</span></p>
+      </div>
+      <div class="cond-block">
+        <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='ileum').answer.value.exists().not()">Status segment = leeg (segment onderzocht)</data>
+        <div class="crohn-detail"><span class="field" data-designation="nl" data-value="%resource.item.where(linkId='ileum-5').answer.value.display">Antwoord op "Vernauwing" <span class="expression-op">|</span> designation('nl')</span></div>
+
+        <div class="section" style="margin-bottom:0.5rem;">
+          <div class="cond-block">
+            <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='ileum-4').answer.value.code = 'onaangetaste-segmenten'">Aangetaste oppervlakte = onaangetast</data>
+            <p class="template-line">Onaangetast.</p>
+          </div>
+          <div class="cond-block">
+            <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='ileum-4').answer.value.code != 'onaangetaste-segmenten' and %resource.item.where(linkId='ileum-4').answer.value.exists()">Aangetaste oppervlakte = &lt;50% / 50-75% / &gt;75%</data>
+            <p class="template-line">Aangetaste oppervlakte: <span class="field" data-value="%resource.item.where(linkId='ileum-4').answer.value.display">Antwoord op "Aangetaste oppervlakte"</span>.</p>
+          </div>
+        </div>
+
+        <div class="section" style="margin-bottom:0.5rem;">
+          <div class="cond-block">
+            <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='ileum-2').answer.value.code = 'geen'">Grootte van de zweren = geen</data>
+            <p class="template-line">Geen zweren.</p>
+          </div>
+          <div class="cond-block">
+            <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='ileum-2').answer.value.code != 'geen' and %resource.item.where(linkId='ileum-2').answer.value.exists()">Grootte van de zweren = aphtheuz / groot / zeer groot</data>
+            <p class="template-line"><span class="field" data-value="%resource.item.where(linkId='ileum-2').answer.value.display">Antwoord op "Grootte van de zweren"</span>.</p>
+          </div>
+        </div>
+
+        <div class="section" style="margin-bottom:0.5rem;">
+          <div class="cond-block">
+            <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='ileum-3').answer.value.code = 'geen'">Oppervlakte met ulceratie = geen</data>
+            <p class="template-line">Geen ulceraties.</p>
+          </div>
+          <div class="cond-block">
+            <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='ileum-3').answer.value.code != 'geen' and %resource.item.where(linkId='ileum-3').answer.value.exists()">Oppervlakte met ulceratie = &lt;10% / 10-30% / &gt;30%</data>
+            <p class="template-line">Ulceraties aanwezig over een oppervlak van <span class="field" data-value="%resource.item.where(linkId='ileum-3').answer.value.display">Antwoord op "Oppervlakte met ulceratie"</span>.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rechter colon -->
+      <div class="segment-title" style="margin-top:1rem;">Rechter colon</div>
+      <div class="cond-block">
+        <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='rechter-colon-2').answer.value.exists()">Status segment = gereseceerd / niet passeerbaar / niet onderzocht</data>
+        <p class="template-line"><span class="field" data-value="%resource.item.where(linkId='rechter-colon-2').answer.value.display">Antwoord op "Status segment"</span></p>
+      </div>
+      <div class="cond-block">
+        <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='rechter-colon-2').answer.value.exists().not()">Status segment = leeg (segment onderzocht)</data>
+        <div class="crohn-detail"><span class="field" data-designation="nl" data-value="%resource.item.where(linkId='rechter-colon-6').answer.value.display">Antwoord op "Vernauwing" <span class="expression-op">|</span> designation('nl')</span></div>
+
+        <div class="section" style="margin-bottom:0.5rem;">
+          <div class="cond-block">
+            <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='rechter-colon-5').answer.value.code = 'onaangetaste-segmenten'">Aangetaste oppervlakte = onaangetast</data>
+            <p class="template-line">Onaangetast.</p>
+          </div>
+          <div class="cond-block">
+            <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='rechter-colon-5').answer.value.code != 'onaangetaste-segmenten' and %resource.item.where(linkId='rechter-colon-5').answer.value.exists()">Aangetaste oppervlakte = &lt;50% / 50-75% / &gt;75%</data>
+            <p class="template-line">Aangetaste oppervlakte: <span class="field" data-value="%resource.item.where(linkId='rechter-colon-5').answer.value.display">Antwoord op "Aangetaste oppervlakte"</span>.</p>
+          </div>
+        </div>
+
+        <div class="section" style="margin-bottom:0.5rem;">
+          <div class="cond-block">
+            <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='rechter-colon-3').answer.value.code = 'geen'">Grootte van de zweren = geen</data>
+            <p class="template-line">Geen zweren.</p>
+          </div>
+          <div class="cond-block">
+            <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='rechter-colon-3').answer.value.code != 'geen' and %resource.item.where(linkId='rechter-colon-3').answer.value.exists()">Grootte van de zweren = aphtheuz / groot / zeer groot</data>
+            <p class="template-line"><span class="field" data-value="%resource.item.where(linkId='rechter-colon-3').answer.value.display">Antwoord op "Grootte van de zweren"</span>.</p>
+          </div>
+        </div>
+
+        <div class="section" style="margin-bottom:0.5rem;">
+          <div class="cond-block">
+            <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='rechter-colon-4').answer.value.code = 'geen'">Oppervlakte met ulceratie = geen</data>
+            <p class="template-line">Geen ulceraties.</p>
+          </div>
+          <div class="cond-block">
+            <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='rechter-colon-4').answer.value.code != 'geen' and %resource.item.where(linkId='rechter-colon-4').answer.value.exists()">Oppervlakte met ulceratie = &lt;10% / 10-30% / &gt;30%</data>
+            <p class="template-line">Ulceraties aanwezig over een oppervlak van <span class="field" data-value="%resource.item.where(linkId='rechter-colon-4').answer.value.display">Antwoord op "Oppervlakte met ulceratie"</span>.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Colon transversum -->
+      <div class="segment-title" style="margin-top:1rem;">Colon transversum</div>
+      <div class="cond-block">
+        <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='colon-transversum').answer.value.exists()">Status segment = gereseceerd / niet passeerbaar / niet onderzocht</data>
+        <p class="template-line"><span class="field" data-value="%resource.item.where(linkId='colon-transversum').answer.value.display">Antwoord op "Status segment"</span></p>
+      </div>
+      <div class="cond-block">
+        <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='colon-transversum').answer.value.exists().not()">Status segment = leeg (segment onderzocht)</data>
+        <div class="crohn-detail"><span class="field" data-designation="nl" data-value="%resource.item.where(linkId='colon-transversum-5').answer.value.display">Antwoord op "Vernauwing" <span class="expression-op">|</span> designation('nl')</span></div>
+
+        <div class="section" style="margin-bottom:0.5rem;">
+          <div class="cond-block">
+            <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='colon-transversum-4').answer.value.code = 'onaangetaste-segmenten'">Aangetaste oppervlakte = onaangetast</data>
+            <p class="template-line">Onaangetast.</p>
+          </div>
+          <div class="cond-block">
+            <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='colon-transversum-4').answer.value.code != 'onaangetaste-segmenten' and %resource.item.where(linkId='colon-transversum-4').answer.value.exists()">Aangetaste oppervlakte = &lt;50% / 50-75% / &gt;75%</data>
+            <p class="template-line">Aangetaste oppervlakte: <span class="field" data-value="%resource.item.where(linkId='colon-transversum-4').answer.value.display">Antwoord op "Aangetaste oppervlakte"</span>.</p>
+          </div>
+        </div>
+
+        <div class="section" style="margin-bottom:0.5rem;">
+          <div class="cond-block">
+            <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='colon-transversum-2').answer.value.code = 'geen'">Grootte van de zweren = geen</data>
+            <p class="template-line">Geen zweren.</p>
+          </div>
+          <div class="cond-block">
+            <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='colon-transversum-2').answer.value.code != 'geen' and %resource.item.where(linkId='colon-transversum-2').answer.value.exists()">Grootte van de zweren = aphtheuz / groot / zeer groot</data>
+            <p class="template-line"><span class="field" data-value="%resource.item.where(linkId='colon-transversum-2').answer.value.display">Antwoord op "Grootte van de zweren"</span>.</p>
+          </div>
+        </div>
+
+        <div class="section" style="margin-bottom:0.5rem;">
+          <div class="cond-block">
+            <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='colon-transversum-3').answer.value.code = 'geen'">Oppervlakte met ulceratie = geen</data>
+            <p class="template-line">Geen ulceraties.</p>
+          </div>
+          <div class="cond-block">
+            <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='colon-transversum-3').answer.value.code != 'geen' and %resource.item.where(linkId='colon-transversum-3').answer.value.exists()">Oppervlakte met ulceratie = &lt;10% / 10-30% / &gt;30%</data>
+            <p class="template-line">Ulceraties aanwezig over een oppervlak van <span class="field" data-value="%resource.item.where(linkId='colon-transversum-3').answer.value.display">Antwoord op "Oppervlakte met ulceratie"</span>.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sigmoïd en linker colon -->
+      <div class="segment-title" style="margin-top:1rem;">Sigmoïd en linker colon</div>
+      <div class="cond-block">
+        <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='sigmoid-en-linker-colon').answer.value.exists()">Status segment = gereseceerd / niet passeerbaar / niet onderzocht</data>
+        <p class="template-line"><span class="field" data-value="%resource.item.where(linkId='sigmoid-en-linker-colon').answer.value.display">Antwoord op "Status segment"</span></p>
+      </div>
+      <div class="cond-block">
+        <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='sigmoid-en-linker-colon').answer.value.exists().not()">Status segment = leeg (segment onderzocht)</data>
+        <div class="crohn-detail"><span class="field" data-designation="nl" data-value="%resource.item.where(linkId='sigmoid-en-linker-colon-5').answer.value.display">Antwoord op "Vernauwing" <span class="expression-op">|</span> designation('nl')</span></div>
+
+        <div class="section" style="margin-bottom:0.5rem;">
+          <div class="cond-block">
+            <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='sigmoid-en-linker-colon-4').answer.value.code = 'onaangetaste-segmenten'">Aangetaste oppervlakte = onaangetast</data>
+            <p class="template-line">Onaangetast.</p>
+          </div>
+          <div class="cond-block">
+            <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='sigmoid-en-linker-colon-4').answer.value.code != 'onaangetaste-segmenten' and %resource.item.where(linkId='sigmoid-en-linker-colon-4').answer.value.exists()">Aangetaste oppervlakte = &lt;50% / 50-75% / &gt;75%</data>
+            <p class="template-line">Aangetaste oppervlakte: <span class="field" data-value="%resource.item.where(linkId='sigmoid-en-linker-colon-4').answer.value.display">Antwoord op "Aangetaste oppervlakte"</span>.</p>
+          </div>
+        </div>
+
+        <div class="section" style="margin-bottom:0.5rem;">
+          <div class="cond-block">
+            <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='sigmoid-en-linker-colon-2').answer.value.code = 'geen'">Grootte van de zweren = geen</data>
+            <p class="template-line">Geen zweren.</p>
+          </div>
+          <div class="cond-block">
+            <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='sigmoid-en-linker-colon-2').answer.value.code != 'geen' and %resource.item.where(linkId='sigmoid-en-linker-colon-2').answer.value.exists()">Grootte van de zweren = aphtheuz / groot / zeer groot</data>
+            <p class="template-line"><span class="field" data-value="%resource.item.where(linkId='sigmoid-en-linker-colon-2').answer.value.display">Antwoord op "Grootte van de zweren"</span>.</p>
+          </div>
+        </div>
+
+        <div class="section" style="margin-bottom:0.5rem;">
+          <div class="cond-block">
+            <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='sigmoid-en-linker-colon-3').answer.value.code = 'geen'">Oppervlakte met ulceratie = geen</data>
+            <p class="template-line">Geen ulceraties.</p>
+          </div>
+          <div class="cond-block">
+            <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='sigmoid-en-linker-colon-3').answer.value.code != 'geen' and %resource.item.where(linkId='sigmoid-en-linker-colon-3').answer.value.exists()">Oppervlakte met ulceratie = &lt;10% / 10-30% / &gt;30%</data>
+            <p class="template-line">Ulceraties aanwezig over een oppervlak van <span class="field" data-value="%resource.item.where(linkId='sigmoid-en-linker-colon-3').answer.value.display">Antwoord op "Oppervlakte met ulceratie"</span>.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rectum -->
+      <div class="segment-title" style="margin-top:1rem;">Rectum</div>
+      <div class="cond-block">
+        <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='rectum').answer.value.exists()">Status segment = gereseceerd / niet passeerbaar / niet onderzocht</data>
+        <p class="template-line"><span class="field" data-value="%resource.item.where(linkId='rectum').answer.value.display">Antwoord op "Status segment"</span></p>
+      </div>
+      <div class="cond-block">
+        <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='rectum').answer.value.exists().not()">Status segment = leeg (segment onderzocht)</data>
+        <div class="crohn-detail"><span class="field" data-designation="nl" data-value="%resource.item.where(linkId='rectum-5').answer.value.display">Antwoord op "Vernauwing" <span class="expression-op">|</span> designation('nl')</span></div>
+
+        <div class="section" style="margin-bottom:0.5rem;">
+          <div class="cond-block">
+            <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='rectum-4').answer.value.code = 'onaangetaste-segmenten'">Aangetaste oppervlakte = onaangetast</data>
+            <p class="template-line">Onaangetast.</p>
+          </div>
+          <div class="cond-block">
+            <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='rectum-4').answer.value.code != 'onaangetaste-segmenten' and %resource.item.where(linkId='rectum-4').answer.value.exists()">Aangetaste oppervlakte = &lt;50% / 50-75% / &gt;75%</data>
+            <p class="template-line">Aangetaste oppervlakte: <span class="field" data-value="%resource.item.where(linkId='rectum-4').answer.value.display">Antwoord op "Aangetaste oppervlakte"</span>.</p>
+          </div>
+        </div>
+
+        <div class="section" style="margin-bottom:0.5rem;">
+          <div class="cond-block">
+            <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='rectum-2').answer.value.code = 'geen'">Grootte van de zweren = geen</data>
+            <p class="template-line">Geen zweren.</p>
+          </div>
+          <div class="cond-block">
+            <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='rectum-2').answer.value.code != 'geen' and %resource.item.where(linkId='rectum-2').answer.value.exists()">Grootte van de zweren = aphtheuz / groot / zeer groot</data>
+            <p class="template-line"><span class="field" data-value="%resource.item.where(linkId='rectum-2').answer.value.display">Antwoord op "Grootte van de zweren"</span>.</p>
+          </div>
+        </div>
+
+        <div class="section" style="margin-bottom:0.5rem;">
+          <div class="cond-block">
+            <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='rectum-3').answer.value.code = 'geen'">Oppervlakte met ulceratie = geen</data>
+            <p class="template-line">Geen ulceraties.</p>
+          </div>
+          <div class="cond-block">
+            <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='rectum-3').answer.value.code != 'geen' and %resource.item.where(linkId='rectum-3').answer.value.exists()">Oppervlakte met ulceratie = &lt;10% / 10-30% / &gt;30%</data>
+            <p class="template-line">Ulceraties aanwezig over een oppervlak van <span class="field" data-value="%resource.item.where(linkId='rectum-3').answer.value.display">Antwoord op "Oppervlakte met ulceratie"</span>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="template-line" style="margin-top:0.8rem;">SES-CD score: <span class="field" data-value="%resource.item.where(linkId='ses-cd-score-2').answer.value">Antwoord op "Totale SES-CD score"</span></p>
+  </div>
+</div>
+
+<!-- BESLUIT -->
+<div class="besluit-section">
+  <div class="besluit-title">Besluit</div>
+
+  <div class="cond-block">
+    <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='insertiediepte').answer.value.code = 'caecum'">Insertiediepte = caecum</data>
+    <p class="template-line">Totale coloscopie.</p>
+  </div>
+
+  <div class="cond-block">
+    <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='insertiediepte').answer.value.code = 'terminale-ileum'">Insertiediepte = terminale ileum</data>
+    <p class="template-line">Totale ileocoloscopie.</p>
+  </div>
+
+  <div class="cond-block">
+    <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='insertiediepte').answer.value.code != 'caecum' and %resource.item.where(linkId='insertiediepte').answer.value.code != 'terminale-ileum'">Insertiediepte ≠ caecum én ≠ terminale ileum</data>
+    <p class="template-line">Onvolledige coloscopie wegens <span class="field" data-value="%resource.item.where(linkId='oorzaak').answer.value.display">Antwoord op "Oorzaak"</span>, inspectie tot <span class="field" data-value="%resource.item.where(linkId='insertiediepte').answer.value.display">Antwoord op "Insertiediepte"</span>.</p>
+  </div>
+
+  <div class="cond-block">
+    <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='poliep-en-aanwezig').answer.value.code = 'nee' and %resource.item.where(linkId='divertikels-2').answer.value.code = 'nee' and %resource.item.where(linkId='carcinoom-2').answer.value.code = 'nee' and %resource.item.where(linkId='colitis-ulcerosa-2').answer.value.code = 'nee' and %resource.item.where(linkId='group-2').answer.value.code = 'nee'">Poliep(en) = nee en Divertikels = nee en Carcinoom = Nee en Colitis ulcerosa = Nee en Crohn = Nee</data>
+    <p class="template-line">Normale endoscopische bevindingen.</p>
+  </div>
+
+  <div class="cond-block">
+    <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='poliep-en-aanwezig').answer.value.code = 'ja'">Poliep(en) aanwezig? = ja</data>
+    <p class="template-line">Aanwezigheid van X poliep(en), waarvan X gereseceerd.</p>
+
+    <div class="cond-block">
+      <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='nabloeding').answer.value.code = 'ja'">Nabloeding = Ja</data>
+      <p class="template-line">Ontstaan van bloeding na resectie</p>
+      <div class="cond-block">
+        <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='succesvolle-hemostase').answer.value.code = 'ja'">Succesvolle hemostase = Ja</data>
+        <p class="template-line">waarvoor succesvolle hemostase.</p>
+      </div>
+      <div class="cond-block">
+        <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='succesvolle-hemostase').answer.value.code = 'nee'">Succesvolle hemostase = Nee</data>
+        <p class="template-line">waarvoor poging tot hemostase niet succesvol.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="cond-block">
+    <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='divertikels-2').answer.value.code = 'ja' and (%resource.item.where(linkId='locatie-3').answer.value.code = 'sigmoid' or %resource.item.where(linkId='locatie-3').answer.value.code = 'linker-colon')">Divertikels? = ja en locatie = sigmoïd of linker colon</data>
+    <p class="template-line">Divertikels ter hoogte van het <span class="field" data-value="%resource.item.where(linkId='locatie-3').answer.value.display">Antwoord op "Locatie"</span></p>
+  </div>
+  <div class="cond-block">
+    <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='divertikels-2').answer.value.code = 'ja' and %resource.item.where(linkId='locatie-3').answer.value.code = 'volledig-colon'">Divertikels? = ja en locatie = volledig colon</data>
+    <p class="template-line">Divertikels over het hele colonkader</p>
+  </div>
+
+  <div class="cond-block">
+    <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='carcinoom-2').answer.value.code = 'nee-vermelden-in-brief'">Carcinoom? = Nee, vermelden in brief</data>
+    <p class="template-line">Geen carcinogene letsels gedetecteerd.</p>
+  </div>
+  <div class="cond-block">
+    <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='carcinoom-2').answer.value.code = 'ja'">Carcinoom? = Ja</data>
+    <p class="template-line"><span class="field" data-value="%resource.item.where(linkId='morfologie').answer.value.display">Antwoord op "Morfologie"</span> carcinoom ter hoogte van <span class="field" data-value="%resource.item.where(linkId='locatie-4').answer.value.display">Antwoord op "Locatie"</span>.</p>
+  </div>
+
+  <div class="cond-block">
+    <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='colitis-ulcerosa-2').answer.value.code = 'ja'">Colitis ulcerosa = Ja</data>
+    <p class="template-line">Colitis ulcerosa met letsels ter hoogte van <span class="field" data-value="%resource.item.where(linkId='locatie-6').answer.value.display">Antwoord op "Locatie"</span>
+      <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='caecal-patch').answer.value.code = 'ja'">Caecal patch = Ja</data> en caecal patch.
+      Mayo score: <span class="field" data-value="%resource.item.where(linkId='mayo-score').answer.value.display">Antwoord op "Mayo score"</span>.
+    </p>
+  </div>
+
+  <div class="cond-block">
+    <span class="cond-label">als</span> <data class="cond-expr" value="%resource.item.where(linkId='group-2').answer.value.code = 'ja'">Ziekte van Crohn = Ja</data>
+    <p class="template-line">SES-CD score: <span class="field" data-value="%resource.item.where(linkId='ses-cd-score-2').answer.value">Antwoord op "Totale SES-CD score"</span></p>
+  </div>
+</div>
+
+<footer>
+  <p>Coloscopie tekstgeneratie template — conditionele logica weergegeven als geneste blokken</p>
+</footer>
+
+</body>
+</html>

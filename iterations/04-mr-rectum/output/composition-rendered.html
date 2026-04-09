@@ -5,45 +5,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MR Rectum</title>
     <style>
+        @page {
+            size: A4;
+            margin: 0.5cm 2.2cm;
+        }
         body {
             font-family: system-ui, -apple-system, sans-serif;
-            max-width: 800px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-            line-height: 1.5;
+            margin: 0;
+            padding: 0;
+            line-height: 1.4;
+            font-size: 8pt;
         }
         h1 {
-            border-bottom: 2px solid #333;
-            padding-bottom: 0.5rem;
+            font-size: 12pt;
+            border-bottom: 1.5px solid #333;
+            padding-bottom: 0.3rem;
+            margin: 0.5rem 0;
         }
         h2 {
-            font-size: 1.15rem;
-            margin-top: 2rem;
+            font-size: 9pt;
+            margin: 0.8rem 0 0.3rem;
+            padding-bottom: 0.2rem;
+            border-bottom: 1px solid #ddd;
         }
         dl {
             display: grid;
-            grid-template-columns: minmax(200px, 1fr) 2fr;
-            gap: 0.25rem 1rem;
+            grid-template-columns: minmax(120px, 1fr) 2fr;
+            gap: 0.1rem 0.8rem;
+            margin: 0.2rem 0;
         }
         dt {
             font-weight: 600;
-            padding: 0.25rem 0;
+            padding: 0.1rem 0;
         }
         dd {
             margin: 0;
-            padding: 0.25rem 0;
+            padding: 0.1rem 0;
             border-bottom: 1px solid #eee;
         }
         section {
-            margin-bottom: 2rem;
+            margin: 1rem 0;
         }
         table {
             width: 100%;
             border-collapse: collapse;
-            margin: 1rem 0;
+            margin: 0.5rem 0;
         }
         th, td {
-            padding: 0.5rem;
+            padding: 0.2rem 0.4rem;
             text-align: left;
             border-bottom: 1px solid #ddd;
         }
@@ -54,9 +63,61 @@
         thead th {
             border-bottom: 2px solid #ccc;
         }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 1.5px solid #333;
+            padding-bottom: 0.4rem;
+            margin-bottom: 0.5rem;
+        }
+        .lab-info {
+            font-size: 7pt;
+            color: #555;
+        }
+        .lab-info strong {
+            font-size: 8pt;
+            color: #111;
+        }
+        .report-meta {
+            font-size: 7pt;
+            text-align: right;
+            color: #555;
+        }
+        .report-meta strong {
+            color: #111;
+        }
+        footer {
+            margin-top: 1rem;
+            padding-top: 0.4rem;
+            border-top: 1.5px solid #333;
+        }
+        .attestation {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+            font-size: 7pt;
+        }
+        .attestation .signer {
+            padding-top: 0.2rem;
+        }
+        .attestation .signature-line {
+            margin-top: 1rem;
+            border-top: 1px solid #999;
+            padding-top: 0.15rem;
+            font-size: 6.5pt;
+            color: #666;
+        }
+        .attestation-note {
+            margin-top: 0.4rem;
+            font-size: 6pt;
+            color: #888;
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
+
     <h1>MR Rectum</h1>
     <section>
         <h2>Morfologie</h2>
@@ -86,5 +147,6 @@
         <h2>Criteria</h2>
         <p>(*) Gebruikte criteria:</p><ul><li>Korte as: &gt; 9mm</li><li>Korte as: &gt; 5-9mm + 2/3: onregelmatige aflijning en/of heterogeen aspect en/of rond.</li><li>Korte as: &lt; 5 mm + 3/3: onregelmatige aflijning en heterogeen aspect en rond.</li></ul>
     </section>
+
 </body>
 </html>
