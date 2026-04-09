@@ -8288,7 +8288,7 @@
           "title": "Procedure info",
           "text": {
             "status": "generated",
-            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Coloscopie uitgevoerd op {{%context.item.where(linkId='datum-procedure').answer.value}} door {{%context.item.where(linkId='uitvoerende-arts').answer.value.display}}.</p><p>Indicatie: {{iif(%context.item.where(linkId='urgentie').answer.value.code = '373066001', 'Urgentie, ', '')}}{{%context.item.where(linkId='indicatie').answer.value.display}}</p><!-- sections --></div>"
+            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Coloscopie uitgevoerd op {{%context.item.where(linkId='datum-procedure').answer.value}} door {{%context.item.where(linkId='uitvoerende-arts').answer.value.display}}.</p><p>Indicatie: {{iif(%context.item.where(linkId='urgentie').answer.value ~ %factory.Coding('http://snomed.info/sct', '373066001'), 'Urgentie, ', '')}}{{%context.item.where(linkId='indicatie').answer.value.display}}</p><!-- sections --></div>"
           },
           "section": [
             {
@@ -8322,7 +8322,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                  "valueString": "%context.where(item.where(linkId='sedatie').answer.value.code = '373067005')"
+                  "valueString": "%context.where(item.where(linkId='sedatie').answer.value ~ %factory.Coding('http://snomed.info/sct', '373067005'))"
                 }
               ],
               "text": {
@@ -8334,7 +8334,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                  "valueString": "%context.where(item.where(linkId='sedatie').answer.value.code = '0192058a-9c01-7eed-9d3e-21a716d9fb7a')"
+                  "valueString": "%context.where(item.where(linkId='sedatie').answer.value ~ %factory.Coding('http://templates.tiro.health/templates/3499e844feaa47a3acca12d4a51fc09c/custom-codes', '0192058a-9c01-7eed-9d3e-21a716d9fb7a'))"
                 }
               ],
               "text": {
@@ -8346,7 +8346,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                  "valueString": "%context.where(item.where(linkId='sedatie').answer.value.code = '399097000')"
+                  "valueString": "%context.where(item.where(linkId='sedatie').answer.value ~ %factory.Coding('http://snomed.info/sct', '399097000'))"
                 }
               ],
               "text": {
@@ -8358,7 +8358,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                  "valueString": "%context.where(item.where(linkId='bloedverdunners').answer.value.code != '373067005')"
+                  "valueString": "%context.where(item.where(linkId='bloedverdunners').answer.value !~ %factory.Coding('http://snomed.info/sct', '373067005'))"
                 }
               ],
               "text": {
@@ -8399,7 +8399,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                  "valueString": "%context.where(item.where(linkId='problemen-bij-voorbereiding').answer.value.code != '373067005')"
+                  "valueString": "%context.where(item.where(linkId='problemen-bij-voorbereiding').answer.value !~ %factory.Coding('http://snomed.info/sct', '373067005'))"
                 }
               ],
               "text": {
@@ -8465,7 +8465,7 @@
                   "extension": [
                     {
                       "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                      "valueString": "%context.where(item.where(linkId='resectie').answer.value.code = '373066001')"
+                      "valueString": "%context.where(item.where(linkId='resectie').answer.value ~ %factory.Coding('http://snomed.info/sct', '373066001'))"
                     }
                   ],
                   "text": {
@@ -8477,7 +8477,7 @@
                       "extension": [
                         {
                           "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                          "valueString": "%context.where(item.where(linkId='resectie').answer.item.where(linkId='biopten').answer.value.code = '373066001')"
+                          "valueString": "%context.where(item.where(linkId='resectie').answer.item.where(linkId='biopten').answer.value ~ %factory.Coding('http://snomed.info/sct', '373066001'))"
                         }
                       ],
                       "text": {
@@ -8489,7 +8489,7 @@
                       "extension": [
                         {
                           "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                          "valueString": "%context.where(item.where(linkId='resectie').answer.item.where(linkId='recuperatie').answer.value.code = '373066001')"
+                          "valueString": "%context.where(item.where(linkId='resectie').answer.item.where(linkId='recuperatie').answer.value ~ %factory.Coding('http://snomed.info/sct', '373066001'))"
                         }
                       ],
                       "text": {
@@ -8501,7 +8501,7 @@
                       "extension": [
                         {
                           "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                          "valueString": "%context.where(item.where(linkId='resectie').answer.item.where(linkId='recuperatie').answer.value.code = '373067005')"
+                          "valueString": "%context.where(item.where(linkId='resectie').answer.item.where(linkId='recuperatie').answer.value ~ %factory.Coding('http://snomed.info/sct', '373067005'))"
                         }
                       ],
                       "text": {
@@ -8513,7 +8513,7 @@
                       "extension": [
                         {
                           "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                          "valueString": "%context.where(item.where(linkId='resectie').answer.item.where(linkId='termale-ablatie-van-de-randen').answer.value.code = '373066001')"
+                          "valueString": "%context.where(item.where(linkId='resectie').answer.item.where(linkId='termale-ablatie-van-de-randen').answer.value ~ %factory.Coding('http://snomed.info/sct', '373066001'))"
                         }
                       ],
                       "text": {
@@ -8525,7 +8525,7 @@
                       "extension": [
                         {
                           "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                          "valueString": "%context.where(item.where(linkId='resectie').answer.item.where(linkId='nabloeding').answer.value.code = '373066001')"
+                          "valueString": "%context.where(item.where(linkId='resectie').answer.item.where(linkId='nabloeding').answer.value ~ %factory.Coding('http://snomed.info/sct', '373066001'))"
                         }
                       ],
                       "text": {
@@ -8537,7 +8537,7 @@
                           "extension": [
                             {
                               "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                              "valueString": "%context.where(item.where(linkId='resectie').answer.item.where(linkId='nabloeding').answer.item.where(linkId='succesvolle-hemostase').answer.value.code = '373066001')"
+                              "valueString": "%context.where(item.where(linkId='resectie').answer.item.where(linkId='nabloeding').answer.item.where(linkId='succesvolle-hemostase').answer.value ~ %factory.Coding('http://snomed.info/sct', '373066001'))"
                             }
                           ],
                           "text": {
@@ -8549,7 +8549,7 @@
                           "extension": [
                             {
                               "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                              "valueString": "%context.where(item.where(linkId='resectie').answer.item.where(linkId='nabloeding').answer.item.where(linkId='succesvolle-hemostase').answer.value.code = '373067005')"
+                              "valueString": "%context.where(item.where(linkId='resectie').answer.item.where(linkId='nabloeding').answer.item.where(linkId='succesvolle-hemostase').answer.value ~ %factory.Coding('http://snomed.info/sct', '373067005'))"
                             }
                           ],
                           "text": {
@@ -8563,7 +8563,7 @@
                       "extension": [
                         {
                           "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                          "valueString": "%context.where(item.where(linkId='resectie').answer.item.where(linkId='markering').answer.value.code = '373066001')"
+                          "valueString": "%context.where(item.where(linkId='resectie').answer.item.where(linkId='markering').answer.value ~ %factory.Coding('http://snomed.info/sct', '373066001'))"
                         }
                       ],
                       "text": {
@@ -8594,7 +8594,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                  "valueString": "%context.where(item.where(linkId='divertikels-2').answer.value.code = '373066001' and (item.where(linkId='locatie-3').answer.value.code = '60184004' or item.where(linkId='locatie-3').answer.value.code = '55572008'))"
+                  "valueString": "%context.where(item.where(linkId='divertikels-2').answer.value ~ %factory.Coding('http://snomed.info/sct', '373066001') and (item.where(linkId='locatie-3').answer.value ~ %factory.Coding('http://snomed.info/sct', '60184004') or item.where(linkId='locatie-3').answer.value ~ %factory.Coding('http://snomed.info/sct', '55572008')))"
                 }
               ],
               "text": {
@@ -8606,7 +8606,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                  "valueString": "%context.where(item.where(linkId='divertikels-2').answer.value.code = '373066001' and item.where(linkId='locatie-3').answer.value.code = '0196f8a1-4638-777d-9da0-be5f1c85aa58')"
+                  "valueString": "%context.where(item.where(linkId='divertikels-2').answer.value ~ %factory.Coding('http://snomed.info/sct', '373066001') and item.where(linkId='locatie-3').answer.value ~ %factory.Coding('http://templates.tiro.health/templates/3499e844feaa47a3acca12d4a51fc09c/custom-codes', '0196f8a1-4638-777d-9da0-be5f1c85aa58'))"
                 }
               ],
               "text": {
@@ -8633,7 +8633,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                  "valueString": "%context.where(item.where(linkId='stenoserend').answer.value.code = '373066001')"
+                  "valueString": "%context.where(item.where(linkId='stenoserend').answer.value ~ %factory.Coding('http://snomed.info/sct', '373066001'))"
                 }
               ],
               "text": {
@@ -8672,7 +8672,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                  "valueString": "%context.where(item.where(linkId='carcinoom-2').answer.value.code = '01922946-802f-7117-87b2-a2f9dd3788e6')"
+                  "valueString": "%context.where(item.where(linkId='carcinoom-2').answer.value ~ %factory.Coding('http://templates.tiro.health/templates/3499e844feaa47a3acca12d4a51fc09c/custom-codes', '01922946-802f-7117-87b2-a2f9dd3788e6'))"
                 }
               ],
               "text": {
@@ -8684,7 +8684,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                  "valueString": "%context.where(item.where(linkId='carcinoom-2').answer.value.code = '373066001')"
+                  "valueString": "%context.where(item.where(linkId='carcinoom-2').answer.value ~ %factory.Coding('http://snomed.info/sct', '373066001'))"
                 }
               ],
               "text": {
@@ -8696,7 +8696,7 @@
                   "extension": [
                     {
                       "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                      "valueString": "%context.where(item.where(linkId='stenoserend-2').answer.value.code = '373066001')"
+                      "valueString": "%context.where(item.where(linkId='stenoserend-2').answer.value ~ %factory.Coding('http://snomed.info/sct', '373066001'))"
                     }
                   ],
                   "text": {
@@ -8708,7 +8708,7 @@
                   "extension": [
                     {
                       "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                      "valueString": "%context.where(item.where(linkId='stenoserend-2').answer.value.code = '373067005')"
+                      "valueString": "%context.where(item.where(linkId='stenoserend-2').answer.value ~ %factory.Coding('http://snomed.info/sct', '373067005'))"
                     }
                   ],
                   "text": {
@@ -8720,7 +8720,7 @@
                   "extension": [
                     {
                       "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                      "valueString": "%context.where(item.where(linkId='biopten-2').answer.value.code = '373066001')"
+                      "valueString": "%context.where(item.where(linkId='biopten-2').answer.value ~ %factory.Coding('http://snomed.info/sct', '373066001'))"
                     }
                   ],
                   "text": {
@@ -8732,7 +8732,7 @@
                   "extension": [
                     {
                       "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                      "valueString": "%context.where(item.where(linkId='markering-2').answer.value.code = '373066001')"
+                      "valueString": "%context.where(item.where(linkId='markering-2').answer.value ~ %factory.Coding('http://snomed.info/sct', '373066001'))"
                     }
                   ],
                   "text": {
@@ -8761,12 +8761,12 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                  "valueString": "%context.where(item.where(linkId='colitis-ulcerosa-2').answer.value.code = '373066001')"
+                  "valueString": "%context.where(item.where(linkId='colitis-ulcerosa-2').answer.value ~ %factory.Coding('http://snomed.info/sct', '373066001'))"
                 }
               ],
               "text": {
                 "status": "generated",
-                "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Colitis ulcerosa met letsels ter hoogte van {{%context.item.where(linkId='locatie-6').answer.value.display}}{{iif(%context.item.where(linkId='caecal-patch').answer.value.code = '01921e4a-235d-7999-9d73-6d5595c06084', ' en caecal patch', '')}}. Mayo score: {{%context.item.where(linkId='mayo-score').answer.value.display}}. Backwash ileitis {{%context.item.where(linkId='backwash-ileitis').answer.value.display}}</p></div>"
+                "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Colitis ulcerosa met letsels ter hoogte van {{%context.item.where(linkId='locatie-6').answer.value.display}}{{iif(%context.item.where(linkId='caecal-patch').answer.value ~ %factory.Coding('http://templates.tiro.health/templates/3499e844feaa47a3acca12d4a51fc09c/custom-codes', '01921e4a-235d-7999-9d73-6d5595c06084'), ' en caecal patch', '')}}. Mayo score: {{%context.item.where(linkId='mayo-score').answer.value.display}}. Backwash ileitis {{%context.item.where(linkId='backwash-ileitis').answer.value.display}}</p></div>"
               }
             }
           ]
@@ -8788,7 +8788,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                  "valueString": "%context.where(item.where(linkId='group-2').answer.value.code = '373066001')"
+                  "valueString": "%context.where(item.where(linkId='group-2').answer.value ~ %factory.Coding('http://snomed.info/sct', '373066001'))"
                 }
               ],
               "text": {
@@ -8824,7 +8824,7 @@
                       "extension": [
                         {
                           "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='aangetaste-oppervlakte').item.where(linkId='ileum-4').answer.value.code = 'cdc6ebf2fce34e5a83c0eba6ec90b844')"
+                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='aangetaste-oppervlakte').item.where(linkId='ileum-4').answer.value ~ %factory.Coding('http://templates.tiro.health/templates/a6c95d6047764209af0dd7bce4494e56/custom-codes', 'cdc6ebf2fce34e5a83c0eba6ec90b844'))"
                         }
                       ],
                       "text": {
@@ -8836,7 +8836,7 @@
                       "extension": [
                         {
                           "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='aangetaste-oppervlakte').item.where(linkId='ileum-4').answer.value.code != 'cdc6ebf2fce34e5a83c0eba6ec90b844' and item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='aangetaste-oppervlakte').item.where(linkId='ileum-4').answer.value.exists())"
+                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='aangetaste-oppervlakte').item.where(linkId='ileum-4').answer.value !~ %factory.Coding('http://templates.tiro.health/templates/a6c95d6047764209af0dd7bce4494e56/custom-codes', 'cdc6ebf2fce34e5a83c0eba6ec90b844') and item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='aangetaste-oppervlakte').item.where(linkId='ileum-4').answer.value.exists())"
                         }
                       ],
                       "text": {
@@ -8848,7 +8848,7 @@
                       "extension": [
                         {
                           "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='grootte-van-de-zweren').item.where(linkId='ileum-2').answer.value.code = '260413007')"
+                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='grootte-van-de-zweren').item.where(linkId='ileum-2').answer.value ~ %factory.Coding('http://snomed.info/sct', '260413007'))"
                         }
                       ],
                       "text": {
@@ -8860,7 +8860,7 @@
                       "extension": [
                         {
                           "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='grootte-van-de-zweren').item.where(linkId='ileum-2').answer.value.code != '260413007' and item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='grootte-van-de-zweren').item.where(linkId='ileum-2').answer.value.exists())"
+                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='grootte-van-de-zweren').item.where(linkId='ileum-2').answer.value !~ %factory.Coding('http://snomed.info/sct', '260413007') and item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='grootte-van-de-zweren').item.where(linkId='ileum-2').answer.value.exists())"
                         }
                       ],
                       "text": {
@@ -8872,7 +8872,7 @@
                       "extension": [
                         {
                           "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='oppervlakte-met-ulceratie').item.where(linkId='ileum-3').answer.value.code = '260413007')"
+                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='oppervlakte-met-ulceratie').item.where(linkId='ileum-3').answer.value ~ %factory.Coding('http://snomed.info/sct', '260413007'))"
                         }
                       ],
                       "text": {
@@ -8884,7 +8884,7 @@
                       "extension": [
                         {
                           "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='oppervlakte-met-ulceratie').item.where(linkId='ileum-3').answer.value.code != '260413007' and item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='oppervlakte-met-ulceratie').item.where(linkId='ileum-3').answer.value.exists())"
+                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='oppervlakte-met-ulceratie').item.where(linkId='ileum-3').answer.value !~ %factory.Coding('http://snomed.info/sct', '260413007') and item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='oppervlakte-met-ulceratie').item.where(linkId='ileum-3').answer.value.exists())"
                         }
                       ],
                       "text": {
@@ -8922,7 +8922,7 @@
                       "extension": [
                         {
                           "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='aangetaste-oppervlakte').item.where(linkId='rechter-colon-5').answer.value.code = 'cdc6ebf2fce34e5a83c0eba6ec90b844')"
+                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='aangetaste-oppervlakte').item.where(linkId='rechter-colon-5').answer.value ~ %factory.Coding('http://templates.tiro.health/templates/a6c95d6047764209af0dd7bce4494e56/custom-codes', 'cdc6ebf2fce34e5a83c0eba6ec90b844'))"
                         }
                       ],
                       "text": {
@@ -8934,7 +8934,7 @@
                       "extension": [
                         {
                           "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='aangetaste-oppervlakte').item.where(linkId='rechter-colon-5').answer.value.code != 'cdc6ebf2fce34e5a83c0eba6ec90b844' and item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='aangetaste-oppervlakte').item.where(linkId='rechter-colon-5').answer.value.exists())"
+                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='aangetaste-oppervlakte').item.where(linkId='rechter-colon-5').answer.value !~ %factory.Coding('http://templates.tiro.health/templates/a6c95d6047764209af0dd7bce4494e56/custom-codes', 'cdc6ebf2fce34e5a83c0eba6ec90b844') and item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='aangetaste-oppervlakte').item.where(linkId='rechter-colon-5').answer.value.exists())"
                         }
                       ],
                       "text": {
@@ -8946,7 +8946,7 @@
                       "extension": [
                         {
                           "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='grootte-van-de-zweren').item.where(linkId='rechter-colon-3').answer.value.code = '260413007')"
+                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='grootte-van-de-zweren').item.where(linkId='rechter-colon-3').answer.value ~ %factory.Coding('http://snomed.info/sct', '260413007'))"
                         }
                       ],
                       "text": {
@@ -8958,7 +8958,7 @@
                       "extension": [
                         {
                           "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='grootte-van-de-zweren').item.where(linkId='rechter-colon-3').answer.value.code != '260413007' and item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='grootte-van-de-zweren').item.where(linkId='rechter-colon-3').answer.value.exists())"
+                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='grootte-van-de-zweren').item.where(linkId='rechter-colon-3').answer.value !~ %factory.Coding('http://snomed.info/sct', '260413007') and item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='grootte-van-de-zweren').item.where(linkId='rechter-colon-3').answer.value.exists())"
                         }
                       ],
                       "text": {
@@ -8970,7 +8970,7 @@
                       "extension": [
                         {
                           "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='oppervlakte-met-ulceratie').item.where(linkId='rechter-colon-4').answer.value.code = '260413007')"
+                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='oppervlakte-met-ulceratie').item.where(linkId='rechter-colon-4').answer.value ~ %factory.Coding('http://snomed.info/sct', '260413007'))"
                         }
                       ],
                       "text": {
@@ -8982,7 +8982,7 @@
                       "extension": [
                         {
                           "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='oppervlakte-met-ulceratie').item.where(linkId='rechter-colon-4').answer.value.code != '260413007' and item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='oppervlakte-met-ulceratie').item.where(linkId='rechter-colon-4').answer.value.exists())"
+                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='oppervlakte-met-ulceratie').item.where(linkId='rechter-colon-4').answer.value !~ %factory.Coding('http://snomed.info/sct', '260413007') and item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='oppervlakte-met-ulceratie').item.where(linkId='rechter-colon-4').answer.value.exists())"
                         }
                       ],
                       "text": {
@@ -9020,7 +9020,7 @@
                       "extension": [
                         {
                           "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='aangetaste-oppervlakte').item.where(linkId='colon-transversum-4').answer.value.code = 'cdc6ebf2fce34e5a83c0eba6ec90b844')"
+                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='aangetaste-oppervlakte').item.where(linkId='colon-transversum-4').answer.value ~ %factory.Coding('http://templates.tiro.health/templates/a6c95d6047764209af0dd7bce4494e56/custom-codes', 'cdc6ebf2fce34e5a83c0eba6ec90b844'))"
                         }
                       ],
                       "text": {
@@ -9032,7 +9032,7 @@
                       "extension": [
                         {
                           "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='aangetaste-oppervlakte').item.where(linkId='colon-transversum-4').answer.value.code != 'cdc6ebf2fce34e5a83c0eba6ec90b844' and item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='aangetaste-oppervlakte').item.where(linkId='colon-transversum-4').answer.value.exists())"
+                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='aangetaste-oppervlakte').item.where(linkId='colon-transversum-4').answer.value !~ %factory.Coding('http://templates.tiro.health/templates/a6c95d6047764209af0dd7bce4494e56/custom-codes', 'cdc6ebf2fce34e5a83c0eba6ec90b844') and item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='aangetaste-oppervlakte').item.where(linkId='colon-transversum-4').answer.value.exists())"
                         }
                       ],
                       "text": {
@@ -9044,7 +9044,7 @@
                       "extension": [
                         {
                           "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='grootte-van-de-zweren').item.where(linkId='colon-transversum-2').answer.value.code = '260413007')"
+                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='grootte-van-de-zweren').item.where(linkId='colon-transversum-2').answer.value ~ %factory.Coding('http://snomed.info/sct', '260413007'))"
                         }
                       ],
                       "text": {
@@ -9056,7 +9056,7 @@
                       "extension": [
                         {
                           "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='grootte-van-de-zweren').item.where(linkId='colon-transversum-2').answer.value.code != '260413007' and item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='grootte-van-de-zweren').item.where(linkId='colon-transversum-2').answer.value.exists())"
+                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='grootte-van-de-zweren').item.where(linkId='colon-transversum-2').answer.value !~ %factory.Coding('http://snomed.info/sct', '260413007') and item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='grootte-van-de-zweren').item.where(linkId='colon-transversum-2').answer.value.exists())"
                         }
                       ],
                       "text": {
@@ -9068,7 +9068,7 @@
                       "extension": [
                         {
                           "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='oppervlakte-met-ulceratie').item.where(linkId='colon-transversum-3').answer.value.code = '260413007')"
+                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='oppervlakte-met-ulceratie').item.where(linkId='colon-transversum-3').answer.value ~ %factory.Coding('http://snomed.info/sct', '260413007'))"
                         }
                       ],
                       "text": {
@@ -9080,7 +9080,7 @@
                       "extension": [
                         {
                           "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='oppervlakte-met-ulceratie').item.where(linkId='colon-transversum-3').answer.value.code != '260413007' and item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='oppervlakte-met-ulceratie').item.where(linkId='colon-transversum-3').answer.value.exists())"
+                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='oppervlakte-met-ulceratie').item.where(linkId='colon-transversum-3').answer.value !~ %factory.Coding('http://snomed.info/sct', '260413007') and item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='oppervlakte-met-ulceratie').item.where(linkId='colon-transversum-3').answer.value.exists())"
                         }
                       ],
                       "text": {
@@ -9118,7 +9118,7 @@
                       "extension": [
                         {
                           "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='aangetaste-oppervlakte').item.where(linkId='sigmoid-en-linker-colon-4').answer.value.code = 'cdc6ebf2fce34e5a83c0eba6ec90b844')"
+                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='aangetaste-oppervlakte').item.where(linkId='sigmoid-en-linker-colon-4').answer.value ~ %factory.Coding('http://templates.tiro.health/templates/a6c95d6047764209af0dd7bce4494e56/custom-codes', 'cdc6ebf2fce34e5a83c0eba6ec90b844'))"
                         }
                       ],
                       "text": {
@@ -9130,7 +9130,7 @@
                       "extension": [
                         {
                           "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='aangetaste-oppervlakte').item.where(linkId='sigmoid-en-linker-colon-4').answer.value.code != 'cdc6ebf2fce34e5a83c0eba6ec90b844' and item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='aangetaste-oppervlakte').item.where(linkId='sigmoid-en-linker-colon-4').answer.value.exists())"
+                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='aangetaste-oppervlakte').item.where(linkId='sigmoid-en-linker-colon-4').answer.value !~ %factory.Coding('http://templates.tiro.health/templates/a6c95d6047764209af0dd7bce4494e56/custom-codes', 'cdc6ebf2fce34e5a83c0eba6ec90b844') and item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='aangetaste-oppervlakte').item.where(linkId='sigmoid-en-linker-colon-4').answer.value.exists())"
                         }
                       ],
                       "text": {
@@ -9142,7 +9142,7 @@
                       "extension": [
                         {
                           "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='grootte-van-de-zweren').item.where(linkId='sigmoid-en-linker-colon-2').answer.value.code = '260413007')"
+                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='grootte-van-de-zweren').item.where(linkId='sigmoid-en-linker-colon-2').answer.value ~ %factory.Coding('http://snomed.info/sct', '260413007'))"
                         }
                       ],
                       "text": {
@@ -9154,7 +9154,7 @@
                       "extension": [
                         {
                           "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='grootte-van-de-zweren').item.where(linkId='sigmoid-en-linker-colon-2').answer.value.code != '260413007' and item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='grootte-van-de-zweren').item.where(linkId='sigmoid-en-linker-colon-2').answer.value.exists())"
+                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='grootte-van-de-zweren').item.where(linkId='sigmoid-en-linker-colon-2').answer.value !~ %factory.Coding('http://snomed.info/sct', '260413007') and item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='grootte-van-de-zweren').item.where(linkId='sigmoid-en-linker-colon-2').answer.value.exists())"
                         }
                       ],
                       "text": {
@@ -9166,7 +9166,7 @@
                       "extension": [
                         {
                           "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='oppervlakte-met-ulceratie').item.where(linkId='sigmoid-en-linker-colon-3').answer.value.code = '260413007')"
+                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='oppervlakte-met-ulceratie').item.where(linkId='sigmoid-en-linker-colon-3').answer.value ~ %factory.Coding('http://snomed.info/sct', '260413007'))"
                         }
                       ],
                       "text": {
@@ -9178,7 +9178,7 @@
                       "extension": [
                         {
                           "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='oppervlakte-met-ulceratie').item.where(linkId='sigmoid-en-linker-colon-3').answer.value.code != '260413007' and item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='oppervlakte-met-ulceratie').item.where(linkId='sigmoid-en-linker-colon-3').answer.value.exists())"
+                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='oppervlakte-met-ulceratie').item.where(linkId='sigmoid-en-linker-colon-3').answer.value !~ %factory.Coding('http://snomed.info/sct', '260413007') and item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='oppervlakte-met-ulceratie').item.where(linkId='sigmoid-en-linker-colon-3').answer.value.exists())"
                         }
                       ],
                       "text": {
@@ -9216,7 +9216,7 @@
                       "extension": [
                         {
                           "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='aangetaste-oppervlakte').item.where(linkId='rectum-4').answer.value.code = 'cdc6ebf2fce34e5a83c0eba6ec90b844')"
+                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='aangetaste-oppervlakte').item.where(linkId='rectum-4').answer.value ~ %factory.Coding('http://templates.tiro.health/templates/a6c95d6047764209af0dd7bce4494e56/custom-codes', 'cdc6ebf2fce34e5a83c0eba6ec90b844'))"
                         }
                       ],
                       "text": {
@@ -9228,7 +9228,7 @@
                       "extension": [
                         {
                           "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='aangetaste-oppervlakte').item.where(linkId='rectum-4').answer.value.code != 'cdc6ebf2fce34e5a83c0eba6ec90b844' and item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='aangetaste-oppervlakte').item.where(linkId='rectum-4').answer.value.exists())"
+                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='aangetaste-oppervlakte').item.where(linkId='rectum-4').answer.value !~ %factory.Coding('http://templates.tiro.health/templates/a6c95d6047764209af0dd7bce4494e56/custom-codes', 'cdc6ebf2fce34e5a83c0eba6ec90b844') and item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='aangetaste-oppervlakte').item.where(linkId='rectum-4').answer.value.exists())"
                         }
                       ],
                       "text": {
@@ -9240,7 +9240,7 @@
                       "extension": [
                         {
                           "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='grootte-van-de-zweren').item.where(linkId='rectum-2').answer.value.code = '260413007')"
+                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='grootte-van-de-zweren').item.where(linkId='rectum-2').answer.value ~ %factory.Coding('http://snomed.info/sct', '260413007'))"
                         }
                       ],
                       "text": {
@@ -9252,7 +9252,7 @@
                       "extension": [
                         {
                           "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='grootte-van-de-zweren').item.where(linkId='rectum-2').answer.value.code != '260413007' and item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='grootte-van-de-zweren').item.where(linkId='rectum-2').answer.value.exists())"
+                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='grootte-van-de-zweren').item.where(linkId='rectum-2').answer.value !~ %factory.Coding('http://snomed.info/sct', '260413007') and item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='grootte-van-de-zweren').item.where(linkId='rectum-2').answer.value.exists())"
                         }
                       ],
                       "text": {
@@ -9264,7 +9264,7 @@
                       "extension": [
                         {
                           "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='oppervlakte-met-ulceratie').item.where(linkId='rectum-3').answer.value.code = '260413007')"
+                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='oppervlakte-met-ulceratie').item.where(linkId='rectum-3').answer.value ~ %factory.Coding('http://snomed.info/sct', '260413007'))"
                         }
                       ],
                       "text": {
@@ -9276,7 +9276,7 @@
                       "extension": [
                         {
                           "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='oppervlakte-met-ulceratie').item.where(linkId='rectum-3').answer.value.code != '260413007' and item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='oppervlakte-met-ulceratie').item.where(linkId='rectum-3').answer.value.exists())"
+                          "valueString": "%context.where(item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='oppervlakte-met-ulceratie').item.where(linkId='rectum-3').answer.value !~ %factory.Coding('http://snomed.info/sct', '260413007') and item.where(linkId='ses-cd-score').item.where(linkId='ses-cd').item.where(linkId='oppervlakte-met-ulceratie').item.where(linkId='rectum-3').answer.value.exists())"
                         }
                       ],
                       "text": {
@@ -9343,7 +9343,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                  "valueString": "%resource.where(item.where(linkId='poliepen').item.where(linkId='poliep-en-aanwezig').answer.value.code = '373067005' and item.where(linkId='divertikels').item.where(linkId='divertikels-2').answer.value.code = '373067005' and item.where(linkId='carcinoom').item.where(linkId='carcinoom-2').answer.value.code = '373067005' and item.where(linkId='colitis-ulcerosa').item.where(linkId='colitis-ulcerosa-2').answer.value.code = '373067005' and item.where(linkId='ziekte-van-crohn').item.where(linkId='group-2').answer.value.code = '373067005')"
+                  "valueString": "%resource.where(item.where(linkId='poliepen').item.where(linkId='poliep-en-aanwezig').answer.value ~ %factory.Coding('http://snomed.info/sct', '373067005') and item.where(linkId='divertikels').item.where(linkId='divertikels-2').answer.value ~ %factory.Coding('http://snomed.info/sct', '373067005') and item.where(linkId='carcinoom').item.where(linkId='carcinoom-2').answer.value ~ %factory.Coding('http://snomed.info/sct', '373067005') and item.where(linkId='colitis-ulcerosa').item.where(linkId='colitis-ulcerosa-2').answer.value ~ %factory.Coding('http://snomed.info/sct', '373067005') and item.where(linkId='ziekte-van-crohn').item.where(linkId='group-2').answer.value ~ %factory.Coding('http://snomed.info/sct', '373067005'))"
                 }
               ],
               "text": {
@@ -9355,19 +9355,19 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                  "valueString": "%resource.where(item.where(linkId='poliepen').item.where(linkId='poliep-en-aanwezig').answer.value.code = '373066001')"
+                  "valueString": "%resource.where(item.where(linkId='poliepen').item.where(linkId='poliep-en-aanwezig').answer.value ~ %factory.Coding('http://snomed.info/sct', '373066001'))"
                 }
               ],
               "text": {
                 "status": "generated",
-                "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Aanwezigheid van {{%context.item.where(linkId='poliepen').item.where(linkId='poliep').count()}} poliep(en), waarvan {{%context.item.where(linkId='poliepen').item.where(linkId='poliep').where(item.where(linkId='resectie').answer.value.code = '373066001').count()}} gereseceerd.</p><!-- sections --></div>"
+                "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Aanwezigheid van {{%context.item.where(linkId='poliepen').item.where(linkId='poliep').count()}} poliep(en), waarvan {{%context.item.where(linkId='poliepen').item.where(linkId='poliep').where(item.where(linkId='resectie').answer.value ~ %factory.Coding('http://snomed.info/sct', '373066001')).count()}} gereseceerd.</p><!-- sections --></div>"
               },
               "section": [
                 {
                   "extension": [
                     {
                       "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                      "valueString": "%resource.where(item.where(linkId='poliepen').item.where(linkId='poliep').where(item.where(linkId='resectie').answer.item.where(linkId='nabloeding').answer.value.code = '373066001').exists())"
+                      "valueString": "%resource.where(item.where(linkId='poliepen').item.where(linkId='poliep').where(item.where(linkId='resectie').answer.item.where(linkId='nabloeding').answer.value ~ %factory.Coding('http://snomed.info/sct', '373066001')).exists())"
                     }
                   ],
                   "text": {
@@ -9379,7 +9379,7 @@
                       "extension": [
                         {
                           "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                          "valueString": "%resource.where(item.where(linkId='poliepen').item.where(linkId='poliep').where(item.where(linkId='resectie').answer.item.where(linkId='nabloeding').answer.item.where(linkId='succesvolle-hemostase').answer.value.code = '373066001').exists())"
+                          "valueString": "%resource.where(item.where(linkId='poliepen').item.where(linkId='poliep').where(item.where(linkId='resectie').answer.item.where(linkId='nabloeding').answer.item.where(linkId='succesvolle-hemostase').answer.value ~ %factory.Coding('http://snomed.info/sct', '373066001')).exists())"
                         }
                       ],
                       "text": {
@@ -9391,7 +9391,7 @@
                       "extension": [
                         {
                           "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                          "valueString": "%resource.where(item.where(linkId='poliepen').item.where(linkId='poliep').where(item.where(linkId='resectie').answer.item.where(linkId='nabloeding').answer.item.where(linkId='succesvolle-hemostase').answer.value.code = '373067005').exists())"
+                          "valueString": "%resource.where(item.where(linkId='poliepen').item.where(linkId='poliep').where(item.where(linkId='resectie').answer.item.where(linkId='nabloeding').answer.item.where(linkId='succesvolle-hemostase').answer.value ~ %factory.Coding('http://snomed.info/sct', '373067005')).exists())"
                         }
                       ],
                       "text": {
@@ -9407,7 +9407,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                  "valueString": "%resource.where(item.where(linkId='divertikels').item.where(linkId='divertikels-2').answer.value.code = '373066001' and (item.where(linkId='divertikels').item.where(linkId='locatie-3').answer.value.code = '60184004' or item.where(linkId='divertikels').item.where(linkId='locatie-3').answer.value.code = '55572008'))"
+                  "valueString": "%resource.where(item.where(linkId='divertikels').item.where(linkId='divertikels-2').answer.value ~ %factory.Coding('http://snomed.info/sct', '373066001') and (item.where(linkId='divertikels').item.where(linkId='locatie-3').answer.value ~ %factory.Coding('http://snomed.info/sct', '60184004') or item.where(linkId='divertikels').item.where(linkId='locatie-3').answer.value ~ %factory.Coding('http://snomed.info/sct', '55572008')))"
                 }
               ],
               "text": {
@@ -9419,7 +9419,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                  "valueString": "%resource.where(item.where(linkId='divertikels').item.where(linkId='divertikels-2').answer.value.code = '373066001' and item.where(linkId='divertikels').item.where(linkId='locatie-3').answer.value.code = '0196f8a1-4638-777d-9da0-be5f1c85aa58')"
+                  "valueString": "%resource.where(item.where(linkId='divertikels').item.where(linkId='divertikels-2').answer.value ~ %factory.Coding('http://snomed.info/sct', '373066001') and item.where(linkId='divertikels').item.where(linkId='locatie-3').answer.value ~ %factory.Coding('http://templates.tiro.health/templates/3499e844feaa47a3acca12d4a51fc09c/custom-codes', '0196f8a1-4638-777d-9da0-be5f1c85aa58'))"
                 }
               ],
               "text": {
@@ -9431,7 +9431,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                  "valueString": "%resource.where(item.where(linkId='carcinoom').item.where(linkId='carcinoom-2').answer.value.code = '01922946-802f-7117-87b2-a2f9dd3788e6')"
+                  "valueString": "%resource.where(item.where(linkId='carcinoom').item.where(linkId='carcinoom-2').answer.value ~ %factory.Coding('http://templates.tiro.health/templates/3499e844feaa47a3acca12d4a51fc09c/custom-codes', '01922946-802f-7117-87b2-a2f9dd3788e6'))"
                 }
               ],
               "text": {
@@ -9443,7 +9443,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                  "valueString": "%resource.where(item.where(linkId='carcinoom').item.where(linkId='carcinoom-2').answer.value.code = '373066001')"
+                  "valueString": "%resource.where(item.where(linkId='carcinoom').item.where(linkId='carcinoom-2').answer.value ~ %factory.Coding('http://snomed.info/sct', '373066001'))"
                 }
               ],
               "text": {
@@ -9455,19 +9455,19 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                  "valueString": "%resource.where(item.where(linkId='colitis-ulcerosa').item.where(linkId='colitis-ulcerosa-2').answer.value.code = '373066001')"
+                  "valueString": "%resource.where(item.where(linkId='colitis-ulcerosa').item.where(linkId='colitis-ulcerosa-2').answer.value ~ %factory.Coding('http://snomed.info/sct', '373066001'))"
                 }
               ],
               "text": {
                 "status": "generated",
-                "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Colitis ulcerosa met letsels ter hoogte van {{%context.item.where(linkId='colitis-ulcerosa').item.where(linkId='locatie-6').answer.value.display}}{{iif(%context.item.where(linkId='colitis-ulcerosa').item.where(linkId='caecal-patch').answer.value.code = '01921e4a-235d-7999-9d73-6d5595c06084', ' en caecal patch', '')}}. Mayo score: {{%context.item.where(linkId='colitis-ulcerosa').item.where(linkId='mayo-score').answer.value.display}}.</p></div>"
+                "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Colitis ulcerosa met letsels ter hoogte van {{%context.item.where(linkId='colitis-ulcerosa').item.where(linkId='locatie-6').answer.value.display}}{{iif(%context.item.where(linkId='colitis-ulcerosa').item.where(linkId='caecal-patch').answer.value ~ %factory.Coding('http://templates.tiro.health/templates/3499e844feaa47a3acca12d4a51fc09c/custom-codes', '01921e4a-235d-7999-9d73-6d5595c06084'), ' en caecal patch', '')}}. Mayo score: {{%context.item.where(linkId='colitis-ulcerosa').item.where(linkId='mayo-score').answer.value.display}}.</p></div>"
               }
             },
             {
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                  "valueString": "%resource.where(item.where(linkId='ziekte-van-crohn').item.where(linkId='group-2').answer.value.code = '373066001')"
+                  "valueString": "%resource.where(item.where(linkId='ziekte-van-crohn').item.where(linkId='group-2').answer.value ~ %factory.Coding('http://snomed.info/sct', '373066001'))"
                 }
               ],
               "text": {

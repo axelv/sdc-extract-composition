@@ -20,6 +20,11 @@ CONTEXT_URL = (
     "sdc-questionnaire-templateExtractContext"
 )
 
+# -- Code systems ---------------------------------------------------------------
+SCT = "http://snomed.info/sct"
+TIRO = "http://templates.tiro.health/templates/3499e844feaa47a3acca12d4a51fc09c/custom-codes"
+TIRO2 = "http://templates.tiro.health/templates/a6c95d6047764209af0dd7bce4494e56/custom-codes"
+
 # -- Answer codes from the Questionnaire ---------------------------------------
 # SNOMED ja/nee
 JA = "373066001"
@@ -30,7 +35,7 @@ SEDATIE_NEE = NEE
 SEDATIE_PROCEDUREEL = "0192058a-9c01-7eed-9d3e-21a716d9fb7a"
 SEDATIE_ANESTHESIE = "399097000"
 
-# Insertiediepte (custom codes)
+# Insertiediepte (custom codes — no system)
 INS_CAECUM = "caecum"
 INS_TERMINALE_ILEUM = "terminale-ileum"
 
@@ -51,6 +56,11 @@ SES_ONAANGETAST = "cdc6ebf2fce34e5a83c0eba6ec90b844"  # aangetaste oppervlakte =
 
 # Problemen bij voorbereiding
 PROBLEMEN_GEEN = NEE  # Uses same code as Nee (373067005)
+
+def coding(system: str, code: str) -> str:
+    """FHIRPath %factory.Coding(system, code) literal."""
+    return f"%factory.Coding('{system}', '{code}')"
+
 
 # -- Questionnaire item paths --------------------------------------------------
 G = "item.where(linkId='group')"
@@ -123,7 +133,7 @@ def build_procedure_info() -> dict:
             "{{%context.item.where(linkId='datum-procedure').answer.value}} "
             "door {{%context.item.where(linkId='uitvoerende-arts').answer.value.display}}.</p>"
             "<p>Indicatie: "
-            f"{{{{iif(%context.item.where(linkId='urgentie').answer.value.code = '{JA}', 'Urgentie, ', '')}}}}"
+            f"{{{{iif(%context.item.where(linkId='urgentie').answer.value ~ {coding(SCT, JA)}, 'Urgentie, ', '')}}}}"
             "{{%context.item.where(linkId='indicatie').answer.value.display}}</p>"
             "<!-- sections -->"
         ),
@@ -147,8 +157,8 @@ def build_procedure_info() -> dict:
 
 def build_sedatie() -> dict:
     """Sedatie & medicatie — 3 exclusive branches + bloedverdunners."""
-    sed = "item.where(linkId='sedatie').answer.value.code"
-    bv = "item.where(linkId='bloedverdunners').answer.value.code"
+    sed = "item.where(linkId='sedatie').answer.value"
+    bv = "item.where(linkId='bloedverdunners').answer.value"
 
     return sec(
         title="Sedatie & medicatie",
@@ -156,15 +166,15 @@ def build_sedatie() -> dict:
         text="<!-- sections -->",
         children=[
             sec(
-                context=ctx_where(f"{sed} = '{SEDATIE_NEE}'"),
+                context=ctx_where(f"{sed} ~ {coding(SCT, SEDATIE_NEE)}"),
                 text="<p>Onderzoek zonder sedatie.</p>",
             ),
             sec(
-                context=ctx_where(f"{sed} = '{SEDATIE_PROCEDUREEL}'"),
+                context=ctx_where(f"{sed} ~ {coding(TIRO, SEDATIE_PROCEDUREEL)}"),
                 text="<p>Onderzoek onder procedurele sedatie.</p>",
             ),
             sec(
-                context=ctx_where(f"{sed} = '{SEDATIE_ANESTHESIE}'"),
+                context=ctx_where(f"{sed} ~ {coding(SCT, SEDATIE_ANESTHESIE)}"),
                 text=(
                     "<p>Onderzoek onder anesthesie, uitgevoerd door "
                     "{{%context.item.where(linkId='sedatie').answer.item"
@@ -172,7 +182,7 @@ def build_sedatie() -> dict:
                 ),
             ),
             sec(
-                context=ctx_where(f"{bv} != '{NEE}'"),
+                context=ctx_where(f"{bv} !~ {coding(SCT, NEE)}"),
                 text=(
                     "<p>Patiënt onder "
                     "{{%context.item.where(linkId='bloedverdunners').answer.value.display}}.</p>"
@@ -213,7 +223,7 @@ def build_voorbereiding() -> dict:
         children=[
             sec(
                 context=ctx_where(
-                    f"item.where(linkId='problemen-bij-voorbereiding').answer.value.code != '{PROBLEMEN_GEEN}'"
+                    f"item.where(linkId='problemen-bij-voorbereiding').answer.value !~ {coding(SCT, PROBLEMEN_GEEN)}"
                 ),
                 text=(
                     "<p>Problemen bij voorbereiding: "
@@ -256,7 +266,7 @@ def build_insertiediepte() -> dict:
 
 def build_poliepen() -> dict:
     """Polyp section — repeating block per polyp."""
-    res_code = "item.where(linkId='resectie').answer.value.code"
+    res_val = "item.where(linkId='resectie').answer.value"
     res = "item.where(linkId='resectie').answer.item"
 
     def rf(lid: str, prop: str = "") -> str:
@@ -292,10 +302,10 @@ def build_poliepen() -> dict:
         expr = f"%context.item.where(linkId='{lid}').answer.value"
         return "{{" + f"iif({expr}.exists(), '{prefix}' + {expr}.{prop}, '')" + "}}"
 
-    nbl_code = f"{res}.where(linkId='nabloeding').answer.value.code"
-    hem_code = (
+    nbl_val = f"{res}.where(linkId='nabloeding').answer.value"
+    hem_val = (
         f"{res}.where(linkId='nabloeding').answer.item"
-        ".where(linkId='succesvolle-hemostase').answer.value.code"
+        ".where(linkId='succesvolle-hemostase').answer.value"
     )
 
     lifting_iif = (
@@ -307,37 +317,37 @@ def build_poliepen() -> dict:
 
     resectie_children = [
         sec(
-            context=ctx_where(f"{res}.where(linkId='biopten').answer.value.code = '{JA}'"),
+            context=ctx_where(f"{res}.where(linkId='biopten').answer.value ~ {coding(SCT, JA)}"),
             text=f"<p>Biopten in potje # {rf('potje')}.</p>",
         ),
         sec(
-            context=ctx_where(f"{res}.where(linkId='recuperatie').answer.value.code = '{JA}'"),
+            context=ctx_where(f"{res}.where(linkId='recuperatie').answer.value ~ {coding(SCT, JA)}"),
             text=f"<p>Recuperatie voor pathologie (potje # {rf('potje-2')}).</p>",
         ),
         sec(
-            context=ctx_where(f"{res}.where(linkId='recuperatie').answer.value.code = '{NEE}'"),
+            context=ctx_where(f"{res}.where(linkId='recuperatie').answer.value ~ {coding(SCT, NEE)}"),
             text="<p>Geen recuperatie voor pathologie.</p>",
         ),
         sec(
-            context=ctx_where(f"{res}.where(linkId='termale-ablatie-van-de-randen').answer.value.code = '{JA}'"),
+            context=ctx_where(f"{res}.where(linkId='termale-ablatie-van-de-randen').answer.value ~ {coding(SCT, JA)}"),
             text="<p>Termale ablatie van de randen uitgevoerd.</p>",
         ),
         sec(
-            context=ctx_where(f"{nbl_code} = '{JA}'"),
+            context=ctx_where(f"{nbl_val} ~ {coding(SCT, JA)}"),
             text="<p>Ontstaan van bloeding na resectie</p><!-- sections -->",
             children=[
                 sec(
-                    context=ctx_where(f"{hem_code} = '{JA}'"),
+                    context=ctx_where(f"{hem_val} ~ {coding(SCT, JA)}"),
                     text=f"<p>waarvoor succesvolle hemostase middels {nbl('modaliteit-2', 'display')}</p>",
                 ),
                 sec(
-                    context=ctx_where(f"{hem_code} = '{NEE}'"),
+                    context=ctx_where(f"{hem_val} ~ {coding(SCT, NEE)}"),
                     text=f"<p>waarvoor poging tot hemostase niet succesvol ondanks {nbl('modaliteit-2', 'display')}</p>",
                 ),
             ],
         ),
         sec(
-            context=ctx_where(f"{res}.where(linkId='markering').answer.value.code = '{JA}'"),
+            context=ctx_where(f"{res}.where(linkId='markering').answer.value ~ {coding(SCT, JA)}"),
             text=(
                 f"<p>Aanbrengen van markering {mark('locatie-2', 'display')}"
                 f" met {mark('modaliteit-3', 'display')}</p>"
@@ -367,7 +377,7 @@ def build_poliepen() -> dict:
                 text=polyp_text,
                 children=[
                     sec(
-                        context=ctx_where(f"{res_code} = '{JA}'"),
+                        context=ctx_where(f"{res_val} ~ {coding(SCT, JA)}"),
                         text=(
                             f"<p>waarvoor {lifting_iif}"
                             f"{rf('device', 'display')} "
@@ -383,8 +393,8 @@ def build_poliepen() -> dict:
 
 
 def build_divertikels() -> dict:
-    dc = "item.where(linkId='divertikels-2').answer.value.code"
-    lc = "item.where(linkId='locatie-3').answer.value.code"
+    dc = "item.where(linkId='divertikels-2').answer.value"
+    lc = "item.where(linkId='locatie-3').answer.value"
 
     return sec(
         title="Divertikels",
@@ -393,12 +403,12 @@ def build_divertikels() -> dict:
         children=[
             sec(
                 context=ctx_where(
-                    f"{dc} = '{JA}' and ({lc} = '{LOC_SIGMOID}' or {lc} = '{LOC_LINKER_COLON}')"
+                    f"{dc} ~ {coding(SCT, JA)} and ({lc} ~ {coding(SCT, LOC_SIGMOID)} or {lc} ~ {coding(SCT, LOC_LINKER_COLON)})"
                 ),
                 text="<p>Divertikels ter hoogte van het {{%context.item.where(linkId='locatie-3').answer.value.display}}</p>",
             ),
             sec(
-                context=ctx_where(f"{dc} = '{JA}' and {lc} = '{LOC_VOLLEDIG_COLON}'"),
+                context=ctx_where(f"{dc} ~ {coding(SCT, JA)} and {lc} ~ {coding(TIRO, LOC_VOLLEDIG_COLON)}"),
                 text="<p>Divertikels over het hele colonkader</p>",
             ),
         ],
@@ -412,7 +422,7 @@ def build_stenose() -> dict:
         text="<!-- sections -->",
         children=[
             sec(
-                context=ctx_where(f"item.where(linkId='stenoserend').answer.value.code = '{JA}'"),
+                context=ctx_where(f"item.where(linkId='stenoserend').answer.value ~ {coding(SCT, JA)}"),
                 text="<p>Stenoserend, {{%context.item.where(linkId='te-passeren').answer.value.display}}</p>",
             ),
             sec(
@@ -424,7 +434,7 @@ def build_stenose() -> dict:
 
 
 def build_carcinoom() -> dict:
-    cc = "item.where(linkId='carcinoom-2').answer.value.code"
+    cc = "item.where(linkId='carcinoom-2').answer.value"
 
     return sec(
         title="Carcinoom",
@@ -432,11 +442,11 @@ def build_carcinoom() -> dict:
         text="<!-- sections -->",
         children=[
             sec(
-                context=ctx_where(f"{cc} = '{CAR_NEE_VERMELDEN}'"),
+                context=ctx_where(f"{cc} ~ {coding(TIRO, CAR_NEE_VERMELDEN)}"),
                 text="<p>Geen carcinogene letsels gedetecteerd.</p>",
             ),
             sec(
-                context=ctx_where(f"{cc} = '{JA}'"),
+                context=ctx_where(f"{cc} ~ {coding(SCT, JA)}"),
                 text=(
                     "<p>{{%context.item.where(linkId='morfologie').answer.value.display}} "
                     "carcinoom ter hoogte van "
@@ -445,15 +455,15 @@ def build_carcinoom() -> dict:
                 ),
                 children=[
                     sec(
-                        context=ctx_where(f"item.where(linkId='stenoserend-2').answer.value.code = '{JA}'"),
+                        context=ctx_where(f"item.where(linkId='stenoserend-2').answer.value ~ {coding(SCT, JA)}"),
                         text="<p>Stenoserend, {{%context.item.where(linkId='te-passeren-2').answer.value.display}}</p>",
                     ),
                     sec(
-                        context=ctx_where(f"item.where(linkId='stenoserend-2').answer.value.code = '{NEE}'"),
+                        context=ctx_where(f"item.where(linkId='stenoserend-2').answer.value ~ {coding(SCT, NEE)}"),
                         text="<p>Niet stenoserend.</p>",
                     ),
                     sec(
-                        context=ctx_where(f"item.where(linkId='biopten-2').answer.value.code = '{JA}'"),
+                        context=ctx_where(f"item.where(linkId='biopten-2').answer.value ~ {coding(SCT, JA)}"),
                         text=(
                             "<p>Biopten in potje # "
                             "{{%context.item.where(linkId='biopten-2').answer.item"
@@ -461,7 +471,7 @@ def build_carcinoom() -> dict:
                         ),
                     ),
                     sec(
-                        context=ctx_where(f"item.where(linkId='markering-2').answer.value.code = '{JA}'"),
+                        context=ctx_where(f"item.where(linkId='markering-2').answer.value ~ {coding(SCT, JA)}"),
                         text=(
                             "<p>Aanbrengen van markering "
                             "{{%context.item.where(linkId='markering-2').answer.item"
@@ -483,11 +493,11 @@ def build_colitis_ulcerosa() -> dict:
         text="<!-- sections -->",
         children=[
             sec(
-                context=ctx_where(f"item.where(linkId='colitis-ulcerosa-2').answer.value.code = '{JA}'"),
+                context=ctx_where(f"item.where(linkId='colitis-ulcerosa-2').answer.value ~ {coding(SCT, JA)}"),
                 text=(
                     "<p>Colitis ulcerosa met letsels ter hoogte van "
                     "{{%context.item.where(linkId='locatie-6').answer.value.display}}"
-                    f"{{{{iif(%context.item.where(linkId='caecal-patch').answer.value.code = '{CAECAL_PATCH_JA}', ' en caecal patch', '')}}}}"
+                    f"{{{{iif(%context.item.where(linkId='caecal-patch').answer.value ~ {coding(TIRO, CAECAL_PATCH_JA)}, ' en caecal patch', '')}}}}"
                     ". Mayo score: {{%context.item.where(linkId='mayo-score').answer.value.display}}. "
                     "Backwash ileitis {{%context.item.where(linkId='backwash-ileitis').answer.value.display}}</p>"
                 ),
@@ -523,29 +533,29 @@ def build_crohn_segment(seg: dict) -> list[dict]:
     detail_children = [
         # Aangetaste oppervlakte
         sec(
-            context=ctx_where(f"{opp_path}.answer.value.code = '{SES_ONAANGETAST}'"),
+            context=ctx_where(f"{opp_path}.answer.value ~ {coding(TIRO2, SES_ONAANGETAST)}"),
             text="<p>Onaangetast.</p>",
         ),
         sec(
-            context=ctx_where(f"{opp_path}.answer.value.code != '{SES_ONAANGETAST}' and {opp_path}.answer.value.exists()"),
+            context=ctx_where(f"{opp_path}.answer.value !~ {coding(TIRO2, SES_ONAANGETAST)} and {opp_path}.answer.value.exists()"),
             text=f"<p>Aangetaste oppervlakte: {{{{%context.{opp_path}.answer.value.display}}}}.</p>",
         ),
         # Grootte zweren
         sec(
-            context=ctx_where(f"{zweren_path}.answer.value.code = '{SES_GEEN}'"),
+            context=ctx_where(f"{zweren_path}.answer.value ~ {coding(SCT, SES_GEEN)}"),
             text="<p>Geen zweren.</p>",
         ),
         sec(
-            context=ctx_where(f"{zweren_path}.answer.value.code != '{SES_GEEN}' and {zweren_path}.answer.value.exists()"),
+            context=ctx_where(f"{zweren_path}.answer.value !~ {coding(SCT, SES_GEEN)} and {zweren_path}.answer.value.exists()"),
             text=f"<p>{{{{%context.{zweren_path}.answer.value.display}}}}.</p>",
         ),
         # Ulceratie
         sec(
-            context=ctx_where(f"{ulc_path}.answer.value.code = '{SES_GEEN}'"),
+            context=ctx_where(f"{ulc_path}.answer.value ~ {coding(SCT, SES_GEEN)}"),
             text="<p>Geen ulceraties.</p>",
         ),
         sec(
-            context=ctx_where(f"{ulc_path}.answer.value.code != '{SES_GEEN}' and {ulc_path}.answer.value.exists()"),
+            context=ctx_where(f"{ulc_path}.answer.value !~ {coding(SCT, SES_GEEN)} and {ulc_path}.answer.value.exists()"),
             text=f"<p>Ulceraties aanwezig over een oppervlak van {{{{%context.{ulc_path}.answer.value.display}}}}.</p>",
         ),
     ]
@@ -588,7 +598,7 @@ def build_ziekte_van_crohn() -> dict:
         text="<!-- sections -->",
         children=[
             sec(
-                context=ctx_where(f"item.where(linkId='group-2').answer.value.code = '{JA}'"),
+                context=ctx_where(f"item.where(linkId='group-2').answer.value ~ {coding(SCT, JA)}"),
                 text="<!-- sections -->",
                 children=segment_sections,
             ),
@@ -600,30 +610,30 @@ def build_ziekte_van_crohn() -> dict:
 
 def build_besluit() -> dict:
     """Besluit spans all groups — uses %resource.where() with full paths in text."""
-    ins = f"{G}.item.where(linkId='caecum-bereikt').item.where(linkId='insertiediepte').answer.value.code"
-    pol = f"{POL}.item.where(linkId='poliep-en-aanwezig').answer.value.code"
-    dc = f"{DIV}.item.where(linkId='divertikels-2').answer.value.code"
-    lc = f"{DIV}.item.where(linkId='locatie-3').answer.value.code"
-    cc = f"{CAR}.item.where(linkId='carcinoom-2').answer.value.code"
-    cu = f"{CU}.item.where(linkId='colitis-ulcerosa-2').answer.value.code"
-    cr = f"{ZC}.item.where(linkId='group-2').answer.value.code"
+    ins = f"{G}.item.where(linkId='caecum-bereikt').item.where(linkId='insertiediepte').answer.value"
+    pol = f"{POL}.item.where(linkId='poliep-en-aanwezig').answer.value"
+    dc = f"{DIV}.item.where(linkId='divertikels-2').answer.value"
+    lc = f"{DIV}.item.where(linkId='locatie-3').answer.value"
+    cc = f"{CAR}.item.where(linkId='carcinoom-2').answer.value"
+    cu = f"{CU}.item.where(linkId='colitis-ulcerosa-2').answer.value"
+    cr = f"{ZC}.item.where(linkId='group-2').answer.value"
 
     # For aggregation across polyps, use .where().exists() to avoid collection comparison issues
     polyp_nbl = (
         f"{POL}.item.where(linkId='poliep')"
-        f".where(item.where(linkId='resectie').answer.item.where(linkId='nabloeding').answer.value.code = '{JA}')"
+        f".where(item.where(linkId='resectie').answer.item.where(linkId='nabloeding').answer.value ~ {coding(SCT, JA)})"
     )
     polyp_hem_ja = (
         f"{POL}.item.where(linkId='poliep')"
         ".where(item.where(linkId='resectie').answer.item"
         ".where(linkId='nabloeding').answer.item"
-        f".where(linkId='succesvolle-hemostase').answer.value.code = '{JA}')"
+        f".where(linkId='succesvolle-hemostase').answer.value ~ {coding(SCT, JA)})"
     )
     polyp_hem_nee = (
         f"{POL}.item.where(linkId='poliep')"
         ".where(item.where(linkId='resectie').answer.item"
         ".where(linkId='nabloeding').answer.item"
-        f".where(linkId='succesvolle-hemostase').answer.value.code = '{NEE}')"
+        f".where(linkId='succesvolle-hemostase').answer.value ~ {coding(SCT, NEE)})"
     )
 
     # Text helpers using full paths (since %context = QR root for res_where)
@@ -636,15 +646,15 @@ def build_besluit() -> dict:
         text="<!-- sections -->",
         children=[
             sec(
-                context=res_where(f"{ins} = '{INS_CAECUM}'"),
+                context=res_where(f"{ins}.code = '{INS_CAECUM}'"),
                 text="<p>Totale coloscopie.</p>",
             ),
             sec(
-                context=res_where(f"{ins} = '{INS_TERMINALE_ILEUM}'"),
+                context=res_where(f"{ins}.code = '{INS_TERMINALE_ILEUM}'"),
                 text="<p>Totale ileocoloscopie.</p>",
             ),
             sec(
-                context=res_where(f"{ins} != '{INS_CAECUM}' and {ins} != '{INS_TERMINALE_ILEUM}'"),
+                context=res_where(f"{ins}.code != '{INS_CAECUM}' and {ins}.code != '{INS_TERMINALE_ILEUM}'"),
                 text=(
                     f"<p>Onvolledige coloscopie wegens {{{{%context.{G}.item.where(linkId='caecum-bereikt').item.where(linkId='oorzaak').answer.value.display}}}}"
                     f", inspectie tot {{{{%context.{G}.item.where(linkId='caecum-bereikt').item.where(linkId='insertiediepte').answer.value.display}}}}.</p>"
@@ -653,17 +663,17 @@ def build_besluit() -> dict:
             # Normale bevindingen
             sec(
                 context=res_where(
-                    f"{pol} = '{NEE}' and {dc} = '{NEE}' and {cc} = '{NEE}' and {cu} = '{NEE}' and {cr} = '{NEE}'"
+                    f"{pol} ~ {coding(SCT, NEE)} and {dc} ~ {coding(SCT, NEE)} and {cc} ~ {coding(SCT, NEE)} and {cu} ~ {coding(SCT, NEE)} and {cr} ~ {coding(SCT, NEE)}"
                 ),
                 text="<p>Normale endoscopische bevindingen.</p>",
             ),
             # Poliepen
             sec(
-                context=res_where(f"{pol} = '{JA}'"),
+                context=res_where(f"{pol} ~ {coding(SCT, JA)}"),
                 text=(
                     f"<p>Aanwezigheid van {{{{%context.{POL}.item.where(linkId='poliep').count()}}}} poliep(en)"
                     f", waarvan {{{{%context.{POL}.item.where(linkId='poliep')"
-                    f".where(item.where(linkId='resectie').answer.value.code = '{JA}').count()}}}} gereseceerd.</p>"
+                    f".where(item.where(linkId='resectie').answer.value ~ {coding(SCT, JA)}).count()}}}} gereseceerd.</p>"
                     "<!-- sections -->"
                 ),
                 children=[
@@ -679,20 +689,20 @@ def build_besluit() -> dict:
             ),
             # Divertikels
             sec(
-                context=res_where(f"{dc} = '{JA}' and ({lc} = '{LOC_SIGMOID}' or {lc} = '{LOC_LINKER_COLON}')"),
+                context=res_where(f"{dc} ~ {coding(SCT, JA)} and ({lc} ~ {coding(SCT, LOC_SIGMOID)} or {lc} ~ {coding(SCT, LOC_LINKER_COLON)})"),
                 text=f"<p>Divertikels ter hoogte van het {{{{%context.{DIV}.item.where(linkId='locatie-3').answer.value.display}}}}</p>",
             ),
             sec(
-                context=res_where(f"{dc} = '{JA}' and {lc} = '{LOC_VOLLEDIG_COLON}'"),
+                context=res_where(f"{dc} ~ {coding(SCT, JA)} and {lc} ~ {coding(TIRO, LOC_VOLLEDIG_COLON)}"),
                 text="<p>Divertikels over het hele colonkader</p>",
             ),
             # Carcinoom
             sec(
-                context=res_where(f"{cc} = '{CAR_NEE_VERMELDEN}'"),
+                context=res_where(f"{cc} ~ {coding(TIRO, CAR_NEE_VERMELDEN)}"),
                 text="<p>Geen carcinogene letsels gedetecteerd.</p>",
             ),
             sec(
-                context=res_where(f"{cc} = '{JA}'"),
+                context=res_where(f"{cc} ~ {coding(SCT, JA)}"),
                 text=(
                     f"<p>{{{{%context.{CAR}.item.where(linkId='morfologie').answer.value.display}}}} "
                     f"carcinoom ter hoogte van {{{{%context.{CAR}.item.where(linkId='locatie-4').answer.value.display}}}}.</p>"
@@ -700,16 +710,16 @@ def build_besluit() -> dict:
             ),
             # CU
             sec(
-                context=res_where(f"{cu} = '{JA}'"),
+                context=res_where(f"{cu} ~ {coding(SCT, JA)}"),
                 text=(
                     f"<p>Colitis ulcerosa met letsels ter hoogte van {{{{%context.{CU}.item.where(linkId='locatie-6').answer.value.display}}}}"
-                    f"{{{{iif(%context.{CU}.item.where(linkId='caecal-patch').answer.value.code = '{CAECAL_PATCH_JA}', ' en caecal patch', '')}}}}"
+                    f"{{{{iif(%context.{CU}.item.where(linkId='caecal-patch').answer.value ~ {coding(TIRO, CAECAL_PATCH_JA)}, ' en caecal patch', '')}}}}"
                     f". Mayo score: {{{{%context.{CU}.item.where(linkId='mayo-score').answer.value.display}}}}.</p>"
                 ),
             ),
             # Crohn
             sec(
-                context=res_where(f"{cr} = '{JA}'"),
+                context=res_where(f"{cr} ~ {coding(SCT, JA)}"),
                 text=f"<p>SES-CD score: {{{{%context.{ZC}.{SES_BASE}.item.where(linkId='ses-cd-score-2').answer.value}}}}</p>",
             ),
         ],

@@ -27,44 +27,35 @@ function hasSectionsPlaceholder(section: CompositionSection): boolean {
   return section.text?.div?.includes(SECTIONS_PLACEHOLDER) ?? false;
 }
 
-/**
- * Determine whether a context expression represents a repeating (clone) pattern
- * vs a conditional (show/hide) pattern.
- *
- * Repeating: navigates to child items, e.g. `%context.item.where(linkId='poliep')`
- * Conditional: filters current context with a predicate, e.g. `%context.where(item...code = 'ja')`
- */
 function isRepeatingContext(expr: string | null): boolean {
   if (!expr) return false;
   if (/^%(?:context|resource)\.where\(/.test(expr)) return false;
   return true;
 }
 
-/**
- * A section is a "conditional block" if it has a context expression but no title.
- * Titled sections with context are just scoped (e.g., "Procedure info" scoped to group).
- */
 function isCondBlock(section: CompositionSection): boolean {
   return !section.title && !!getContextExpression(section);
 }
 
 /**
- * Build a label badge ("als" or "per item") + context expression HTML.
- * When a QuestionnaireIndex is available, renders pills for answer-value
- * paths and code literals.
+ * Build the condition indicator HTML for inline cond-blocks.
+ * Shows a small icon + label, with expression hidden in a <details>.
  */
-function buildLabelHtml(
+function buildCondIndicatorHtml(
   section: CompositionSection,
   questionnaireIndex?: QuestionnaireIndex
 ): string {
   const ctx = getContextExpression(section);
   if (!ctx) return "";
   const repeating = isRepeatingContext(ctx);
+  const icon = repeating ? "↻" : "⎇";
   const label = repeating ? "per item" : "als";
   const exprHtml = segmentExpressionToHtml(ctx, questionnaireIndex);
   return (
-    `<span class="cond-label">${label}</span> ` +
-    `<span class="context-badge-resolved" title="${ctx.replace(/"/g, "&quot;")}">${exprHtml}</span>`
+    `<details class="cond-details">` +
+    `<summary class="cond-summary"><span class="cond-icon">${icon}</span><span class="cond-label">${label}</span></summary>` +
+    `<span class="context-badge-resolved" title="${ctx.replace(/"/g, "&quot;")}">${exprHtml}</span>` +
+    `</details>`
   );
 }
 
@@ -89,13 +80,13 @@ function buildSectionHtml(
         const childDiv = child.text?.div;
         if (!childDiv) return "";
         const isCond = isCondBlock(child);
-        const label = buildLabelHtml(child, questionnaireIndex);
+        const indicator = buildCondIndicatorHtml(child, questionnaireIndex);
         const childInner = injectPills(
           stripDivWrapper(childDiv),
           linkIdTextMap
         );
         if (isCond) {
-          return `<div class="cond-block">${label}${childInner}</div>`;
+          return `<div class="cond-block">${indicator}${childInner}</div>`;
         }
         return childInner;
       })
@@ -124,19 +115,28 @@ export function SectionView({
       style={{
         marginLeft: depth > 0 && !isCond ? "1rem" : 0,
         ...(!isCond && depth > 0
-          ? { borderLeft: "2px solid #e5e7eb", paddingLeft: "1rem" }
+          ? { borderLeft: "1px solid #e8e5df", paddingLeft: "0.8rem" }
           : {}),
       }}
     >
-      <div className="flex items-center gap-2 flex-wrap mb-1">
+      <div className="flex items-center gap-2 flex-wrap">
         {section.title && (
           <h3 className="text-sm font-semibold text-gray-900 m-0">
             {section.title}
+            {contextExpr && (
+              <span className="context-scope-icon" title={contextExpr}>⚙</span>
+            )}
           </h3>
         )}
-        {conditional && <span className="cond-label">als</span>}
-        {repeating && <span className="cond-label">per item</span>}
-        {contextExpr && <ContextBadge expression={contextExpr} questionnaireIndex={questionnaireIndex} />}
+        {isCond && contextExpr && (
+          <details className="cond-details">
+            <summary className="cond-summary">
+              <span className="cond-icon">{repeating ? "↻" : "⎇"}</span>
+              <span className="cond-label">{conditional ? "als" : "per item"}</span>
+            </summary>
+            <ContextBadge expression={contextExpr} questionnaireIndex={questionnaireIndex} />
+          </details>
+        )}
       </div>
 
       {inlinesChildren ? (

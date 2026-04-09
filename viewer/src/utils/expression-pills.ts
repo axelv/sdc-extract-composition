@@ -290,8 +290,54 @@ function findAnswerPills(
 }
 
 /**
- * Find code-literal pills: string literals that appear opposite an answer pill
- * in an EqualityExpression.
+ * Try to extract the code from a %factory.Coding(system, code) invocation.
+ * Returns the code string and the node range, or null.
+ */
+function tryExtractFactoryCoding(
+  node: SyntaxNode,
+  expr: string
+): { code: string; from: number; to: number } | null {
+  if (node.type.name !== "InvocationExpression") return null;
+
+  const receiver = node.firstChild;
+  const member = node.lastChild;
+  if (!receiver || !member) return null;
+
+  // Check receiver is %factory
+  if (receiver.type.name !== "ExternalConstant") return null;
+  const extName = expr.slice(receiver.from, receiver.to);
+  if (extName !== "%factory") return null;
+
+  // Check member is Function named "Coding"
+  if (member.type.name !== "Function") return null;
+  const funcIdent = member.firstChild;
+  if (!funcIdent || expr.slice(funcIdent.from, funcIdent.to) !== "Coding") return null;
+
+  // Extract second argument (code) from ParamList
+  const paramList = member.getChild("ParamList");
+  if (!paramList) return null;
+
+  const literals: SyntaxNode[] = [];
+  let child = paramList.firstChild;
+  while (child) {
+    if (child.type.name === "Literal") literals.push(child);
+    child = child.nextSibling;
+  }
+
+  if (literals.length < 2) return null;
+  const codeNode = literals[1].getChild("String");
+  if (!codeNode) return null;
+
+  return {
+    code: expr.slice(codeNode.from + 1, codeNode.to - 1),
+    from: node.from,
+    to: node.to,
+  };
+}
+
+/**
+ * Find code pills: string literals or %factory.Coding() calls that appear
+ * opposite an answer pill in an EqualityExpression.
  */
 function findCodePills(
   root: SyntaxNode,
@@ -302,16 +348,23 @@ function findCodePills(
 
   function visit(node: SyntaxNode): void {
     if (node.type.name === "EqualityExpression") {
-      // Collect children: left operand, operator, right operand
       let matchedPill: AnswerPillSegment | undefined;
       let literalNode: SyntaxNode | undefined;
+      let factoryCoding: { code: string; from: number; to: number } | null = null;
 
       let child = node.firstChild;
       while (child) {
         if (child.type.name === "InvocationExpression") {
-          matchedPill = answerPills.find(
+          // Check if it's an answer pill
+          const pill = answerPills.find(
             (p) => p.from <= child!.from && p.to >= child!.to
           );
+          if (pill) {
+            matchedPill = pill;
+          } else {
+            // Check if it's a %factory.Coding(...) call
+            factoryCoding = tryExtractFactoryCoding(child, expr);
+          }
         }
         if (child.type.name === "Literal") {
           literalNode = child;
@@ -319,17 +372,31 @@ function findCodePills(
         child = child.nextSibling;
       }
 
-      if (matchedPill && literalNode) {
-        const str = literalNode.getChild("String");
-        if (str) {
-          const value = expr.slice(str.from + 1, str.to - 1);
+      if (matchedPill) {
+        const contextLinkId = matchedPill.linkIds[matchedPill.linkIds.length - 1];
+
+        // %factory.Coding(system, code) on the other side
+        if (factoryCoding) {
           codePills.push({
             kind: "code-pill",
-            from: literalNode.from,
-            to: literalNode.to,
-            value,
-            contextLinkId: matchedPill.linkIds[matchedPill.linkIds.length - 1],
+            from: factoryCoding.from,
+            to: factoryCoding.to,
+            value: factoryCoding.code,
+            contextLinkId,
           });
+        }
+        // Plain string literal on the other side (legacy .code = 'X' pattern)
+        else if (literalNode) {
+          const str = literalNode.getChild("String");
+          if (str) {
+            codePills.push({
+              kind: "code-pill",
+              from: literalNode.from,
+              to: literalNode.to,
+              value: expr.slice(str.from + 1, str.to - 1),
+              contextLinkId,
+            });
+          }
         }
       }
     }
