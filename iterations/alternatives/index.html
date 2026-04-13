@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Composition Template Preview - Alternatives</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            color: #1f2937;
+            line-height: 1.6;
+        }
+        h1 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+        .subtitle { color: #6b7280; margin-bottom: 2rem; }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        .card {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.25rem;
+            transition: box-shadow 0.15s, border-color 0.15s;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        .card:hover {
+            border-color: #3b82f6;
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
+        }
+        .card h2 { font-size: 1rem; margin-bottom: 0.35rem; }
+        .card p { font-size: 0.85rem; color: #6b7280; }
+        .card .tag {
+            display: inline-block;
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-top: 0.5rem;
+        }
+        .tag.layout { background: #dbeafe; color: #1e40af; }
+        .tag.interactive { background: #d1fae5; color: #065f46; }
+        .issues {
+            margin-top: 2.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e2e8f0;
+        }
+        .issues h2 { font-size: 1.1rem; margin-bottom: 0.75rem; }
+        .issues ul { padding-left: 1.25rem; }
+        .issues li { margin-bottom: 0.35rem; font-size: 0.9rem; color: #4b5563; }
+        .issues li strong { color: #1f2937; }
+    </style>
+</head>
+<body>
+    <h1>Composition Template Preview - Alternatives</h1>
+    <p class="subtitle">5 alternative presentations addressing section clarity, WYSIWYG fidelity, and annotation placement.</p>
+
+    <div class="grid">
+        <a class="card" href="01-margin-annotations.html">
+            <h2>1. Margin Annotations</h2>
+            <p>PER ITEM and ALS labels move to a left gutter. The document area stays clean and WYSIWYG. Context expressions appear as small annotations in the margin.</p>
+            <span class="tag layout">Layout</span>
+        </a>
+        <a class="card" href="02-card-containers.html">
+            <h2>2. Card Containers</h2>
+            <p>Each section is a distinct card with clear boundaries. Badges live in the card header bar only. ALS conditions are indented blocks with colored border.</p>
+            <span class="tag layout">Layout</span>
+        </a>
+        <a class="card" href="03-color-bands.html">
+            <h2>3. Color-Coded Bands</h2>
+            <p>Alternating background colors define section boundaries. Small icons replace text labels. A legend explains the visual language.</p>
+            <span class="tag layout">Layout</span>
+        </a>
+        <a class="card" href="04-split-view.html">
+            <h2>4. Split View</h2>
+            <p>Left panel is the pure WYSIWYG document. Right panel shows all technical annotations aligned to their corresponding sections.</p>
+            <span class="tag layout">Layout</span>
+        </a>
+        <a class="card" href="05-toggle-overlay.html">
+            <h2>5. Toggle Overlay</h2>
+            <p>Clean WYSIWYG by default. Checkbox toggles reveal/hide section metadata and conditional annotations independently.</p>
+            <span class="tag interactive">Interactive</span>
+        </a>
+    </div>
+
+    <div class="issues">
+        <h2>Issues Addressed</h2>
+        <ul>
+            <li><strong>Section boundaries unclear</strong> &mdash; Cards (2), color bands (3), and margin gutters (1) create visual containment</li>
+            <li><strong>PER ITEM / ALS too intrusive</strong> &mdash; Moved to margins (1), card headers (2), icons (3), separate panel (4), or toggleable (5)</li>
+            <li><strong>Context expression &harr; section link</strong> &mdash; Gutter alignment (1), header badges (2), context bar (3), side panel (4)</li>
+            <li><strong>WYSIWYG fidelity</strong> &mdash; Split view (4) and toggle (5) offer the cleanest document view; cards (2) add minimal chrome</li>
+        </ul>
+    </div>
+</body>
+</html>
