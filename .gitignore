@@ -14,3 +14,10 @@ wheels/
 
 # Claude Code local settings
 .claude/settings.local.json
+
+# Playwright test artifacts
+.playwright-mcp/
+*.png
+
+# Generated output
+iterations/*/output/
