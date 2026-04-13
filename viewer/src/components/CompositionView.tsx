@@ -45,7 +45,7 @@ export function CompositionView({ composition, questionnaireIndex, showContext =
         )}
       </div>
 
-      <div className="space-y-2">
+      <div className="sections-gutter space-y-2">
         {composition.section?.map((section, i) => (
           <SectionView key={i} section={section} questionnaireIndex={questionnaireIndex} showContext={showContext} />
         ))}

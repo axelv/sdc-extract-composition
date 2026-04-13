@@ -180,9 +180,17 @@ html, body, #root {
 }
 
 /*
+ * Gutter for left-margin badges.
+ */
+.sections-gutter {
+  padding-left: 6rem;
+}
+
+/*
  * Unified section block — consistent left border at every depth.
  */
 .section-block {
+  position: relative;
   border-left: 2px solid var(--doc-cond-border);
   padding: 0.15rem 0 0.15rem 0.7rem;
   margin: 0.15rem 0;
@@ -213,44 +221,64 @@ html, body, #root {
  * Inline cond-blocks inside narrative HTML (built by buildSectionHtml).
  */
 .cond-block {
+  position: relative;
   border-left: 2px solid var(--doc-cond-border);
   padding: 0.1rem 0 0.1rem 0.6rem;
   margin: 0.1rem 0;
 }
 
 /*
- * Condition indicator — compact icon + label with expandable expression.
+ * Badge positioned in the left margin (outside the border).
  */
-.cond-details {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
+.cond-badge-margin {
+  position: absolute;
+  right: calc(100% + 0.4rem);
+  top: 0;
+  white-space: nowrap;
 }
 
+.cond-badge-margin:hover {
+  z-index: 50;
+}
+
+/*
+ * Badge chip — shared base for PER ITEM / ALS indicators.
+ */
 .cond-summary {
   display: inline-flex;
   align-items: center;
   gap: 0.2rem;
-  cursor: pointer;
-  list-style: none;
+  cursor: default;
   user-select: none;
-  border-radius: 3px;
-  padding: 0.05rem 0.3rem;
-  opacity: 0.6;
+  border-radius: 4px;
+  padding: 0.15rem 0.45rem;
+  border: 1px solid transparent;
+  opacity: 0.75;
   transition: opacity 0.15s;
+  white-space: nowrap;
 }
 
-.cond-summary:hover {
+.cond-badge-margin:hover .cond-summary,
+.cond-badge-trigger:hover .cond-summary {
   opacity: 1;
 }
 
-.cond-summary::-webkit-details-marker {
-  display: none;
+/* Repeating context (PER ITEM) — cyan chip */
+.cond-summary.cond-repeating {
+  background: #e0f7fa;
+  border-color: #80deea;
+  color: #00838f;
+}
+
+/* Conditional context (ALS) — lavender chip */
+.cond-summary.cond-conditional {
+  background: #ede7f6;
+  border-color: #b39ddb;
+  color: #5e35b1;
 }
 
 .cond-icon {
   font-size: 0.7rem;
-  color: var(--doc-accent);
   line-height: 1;
 }
 
@@ -258,19 +286,77 @@ html, body, #root {
   font-family: 'IBM Plex Sans', system-ui, sans-serif;
   font-size: 0.65rem;
   font-weight: 600;
-  color: var(--doc-accent);
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
 
-.cond-details[open] .context-badge-resolved,
-.cond-details[open] .context-badge {
-  display: inline;
-  margin-left: 0.3rem;
-  padding: 0.1rem 0.4rem;
+/*
+ * Floating tooltip (rendered via @floating-ui portal for React badges).
+ */
+.context-tooltip {
+  z-index: 50;
+  padding: 0.4rem 0.6rem;
   background: #f9f8f6;
-  border-radius: 3px;
-  border: 1px solid #e8e5df;
+  border: 1px solid #e0ddd6;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
+  max-width: 24rem;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  animation: tooltip-in 0.12s ease-out;
+}
+
+@keyframes tooltip-in {
+  from { opacity: 0; transform: translateY(-2px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/*
+ * CSS hover tooltip for inline HTML badges (inside dangerouslySetInnerHTML).
+ */
+.cond-hover-tooltip {
+  display: none;
+  position: absolute;
+  left: 0;
+  top: calc(100% + 0.4rem);
+  z-index: 50;
+  min-width: 10rem;
+  max-width: 24rem;
+  padding: 0.4rem 0.6rem;
+  background: #f9f8f6;
+  border: 1px solid #e0ddd6;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
+  white-space: normal;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  animation: tooltip-in 0.12s ease-out;
+}
+
+.cond-badge-margin:hover .cond-hover-tooltip {
+  display: block;
+}
+
+/*
+ * Responsive: collapse gutter on small screens, badges go inline.
+ */
+@media (max-width: 640px) {
+  .sections-gutter {
+    padding-left: 0;
+  }
+
+  .cond-badge-margin {
+    position: static;
+    margin-bottom: 0.25rem;
+    white-space: normal;
+  }
+
+  .cond-hover-tooltip {
+    position: static;
+    display: none;
+    margin-top: 0.2rem;
+    min-width: auto;
+  }
 }
 
 /*

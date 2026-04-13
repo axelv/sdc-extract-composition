@@ -3,6 +3,7 @@ import type { QuestionnaireIndex } from "../utils/questionnaire-index";
 import { segmentExpressionToHtml } from "../utils/expression-pills";
 import { stripDivWrapper } from "../utils/parse-narrative";
 import { ContextBadge } from "./ContextBadge";
+import { ContextTooltip } from "./ContextTooltip";
 import { injectPills, NarrativeHtml } from "./NarrativeHtml";
 
 interface SectionViewProps {
@@ -40,7 +41,7 @@ function isCondBlock(section: CompositionSection): boolean {
 
 /**
  * Build the condition indicator HTML for inline cond-blocks.
- * Shows a small icon + label, with expression hidden in a <details>.
+ * Shows a badge chip with a CSS hover tooltip revealing the expression.
  */
 function buildCondIndicatorHtml(
   section: CompositionSection,
@@ -51,12 +52,17 @@ function buildCondIndicatorHtml(
   const repeating = isRepeatingContext(ctx);
   const icon = repeating ? "↻" : "⎇";
   const label = repeating ? "per item" : "als";
+  const summaryClass = repeating ? "cond-repeating" : "cond-conditional";
   const exprHtml = segmentExpressionToHtml(ctx, questionnaireIndex);
   return (
-    `<details class="cond-details">` +
-    `<summary class="cond-summary"><span class="cond-icon">${icon}</span><span class="cond-label">${label}</span></summary>` +
-    `<span class="context-badge-resolved" title="${ctx.replace(/"/g, "&quot;")}">${exprHtml}</span>` +
-    `</details>`
+    `<div class="cond-badge-margin">` +
+    `<span class="cond-summary ${summaryClass}" title="${ctx.replace(/"/g, "&quot;")}">` +
+    `<span class="cond-icon">${icon}</span><span class="cond-label">${label}</span>` +
+    `</span>` +
+    `<div class="cond-hover-tooltip">` +
+    `<span class="context-badge-resolved">${exprHtml}</span>` +
+    `</div>` +
+    `</div>`
   );
 }
 
@@ -111,22 +117,23 @@ export function SectionView({
 
   return (
     <div className="section-block" data-depth={depth}>
-      <div className="flex items-center gap-2 flex-wrap">
-        {section.title && (
-          <h3 className="text-sm font-semibold text-gray-900 m-0">
-            {section.title}
-          </h3>
-        )}
-        {showContext && contextExpr && (
-          <details className="cond-details">
-            <summary className="cond-summary">
+      {showContext && contextExpr && (
+        <div className="cond-badge-margin">
+          <ContextTooltip
+            content={<ContextBadge expression={contextExpr} questionnaireIndex={questionnaireIndex} />}
+          >
+            <span className={`cond-summary ${repeating ? 'cond-repeating' : 'cond-conditional'}`}>
               <span className="cond-icon">{repeating ? "↻" : "⎇"}</span>
               <span className="cond-label">{repeating ? "per item" : "als"}</span>
-            </summary>
-            <ContextBadge expression={contextExpr} questionnaireIndex={questionnaireIndex} />
-          </details>
-        )}
-      </div>
+            </span>
+          </ContextTooltip>
+        </div>
+      )}
+      {section.title && (
+        <h3 className="text-sm font-semibold text-gray-900 m-0">
+          {section.title}
+        </h3>
+      )}
 
       {inlinesChildren ? (
         <div
