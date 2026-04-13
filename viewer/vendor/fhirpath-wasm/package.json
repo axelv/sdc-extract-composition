@@ -1,0 +1,22 @@
+{
+  "name": "@tiro-health/fhirpath-wasm",
+  "version": "0.1.0",
+  "description": "FHIRPath parser and SDC expression analyzer compiled to WebAssembly",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Tiro-health/fhirpath-py.git"
+  },
+  "type": "module",
+  "files": [
+    "_rust_bg.wasm",
+    "_rust.js",
+    "_rust.d.ts",
+    "fhirpath_wasm.d.ts"
+  ],
+  "main": "_rust.js",
+  "types": "fhirpath_wasm.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}

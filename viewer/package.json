@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@floating-ui/react": "^0.27.19",
-    "@tiro-health/fhirpath-wasm": "file:../../../fhirpath-py/wasm/pkg",
+    "@tiro-health/fhirpath-wasm": "file:vendor/fhirpath-wasm",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-resizable-panels": "^4.9.0"
