@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alternative 2: Card Containers</title>
+    <style>
+        :root {
+            --bg-expr: #fef3c7;
+            --border-expr: #f59e0b;
+            --text-expr: #92400e;
+            --card-border: #e2e8f0;
+            --card-header-bg: #f8fafc;
+            --condition-bg: #faf5ff;
+            --condition-border: #c4b5fd;
+            --repeat-color: #0284c7;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            line-height: 1.6;
+            color: #1f2937;
+            background: #f1f5f9;
+        }
+        .approach-label {
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            margin-bottom: 2rem;
+            display: inline-block;
+        }
+        .approach-label strong { display: block; font-size: 1rem; }
+
+        /* Document */
+        .document {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        /* Document header */
+        .doc-header {
+            padding: 1.5rem;
+            border-bottom: 2px solid #111;
+        }
+        .doc-header h1 { font-size: 1.4rem; margin-bottom: 0.25rem; }
+        .doc-meta { color: #6b7280; font-size: 0.85rem; }
+
+        /* Section card */
+        .section-card {
+            margin: 1rem;
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        /* Card header: title + badges */
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1rem;
+            background: var(--card-header-bg);
+            border-bottom: 1px solid var(--card-border);
+        }
+        .card-header h2 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            flex: 1;
+        }
+        .badge {
+            font-size: 0.6rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 2px 8px;
+            border-radius: 10px;
+            white-space: nowrap;
+        }
+        .badge.repeat {
+            background: #e0f2fe;
+            color: var(--repeat-color);
+            border: 1px solid #7dd3fc;
+        }
+        .context-badge {
+            font-size: 0.65rem;
+            color: #64748b;
+            font-family: ui-monospace, monospace;
+            background: #f1f5f9;
+            padding: 2px 8px;
+            border-radius: 4px;
+            border: 1px solid #cbd5e1;
+            max-width: 300px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .context-badge:hover {
+            max-width: none;
+            white-space: normal;
+            word-break: break-all;
+        }
+
+        /* Card body */
+        .card-body {
+            padding: 0.75rem 1rem;
+        }
+        .card-body p {
+            margin-bottom: 0.35rem;
+            font-size: 0.9rem;
+        }
+
+        /* Conditional block - indented with colored left border */
+        .conditional {
+            background: var(--condition-bg);
+            border-left: 3px solid var(--condition-border);
+            border-radius: 0 4px 4px 0;
+            padding: 0.4rem 0.75rem;
+            margin: 0.4rem 0;
+            position: relative;
+        }
+        .conditional::before {
+            content: "ALS";
+            position: absolute;
+            top: 0.35rem;
+            right: 0.5rem;
+            font-size: 0.55rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #8b5cf6;
+            opacity: 0.6;
+        }
+        .conditional p { margin-bottom: 0; }
+
+        /* FHIRPath expression */
+        .fhirpath-expr {
+            background: var(--bg-expr);
+            border: 1px solid var(--border-expr);
+            color: var(--text-expr);
+            padding: 0.1rem 0.35rem;
+            border-radius: 3px;
+            font-family: ui-monospace, monospace;
+            font-size: 0.8em;
+        }
+
+        /* DL */
+        dl {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 0.15rem 0.75rem;
+        }
+        dt { font-weight: 600; font-size: 0.9rem; }
+        dd { font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+    <div class="approach-label">
+        <strong>Alternative 2: Card Containers</strong>
+        Each section is a distinct card. Badges (PER ITEM, context) live in the card header bar,
+        completely separated from content. ALS conditions are indented blocks with a colored border.
+    </div>
+
+    <div class="document">
+        <div class="doc-header">
+            <h1>Coloscopie verslag</h1>
+            <div class="doc-meta">Date: 2024-01-01 &middot; Consultation note (T1488-4)</div>
+        </div>
+
+        <!-- Procedure info -->
+        <div class="section-card">
+            <div class="card-header">
+                <h2>Procedure info</h2>
+                <span class="badge repeat">&#x21bb; per item</span>
+                <span class="context-badge" title="%resource.item.where(linkId='procedure-info')">%resource.item.where(linkId='procedure-info')</span>
+            </div>
+            <div class="card-body">
+                <p><strong>Coloscopie uitgevoerd op</strong> <code class="fhirpath-expr">datum procedure</code> <strong>door</strong> <code class="fhirpath-expr">uitvoerende arts</code>.</p>
+                <p>Indicatie: <code class="fhirpath-expr">%r.digestieFHIR</code>, <code class="fhirpath-expr">urgentie</code>, <code class="fhirpath-expr">indicatie</code></p>
+                <div class="conditional">
+                    <p>Pati&euml;nt verwezen via <code class="fhirpath-expr">verwijzend ziekenhuis</code>, <code class="fhirpath-expr">Verwijzende specialist</code>.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sedatie & medicatie -->
+        <div class="section-card">
+            <div class="card-header">
+                <h2>Sedatie &amp; medicatie</h2>
+                <span class="badge repeat">&#x21bb; per item</span>
+                <span class="context-badge">%resource.item.where(linkId='sedatie')</span>
+            </div>
+            <div class="card-body">
+                <div class="conditional">
+                    <p>Onderzoek zonder sedatie.</p>
+                </div>
+                <div class="conditional">
+                    <p>Onderzoek onder procedurale sedatie.</p>
+                </div>
+                <div class="conditional">
+                    <p>Onderzoek onder anesthesie, uitgevoerd door <code class="fhirpath-expr">Anesthesist</code>.</p>
+                </div>
+                <div class="conditional">
+                    <p>Pati&euml;nt onder <code class="fhirpath-expr">kindVerdovingsmiddel</code>.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Colonvoorbereiding -->
+        <div class="section-card">
+            <div class="card-header">
+                <h2>Colonvoorbereiding</h2>
+                <span class="badge repeat">&#x21bb; per item</span>
+                <span class="context-badge">%resource.item.where(linkId='colonvoorbereiding')</span>
+            </div>
+            <div class="card-body">
+                <p><strong>Colonvoorbereiding:</strong> <code class="fhirpath-expr">colonvoorbereiding</code></p>
+                <div class="conditional">
+                    <p>Problemen bij voorbereiding: <code class="fhirpath-expr">Problemen bij voorbereiding</code></p>
+                </div>
+                <p><strong>BBPS:</strong> <code class="fhirpath-expr">Boston Bowel Preparation Scale</code> /9, darmreiniging <code class="fhirpath-expr">darmreiniging</code></p>
+            </div>
+        </div>
+
+        <!-- Insertiediepte & inspectie -->
+        <div class="section-card">
+            <div class="card-header">
+                <h2>Insertiediepte &amp; inspectie</h2>
+                <span class="badge repeat">&#x21bb; per item</span>
+                <span class="context-badge">%resource.item.where(linkId='insertiediepte')</span>
+            </div>
+            <div class="card-body">
+                <p><strong>Insertiediepte:</strong> <code class="fhirpath-expr">Insertiediepte</code>.</p>
+                <div class="conditional">
+                    <p>Caecum niet bereikt omwille van <code class="fhirpath-expr">Reden</code>.</p>
+                </div>
+                <p>Terugtrekdtijd: <code class="fhirpath-expr">terugtrekdtijd</code> min <code class="fhirpath-expr">Terugtrekdtijd</code> sec</p>
+                <p>Retrovisie ascendens: <code class="fhirpath-expr">Retrovisie ascendens</code></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

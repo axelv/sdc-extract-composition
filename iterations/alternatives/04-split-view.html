@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alternative 4: Split View</title>
+    <style>
+        :root {
+            --bg-expr: #fef3c7;
+            --border-expr: #f59e0b;
+            --text-expr: #92400e;
+            --panel-bg: #f8fafc;
+            --condition-stripe: #8b5cf6;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 1100px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            line-height: 1.6;
+            color: #1f2937;
+        }
+        .approach-label {
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            margin-bottom: 2rem;
+            display: inline-block;
+        }
+        .approach-label strong { display: block; font-size: 1rem; }
+
+        /* Split layout */
+        .split-container {
+            display: grid;
+            grid-template-columns: 1fr 260px;
+            gap: 0;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        /* Left: WYSIWYG document */
+        .doc-panel {
+            background: white;
+            padding: 0;
+        }
+        .doc-header {
+            padding: 1.5rem 1.5rem 0.75rem;
+            border-bottom: 2px solid #111;
+            margin: 0 0 0 0;
+        }
+        .doc-header h1 { font-size: 1.4rem; margin-bottom: 0.25rem; }
+        .doc-meta { color: #6b7280; font-size: 0.85rem; }
+
+        .doc-section {
+            padding: 0.75rem 1.5rem;
+            border-bottom: 1px solid #f1f5f9;
+            min-height: 80px;
+        }
+        .doc-section:last-child { border-bottom: none; }
+
+        .doc-section h2 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+            padding-bottom: 0.2rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .doc-section p {
+            margin-bottom: 0.3rem;
+            font-size: 0.9rem;
+        }
+
+        /* Conditional in doc: just a subtle left stripe */
+        .doc-conditional {
+            border-left: 2px solid var(--condition-stripe);
+            padding-left: 0.5rem;
+            margin: 0.3rem 0;
+            opacity: 0.8;
+        }
+        .doc-conditional p { margin-bottom: 0; }
+
+        /* Right: annotation panel */
+        .anno-panel {
+            background: var(--panel-bg);
+            border-left: 1px solid #e2e8f0;
+            padding: 0;
+            font-size: 0.75rem;
+        }
+        .anno-header {
+            padding: 1.5rem 1rem 0.75rem;
+            border-bottom: 2px solid transparent;
+            /* Align with doc header height */
+            min-height: 82px;
+            display: flex;
+            align-items: flex-end;
+        }
+        .anno-header h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #94a3b8;
+            font-weight: 600;
+        }
+
+        .anno-section {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #e2e8f0;
+            min-height: 80px;
+        }
+        .anno-section:last-child { border-bottom: none; }
+
+        .anno-label {
+            font-size: 0.6rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #94a3b8;
+            margin-bottom: 0.2rem;
+        }
+        .anno-value {
+            font-family: ui-monospace, monospace;
+            font-size: 0.65rem;
+            color: #64748b;
+            word-break: break-all;
+            margin-bottom: 0.5rem;
+            padding: 3px 6px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 3px;
+        }
+        .anno-badge {
+            display: inline-block;
+            font-size: 0.6rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            padding: 2px 6px;
+            border-radius: 3px;
+            margin-bottom: 0.3rem;
+        }
+        .anno-badge.repeat {
+            background: #e0f2fe;
+            color: #0284c7;
+        }
+        .anno-condition {
+            font-size: 0.65rem;
+            color: #7c3aed;
+            margin-top: 0.25rem;
+            padding-left: 0.5rem;
+            border-left: 2px solid var(--condition-stripe);
+        }
+        .anno-condition span {
+            display: block;
+            margin-bottom: 0.15rem;
+        }
+
+        /* FHIRPath expression */
+        .fhirpath-expr {
+            background: var(--bg-expr);
+            border: 1px solid var(--border-expr);
+            color: var(--text-expr);
+            padding: 0.1rem 0.35rem;
+            border-radius: 3px;
+            font-family: ui-monospace, monospace;
+            font-size: 0.8em;
+        }
+
+        /* Hover sync: highlight corresponding section */
+        .doc-section:hover, .anno-section:hover {
+            background: rgba(59, 130, 246, 0.04);
+        }
+        /* Pair hover effect via JS would be ideal, simulated with nth-child */
+        .doc-section:nth-child(1):hover ~ .doc-section,
+        .anno-section:nth-child(1):hover ~ .anno-section {
+            background: transparent;
+        }
+    </style>
+</head>
+<body>
+    <div class="approach-label">
+        <strong>Alternative 4: Split View</strong>
+        Left panel is the pure WYSIWYG document. Right panel shows all technical annotations
+        (context, PER ITEM, ALS conditions) aligned to their corresponding sections.
+    </div>
+
+    <div class="split-container">
+        <!-- LEFT: Document -->
+        <div class="doc-panel">
+            <div class="doc-header">
+                <h1>Coloscopie verslag</h1>
+                <div class="doc-meta">Date: 2024-01-01 &middot; Consultation note (T1488-4)</div>
+            </div>
+
+            <div class="doc-section">
+                <h2>Procedure info</h2>
+                <p><strong>Coloscopie uitgevoerd op</strong> <code class="fhirpath-expr">datum procedure</code> <strong>door</strong> <code class="fhirpath-expr">uitvoerende arts</code>.</p>
+                <p>Indicatie: <code class="fhirpath-expr">%r.digestieFHIR</code>, <code class="fhirpath-expr">urgentie</code>, <code class="fhirpath-expr">indicatie</code></p>
+                <div class="doc-conditional">
+                    <p>Pati&euml;nt verwezen via <code class="fhirpath-expr">verwijzend ziekenhuis</code>, <code class="fhirpath-expr">Verwijzende specialist</code>.</p>
+                </div>
+            </div>
+
+            <div class="doc-section">
+                <h2>Sedatie &amp; medicatie</h2>
+                <div class="doc-conditional"><p>Onderzoek zonder sedatie.</p></div>
+                <div class="doc-conditional"><p>Onderzoek onder procedurale sedatie.</p></div>
+                <div class="doc-conditional"><p>Onderzoek onder anesthesie, uitgevoerd door <code class="fhirpath-expr">Anesthesist</code>.</p></div>
+                <div class="doc-conditional"><p>Pati&euml;nt onder <code class="fhirpath-expr">kindVerdovingsmiddel</code>.</p></div>
+            </div>
+
+            <div class="doc-section">
+                <h2>Colonvoorbereiding</h2>
+                <p><strong>Colonvoorbereiding:</strong> <code class="fhirpath-expr">colonvoorbereiding</code></p>
+                <div class="doc-conditional">
+                    <p>Problemen bij voorbereiding: <code class="fhirpath-expr">Problemen bij voorbereiding</code></p>
+                </div>
+                <p><strong>BBPS:</strong> <code class="fhirpath-expr">Boston Bowel Preparation Scale</code> /9, darmreiniging <code class="fhirpath-expr">darmreiniging</code></p>
+            </div>
+
+            <div class="doc-section">
+                <h2>Insertiediepte &amp; inspectie</h2>
+                <p><strong>Insertiediepte:</strong> <code class="fhirpath-expr">Insertiediepte</code>.</p>
+                <div class="doc-conditional">
+                    <p>Caecum niet bereikt omwille van <code class="fhirpath-expr">Reden</code>.</p>
+                </div>
+                <p>Terugtrekdtijd: <code class="fhirpath-expr">terugtrekdtijd</code> min <code class="fhirpath-expr">Terugtrekdtijd</code> sec</p>
+                <p>Retrovisie ascendens: <code class="fhirpath-expr">Retrovisie ascendens</code></p>
+            </div>
+        </div>
+
+        <!-- RIGHT: Annotations -->
+        <div class="anno-panel">
+            <div class="anno-header">
+                <h3>Template Annotations</h3>
+            </div>
+
+            <div class="anno-section">
+                <span class="anno-badge repeat">&#x21bb; per item</span>
+                <div class="anno-label">Context</div>
+                <div class="anno-value">%resource.item.where(linkId='procedure-info')</div>
+                <div class="anno-label">Conditions</div>
+                <div class="anno-condition">
+                    <span>&#x2022; if: verwezen = true</span>
+                </div>
+            </div>
+
+            <div class="anno-section">
+                <span class="anno-badge repeat">&#x21bb; per item</span>
+                <div class="anno-label">Context</div>
+                <div class="anno-value">%resource.item.where(linkId='sedatie')</div>
+                <div class="anno-label">Conditions</div>
+                <div class="anno-condition">
+                    <span>&#x2022; if: sedatie-type = geen</span>
+                    <span>&#x2022; if: sedatie-type = proceduraal</span>
+                    <span>&#x2022; if: sedatie-type = anesthesie</span>
+                    <span>&#x2022; if: sedatie-type = kind</span>
+                </div>
+            </div>
+
+            <div class="anno-section">
+                <span class="anno-badge repeat">&#x21bb; per item</span>
+                <div class="anno-label">Context</div>
+                <div class="anno-value">%resource.item.where(linkId='colonvoorbereiding')</div>
+                <div class="anno-label">Conditions</div>
+                <div class="anno-condition">
+                    <span>&#x2022; if: problemen = true</span>
+                </div>
+            </div>
+
+            <div class="anno-section">
+                <span class="anno-badge repeat">&#x21bb; per item</span>
+                <div class="anno-label">Context</div>
+                <div class="anno-value">%resource.item.where(linkId='insertiediepte')</div>
+                <div class="anno-label">Conditions</div>
+                <div class="anno-condition">
+                    <span>&#x2022; if: caecum niet bereikt</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
