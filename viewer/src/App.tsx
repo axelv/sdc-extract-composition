@@ -44,7 +44,7 @@ function App() {
   }, []);
 
   // Debounced render when QR or composition changes
-  const renderTimeoutRef = useRef<ReturnType<typeof setTimeout>>();
+  const renderTimeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   useEffect(() => {
     if (!composition || !questionnaireResponse) return;
 

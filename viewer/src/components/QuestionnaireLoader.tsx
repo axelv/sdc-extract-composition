@@ -133,13 +133,10 @@ export function QuestionnaireLoader({ onLoad }: QuestionnaireLoaderProps) {
       reader.onload = () => {
         try {
           const parsed = JSON.parse(reader.result as string);
-          if (parsed.resourceType !== "Questionnaire") {
-            setPasteError("JSON must have resourceType: Questionnaire");
-            return;
-          }
+          if (parsed.resourceType !== "Questionnaire") return;
           onLoad(parsed as Questionnaire);
         } catch {
-          setPasteError("Invalid JSON file");
+          // ignore invalid JSON
         }
       };
       reader.readAsText(file);
