@@ -1,5 +1,14 @@
 {
   "buildCommand": "cd viewer && npm run build",
   "outputDirectory": "viewer/dist",
-  "installCommand": "cd viewer && npm install"
+  "installCommand": "cd viewer && npm install",
+  "functions": {
+    "api/index.py": {
+      "runtime": "@vercel/python@6.30.0",
+      "maxDuration": 30
+    }
+  },
+  "rewrites": [
+    { "source": "/api/:path*", "destination": "/api" }
+  ]
 }
