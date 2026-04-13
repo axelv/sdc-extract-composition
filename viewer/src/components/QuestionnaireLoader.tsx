@@ -111,8 +111,6 @@ function IterationDropdown({
 }
 
 export function QuestionnaireLoader({ onLoad }: QuestionnaireLoaderProps) {
-  const [pasteValue, setPasteValue] = useState("");
-  const [pasteError, setPasteError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [initialSelection, setInitialSelection] = useState<string>();
 
@@ -126,21 +124,6 @@ export function QuestionnaireLoader({ onLoad }: QuestionnaireLoaderProps) {
       onLoad(match.data);
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const handlePaste = useCallback(() => {
-    setPasteError(null);
-    try {
-      const parsed = JSON.parse(pasteValue);
-      if (parsed.resourceType !== "Questionnaire") {
-        setPasteError("JSON must have resourceType: Questionnaire");
-        return;
-      }
-      onLoad(parsed as Questionnaire);
-      setPasteValue("");
-    } catch {
-      setPasteError("Invalid JSON");
-    }
-  }, [pasteValue, onLoad]);
 
   const handleFileUpload = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -165,49 +148,22 @@ export function QuestionnaireLoader({ onLoad }: QuestionnaireLoaderProps) {
   );
 
   return (
-    <div className="space-y-3">
-      <div className="flex items-center gap-3">
-        <IterationDropdown onSelect={onLoad} initialSelection={initialSelection} />
+    <div className="flex items-center gap-3">
+      <IterationDropdown onSelect={onLoad} initialSelection={initialSelection} />
 
-        <button
-          onClick={() => fileInputRef.current?.click()}
-          className="border border-gray-300 rounded px-3 py-1.5 text-sm bg-white hover:bg-gray-50"
-        >
-          Upload JSON
-        </button>
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept=".json"
-          onChange={handleFileUpload}
-          className="hidden"
-        />
-      </div>
-
-      <details className="text-sm">
-        <summary className="cursor-pointer text-gray-500 hover:text-gray-700">
-          Paste JSON…
-        </summary>
-        <div className="mt-2 space-y-2">
-          <textarea
-            value={pasteValue}
-            onChange={(e) => setPasteValue(e.target.value)}
-            placeholder="Paste Questionnaire JSON here…"
-            rows={4}
-            className="w-full border border-gray-300 rounded p-2 font-mono text-xs"
-          />
-          <button
-            onClick={handlePaste}
-            disabled={!pasteValue.trim()}
-            className="border border-gray-300 rounded px-3 py-1 text-sm bg-white hover:bg-gray-50 disabled:opacity-50"
-          >
-            Load
-          </button>
-          {pasteError && (
-            <p className="text-red-600 text-xs">{pasteError}</p>
-          )}
-        </div>
-      </details>
+      <button
+        onClick={() => fileInputRef.current?.click()}
+        className="border border-gray-300 rounded px-3 py-1.5 text-sm bg-white hover:bg-gray-50"
+      >
+        Upload JSON
+      </button>
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept=".json"
+        onChange={handleFileUpload}
+        className="hidden"
+      />
     </div>
   );
 }

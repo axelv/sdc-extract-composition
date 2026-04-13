@@ -26,4 +26,11 @@ for (const dir of readdirSync(iterationsSource, { withFileTypes: true })) {
   mkdirSync(destDir, { recursive: true });
   copyFileSync(src, join(destDir, "questionnaire-extract.json"));
   console.log(`Copied ${dir.name}/questionnaire-extract.json`);
+
+  // Also copy questionnaire-response.json if present
+  const qrSrc = join(iterationsSource, dir.name, "questionnaire-response.json");
+  if (existsSync(qrSrc)) {
+    copyFileSync(qrSrc, join(destDir, "questionnaire-response.json"));
+    console.log(`Copied ${dir.name}/questionnaire-response.json`);
+  }
 }

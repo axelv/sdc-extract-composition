@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
-html, body {
-  overflow: auto;
-  height: auto;
+html, body, #root {
+  height: 100%;
+  overflow: hidden;
 }
 
 /*
@@ -30,6 +30,49 @@ html, body {
 .panel-resize-handle:hover::after,
 .panel-resize-handle[data-resize-handle-active]::after {
   background: #9ca3af;
+}
+
+/*
+ * Panel containers
+ */
+.panel-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: white;
+  border-right: 1px solid #e5e7eb;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid #e5e7eb;
+  background: #f9fafb;
+  flex-shrink: 0;
+}
+
+.panel-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #374151;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.panel-body {
+  flex: 1;
+  overflow: auto;
+  padding: 0.75rem;
+}
+
+.tiro-form-filler-container {
+  min-height: 100%;
+}
+
+.tiro-form-filler-container tiro-form-filler {
+  display: block;
 }
 
 /*

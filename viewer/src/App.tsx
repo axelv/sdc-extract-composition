@@ -1,20 +1,30 @@
-import { useMemo, useState } from "react";
-import { Panel, Group as PanelGroup, Separator as PanelResizeHandle } from "react-resizable-panels";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  Panel,
+  Group as PanelGroup,
+  Separator as PanelResizeHandle,
+} from "react-resizable-panels";
 import type { Questionnaire } from "./types";
 import { extractComposition } from "./utils/extract-composition";
 import { buildQuestionnaireIndex } from "./utils/questionnaire-index";
+import { renderComposition } from "./utils/render-api";
 import { QuestionnaireLoader } from "./components/QuestionnaireLoader";
-import { CompositionView } from "./components/CompositionView";
-import { RawCompositionView } from "./components/RawCompositionView";
-
-type ViewMode = "rendered" | "raw" | "split";
+import { QuestionnaireFormPanel } from "./components/QuestionnaireFormPanel";
+import { CompositionTemplatePanel } from "./components/CompositionTemplatePanel";
+import { RenderedOutputPanel } from "./components/RenderedOutputPanel";
 
 function App() {
   const [questionnaire, setQuestionnaire] = useState<Questionnaire | null>(
     null
   );
-  const [viewMode, setViewMode] = useState<ViewMode>("rendered");
   const [showContext, setShowContext] = useState(true);
+  const [questionnaireResponse, setQuestionnaireResponse] = useState<Record<
+    string,
+    unknown
+  > | null>(null);
+  const [renderedHtml, setRenderedHtml] = useState<string | null>(null);
+  const [renderErrors, setRenderErrors] = useState<string[]>([]);
+  const [renderLoading, setRenderLoading] = useState(false);
 
   const composition = questionnaire
     ? extractComposition(questionnaire)
@@ -25,87 +35,98 @@ function App() {
     [questionnaire]
   );
 
+  // Clear QR when questionnaire changes
+  const handleQuestionnaireLoad = useCallback((q: Questionnaire) => {
+    setQuestionnaire(q);
+    setQuestionnaireResponse(null);
+    setRenderedHtml(null);
+    setRenderErrors([]);
+  }, []);
+
+  // Debounced render when QR or composition changes
+  const renderTimeoutRef = useRef<ReturnType<typeof setTimeout>>();
+  useEffect(() => {
+    if (!composition || !questionnaireResponse) return;
+
+    clearTimeout(renderTimeoutRef.current);
+    renderTimeoutRef.current = setTimeout(async () => {
+      setRenderLoading(true);
+      try {
+        const result = await renderComposition(
+          composition as unknown as Record<string, unknown>,
+          questionnaireResponse
+        );
+        setRenderedHtml(result.html);
+        setRenderErrors(result.errors);
+      } catch (err) {
+        setRenderErrors([
+          `Network error: ${err instanceof Error ? err.message : String(err)}`,
+        ]);
+      } finally {
+        setRenderLoading(false);
+      }
+    }, 300);
+
+    return () => clearTimeout(renderTimeoutRef.current);
+  }, [composition, questionnaireResponse]);
+
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className={viewMode === "split" ? "max-w-[1600px] mx-auto px-4 py-8" : "max-w-4xl mx-auto px-4 py-8"}>
-        <header className="mb-6 flex items-start justify-between">
-          <div>
-            <h1 className="text-xl font-bold text-gray-900 mb-1">
-              Composition Template Viewer
-            </h1>
-            <p className="text-sm text-gray-500">
-              Inspect SDC Composition templates with FHIRPath expression
-              highlighting
-            </p>
-          </div>
-          {composition && (
-            <div className="flex items-center gap-3">
-              <label className="flex items-center gap-1.5 text-xs text-gray-500 cursor-pointer select-none">
-                <input
-                  type="checkbox"
-                  checked={showContext}
-                  onChange={(e) => setShowContext(e.target.checked)}
-                  className="rounded border-gray-300"
-                />
-                Context
-              </label>
-              <div className="flex gap-1 bg-gray-100 rounded-lg p-0.5">
-                {(["rendered", "split", "raw"] as const).map((mode) => (
-                  <button
-                    key={mode}
-                    onClick={() => setViewMode(mode)}
-                    className={`px-3 py-1 text-xs rounded-md transition-colors ${
-                      viewMode === mode
-                        ? "bg-white shadow-sm text-gray-900 font-medium"
-                        : "text-gray-500 hover:text-gray-700"
-                    }`}
-                  >
-                    {mode === "rendered" ? "Rendered" : mode === "raw" ? "Raw" : "Split"}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-        </header>
-
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
-          <QuestionnaireLoader onLoad={setQuestionnaire} />
+    <div className="h-screen flex flex-col bg-gray-50">
+      {/* Header */}
+      <header className="flex items-center justify-between px-4 py-2 border-b border-gray-200 bg-white shrink-0">
+        <div className="flex items-center gap-4">
+          <h1 className="text-sm font-semibold text-gray-900">
+            Composition Template Viewer
+          </h1>
+          <QuestionnaireLoader onLoad={handleQuestionnaireLoad} />
         </div>
-
-        {questionnaire && !composition && (
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-sm text-yellow-800">
-            No Composition found in Questionnaire.contained
-          </div>
+        {composition && (
+          <label className="flex items-center gap-1.5 text-xs text-gray-500 cursor-pointer select-none">
+            <input
+              type="checkbox"
+              checked={showContext}
+              onChange={(e) => setShowContext(e.target.checked)}
+              className="rounded border-gray-300"
+            />
+            Context
+          </label>
         )}
+      </header>
 
-        {composition && viewMode === "split" && (
-          <PanelGroup orientation="horizontal">
-            <Panel defaultSize={60} minSize={20}>
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 overflow-auto h-[calc(100vh-14rem)]">
-                <CompositionView composition={composition} questionnaireIndex={questionnaireIndex} showContext={showContext} />
-              </div>
-            </Panel>
-            <PanelResizeHandle className="panel-resize-handle" />
-            <Panel defaultSize={40} minSize={10} collapsible>
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 overflow-auto h-[calc(100vh-14rem)]">
-                <RawCompositionView composition={composition} />
-              </div>
-            </Panel>
-          </PanelGroup>
-        )}
+      {/* Panels */}
+      {questionnaire && !composition && (
+        <div className="m-4 bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-sm text-yellow-800">
+          No Composition found in Questionnaire.contained
+        </div>
+      )}
 
-        {composition && viewMode === "rendered" && (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 overflow-auto">
-            <CompositionView composition={composition} questionnaireIndex={questionnaireIndex} showContext={showContext} />
-          </div>
-        )}
-
-        {composition && viewMode === "raw" && (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 overflow-auto">
-            <RawCompositionView composition={composition} />
-          </div>
-        )}
-      </div>
+      {questionnaire && composition && (
+        <PanelGroup orientation="horizontal" className="flex-1">
+          <Panel defaultSize={30} minSize={15}>
+            <QuestionnaireFormPanel
+              questionnaire={questionnaire}
+              onResponse={setQuestionnaireResponse}
+              hasResponse={questionnaireResponse !== null}
+            />
+          </Panel>
+          <PanelResizeHandle className="panel-resize-handle" />
+          <Panel defaultSize={35} minSize={15}>
+            <CompositionTemplatePanel
+              composition={composition}
+              questionnaireIndex={questionnaireIndex}
+              showContext={showContext}
+            />
+          </Panel>
+          <PanelResizeHandle className="panel-resize-handle" />
+          <Panel defaultSize={35} minSize={15}>
+            <RenderedOutputPanel
+              html={renderedHtml}
+              errors={renderErrors}
+              loading={renderLoading}
+            />
+          </Panel>
+        </PanelGroup>
+      )}
     </div>
   );
 }
