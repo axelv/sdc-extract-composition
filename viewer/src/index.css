@@ -228,11 +228,20 @@ html, body, #root {
 }
 
 /*
- * Badge positioned in the left margin (outside the border).
+ * Badge positioned in the left margin, right-aligned to the gutter edge.
+ * Uses --depth-offset (set via inline style on .section-block) to compensate
+ * for nesting so all badges align to the same vertical line.
  */
-.cond-badge-margin {
+.section-block > .cond-badge-margin {
   position: absolute;
-  right: calc(100% + 0.4rem);
+  right: calc(100% + 0.4rem + var(--depth-offset, 0px));
+  top: 0;
+  white-space: nowrap;
+}
+
+.cond-block > .cond-badge-margin {
+  position: absolute;
+  right: calc(100% + 0.4rem + var(--depth-offset, 0px) + 0.7rem);
   top: 0;
   white-space: nowrap;
 }

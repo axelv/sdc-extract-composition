@@ -233,7 +233,7 @@ export function SectionView({
   const editable = !!onSectionHtmlChange;
 
   return (
-    <div className="section-block" data-depth={depth}>
+    <div className="section-block" data-depth={depth} style={{ '--depth-offset': `${depth * 0.7}rem` } as React.CSSProperties}>
       {showContext && contextExpr && (
         <div className="cond-badge-margin">
           <ContextTooltip
