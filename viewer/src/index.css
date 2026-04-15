@@ -241,7 +241,7 @@ html, body, #root {
 
 .cond-block > .cond-badge-margin {
   position: absolute;
-  right: calc(100% + 0.4rem + var(--depth-offset, 0px) + 0.7rem);
+  right: calc(100% + 0.4rem + var(--depth-offset, 0px) + 0.7rem + 2px);
   top: 0;
   white-space: nowrap;
 }
