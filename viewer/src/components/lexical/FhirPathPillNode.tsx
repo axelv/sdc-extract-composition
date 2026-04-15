@@ -9,6 +9,7 @@ import type {
   Spread,
 } from "lexical";
 import { $applyNodeReplacement, DecoratorNode } from "lexical";
+import type { ReactNode } from "react";
 import { FhirPathPillComponent } from "./FhirPathPillComponent";
 
 export type SerializedFhirPathPillNode = Spread<
@@ -16,7 +17,7 @@ export type SerializedFhirPathPillNode = Spread<
   SerializedLexicalNode
 >;
 
-export class FhirPathPillNode extends DecoratorNode<JSX.Element> {
+export class FhirPathPillNode extends DecoratorNode<ReactNode> {
   __expression: string;
 
   static getType(): string {
@@ -110,7 +111,7 @@ export class FhirPathPillNode extends DecoratorNode<JSX.Element> {
 
   // -- Decorator --
 
-  decorate(_editor: LexicalEditor, _config: EditorConfig): JSX.Element {
+  decorate(_editor: LexicalEditor, _config: EditorConfig): ReactNode {
     return (
       <FhirPathPillComponent
         expression={this.__expression}
