@@ -8,7 +8,7 @@ export default defineConfig({
   },
   server: {
     fs: {
-      allow: ["..", "/Users/axelvanraes/dev/fhirpath-py/pkg"],
+      allow: [".."],
     },
     proxy: {
       "/api": {
