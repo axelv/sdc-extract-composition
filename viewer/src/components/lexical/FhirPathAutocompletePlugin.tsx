@@ -13,8 +13,8 @@ import {
   type LexicalEditor,
   type TextNode,
 } from "lexical";
-import type { QuestionnaireIndex } from "fhirpath-rs";
 import { $createFhirPathPillNode } from "./FhirPathPillNode";
+import { useWasmQuestionnaireIndex } from "./WasmQuestionnaireIndexContext";
 
 interface CompletionItem {
   label: string;
@@ -51,15 +51,14 @@ function fhirPathTriggerFn(
 }
 
 interface FhirPathAutocompletePluginProps {
-  wasmQuestionnaireIndex?: QuestionnaireIndex | null;
   contextExpression?: string | null;
 }
 
 export function FhirPathAutocompletePlugin({
-  wasmQuestionnaireIndex,
   contextExpression,
 }: FhirPathAutocompletePluginProps) {
   const [editor] = useLexicalComposerContext();
+  const wasmQuestionnaireIndex = useWasmQuestionnaireIndex();
   const [queryString, setQueryString] = useState<string | null>(null);
 
   const allCompletions = useMemo<CompletionItem[]>(() => {

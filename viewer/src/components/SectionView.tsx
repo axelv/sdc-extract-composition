@@ -1,5 +1,4 @@
 import { useState } from "react";
-import type { QuestionnaireIndex as WasmQuestionnaireIndex } from "fhirpath-rs";
 import type { CompositionSection } from "../types";
 import type { QuestionnaireIndex } from "../utils/questionnaire-index";
 import { segmentExpressionToHtml } from "../utils/expression-pills";
@@ -14,11 +13,12 @@ interface SectionViewProps {
   section: CompositionSection;
   depth?: number;
   questionnaireIndex?: QuestionnaireIndex;
-  wasmQuestionnaireIndex?: WasmQuestionnaireIndex | null;
   showContext?: boolean;
   sectionPath?: number[];
   onSectionHtmlChange?: (sectionPath: number[], newDivHtml: string) => void;
   onContextExpressionChange?: (sectionPath: number[], newExpression: string) => void;
+  onAddSection?: (parentPath: number[]) => void;
+  onRemoveSection?: (sectionPath: number[]) => void;
 }
 
 const TEMPLATE_EXTRACT_CONTEXT_URL =
@@ -133,24 +133,26 @@ function SectionContentWithChildren({
   section,
   depth,
   questionnaireIndex,
-  wasmQuestionnaireIndex,
   showContext,
   sectionPath,
   editable,
   onNarrativeClick,
   onSectionHtmlChange,
   onContextExpressionChange,
+  onAddSection,
+  onRemoveSection,
 }: {
   section: CompositionSection;
   depth: number;
   questionnaireIndex?: QuestionnaireIndex;
-  wasmQuestionnaireIndex?: WasmQuestionnaireIndex | null;
   showContext: boolean;
   sectionPath: number[];
   editable: boolean;
   onNarrativeClick: () => void;
   onSectionHtmlChange?: (sectionPath: number[], newDivHtml: string) => void;
   onContextExpressionChange?: (sectionPath: number[], newExpression: string) => void;
+  onAddSection?: (parentPath: number[]) => void;
+  onRemoveSection?: (sectionPath: number[]) => void;
 }) {
   const divHtml = section.text?.div;
   const hasPlaceholder = hasSectionsPlaceholder(section);
@@ -163,13 +165,25 @@ function SectionContentWithChildren({
       section={child}
       depth={depth + 1}
       questionnaireIndex={questionnaireIndex}
-      wasmQuestionnaireIndex={wasmQuestionnaireIndex}
+
       showContext={showContext}
       sectionPath={[...sectionPath, i]}
       onSectionHtmlChange={onSectionHtmlChange}
       onContextExpressionChange={onContextExpressionChange}
+      onAddSection={onAddSection}
+      onRemoveSection={onRemoveSection}
     />
   ));
+
+  const addChildButton = onAddSection && (
+    <button
+      className="section-add-btn section-add-btn-nested"
+      onClick={() => onAddSection(sectionPath)}
+      title="Add child section"
+    >
+      + Add subsection
+    </button>
+  );
 
   // No placeholder — simple case
   if (!hasPlaceholder) {
@@ -183,13 +197,14 @@ function SectionContentWithChildren({
           />
         )}
         {children}
+        {addChildButton}
       </>
     );
   }
 
   // Container-only (text.div is just <!-- sections -->) — skip parent text, render children directly
   if (isContainerOnly) {
-    return <>{children}</>;
+    return <>{children}{addChildButton}</>;
   }
 
   // Mixed content: split around <!-- sections --> and interleave
@@ -208,6 +223,7 @@ function SectionContentWithChildren({
         />
       )}
       {children}
+      {addChildButton}
       {afterDiv && (
         <NarrativeHtml
           divHtml={afterDiv}
@@ -223,11 +239,12 @@ export function SectionView({
   section,
   depth = 0,
   questionnaireIndex,
-  wasmQuestionnaireIndex,
   showContext = true,
   sectionPath = [],
   onSectionHtmlChange,
   onContextExpressionChange,
+  onAddSection,
+  onRemoveSection,
 }: SectionViewProps) {
   const contextExpr = getContextExpression(section);
   const repeating = isRepeatingContext(contextExpr);
@@ -239,7 +256,7 @@ export function SectionView({
   const editable = !!onSectionHtmlChange;
 
   return (
-    <div className="section-block" data-depth={depth} style={{ '--depth-offset': `${depth * 0.7}rem` } as React.CSSProperties}>
+    <div className="section-block" data-depth={depth} style={{ '--depth-offset': `calc(${depth * 0.7}rem + ${depth * 2}px)` } as React.CSSProperties}>
       {showContext && contextExpr && (
         <div className="cond-badge-margin">
           <ContextTooltip
@@ -256,9 +273,31 @@ export function SectionView({
         </div>
       )}
       {section.title && (
-        <h3 className="text-sm font-semibold text-gray-900 m-0">
-          {section.title}
-        </h3>
+        <div className="section-header">
+          <h3 className="text-sm font-semibold text-gray-900 m-0">
+            {section.title}
+          </h3>
+          {onRemoveSection && (
+            <button
+              className="section-remove-btn"
+              onClick={(e) => { e.stopPropagation(); onRemoveSection(sectionPath); }}
+              title="Remove section"
+            >
+              ×
+            </button>
+          )}
+        </div>
+      )}
+      {!section.title && onRemoveSection && (
+        <div className="section-header section-header-untitled">
+          <button
+            className="section-remove-btn"
+            onClick={(e) => { e.stopPropagation(); onRemoveSection(sectionPath); }}
+            title="Remove section"
+          >
+            ×
+          </button>
+        </div>
       )}
 
       {inlinesChildren ? (
@@ -275,13 +314,15 @@ export function SectionView({
           section={section}
           depth={depth}
           questionnaireIndex={questionnaireIndex}
-          wasmQuestionnaireIndex={wasmQuestionnaireIndex}
+    
           showContext={showContext}
           sectionPath={sectionPath}
           editable={editable}
           onNarrativeClick={() => setNarrativeModalOpen(true)}
           onSectionHtmlChange={onSectionHtmlChange}
           onContextExpressionChange={onContextExpressionChange}
+          onAddSection={onAddSection}
+          onRemoveSection={onRemoveSection}
         />
       )}
 
@@ -292,7 +333,7 @@ export function SectionView({
           onClose={() => setNarrativeModalOpen(false)}
           divHtml={section.text.div}
           questionnaireIndex={questionnaireIndex}
-          wasmQuestionnaireIndex={wasmQuestionnaireIndex}
+    
           contextExpression={contextExpr}
           onSave={(html) => onSectionHtmlChange?.(sectionPath, html)}
         />

@@ -14,6 +14,7 @@ import { QuestionnaireLoader } from "./components/QuestionnaireLoader";
 import { QuestionnaireFormPanel } from "./components/QuestionnaireFormPanel";
 import { CompositionTemplatePanel } from "./components/CompositionTemplatePanel";
 import { RenderedOutputPanel } from "./components/RenderedOutputPanel";
+import { WasmQuestionnaireIndexProvider } from "./components/lexical/WasmQuestionnaireIndexContext";
 
 function App() {
   const [questionnaire, setQuestionnaire] = useState<Questionnaire | null>(
@@ -109,6 +110,52 @@ function App() {
     []
   );
 
+  const handleAddSection = useCallback(
+    (parentPath: number[]) => {
+      setComposition((prev) => {
+        if (!prev) return prev;
+        const updated = structuredClone(prev);
+        const newSection = {
+          title: "New Section",
+          text: {
+            status: "generated",
+            div: '<div xmlns="http://www.w3.org/1999/xhtml"></div>',
+          },
+        };
+        if (parentPath.length === 0) {
+          updated.section = [...(updated.section ?? []), newSection];
+        } else {
+          const parent = navigateToSection(updated, parentPath);
+          if (parent) {
+            parent.section = [...(parent.section ?? []), newSection];
+          }
+        }
+        return updated;
+      });
+    },
+    []
+  );
+
+  const handleRemoveSection = useCallback(
+    (sectionPath: number[]) => {
+      if (sectionPath.length === 0) return;
+      setComposition((prev) => {
+        if (!prev) return prev;
+        const updated = structuredClone(prev);
+        const index = sectionPath[sectionPath.length - 1];
+        if (sectionPath.length === 1) {
+          updated.section?.splice(index, 1);
+        } else {
+          const parentPath = sectionPath.slice(0, -1);
+          const parent = navigateToSection(updated, parentPath);
+          parent?.section?.splice(index, 1);
+        }
+        return updated;
+      });
+    },
+    []
+  );
+
   // Debounced render when QR or composition changes
   const renderTimeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   useEffect(() => {
@@ -167,34 +214,37 @@ function App() {
       )}
 
       {questionnaire && composition && (
-        <PanelGroup orientation="horizontal" className="flex-1">
-          <Panel defaultSize={30} minSize={15}>
-            <QuestionnaireFormPanel
-              questionnaire={questionnaire}
-              onResponse={setQuestionnaireResponse}
-              hasResponse={questionnaireResponse !== null}
-            />
-          </Panel>
-          <PanelResizeHandle className="panel-resize-handle" />
-          <Panel defaultSize={35} minSize={15}>
-            <CompositionTemplatePanel
-              composition={composition}
-              questionnaireIndex={questionnaireIndex}
-              wasmQuestionnaireIndex={wasmQuestionnaireIndex}
-              showContext={showContext}
-              onSectionHtmlChange={handleSectionHtmlChange}
-              onContextExpressionChange={handleContextExpressionChange}
-            />
-          </Panel>
-          <PanelResizeHandle className="panel-resize-handle" />
-          <Panel defaultSize={35} minSize={15}>
-            <RenderedOutputPanel
-              html={renderedHtml}
-              errors={renderErrors}
-              loading={renderLoading}
-            />
-          </Panel>
-        </PanelGroup>
+        <WasmQuestionnaireIndexProvider value={wasmQuestionnaireIndex}>
+          <PanelGroup orientation="horizontal" className="flex-1">
+            <Panel defaultSize={30} minSize={15}>
+              <QuestionnaireFormPanel
+                questionnaire={questionnaire}
+                onResponse={setQuestionnaireResponse}
+                hasResponse={questionnaireResponse !== null}
+              />
+            </Panel>
+            <PanelResizeHandle className="panel-resize-handle" />
+            <Panel defaultSize={35} minSize={15}>
+              <CompositionTemplatePanel
+                composition={composition}
+                questionnaireIndex={questionnaireIndex}
+                showContext={showContext}
+                onSectionHtmlChange={handleSectionHtmlChange}
+                onContextExpressionChange={handleContextExpressionChange}
+                onAddSection={handleAddSection}
+                onRemoveSection={handleRemoveSection}
+              />
+            </Panel>
+            <PanelResizeHandle className="panel-resize-handle" />
+            <Panel defaultSize={35} minSize={15}>
+              <RenderedOutputPanel
+                html={renderedHtml}
+                errors={renderErrors}
+                loading={renderLoading}
+              />
+            </Panel>
+          </PanelGroup>
+        </WasmQuestionnaireIndexProvider>
       )}
     </div>
   );

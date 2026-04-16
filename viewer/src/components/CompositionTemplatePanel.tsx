@@ -1,5 +1,4 @@
 import { useCallback, useState } from "react";
-import type { QuestionnaireIndex as WasmQuestionnaireIndex } from "fhirpath-rs";
 import type { Composition } from "../types";
 import type { QuestionnaireIndex } from "../utils/questionnaire-index";
 import { CompositionView } from "./CompositionView";
@@ -10,10 +9,11 @@ type Tab = "template" | "structure";
 interface CompositionTemplatePanelProps {
   composition: Composition;
   questionnaireIndex?: QuestionnaireIndex;
-  wasmQuestionnaireIndex?: WasmQuestionnaireIndex | null;
   showContext: boolean;
   onSectionHtmlChange?: (sectionPath: number[], newDivHtml: string) => void;
   onContextExpressionChange?: (sectionPath: number[], newExpression: string) => void;
+  onAddSection?: (parentPath: number[]) => void;
+  onRemoveSection?: (sectionPath: number[]) => void;
 }
 
 function downloadJson(data: unknown, filename: string) {
@@ -31,10 +31,11 @@ function downloadJson(data: unknown, filename: string) {
 export function CompositionTemplatePanel({
   composition,
   questionnaireIndex,
-  wasmQuestionnaireIndex,
   showContext,
   onSectionHtmlChange,
   onContextExpressionChange,
+  onAddSection,
+  onRemoveSection,
 }: CompositionTemplatePanelProps) {
   const [tab, setTab] = useState<Tab>("template");
 
@@ -77,10 +78,11 @@ export function CompositionTemplatePanel({
           <CompositionView
             composition={composition}
             questionnaireIndex={questionnaireIndex}
-            wasmQuestionnaireIndex={wasmQuestionnaireIndex}
             showContext={showContext}
             onSectionHtmlChange={onSectionHtmlChange}
             onContextExpressionChange={onContextExpressionChange}
+            onAddSection={onAddSection}
+            onRemoveSection={onRemoveSection}
           />
         ) : (
           <RawCompositionView composition={composition} />

@@ -8,7 +8,6 @@ import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
 import { HeadingNode } from "@lexical/rich-text";
 import { $generateHtmlFromNodes } from "@lexical/html";
 import type { LexicalEditor } from "lexical";
-import type { QuestionnaireIndex as WasmQuestionnaireIndex } from "fhirpath-rs";
 import type { QuestionnaireIndex } from "../../utils/questionnaire-index";
 import { Modal } from "../Modal";
 import { FhirPathPillNode } from "./FhirPathPillNode";
@@ -23,7 +22,6 @@ interface NarrativeEditorModalProps {
   onClose: () => void;
   divHtml: string;
   questionnaireIndex?: QuestionnaireIndex;
-  wasmQuestionnaireIndex?: WasmQuestionnaireIndex | null;
   contextExpression?: string | null;
   onSave: (newDivHtml: string) => void;
 }
@@ -52,7 +50,6 @@ export function NarrativeEditorModal({
   onClose,
   divHtml,
   questionnaireIndex,
-  wasmQuestionnaireIndex,
   contextExpression,
   onSave,
 }: NarrativeEditorModalProps) {
@@ -86,7 +83,6 @@ export function NarrativeEditorModal({
             <HistoryPlugin />
             <HtmlImportPlugin divHtml={divHtml} />
             <FhirPathAutocompletePlugin
-              wasmQuestionnaireIndex={wasmQuestionnaireIndex}
               contextExpression={contextExpression}
             />
             <EditorRefPlugin editorRef={editorRef} />

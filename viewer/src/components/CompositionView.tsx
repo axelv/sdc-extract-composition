@@ -1,4 +1,3 @@
-import type { QuestionnaireIndex as WasmQuestionnaireIndex } from "fhirpath-rs";
 import type { Composition } from "../types";
 import type { QuestionnaireIndex } from "../utils/questionnaire-index";
 import { FhirPathPill } from "./FhirPathPill";
@@ -7,10 +6,11 @@ import { SectionView } from "./SectionView";
 interface CompositionViewProps {
   composition: Composition;
   questionnaireIndex?: QuestionnaireIndex;
-  wasmQuestionnaireIndex?: WasmQuestionnaireIndex | null;
   showContext?: boolean;
   onSectionHtmlChange?: (sectionPath: number[], newDivHtml: string) => void;
   onContextExpressionChange?: (sectionPath: number[], newExpression: string) => void;
+  onAddSection?: (parentPath: number[]) => void;
+  onRemoveSection?: (sectionPath: number[]) => void;
 }
 
 const TEMPLATE_EXTRACT_VALUE_URL =
@@ -25,7 +25,7 @@ function getDateExpression(composition: Composition): string | null {
   return match ? match[1].trim() : ext.valueString;
 }
 
-export function CompositionView({ composition, questionnaireIndex, wasmQuestionnaireIndex, showContext = true, onSectionHtmlChange, onContextExpressionChange }: CompositionViewProps) {
+export function CompositionView({ composition, questionnaireIndex, showContext = true, onSectionHtmlChange, onContextExpressionChange, onAddSection, onRemoveSection }: CompositionViewProps) {
   const dateExpr = getDateExpression(composition);
 
   return (
@@ -55,13 +55,23 @@ export function CompositionView({ composition, questionnaireIndex, wasmQuestionn
             key={i}
             section={section}
             questionnaireIndex={questionnaireIndex}
-            wasmQuestionnaireIndex={wasmQuestionnaireIndex}
             showContext={showContext}
             sectionPath={[i]}
             onSectionHtmlChange={onSectionHtmlChange}
             onContextExpressionChange={onContextExpressionChange}
+            onAddSection={onAddSection}
+            onRemoveSection={onRemoveSection}
           />
         ))}
+        {onAddSection && (
+          <button
+            className="section-add-btn"
+            onClick={() => onAddSection([])}
+            title="Add section"
+          >
+            + Add section
+          </button>
+        )}
       </div>
     </div>
   );
