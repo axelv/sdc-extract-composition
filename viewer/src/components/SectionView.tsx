@@ -15,6 +15,7 @@ interface SectionViewProps {
   questionnaireIndex?: QuestionnaireIndex;
   showContext?: boolean;
   sectionPath?: number[];
+  parentItemContext?: string | null;
   onSectionHtmlChange?: (sectionPath: number[], newDivHtml: string) => void;
   onContextExpressionChange?: (sectionPath: number[], newExpression: string) => void;
   onAddSection?: (parentPath: number[]) => void;
@@ -46,6 +47,11 @@ function mustInlineChildren(section: CompositionSection): boolean {
   if (!hasSectionsPlaceholder(section)) return false;
   const div = section.text?.div ?? "";
   return /<table\b/i.test(div);
+}
+
+function isItemScopingContext(expr: string | null): boolean {
+  if (!expr) return false;
+  return /\.item\.where\(linkId=/.test(expr);
 }
 
 function isRepeatingContext(expr: string | null): boolean {
@@ -135,6 +141,7 @@ function SectionContentWithChildren({
   questionnaireIndex,
   showContext,
   sectionPath,
+  parentItemContext,
   editable,
   onNarrativeClick,
   onSectionHtmlChange,
@@ -147,6 +154,7 @@ function SectionContentWithChildren({
   questionnaireIndex?: QuestionnaireIndex;
   showContext: boolean;
   sectionPath: number[];
+  parentItemContext?: string | null;
   editable: boolean;
   onNarrativeClick: () => void;
   onSectionHtmlChange?: (sectionPath: number[], newDivHtml: string) => void;
@@ -165,7 +173,7 @@ function SectionContentWithChildren({
       section={child}
       depth={depth + 1}
       questionnaireIndex={questionnaireIndex}
-
+      parentItemContext={parentItemContext}
       showContext={showContext}
       sectionPath={[...sectionPath, i]}
       onSectionHtmlChange={onSectionHtmlChange}
@@ -241,6 +249,7 @@ export function SectionView({
   questionnaireIndex,
   showContext = true,
   sectionPath = [],
+  parentItemContext,
   onSectionHtmlChange,
   onContextExpressionChange,
   onAddSection,
@@ -249,6 +258,9 @@ export function SectionView({
   const contextExpr = getContextExpression(section);
   const repeating = isRepeatingContext(contextExpr);
   const inlinesChildren = mustInlineChildren(section);
+  const effectiveItemContext = isItemScopingContext(contextExpr)
+    ? contextExpr
+    : parentItemContext ?? null;
 
   const [narrativeModalOpen, setNarrativeModalOpen] = useState(false);
   const [contextModalOpen, setContextModalOpen] = useState(false);
@@ -314,9 +326,9 @@ export function SectionView({
           section={section}
           depth={depth}
           questionnaireIndex={questionnaireIndex}
-    
           showContext={showContext}
           sectionPath={sectionPath}
+          parentItemContext={effectiveItemContext}
           editable={editable}
           onNarrativeClick={() => setNarrativeModalOpen(true)}
           onSectionHtmlChange={onSectionHtmlChange}
@@ -334,7 +346,7 @@ export function SectionView({
           divHtml={section.text.div}
           questionnaireIndex={questionnaireIndex}
     
-          contextExpression={contextExpr}
+          contextExpression={effectiveItemContext}
           onSave={(html) => onSectionHtmlChange?.(sectionPath, html)}
         />
       )}
