@@ -92,6 +92,21 @@ function App() {
     []
   );
 
+  const handleSectionTitleChange = useCallback(
+    (sectionPath: number[], newTitle: string) => {
+      setComposition((prev) => {
+        if (!prev) return prev;
+        const updated = structuredClone(prev);
+        const target = navigateToSection(updated, sectionPath);
+        if (target) {
+          target.title = newTitle || undefined;
+        }
+        return updated;
+      });
+    },
+    []
+  );
+
   const handleContextExpressionChange = useCallback(
     (sectionPath: number[], newExpression: string) => {
       setComposition((prev) => {
@@ -230,6 +245,7 @@ function App() {
                 questionnaireIndex={questionnaireIndex}
                 showContext={showContext}
                 onSectionHtmlChange={handleSectionHtmlChange}
+                onSectionTitleChange={handleSectionTitleChange}
                 onContextExpressionChange={handleContextExpressionChange}
                 onAddSection={handleAddSection}
                 onRemoveSection={handleRemoveSection}

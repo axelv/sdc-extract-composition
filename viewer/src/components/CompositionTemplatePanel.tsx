@@ -11,6 +11,7 @@ interface CompositionTemplatePanelProps {
   questionnaireIndex?: QuestionnaireIndex;
   showContext: boolean;
   onSectionHtmlChange?: (sectionPath: number[], newDivHtml: string) => void;
+  onSectionTitleChange?: (sectionPath: number[], newTitle: string) => void;
   onContextExpressionChange?: (sectionPath: number[], newExpression: string) => void;
   onAddSection?: (parentPath: number[]) => void;
   onRemoveSection?: (sectionPath: number[]) => void;
@@ -33,6 +34,7 @@ export function CompositionTemplatePanel({
   questionnaireIndex,
   showContext,
   onSectionHtmlChange,
+  onSectionTitleChange,
   onContextExpressionChange,
   onAddSection,
   onRemoveSection,
@@ -80,6 +82,7 @@ export function CompositionTemplatePanel({
             questionnaireIndex={questionnaireIndex}
             showContext={showContext}
             onSectionHtmlChange={onSectionHtmlChange}
+            onSectionTitleChange={onSectionTitleChange}
             onContextExpressionChange={onContextExpressionChange}
             onAddSection={onAddSection}
             onRemoveSection={onRemoveSection}

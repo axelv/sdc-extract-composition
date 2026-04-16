@@ -16,6 +16,7 @@ interface SectionViewProps {
   showContext?: boolean;
   sectionPath?: number[];
   onSectionHtmlChange?: (sectionPath: number[], newDivHtml: string) => void;
+  onSectionTitleChange?: (sectionPath: number[], newTitle: string) => void;
   onContextExpressionChange?: (sectionPath: number[], newExpression: string) => void;
   onAddSection?: (parentPath: number[]) => void;
   onRemoveSection?: (sectionPath: number[]) => void;
@@ -138,6 +139,7 @@ function SectionContentWithChildren({
   editable,
   onNarrativeClick,
   onSectionHtmlChange,
+  onSectionTitleChange,
   onContextExpressionChange,
   onAddSection,
   onRemoveSection,
@@ -150,6 +152,7 @@ function SectionContentWithChildren({
   editable: boolean;
   onNarrativeClick: () => void;
   onSectionHtmlChange?: (sectionPath: number[], newDivHtml: string) => void;
+  onSectionTitleChange?: (sectionPath: number[], newTitle: string) => void;
   onContextExpressionChange?: (sectionPath: number[], newExpression: string) => void;
   onAddSection?: (parentPath: number[]) => void;
   onRemoveSection?: (sectionPath: number[]) => void;
@@ -169,6 +172,7 @@ function SectionContentWithChildren({
       showContext={showContext}
       sectionPath={[...sectionPath, i]}
       onSectionHtmlChange={onSectionHtmlChange}
+      onSectionTitleChange={onSectionTitleChange}
       onContextExpressionChange={onContextExpressionChange}
       onAddSection={onAddSection}
       onRemoveSection={onRemoveSection}
@@ -242,6 +246,7 @@ export function SectionView({
   showContext = true,
   sectionPath = [],
   onSectionHtmlChange,
+  onSectionTitleChange,
   onContextExpressionChange,
   onAddSection,
   onRemoveSection,
@@ -314,12 +319,13 @@ export function SectionView({
           section={section}
           depth={depth}
           questionnaireIndex={questionnaireIndex}
-    
+
           showContext={showContext}
           sectionPath={sectionPath}
           editable={editable}
           onNarrativeClick={() => setNarrativeModalOpen(true)}
           onSectionHtmlChange={onSectionHtmlChange}
+          onSectionTitleChange={onSectionTitleChange}
           onContextExpressionChange={onContextExpressionChange}
           onAddSection={onAddSection}
           onRemoveSection={onRemoveSection}
@@ -331,11 +337,15 @@ export function SectionView({
         <NarrativeEditorModal
           open={narrativeModalOpen}
           onClose={() => setNarrativeModalOpen(false)}
+          title={section.title}
           divHtml={section.text.div}
           questionnaireIndex={questionnaireIndex}
-    
+
           contextExpression={contextExpr}
-          onSave={(html) => onSectionHtmlChange?.(sectionPath, html)}
+          onSave={(html, title) => {
+            onSectionHtmlChange?.(sectionPath, html);
+            onSectionTitleChange?.(sectionPath, title);
+          }}
         />
       )}
 

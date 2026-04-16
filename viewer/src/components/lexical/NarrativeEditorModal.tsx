@@ -1,4 +1,4 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useRef, useState } from "react";
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
@@ -20,10 +20,11 @@ const XHTML_NS = 'http://www.w3.org/1999/xhtml';
 interface NarrativeEditorModalProps {
   open: boolean;
   onClose: () => void;
+  title?: string;
   divHtml: string;
   questionnaireIndex?: QuestionnaireIndex;
   contextExpression?: string | null;
-  onSave: (newDivHtml: string) => void;
+  onSave: (newDivHtml: string, newTitle: string) => void;
 }
 
 function editorConfig() {
@@ -48,12 +49,14 @@ function EditorRefPlugin({
 export function NarrativeEditorModal({
   open,
   onClose,
+  title: initialTitle,
   divHtml,
   questionnaireIndex,
   contextExpression,
   onSave,
 }: NarrativeEditorModalProps) {
   const editorRef = useRef<LexicalEditor | null>(null);
+  const [title, setTitle] = useState(initialTitle ?? "");
 
   const handleSave = useCallback(() => {
     const editor = editorRef.current;
@@ -62,10 +65,10 @@ export function NarrativeEditorModal({
     editor.read(() => {
       const html = $generateHtmlFromNodes(editor);
       const wrapped = `<div xmlns="${XHTML_NS}">${html}</div>`;
-      onSave(wrapped);
+      onSave(wrapped, title);
     });
     onClose();
-  }, [onSave, onClose]);
+  }, [onSave, onClose, title]);
 
   if (!open) return null;
 
@@ -73,6 +76,19 @@ export function NarrativeEditorModal({
     <Modal title="Edit Section" onClose={onClose} open={open}>
       <QuestionnaireIndexProvider value={questionnaireIndex}>
         <div className="narrative-editor p-4">
+          <div className="mb-3">
+            <label htmlFor="section-title" className="block text-xs font-medium text-gray-600 mb-1">
+              Title
+            </label>
+            <input
+              id="section-title"
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Section title"
+              className="w-full px-2 py-1.5 text-sm border border-gray-200 rounded outline-none focus:border-gray-400"
+            />
+          </div>
           <LexicalComposer initialConfig={editorConfig()}>
             <RichTextPlugin
               contentEditable={
