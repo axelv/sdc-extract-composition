@@ -4,14 +4,17 @@ import {
   Group as PanelGroup,
   Separator as PanelResizeHandle,
 } from "react-resizable-panels";
+import { QuestionnaireIndex as WasmQuestionnaireIndex } from "fhirpath-rs";
 import type { Composition, Questionnaire } from "./types";
 import { extractComposition } from "./utils/extract-composition";
 import { buildQuestionnaireIndex } from "./utils/questionnaire-index";
+import { ensureWasmInit } from "./utils/wasm-init";
 import { renderComposition } from "./utils/render-api";
 import { QuestionnaireLoader } from "./components/QuestionnaireLoader";
 import { QuestionnaireFormPanel } from "./components/QuestionnaireFormPanel";
 import { CompositionTemplatePanel } from "./components/CompositionTemplatePanel";
 import { RenderedOutputPanel } from "./components/RenderedOutputPanel";
+import { WasmQuestionnaireIndexProvider } from "./components/lexical/WasmQuestionnaireIndexContext";
 
 function App() {
   const [questionnaire, setQuestionnaire] = useState<Questionnaire | null>(
@@ -36,6 +39,23 @@ function App() {
     () => (questionnaire ? buildQuestionnaireIndex(questionnaire) : undefined),
     [questionnaire]
   );
+
+  const [wasmQuestionnaireIndex, setWasmQuestionnaireIndex] =
+    useState<WasmQuestionnaireIndex | null>(null);
+
+  useEffect(() => {
+    if (!questionnaire) {
+      setWasmQuestionnaireIndex(null);
+      return;
+    }
+    let cancelled = false;
+    ensureWasmInit().then(() => {
+      if (cancelled) return;
+      const idx = new WasmQuestionnaireIndex(JSON.stringify(questionnaire));
+      setWasmQuestionnaireIndex(idx);
+    });
+    return () => { cancelled = true; };
+  }, [questionnaire]);
 
   // Clear QR when questionnaire changes
   const handleQuestionnaireLoad = useCallback((q: Questionnaire) => {
@@ -194,35 +214,37 @@ function App() {
       )}
 
       {questionnaire && composition && (
-        <PanelGroup orientation="horizontal" className="flex-1">
-          <Panel defaultSize={30} minSize={15}>
-            <QuestionnaireFormPanel
-              questionnaire={questionnaire}
-              onResponse={setQuestionnaireResponse}
-              hasResponse={questionnaireResponse !== null}
-            />
-          </Panel>
-          <PanelResizeHandle className="panel-resize-handle" />
-          <Panel defaultSize={35} minSize={15}>
-            <CompositionTemplatePanel
-              composition={composition}
-              questionnaireIndex={questionnaireIndex}
-              showContext={showContext}
-              onSectionHtmlChange={handleSectionHtmlChange}
-              onContextExpressionChange={handleContextExpressionChange}
-              onAddSection={handleAddSection}
-              onRemoveSection={handleRemoveSection}
-            />
-          </Panel>
-          <PanelResizeHandle className="panel-resize-handle" />
-          <Panel defaultSize={35} minSize={15}>
-            <RenderedOutputPanel
-              html={renderedHtml}
-              errors={renderErrors}
-              loading={renderLoading}
-            />
-          </Panel>
-        </PanelGroup>
+        <WasmQuestionnaireIndexProvider value={wasmQuestionnaireIndex}>
+          <PanelGroup orientation="horizontal" className="flex-1">
+            <Panel defaultSize={30} minSize={15}>
+              <QuestionnaireFormPanel
+                questionnaire={questionnaire}
+                onResponse={setQuestionnaireResponse}
+                hasResponse={questionnaireResponse !== null}
+              />
+            </Panel>
+            <PanelResizeHandle className="panel-resize-handle" />
+            <Panel defaultSize={35} minSize={15}>
+              <CompositionTemplatePanel
+                composition={composition}
+                questionnaireIndex={questionnaireIndex}
+                showContext={showContext}
+                onSectionHtmlChange={handleSectionHtmlChange}
+                onContextExpressionChange={handleContextExpressionChange}
+                onAddSection={handleAddSection}
+                onRemoveSection={handleRemoveSection}
+              />
+            </Panel>
+            <PanelResizeHandle className="panel-resize-handle" />
+            <Panel defaultSize={35} minSize={15}>
+              <RenderedOutputPanel
+                html={renderedHtml}
+                errors={renderErrors}
+                loading={renderLoading}
+              />
+            </Panel>
+          </PanelGroup>
+        </WasmQuestionnaireIndexProvider>
       )}
     </div>
   );

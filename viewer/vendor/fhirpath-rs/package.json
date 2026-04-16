@@ -1,0 +1,15 @@
+{
+  "name": "fhirpath-rs",
+  "type": "module",
+  "version": "3.0.0",
+  "files": [
+    "_rust_bg.wasm",
+    "_rust.js",
+    "_rust.d.ts"
+  ],
+  "main": "_rust.js",
+  "types": "_rust.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}

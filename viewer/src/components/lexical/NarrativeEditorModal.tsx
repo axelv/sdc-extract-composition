@@ -11,6 +11,7 @@ import type { LexicalEditor } from "lexical";
 import type { QuestionnaireIndex } from "../../utils/questionnaire-index";
 import { Modal } from "../Modal";
 import { FhirPathPillNode } from "./FhirPathPillNode";
+import { FhirPathAutocompletePlugin } from "./FhirPathAutocompletePlugin";
 import { HtmlImportPlugin } from "./HtmlImportPlugin";
 import { QuestionnaireIndexProvider } from "./QuestionnaireIndexContext";
 
@@ -21,6 +22,7 @@ interface NarrativeEditorModalProps {
   onClose: () => void;
   divHtml: string;
   questionnaireIndex?: QuestionnaireIndex;
+  contextExpression?: string | null;
   onSave: (newDivHtml: string) => void;
 }
 
@@ -48,6 +50,7 @@ export function NarrativeEditorModal({
   onClose,
   divHtml,
   questionnaireIndex,
+  contextExpression,
   onSave,
 }: NarrativeEditorModalProps) {
   const editorRef = useRef<LexicalEditor | null>(null);
@@ -79,6 +82,9 @@ export function NarrativeEditorModal({
             />
             <HistoryPlugin />
             <HtmlImportPlugin divHtml={divHtml} />
+            <FhirPathAutocompletePlugin
+              contextExpression={contextExpression}
+            />
             <EditorRefPlugin editorRef={editorRef} />
           </LexicalComposer>
         </div>

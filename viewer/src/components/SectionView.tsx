@@ -165,6 +165,7 @@ function SectionContentWithChildren({
       section={child}
       depth={depth + 1}
       questionnaireIndex={questionnaireIndex}
+
       showContext={showContext}
       sectionPath={[...sectionPath, i]}
       onSectionHtmlChange={onSectionHtmlChange}
@@ -313,6 +314,7 @@ export function SectionView({
           section={section}
           depth={depth}
           questionnaireIndex={questionnaireIndex}
+    
           showContext={showContext}
           sectionPath={sectionPath}
           editable={editable}
@@ -331,6 +333,8 @@ export function SectionView({
           onClose={() => setNarrativeModalOpen(false)}
           divHtml={section.text.div}
           questionnaireIndex={questionnaireIndex}
+    
+          contextExpression={contextExpr}
           onSave={(html) => onSectionHtmlChange?.(sectionPath, html)}
         />
       )}
