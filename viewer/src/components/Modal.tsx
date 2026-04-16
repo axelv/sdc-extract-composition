@@ -26,7 +26,7 @@ export function Modal({ open, onClose, title, children }: ModalProps) {
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
       onMouseDown={(e) => {
-        if (panelRef.current && !panelRef.current.contains(e.target as Node)) {
+        if (e.target === e.currentTarget) {
           onClose();
         }
       }}
