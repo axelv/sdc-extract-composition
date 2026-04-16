@@ -12,6 +12,8 @@ interface CompositionTemplatePanelProps {
   showContext: boolean;
   onSectionHtmlChange?: (sectionPath: number[], newDivHtml: string) => void;
   onContextExpressionChange?: (sectionPath: number[], newExpression: string) => void;
+  onAddSection?: (parentPath: number[]) => void;
+  onRemoveSection?: (sectionPath: number[]) => void;
 }
 
 function downloadJson(data: unknown, filename: string) {
@@ -32,6 +34,8 @@ export function CompositionTemplatePanel({
   showContext,
   onSectionHtmlChange,
   onContextExpressionChange,
+  onAddSection,
+  onRemoveSection,
 }: CompositionTemplatePanelProps) {
   const [tab, setTab] = useState<Tab>("template");
 
@@ -77,6 +81,8 @@ export function CompositionTemplatePanel({
             showContext={showContext}
             onSectionHtmlChange={onSectionHtmlChange}
             onContextExpressionChange={onContextExpressionChange}
+            onAddSection={onAddSection}
+            onRemoveSection={onRemoveSection}
           />
         ) : (
           <RawCompositionView composition={composition} />

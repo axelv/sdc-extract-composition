@@ -9,6 +9,8 @@ interface CompositionViewProps {
   showContext?: boolean;
   onSectionHtmlChange?: (sectionPath: number[], newDivHtml: string) => void;
   onContextExpressionChange?: (sectionPath: number[], newExpression: string) => void;
+  onAddSection?: (parentPath: number[]) => void;
+  onRemoveSection?: (sectionPath: number[]) => void;
 }
 
 const TEMPLATE_EXTRACT_VALUE_URL =
@@ -23,7 +25,7 @@ function getDateExpression(composition: Composition): string | null {
   return match ? match[1].trim() : ext.valueString;
 }
 
-export function CompositionView({ composition, questionnaireIndex, showContext = true, onSectionHtmlChange, onContextExpressionChange }: CompositionViewProps) {
+export function CompositionView({ composition, questionnaireIndex, showContext = true, onSectionHtmlChange, onContextExpressionChange, onAddSection, onRemoveSection }: CompositionViewProps) {
   const dateExpr = getDateExpression(composition);
 
   return (
@@ -57,8 +59,19 @@ export function CompositionView({ composition, questionnaireIndex, showContext =
             sectionPath={[i]}
             onSectionHtmlChange={onSectionHtmlChange}
             onContextExpressionChange={onContextExpressionChange}
+            onAddSection={onAddSection}
+            onRemoveSection={onRemoveSection}
           />
         ))}
+        {onAddSection && (
+          <button
+            className="section-add-btn"
+            onClick={() => onAddSection([])}
+            title="Add section"
+          >
+            + Add section
+          </button>
+        )}
       </div>
     </div>
   );

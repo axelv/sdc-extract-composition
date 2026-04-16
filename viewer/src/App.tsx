@@ -90,6 +90,52 @@ function App() {
     []
   );
 
+  const handleAddSection = useCallback(
+    (parentPath: number[]) => {
+      setComposition((prev) => {
+        if (!prev) return prev;
+        const updated = structuredClone(prev);
+        const newSection = {
+          title: "New Section",
+          text: {
+            status: "generated",
+            div: '<div xmlns="http://www.w3.org/1999/xhtml"></div>',
+          },
+        };
+        if (parentPath.length === 0) {
+          updated.section = [...(updated.section ?? []), newSection];
+        } else {
+          const parent = navigateToSection(updated, parentPath);
+          if (parent) {
+            parent.section = [...(parent.section ?? []), newSection];
+          }
+        }
+        return updated;
+      });
+    },
+    []
+  );
+
+  const handleRemoveSection = useCallback(
+    (sectionPath: number[]) => {
+      if (sectionPath.length === 0) return;
+      setComposition((prev) => {
+        if (!prev) return prev;
+        const updated = structuredClone(prev);
+        const index = sectionPath[sectionPath.length - 1];
+        if (sectionPath.length === 1) {
+          updated.section?.splice(index, 1);
+        } else {
+          const parentPath = sectionPath.slice(0, -1);
+          const parent = navigateToSection(updated, parentPath);
+          parent?.section?.splice(index, 1);
+        }
+        return updated;
+      });
+    },
+    []
+  );
+
   // Debounced render when QR or composition changes
   const renderTimeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   useEffect(() => {
@@ -164,6 +210,8 @@ function App() {
               showContext={showContext}
               onSectionHtmlChange={handleSectionHtmlChange}
               onContextExpressionChange={handleContextExpressionChange}
+              onAddSection={handleAddSection}
+              onRemoveSection={handleRemoveSection}
             />
           </Panel>
           <PanelResizeHandle className="panel-resize-handle" />

@@ -17,6 +17,8 @@ interface SectionViewProps {
   sectionPath?: number[];
   onSectionHtmlChange?: (sectionPath: number[], newDivHtml: string) => void;
   onContextExpressionChange?: (sectionPath: number[], newExpression: string) => void;
+  onAddSection?: (parentPath: number[]) => void;
+  onRemoveSection?: (sectionPath: number[]) => void;
 }
 
 const TEMPLATE_EXTRACT_CONTEXT_URL =
@@ -137,6 +139,8 @@ function SectionContentWithChildren({
   onNarrativeClick,
   onSectionHtmlChange,
   onContextExpressionChange,
+  onAddSection,
+  onRemoveSection,
 }: {
   section: CompositionSection;
   depth: number;
@@ -147,6 +151,8 @@ function SectionContentWithChildren({
   onNarrativeClick: () => void;
   onSectionHtmlChange?: (sectionPath: number[], newDivHtml: string) => void;
   onContextExpressionChange?: (sectionPath: number[], newExpression: string) => void;
+  onAddSection?: (parentPath: number[]) => void;
+  onRemoveSection?: (sectionPath: number[]) => void;
 }) {
   const divHtml = section.text?.div;
   const hasPlaceholder = hasSectionsPlaceholder(section);
@@ -163,8 +169,20 @@ function SectionContentWithChildren({
       sectionPath={[...sectionPath, i]}
       onSectionHtmlChange={onSectionHtmlChange}
       onContextExpressionChange={onContextExpressionChange}
+      onAddSection={onAddSection}
+      onRemoveSection={onRemoveSection}
     />
   ));
+
+  const addChildButton = onAddSection && (
+    <button
+      className="section-add-btn section-add-btn-nested"
+      onClick={() => onAddSection(sectionPath)}
+      title="Add child section"
+    >
+      + Add subsection
+    </button>
+  );
 
   // No placeholder — simple case
   if (!hasPlaceholder) {
@@ -178,13 +196,14 @@ function SectionContentWithChildren({
           />
         )}
         {children}
+        {addChildButton}
       </>
     );
   }
 
   // Container-only (text.div is just <!-- sections -->) — skip parent text, render children directly
   if (isContainerOnly) {
-    return <>{children}</>;
+    return <>{children}{addChildButton}</>;
   }
 
   // Mixed content: split around <!-- sections --> and interleave
@@ -203,6 +222,7 @@ function SectionContentWithChildren({
         />
       )}
       {children}
+      {addChildButton}
       {afterDiv && (
         <NarrativeHtml
           divHtml={afterDiv}
@@ -222,6 +242,8 @@ export function SectionView({
   sectionPath = [],
   onSectionHtmlChange,
   onContextExpressionChange,
+  onAddSection,
+  onRemoveSection,
 }: SectionViewProps) {
   const contextExpr = getContextExpression(section);
   const repeating = isRepeatingContext(contextExpr);
@@ -250,9 +272,31 @@ export function SectionView({
         </div>
       )}
       {section.title && (
-        <h3 className="text-sm font-semibold text-gray-900 m-0">
-          {section.title}
-        </h3>
+        <div className="section-header">
+          <h3 className="text-sm font-semibold text-gray-900 m-0">
+            {section.title}
+          </h3>
+          {onRemoveSection && (
+            <button
+              className="section-remove-btn"
+              onClick={(e) => { e.stopPropagation(); onRemoveSection(sectionPath); }}
+              title="Remove section"
+            >
+              ×
+            </button>
+          )}
+        </div>
+      )}
+      {!section.title && onRemoveSection && (
+        <div className="section-header section-header-untitled">
+          <button
+            className="section-remove-btn"
+            onClick={(e) => { e.stopPropagation(); onRemoveSection(sectionPath); }}
+            title="Remove section"
+          >
+            ×
+          </button>
+        </div>
       )}
 
       {inlinesChildren ? (
@@ -275,6 +319,8 @@ export function SectionView({
           onNarrativeClick={() => setNarrativeModalOpen(true)}
           onSectionHtmlChange={onSectionHtmlChange}
           onContextExpressionChange={onContextExpressionChange}
+          onAddSection={onAddSection}
+          onRemoveSection={onRemoveSection}
         />
       )}
 
