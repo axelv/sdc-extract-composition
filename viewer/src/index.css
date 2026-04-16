@@ -286,6 +286,24 @@ html, body, #root {
   color: #5e35b1;
 }
 
+/* Add context button — dashed gray chip */
+.cond-summary.cond-add-context {
+  background: transparent;
+  border: 1px dashed #bbb;
+  color: #999;
+  cursor: pointer;
+  font: inherit;
+  opacity: 0;
+}
+.cond-badge-margin:hover .cond-add-context {
+  opacity: 0.75;
+}
+.cond-add-context:hover {
+  opacity: 1 !important;
+  border-color: #888;
+  color: #666;
+}
+
 .cond-icon {
   font-size: 0.7rem;
   line-height: 1;

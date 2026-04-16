@@ -272,6 +272,18 @@ export function SectionView({
           </ContextTooltip>
         </div>
       )}
+      {showContext && !contextExpr && editable && (
+        <div className="cond-badge-margin">
+          <button
+            className="cond-summary cond-add-context"
+            onClick={(e) => { e.stopPropagation(); setContextModalOpen(true); }}
+            title="Add context expression"
+          >
+            <span className="cond-icon">+</span>
+            <span className="cond-label">context</span>
+          </button>
+        </div>
+      )}
       {section.title && (
         <div className="section-header">
           <h3 className="text-sm font-semibold text-gray-900 m-0">
@@ -340,11 +352,11 @@ export function SectionView({
       )}
 
       {/* Context expression editor modal */}
-      {contextExpr && (
+      {editable && (
         <ContextExpressionModal
           open={contextModalOpen}
           onClose={() => setContextModalOpen(false)}
-          expression={contextExpr}
+          expression={contextExpr ?? ""}
           onSave={(expr) => onContextExpressionChange?.(sectionPath, expr)}
         />
       )}

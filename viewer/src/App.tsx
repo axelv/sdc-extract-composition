@@ -98,11 +98,28 @@ function App() {
         if (!prev) return prev;
         const updated = structuredClone(prev);
         const target = navigateToSection(updated, sectionPath);
-        if (target?.extension) {
-          const ext = target.extension.find(
+        if (!target) return updated;
+
+        if (!newExpression) {
+          // Remove the extension entry
+          if (target.extension) {
+            target.extension = target.extension.filter(
+              (e) => e.url !== TEMPLATE_EXTRACT_CONTEXT_URL
+            );
+            if (target.extension.length === 0) delete target.extension;
+          }
+        } else {
+          const ext = target.extension?.find(
             (e) => e.url === TEMPLATE_EXTRACT_CONTEXT_URL
           );
-          if (ext) ext.valueString = newExpression;
+          if (ext) {
+            ext.valueString = newExpression;
+          } else {
+            target.extension = [
+              ...(target.extension ?? []),
+              { url: TEMPLATE_EXTRACT_CONTEXT_URL, valueString: newExpression },
+            ];
+          }
         }
         return updated;
       });
