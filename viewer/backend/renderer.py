@@ -16,6 +16,36 @@ from fhirpathpy.models import models as fhir_models
 
 R4_MODEL = fhir_models["r4"]
 
+
+def _coding_equival(left: list, right: list) -> list:
+    """Coding-aware ~ that compares code + system (if both present), ignoring display.
+
+    fhirpathpy's default ~ does exact dict comparison, which fails when one
+    side has extra fields like `display`. FHIR equivalence semantics for
+    Coding match on `code` + `system` (when both present) and ignore `display`.
+    Falls back to plain equality for non-Coding values.
+    """
+    if not left or not right:
+        return [not left and not right]
+
+    a, b = left[0], right[0]
+    if isinstance(a, dict) and isinstance(b, dict) and "code" in a and "code" in b:
+        if a["code"] != b["code"]:
+            return [False]
+        a_sys, b_sys = a.get("system"), b.get("system")
+        if a_sys is not None and b_sys is not None and a_sys != b_sys:
+            return [False]
+        return [True]
+
+    return [a == b]
+
+
+_EVAL_OPTIONS = {
+    "userInvocationTable": {
+        "~": {"fn": _coding_equival, "arity": {2: ["Any", "Any"]}},
+    },
+}
+
 PLACEHOLDER_PATTERN = re.compile(r"\{\{(.+?)\}\}")
 SECTIONS_PLACEHOLDER = "<!-- sections -->"
 TEMPLATE_EXTRACT_CONTEXT_URL = (
@@ -61,7 +91,7 @@ def evaluate(resource: dict[str, Any], path: str) -> list[Any]:
     path, extra = _rewrite_factory_calls(path)
     context: dict[str, Any] = {"resource": resource, **extra}
     try:
-        return fhirpathpy.evaluate(resource, path, context, R4_MODEL)
+        return fhirpathpy.evaluate(resource, path, context, R4_MODEL, _EVAL_OPTIONS)
     except Exception:
         return []
 
