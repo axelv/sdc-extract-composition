@@ -259,7 +259,6 @@ export function SectionView({
   const [contextModalOpen, setContextModalOpen] = useState(false);
 
   const editable = !!onSectionHtmlChange;
-  const titleEditable = editable && !!section.text?.div;
 
   return (
     <div className="section-block" data-depth={depth} style={{ '--depth-offset': `calc(${depth * 0.7}rem + ${depth * 2}px)` } as React.CSSProperties}>
@@ -293,8 +292,8 @@ export function SectionView({
       {section.title && (
         <div className="section-header">
           <h3
-            className={`text-sm font-semibold text-gray-900 m-0${titleEditable ? " section-title-editable" : ""}`}
-            onClick={titleEditable ? () => setNarrativeModalOpen(true) : undefined}
+            className={`text-sm font-semibold text-gray-900 m-0${editable ? " section-title-editable" : ""}`}
+            onClick={editable ? () => setNarrativeModalOpen(true) : undefined}
           >
             {section.title}
           </h3>
@@ -349,12 +348,12 @@ export function SectionView({
       )}
 
       {/* Narrative editor modal */}
-      {section.text?.div && (
+      {editable && (
         <NarrativeEditorModal
           open={narrativeModalOpen}
           onClose={() => setNarrativeModalOpen(false)}
           title={section.title}
-          divHtml={section.text.div}
+          divHtml={section.text?.div ?? ""}
           questionnaireIndex={questionnaireIndex}
 
           contextExpression={contextExpr}
