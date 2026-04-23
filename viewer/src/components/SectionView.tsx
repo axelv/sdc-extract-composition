@@ -291,7 +291,10 @@ export function SectionView({
       )}
       {section.title && (
         <div className="section-header">
-          <h3 className="text-sm font-semibold text-gray-900 m-0">
+          <h3
+            className={`text-sm font-semibold text-gray-900 m-0${editable ? " section-title-editable" : ""}`}
+            onClick={editable ? () => setNarrativeModalOpen(true) : undefined}
+          >
             {section.title}
           </h3>
           {onRemoveSection && (
@@ -345,12 +348,12 @@ export function SectionView({
       )}
 
       {/* Narrative editor modal */}
-      {section.text?.div && (
+      {editable && (
         <NarrativeEditorModal
           open={narrativeModalOpen}
           onClose={() => setNarrativeModalOpen(false)}
           title={section.title}
-          divHtml={section.text.div}
+          divHtml={section.text?.div ?? ""}
           questionnaireIndex={questionnaireIndex}
 
           contextExpression={contextExpr}

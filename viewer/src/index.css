@@ -773,6 +773,16 @@ html, body, #root {
   box-shadow: 0 0 0 1px var(--doc-cond-border);
 }
 
+.section-title-editable {
+  cursor: pointer;
+  border-radius: 2px;
+  transition: box-shadow 0.15s;
+}
+
+.section-title-editable:hover {
+  box-shadow: 0 0 0 1px var(--doc-cond-border);
+}
+
 /*
  * Selected pill in Lexical editor
  */
