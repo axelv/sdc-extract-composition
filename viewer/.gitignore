@@ -24,3 +24,6 @@ dist-ssr
 *.sln
 *.sw?
 .vercel
+
+*storybook.log
+storybook-static
