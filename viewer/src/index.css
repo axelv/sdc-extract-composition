@@ -91,6 +91,18 @@ html, body, #root {
 }
 
 /*
+ * FHIRPath expression being composed — shown between typing `{{` and `}}`.
+ * Transient wrapper; disappears when the expression crystallizes into a pill.
+ */
+.fhirpath-editing {
+  background-color: rgba(253, 224, 71, 0.35);
+  border-radius: 2px;
+  padding: 0 1px;
+  font-family: 'IBM Plex Mono', ui-monospace, Consolas, monospace;
+  font-size: 0.8em;
+}
+
+/*
  * FHIRPath expression pill — inline field placeholder.
  * Subtle styling so narrative text stays readable.
  */

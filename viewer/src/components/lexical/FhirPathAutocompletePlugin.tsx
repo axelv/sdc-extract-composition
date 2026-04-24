@@ -7,13 +7,7 @@ import {
   type MenuRenderFn,
   type MenuTextMatch,
 } from "@lexical/react/LexicalTypeaheadMenuPlugin";
-import {
-  $getSelection,
-  $isRangeSelection,
-  type LexicalEditor,
-  type TextNode,
-} from "lexical";
-import { $createFhirPathPillNode } from "./FhirPathPillNode";
+import type { LexicalEditor, TextNode } from "lexical";
 import { useWasmQuestionnaireIndex } from "./WasmQuestionnaireIndexContext";
 
 interface CompletionItem {
@@ -25,28 +19,66 @@ interface CompletionItem {
   kind: "value" | "code" | "display";
 }
 
+/**
+ * Stub variable completions — always available when inside an unclosed `{{`.
+ * `insert_text` is the part after `%` since the user has already typed it.
+ */
+const STUB_COMPLETIONS: CompletionItem[] = [
+  {
+    label: "%context",
+    detail: "Current extraction context",
+    insert_text: "%context",
+    filter_text: "context",
+    sort_text: "00-context",
+    kind: "value",
+  },
+  {
+    label: "%resource",
+    detail: "The QuestionnaireResponse",
+    insert_text: "%resource",
+    filter_text: "resource",
+    sort_text: "00-resource",
+    kind: "value",
+  },
+];
+
 class FhirPathCompletionOption extends MenuOption {
   completionItem: CompletionItem;
 
   constructor(item: CompletionItem) {
-    super(item.insert_text);
+    super(item.label);
     this.completionItem = item;
   }
 }
 
-function fhirPathTriggerFn(
+/**
+ * Trigger activates only when the caret is inside an unclosed `{{` and the
+ * typed query after the most recent `%` is `\w*`. `replaceableString`
+ * intentionally includes the `%` so Lexical's split yields a non-empty
+ * TextNode — zero-width splits break `onSelectOption`. `matchingString`
+ * remains the query alone (used for filter only).
+ */
+function percentTriggerFn(
   text: string,
   _editor: LexicalEditor,
 ): MenuTextMatch | null {
-  const idx = text.lastIndexOf("{{");
-  if (idx === -1) return null;
+  const openIdx = text.lastIndexOf("{{");
+  if (openIdx === -1) return null;
+  const closeIdx = text.lastIndexOf("}}");
+  if (closeIdx > openIdx) return null;
 
-  const afterTrigger = text.slice(idx + 2);
+  const afterOpen = text.slice(openIdx + 2);
+  const percentIdx = afterOpen.lastIndexOf("%");
+  if (percentIdx === -1) return null;
 
+  const query = afterOpen.slice(percentIdx + 1);
+  if (!/^\w*$/.test(query)) return null;
+
+  const absPercentIdx = openIdx + 2 + percentIdx;
   return {
-    leadOffset: idx,
-    matchingString: afterTrigger,
-    replaceableString: text.slice(idx),
+    leadOffset: absPercentIdx,
+    matchingString: query,
+    replaceableString: "%" + query,
   };
 }
 
@@ -62,13 +94,18 @@ export function FhirPathAutocompletePlugin({
   const [queryString, setQueryString] = useState<string | null>(null);
 
   const allCompletions = useMemo<CompletionItem[]>(() => {
-    if (!wasmQuestionnaireIndex || !contextExpression) return [];
-    try {
-      return wasmQuestionnaireIndex.generate_completions(contextExpression);
-    } catch (e) {
-      console.error("[FhirPathAutocomplete]", e);
-      return [];
+    const wasm: CompletionItem[] = [];
+    if (wasmQuestionnaireIndex && contextExpression) {
+      try {
+        const items = wasmQuestionnaireIndex.generate_completions(
+          contextExpression,
+        ) as CompletionItem[];
+        wasm.push(...items);
+      } catch (e) {
+        console.error("[FhirPathAutocomplete]", e);
+      }
     }
+    return [...STUB_COMPLETIONS, ...wasm];
   }, [wasmQuestionnaireIndex, contextExpression]);
 
   const options = useMemo(() => {
@@ -88,37 +125,12 @@ export function FhirPathAutocompletePlugin({
       closeMenu: () => void,
     ) => {
       editor.update(() => {
-        if (textNodeContainingQuery) {
-          const nodeText = textNodeContainingQuery.getTextContent();
-          const triggerStart = nodeText.lastIndexOf("{{");
-
-          if (triggerStart >= 0) {
-            const before = nodeText.slice(0, triggerStart);
-            if (before) {
-              textNodeContainingQuery.setTextContent(before);
-              const pillNode = $createFhirPathPillNode(
-                option.completionItem.insert_text,
-              );
-              textNodeContainingQuery.insertAfter(pillNode);
-              pillNode.selectNext();
-            } else {
-              const pillNode = $createFhirPathPillNode(
-                option.completionItem.insert_text,
-              );
-              textNodeContainingQuery.replace(pillNode);
-              pillNode.selectNext();
-            }
-          }
-        } else {
-          const selection = $getSelection();
-          if ($isRangeSelection(selection)) {
-            const pillNode = $createFhirPathPillNode(
-              option.completionItem.insert_text,
-            );
-            selection.insertNodes([pillNode]);
-            pillNode.selectNext();
-          }
-        }
+        if (!textNodeContainingQuery) return;
+        // `splitNodeContainingQuery` isolated the `%<query>` chunk into this
+        // TextNode. Replace its whole content with the chosen completion.
+        const inserted = option.completionItem.insert_text;
+        textNodeContainingQuery.setTextContent(inserted);
+        textNodeContainingQuery.select(inserted.length, inserted.length);
       });
       closeMenu();
     },
@@ -164,12 +176,10 @@ export function FhirPathAutocompletePlugin({
     [],
   );
 
-  if (!wasmQuestionnaireIndex || !contextExpression) return null;
-
   return (
     <LexicalTypeaheadMenuPlugin<FhirPathCompletionOption>
       options={options}
-      triggerFn={fhirPathTriggerFn}
+      triggerFn={percentTriggerFn}
       onQueryChange={setQueryString}
       onSelectOption={onSelectOption}
       menuRenderFn={menuRenderFn}

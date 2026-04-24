@@ -12,8 +12,10 @@ import type { Questionnaire } from "../../types";
 import { buildQuestionnaireIndex } from "../../utils/questionnaire-index";
 import { ensureWasmInit } from "../../utils/wasm-init";
 
+import { EditingFhirPathNode } from "./EditingFhirPathNode";
 import { FhirPathPillNode } from "./FhirPathPillNode";
 import { FhirPathAutocompletePlugin } from "./FhirPathAutocompletePlugin";
+import { FhirPathPillFinalizePlugin } from "./FhirPathPillFinalizePlugin";
 import { HtmlImportPlugin } from "./HtmlImportPlugin";
 import { QuestionnaireIndexProvider } from "./QuestionnaireIndexContext";
 import { WasmQuestionnaireIndexProvider } from "./WasmQuestionnaireIndexContext";
@@ -29,7 +31,6 @@ const CONTEXT_PRESETS: Record<string, string> = {
 };
 
 const SAMPLE_DIV_HTML = `<div xmlns="http://www.w3.org/1999/xhtml">
-<p>Type <code>{{</code> to open FHIRPath autocomplete.</p>
 <dl>
   <dt>HAND</dt>
   <dd>{{%context.item.where(linkId='hand').answer.value}}</dd>
@@ -93,7 +94,7 @@ function NarrativeEditorHarness({
             key={editorKey}
             initialConfig={{
               namespace: "NarrativeEditorStory",
-              nodes: [HeadingNode, FhirPathPillNode],
+              nodes: [HeadingNode, FhirPathPillNode, EditingFhirPathNode],
               theme: {},
               onError: (e: Error) =>
                 console.error("[NarrativeEditorStory]", e),
@@ -108,11 +109,15 @@ function NarrativeEditorHarness({
             <HistoryPlugin />
             <HtmlImportPlugin divHtml={divHtml} />
             <FhirPathAutocompletePlugin contextExpression={contextExpression} />
+            <FhirPathPillFinalizePlugin />
           </LexicalComposer>
           <p className="text-xs text-gray-500">
-            Tip: place your cursor inside the editor and type{" "}
-            <code className="bg-gray-100 px-1 rounded">{"{{"}</code> to open the
-            autocomplete menu.
+            Tip: type{" "}
+            <code className="bg-gray-100 px-1 rounded">{"{{"}</code>, then{" "}
+            <code className="bg-gray-100 px-1 rounded">%</code> to open the
+            autocomplete. Close with{" "}
+            <code className="bg-gray-100 px-1 rounded">{"}}"}</code> to
+            crystallize into a pill. Click an existing pill to re-edit it.
           </p>
         </div>
       </WasmQuestionnaireIndexProvider>
