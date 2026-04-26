@@ -793,6 +793,71 @@ html, body, #root {
 }
 
 /*
+ * Pill editing workspace — appears below the narrative editor when a pill
+ * is selected. Hosts the CodeMirror FHIRPATH editor and the Synoniemen panel.
+ */
+.pill-editing-workspace {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.pill-editing-workspace-section {
+  border: 1px solid #e5e7eb;
+  border-radius: 0.375rem;
+  background: #fff;
+  overflow: hidden;
+}
+
+.pill-editing-workspace-label {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #6b7280;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.fhirpath-expression-editor {
+  background: #fff;
+}
+
+.fhirpath-expression-editor .cm-editor {
+  background: transparent;
+}
+
+.synonyms-panel {
+  border: 1px solid #e5e7eb;
+  border-radius: 0.375rem;
+  background: #fff;
+  overflow: hidden;
+}
+
+.synonyms-panel-header {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #6b7280;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.synonyms-panel-body {
+  padding: 0.5rem 0.625rem;
+  font-size: 0.8125rem;
+  color: #9ca3af;
+  font-style: italic;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/*
  * FHIRPath autocomplete dropdown
  */
 .fhirpath-autocomplete-menu {

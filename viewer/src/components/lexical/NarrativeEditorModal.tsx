@@ -13,6 +13,7 @@ import { Modal } from "../Modal";
 import { FhirPathPillNode } from "./FhirPathPillNode";
 import { FhirPathAutocompletePlugin } from "./FhirPathAutocompletePlugin";
 import { HtmlImportPlugin } from "./HtmlImportPlugin";
+import { PillEditingWorkspace } from "./PillEditingWorkspace";
 import { QuestionnaireIndexProvider } from "./QuestionnaireIndexContext";
 
 const XHTML_NS = 'http://www.w3.org/1999/xhtml';
@@ -101,6 +102,7 @@ export function NarrativeEditorModal({
             <FhirPathAutocompletePlugin
               contextExpression={contextExpression}
             />
+            <PillEditingWorkspace contextExpression={contextExpression} />
             <EditorRefPlugin editorRef={editorRef} />
           </LexicalComposer>
         </div>

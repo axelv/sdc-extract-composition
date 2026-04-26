@@ -3,6 +3,7 @@ import type { CompositionSection } from "../types";
 import type { QuestionnaireIndex } from "../utils/questionnaire-index";
 import { segmentExpressionToHtml } from "../utils/expression-pills";
 import { stripDivWrapper } from "../utils/parse-narrative";
+import { useWasmReady } from "../utils/wasm-init";
 import { ContextBadge } from "./ContextBadge";
 import { ContextExpressionModal } from "./ContextExpressionModal";
 import { ContextTooltip } from "./ContextTooltip";
@@ -251,6 +252,9 @@ export function SectionView({
   onAddSection,
   onRemoveSection,
 }: SectionViewProps) {
+  // Re-render when wasm is ready so the inline pill HTML reflects analyzer
+  // output (cond indicators, narrative pill injection, etc.).
+  useWasmReady();
   const contextExpr = getContextExpression(section);
   const repeating = isRepeatingContext(contextExpr);
   const inlinesChildren = mustInlineChildren(section);

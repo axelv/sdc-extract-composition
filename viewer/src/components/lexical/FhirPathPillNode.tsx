@@ -109,6 +109,12 @@ export class FhirPathPillNode extends DecoratorNode<ReactNode> {
     return this.getLatest().__expression;
   }
 
+  setExpression(expression: string): this {
+    const writable = this.getWritable();
+    writable.__expression = expression;
+    return writable;
+  }
+
   // -- Decorator --
 
   decorate(_editor: LexicalEditor, _config: EditorConfig): ReactNode {

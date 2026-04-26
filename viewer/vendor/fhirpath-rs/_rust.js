@@ -53,6 +53,8 @@ if (Symbol.dispose) QuestionnaireIndex.prototype[Symbol.dispose] = Questionnaire
  * Analyze a FHIRPath expression in the context of a Questionnaire.
  *
  * Returns `{ annotations: Annotation[], diagnostics: Diagnostic[] }`.
+ * Span offsets are UTF-16 code units, suitable for
+ * `String.prototype.slice` and CodeMirror/Monaco position math.
  *
  * - `expr` -- the FHIRPath expression string
  * - `index` -- a `QuestionnaireIndex` built from the Questionnaire
@@ -83,7 +85,9 @@ export function analyze_expression(expr, index, scope_link_id, parent_context_ex
  * Annotate a FHIRPath expression, extracting answer references,
  * item references, and coded values.
  *
- * Returns `Annotation[]` as a JavaScript value.
+ * Returns `Annotation[]` as a JavaScript value. Span offsets are
+ * UTF-16 code units, suitable for `String.prototype.slice` and
+ * CodeMirror/Monaco position math.
  * @param {string} expr
  * @returns {any}
  */
@@ -112,6 +116,39 @@ export function parse(expr) {
         throw takeFromExternrefTable0(ret[1]);
     }
     return takeFromExternrefTable0(ret[0]);
+}
+
+/**
+ * Resolve `%context` references in a FHIRPath expression at the AST level.
+ *
+ * Parses both expressions, replaces every `%context` reference in `expr`
+ * with the parsed `base_expr` AST, and returns the serialized result.
+ * Returns `expr` unchanged when no `%context` reference exists.
+ * @param {string} expr
+ * @param {string} base_expr
+ * @returns {string}
+ */
+export function resolve_context(expr, base_expr) {
+    let deferred4_0;
+    let deferred4_1;
+    try {
+        const ptr0 = passStringToWasm0(expr, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const len0 = WASM_VECTOR_LEN;
+        const ptr1 = passStringToWasm0(base_expr, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const len1 = WASM_VECTOR_LEN;
+        const ret = wasm.resolve_context(ptr0, len0, ptr1, len1);
+        var ptr3 = ret[0];
+        var len3 = ret[1];
+        if (ret[3]) {
+            ptr3 = 0; len3 = 0;
+            throw takeFromExternrefTable0(ret[2]);
+        }
+        deferred4_0 = ptr3;
+        deferred4_1 = len3;
+        return getStringFromWasm0(ptr3, len3);
+    } finally {
+        wasm.__wbindgen_free(deferred4_0, deferred4_1, 1);
+    }
 }
 function __wbg_get_imports() {
     const import0 = {

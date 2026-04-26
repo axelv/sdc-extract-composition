@@ -4,6 +4,7 @@ import {
   segmentExpression,
   type ExpressionSegment,
 } from "../utils/expression-pills";
+import { useWasmReady } from "../utils/wasm-init";
 
 interface ContextBadgeProps {
   expression: string;
@@ -45,9 +46,10 @@ function SegmentView({
 }
 
 export function ContextBadge({ expression, questionnaireIndex }: ContextBadgeProps) {
+  const wasmReady = useWasmReady();
   const segments = useMemo(
     () => (questionnaireIndex ? segmentExpression(expression) : null),
-    [expression, questionnaireIndex]
+    [expression, questionnaireIndex, wasmReady]
   );
 
   const hasPills = segments?.some((s) => s.kind !== "text");

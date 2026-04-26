@@ -1,6 +1,7 @@
 import type { QuestionnaireIndex } from "../utils/questionnaire-index";
 import { segmentExpressionToHtml } from "../utils/expression-pills";
 import { stripDivWrapper } from "../utils/parse-narrative";
+import { useWasmReady } from "../utils/wasm-init";
 
 interface NarrativeHtmlProps {
   divHtml: string;
@@ -34,6 +35,9 @@ export function injectPills(
 }
 
 export function NarrativeHtml({ divHtml, questionnaireIndex, onClick }: NarrativeHtmlProps) {
+  // Re-render when wasm becomes ready so the synchronous pill injection picks
+  // up the analyzer once it's available.
+  useWasmReady();
   const inner = stripDivWrapper(divHtml);
   const withPills = injectPills(inner, questionnaireIndex);
 
