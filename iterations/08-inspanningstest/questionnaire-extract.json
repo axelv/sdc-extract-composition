@@ -104,7 +104,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                  "valueString": "%context.where((item.where(linkId='019d3db2-e0c4-7fff-854c-95b40a1d03e7').item.where(linkId='019cae08-1c3a-7aa7-99b8-b65a55f18c29').answer.value ~ %factory.Coding('http://snomed.info/sct', '373066001')).not() and item.where(linkId='019d3db2-e0c4-7fff-854c-95b40a1d03e7').item.where(linkId='019d3dae-17e0-7fff-84fb-868b50067657').answer.value ~ %factory.Coding('http://snomed.info/sct', '373066001'))"
+                  "valueString": "%context.where(item.where(linkId='019d3db2-e0c4-7fff-854c-95b40a1d03e7').item.where(linkId='019cae08-1c3a-7aa7-99b8-b65a55f18c29').answer.value !~ %factory.Coding('http://snomed.info/sct', '373066001') and item.where(linkId='019d3db2-e0c4-7fff-854c-95b40a1d03e7').item.where(linkId='019d3dae-17e0-7fff-84fb-868b50067657').answer.value ~ %factory.Coding('http://snomed.info/sct', '373066001'))"
                 }
               ],
               "text": {
@@ -116,7 +116,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                  "valueString": "%context.where((item.where(linkId='019d3db2-e0c4-7fff-854c-95b40a1d03e7').item.where(linkId='019cae08-1c3a-7aa7-99b8-b65a55f18c29').answer.value ~ %factory.Coding('http://snomed.info/sct', '373066001')).not() and (item.where(linkId='019d3db2-e0c4-7fff-854c-95b40a1d03e7').item.where(linkId='019d3dae-17e0-7fff-84fb-868b50067657').answer.value ~ %factory.Coding('http://snomed.info/sct', '373066001')).not())"
+                  "valueString": "%context.where(item.where(linkId='019d3db2-e0c4-7fff-854c-95b40a1d03e7').item.where(linkId='019cae08-1c3a-7aa7-99b8-b65a55f18c29').answer.value !~ %factory.Coding('http://snomed.info/sct', '373066001') and item.where(linkId='019d3db2-e0c4-7fff-854c-95b40a1d03e7').item.where(linkId='019d3dae-17e0-7fff-84fb-868b50067657').answer.value !~ %factory.Coding('http://snomed.info/sct', '373066001'))"
                 }
               ],
               "text": {
@@ -130,7 +130,7 @@
           "extension": [
             {
               "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-              "valueString": "%resource.item.where(linkId='019c4706-3d88-799c-8767-fed5898075e1').where((item.where(linkId='019d3db2-e0c4-7fff-854c-95b40a1d03e7').item.where(linkId='019cae08-1c3a-7aa7-99b8-b65a55f18c29').answer.value ~ %factory.Coding('http://snomed.info/sct', '373066001')).not()).item.where(linkId='019cadf7-0fe6-7aa7-97ae-bfb0dff20e15')"
+              "valueString": "%resource.item.where(linkId='019c4706-3d88-799c-8767-fed5898075e1').where(item.where(linkId='019d3db2-e0c4-7fff-854c-95b40a1d03e7').item.where(linkId='019cae08-1c3a-7aa7-99b8-b65a55f18c29').answer.value !~ %factory.Coding('http://snomed.info/sct', '373066001')).item.where(linkId='019cadf7-0fe6-7aa7-97ae-bfb0dff20e15')"
             }
           ],
           "title": "Protocol",
@@ -143,7 +143,7 @@
           "extension": [
             {
               "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-              "valueString": "%resource.item.where(linkId='019c4706-3d88-799c-8767-fed5898075e1').where((item.where(linkId='019d3db2-e0c4-7fff-854c-95b40a1d03e7').item.where(linkId='019cae08-1c3a-7aa7-99b8-b65a55f18c29').answer.value ~ %factory.Coding('http://snomed.info/sct', '373066001')).not()).item.where(linkId='019d1f04-a852-7330-8782-9df409bbe060')"
+              "valueString": "%resource.item.where(linkId='019c4706-3d88-799c-8767-fed5898075e1').where(item.where(linkId='019d3db2-e0c4-7fff-854c-95b40a1d03e7').item.where(linkId='019cae08-1c3a-7aa7-99b8-b65a55f18c29').answer.value !~ %factory.Coding('http://snomed.info/sct', '373066001')).item.where(linkId='019d1f04-a852-7330-8782-9df409bbe060')"
             }
           ],
           "title": "Inspanning",
@@ -245,7 +245,7 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                  "valueString": "%context.where(item.where(linkId='019d1efe-6153-7330-86ec-e8360dcc5883').item.where(linkId='019c47c6-92ae-799c-900c-0a0c2a9fbbf0').answer.value.where($this ~ %factory.Coding('http://snomed.info/sct', '373067005')).exists() and item.where(linkId='019d1efe-6153-7330-86ec-e8360dcc5883').item.where(linkId='019c47c6-92ae-799c-900c-0a0c2a9fbbf0').answer.value.where($this ~ %factory.Coding('http://snomed.info/sct', '251176006')).exists().not() and item.where(linkId='019d1efe-6153-7330-86ec-e8360dcc5883').item.where(linkId='019c47c6-92ae-799c-900c-0a0c2a9fbbf0').answer.value.where($this ~ %factory.Coding('http://snomed.info/sct', '233917008')).exists().not() and item.where(linkId='019d1efe-6153-7330-86ec-e8360dcc5883').item.where(linkId='019c47c6-92ae-799c-900c-0a0c2a9fbbf0').answer.value.where(($this ~ %factory.Coding('http://snomed.info/sct', '373067005')).not() and ($this ~ %factory.Coding('http://snomed.info/sct', '251176006')).not() and ($this ~ %factory.Coding('http://snomed.info/sct', '233917008')).not()).exists().not())"
+                  "valueString": "%context.where(item.where(linkId='019d1efe-6153-7330-86ec-e8360dcc5883').item.where(linkId='019c47c6-92ae-799c-900c-0a0c2a9fbbf0').answer.value.where($this ~ %factory.Coding('http://snomed.info/sct', '373067005')).exists() and item.where(linkId='019d1efe-6153-7330-86ec-e8360dcc5883').item.where(linkId='019c47c6-92ae-799c-900c-0a0c2a9fbbf0').answer.value.where($this ~ %factory.Coding('http://snomed.info/sct', '251176006')).exists().not() and item.where(linkId='019d1efe-6153-7330-86ec-e8360dcc5883').item.where(linkId='019c47c6-92ae-799c-900c-0a0c2a9fbbf0').answer.value.where($this ~ %factory.Coding('http://snomed.info/sct', '233917008')).exists().not() and item.where(linkId='019d1efe-6153-7330-86ec-e8360dcc5883').item.where(linkId='019c47c6-92ae-799c-900c-0a0c2a9fbbf0').answer.value.where($this !~ %factory.Coding('http://snomed.info/sct', '373067005') and $this !~ %factory.Coding('http://snomed.info/sct', '251176006') and $this !~ %factory.Coding('http://snomed.info/sct', '233917008')).exists().not())"
                 }
               ],
               "text": {
@@ -257,12 +257,12 @@
               "extension": [
                 {
                   "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-                  "valueString": "%context.where(item.where(linkId='019d1efe-6153-7330-86ec-e8360dcc5883').item.where(linkId='019c47c6-92ae-799c-900c-0a0c2a9fbbf0').answer.value.where(($this ~ %factory.Coding('http://snomed.info/sct', '373067005')).not() and ($this ~ %factory.Coding('http://snomed.info/sct', '251176006')).not() and ($this ~ %factory.Coding('http://snomed.info/sct', '233917008')).not()).exists())"
+                  "valueString": "%context.where(item.where(linkId='019d1efe-6153-7330-86ec-e8360dcc5883').item.where(linkId='019c47c6-92ae-799c-900c-0a0c2a9fbbf0').answer.value.where($this !~ %factory.Coding('http://snomed.info/sct', '373067005') and $this !~ %factory.Coding('http://snomed.info/sct', '251176006') and $this !~ %factory.Coding('http://snomed.info/sct', '233917008')).exists())"
                 }
               ],
               "text": {
                 "status": "generated",
-                "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Ritmestoornissen: {{%context.item.where(linkId='019d1efe-6153-7330-86ec-e8360dcc5883').item.where(linkId='019c47c6-92ae-799c-900c-0a0c2a9fbbf0').answer.value.where(($this ~ %factory.Coding('http://snomed.info/sct', '373067005')).not() and ($this ~ %factory.Coding('http://snomed.info/sct', '251176006')).not() and ($this ~ %factory.Coding('http://snomed.info/sct', '233917008')).not()).display || join: ', '}}.</p></div>"
+                "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Ritmestoornissen: {{%context.item.where(linkId='019d1efe-6153-7330-86ec-e8360dcc5883').item.where(linkId='019c47c6-92ae-799c-900c-0a0c2a9fbbf0').answer.value.where($this !~ %factory.Coding('http://snomed.info/sct', '373067005') and $this !~ %factory.Coding('http://snomed.info/sct', '251176006') and $this !~ %factory.Coding('http://snomed.info/sct', '233917008')).display || join: ', '}}.</p></div>"
               }
             },
             {

@@ -170,15 +170,15 @@ def build_intro() -> dict:
             ),
             sec(
                 context=ctx_where(
-                    f"({REGAD_VAL} ~ {coding(SCT, JA)}).not() "
+                    f"{REGAD_VAL} !~ {coding(SCT, JA)} "
                     f"and {LIG_VAL} ~ {coding(SCT, JA)}"
                 ),
                 text="op een ligfiets.",
             ),
             sec(
                 context=ctx_where(
-                    f"({REGAD_VAL} ~ {coding(SCT, JA)}).not() "
-                    f"and ({LIG_VAL} ~ {coding(SCT, JA)}).not()"
+                    f"{REGAD_VAL} !~ {coding(SCT, JA)} "
+                    f"and {LIG_VAL} !~ {coding(SCT, JA)}"
                 ),
                 text="op fiets.",
             ),
@@ -197,7 +197,7 @@ def build_protocol() -> dict:
         title="Protocol",
         context=(
             f"%resource.item.where(linkId='{ROOT}')"
-            f".where(({REGAD_VAL} ~ {coding(SCT, JA)}).not())"
+            f".where({REGAD_VAL} !~ {coding(SCT, JA)})"
             f".item.where(linkId='{PROT_GROUP}')"
         ),
         text=(
@@ -213,7 +213,7 @@ def build_inspanning() -> dict:
         title="Inspanning",
         context=(
             f"%resource.item.where(linkId='{ROOT}')"
-            f".where(({REGAD_VAL} ~ {coding(SCT, JA)}).not())"
+            f".where({REGAD_VAL} !~ {coding(SCT, JA)})"
             f".item.where(linkId='{INSP_GROUP}')"
         ),
         text=(
@@ -334,9 +334,9 @@ def build_ritmestoornissen() -> dict:
     # All selections excluding geen / VES / AV-blok — these get a plain list line.
     other_items = (
         f"{ritme_val}.where("
-        f"($this ~ {coding(SCT, RITME_GEEN)}).not() "
-        f"and ($this ~ {coding(SCT, RITME_VES)}).not() "
-        f"and ($this ~ {coding(SCT, RITME_AV)}).not())"
+        f"$this !~ {coding(SCT, RITME_GEEN)} "
+        f"and $this !~ {coding(SCT, RITME_VES)} "
+        f"and $this !~ {coding(SCT, RITME_AV)})"
     )
     has_other = f"{other_items}.exists()"
 
