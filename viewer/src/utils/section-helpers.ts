@@ -62,7 +62,7 @@ export function analyzeContextType(
 
   try {
     // Check if expression returns a collection by expecting singleton
-    const result = analyze_expression(expr, wasmIndex, null, null, null, "singleton");
+    const result = analyze_expression(expr, wasmIndex, undefined, undefined, undefined, "singleton");
 
     const hasCardinalityMismatch = result.diagnostics?.some(
       (d: { code: string }) => d.code === "expression_cardinality_mismatch"

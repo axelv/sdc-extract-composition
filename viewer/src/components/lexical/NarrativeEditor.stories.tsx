@@ -23,7 +23,7 @@ import { WasmQuestionnaireIndexProvider } from "./WasmQuestionnaireIndexContext"
 // Use the nested-choice-questions iteration: it has answerOption.valueCoding
 // entries (with `system`+`code`+`display`) on the `laterality` linkId, so the
 // SynonymsPanel has codes to surface for renaming.
-import questionnaireJson from "../../iterations/03-nested-choice-questions/questionnaire-extract.json";
+import questionnaireJson from "../../../../iterations/03-nested-choice-questions/questionnaire-extract.json";
 
 const SAMPLE_QUESTIONNAIRE = questionnaireJson as unknown as Questionnaire;
 

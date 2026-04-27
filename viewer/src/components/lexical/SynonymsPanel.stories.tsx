@@ -13,7 +13,7 @@ import {
 } from "./QuestionnaireContext";
 import { SynonymsPanel } from "./SynonymsPanel";
 
-import questionnaireJson from "../../iterations/03-nested-choice-questions/questionnaire-extract.json";
+import questionnaireJson from "../../../../iterations/03-nested-choice-questions/questionnaire-extract.json";
 
 const BASE_QUESTIONNAIRE = questionnaireJson as unknown as Questionnaire;
 

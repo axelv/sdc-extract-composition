@@ -22,8 +22,8 @@ export function AnalyzeExpressionDebug() {
     }
     try {
       // Test with expected_cardinality to detect singleton vs collection
-      const resCollection = analyze_expression(expression, wasmIndex, null, null, null, "collection");
-      const resSingleton = analyze_expression(expression, wasmIndex, null, null, null, "singleton");
+      const resCollection = analyze_expression(expression, wasmIndex, undefined, undefined, undefined, "collection");
+      const resSingleton = analyze_expression(expression, wasmIndex, undefined, undefined, undefined, "singleton");
 
       const isCollection = !resCollection.diagnostics?.some(
         (d: { code: string }) => d.code === "expression_cardinality_mismatch"
@@ -78,7 +78,7 @@ export function AnalyzeExpressionDebug() {
           </button>
         ))}
       </div>
-      {result && (
+      {result != null && (
         <pre className="bg-white p-2 rounded text-xs overflow-auto max-h-64">
           {JSON.stringify(result, null, 2)}
         </pre>
