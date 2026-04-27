@@ -182,7 +182,7 @@ def build_sedatie() -> dict:
                 ),
             ),
             sec(
-                context=ctx_where(f"({bv} ~ {coding(SCT, NEE)}).not()"),
+                context=ctx_where(f"{bv} !~ {coding(SCT, NEE)}"),
                 text=(
                     "<p>Patiënt onder "
                     "{{%context.item.where(linkId='bloedverdunners').answer.value.display}}.</p>"
@@ -223,7 +223,7 @@ def build_voorbereiding() -> dict:
         children=[
             sec(
                 context=ctx_where(
-                    f"(item.where(linkId='problemen-bij-voorbereiding').answer.value ~ {coding(SCT, PROBLEMEN_GEEN)}).not()"
+                    f"item.where(linkId='problemen-bij-voorbereiding').answer.value !~ {coding(SCT, PROBLEMEN_GEEN)}"
                 ),
                 text=(
                     "<p>Problemen bij voorbereiding: "
@@ -537,7 +537,7 @@ def build_crohn_segment(seg: dict) -> list[dict]:
             text="<p>Onaangetast.</p>",
         ),
         sec(
-            context=ctx_where(f"({opp_path}.answer.value ~ {coding(TIRO2, SES_ONAANGETAST)}).not() and {opp_path}.answer.value.exists()"),
+            context=ctx_where(f"{opp_path}.answer.value !~ {coding(TIRO2, SES_ONAANGETAST)} and {opp_path}.answer.value.exists()"),
             text=f"<p>Aangetaste oppervlakte: {{{{%context.{opp_path}.answer.value.display}}}}.</p>",
         ),
         # Grootte zweren
@@ -546,7 +546,7 @@ def build_crohn_segment(seg: dict) -> list[dict]:
             text="<p>Geen zweren.</p>",
         ),
         sec(
-            context=ctx_where(f"({zweren_path}.answer.value ~ {coding(SCT, SES_GEEN)}).not() and {zweren_path}.answer.value.exists()"),
+            context=ctx_where(f"{zweren_path}.answer.value !~ {coding(SCT, SES_GEEN)} and {zweren_path}.answer.value.exists()"),
             text=f"<p>{{{{%context.{zweren_path}.answer.value.display}}}}.</p>",
         ),
         # Ulceratie
@@ -555,7 +555,7 @@ def build_crohn_segment(seg: dict) -> list[dict]:
             text="<p>Geen ulceraties.</p>",
         ),
         sec(
-            context=ctx_where(f"({ulc_path}.answer.value ~ {coding(SCT, SES_GEEN)}).not() and {ulc_path}.answer.value.exists()"),
+            context=ctx_where(f"{ulc_path}.answer.value !~ {coding(SCT, SES_GEEN)} and {ulc_path}.answer.value.exists()"),
             text=f"<p>Ulceraties aanwezig over een oppervlak van {{{{%context.{ulc_path}.answer.value.display}}}}.</p>",
         ),
     ]

@@ -1,0 +1,3298 @@
+{
+  "id": "2397",
+  "meta": {
+    "extension": [
+      {
+        "url": "http://hl7.org/fhir/StructureDefinition/firstCreated",
+        "valueInstant": "2026-03-30T12:00:30.583965Z"
+      }
+    ],
+    "lastUpdated": "2026-04-27T08:16:52.276947Z",
+    "tag": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/common-tags",
+        "code": "SUBSETTED",
+        "display": "subsetted"
+      }
+    ],
+    "profile": [
+      "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-extr-template"
+    ]
+  },
+  "status": "active",
+  "version": "2.0.0",
+  "resourceType": "Questionnaire",
+  "useContext": [
+    {
+      "code": {
+        "code": "program",
+        "system": "http://terminology.hl7.org/CodeSystem/usage-context-type",
+        "display": "Project"
+      },
+      "valueReference": {
+        "display": "AZMM - Cardiologie",
+        "type": "Group",
+        "reference": "Group/280"
+      }
+    },
+    {
+      "code": {
+        "code": "user",
+        "system": "http://terminology.hl7.org/CodeSystem/usage-context-type",
+        "display": "User"
+      },
+      "valueCodeableConcept": {
+        "coding": [
+          {
+            "system": "http://snomed.info/sct",
+            "code": "394579002",
+            "display": "Cardiologie"
+          }
+        ]
+      }
+    }
+  ],
+  "name": " Inspanningstest",
+  "url": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624",
+  "experimental": true,
+  "description": "",
+  "language": "nl-BE",
+  "subjectType": "Patient",
+  "contained": [
+    {
+      "resourceType": "Composition",
+      "id": "composition-template",
+      "status": "final",
+      "type": {
+        "coding": [
+          {
+            "system": "http://loinc.org",
+            "code": "11524-6",
+            "display": "EKG study"
+          }
+        ]
+      },
+      "title": "Inspanningstest verslag",
+      "date": "2026-04-27",
+      "section": [
+        {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+              "valueString": "%resource.item.where(linkId='019c4706-3d88-799c-8767-fed5898075e1')"
+            }
+          ],
+          "title": "Inspanningstest",
+          "text": {
+            "status": "generated",
+            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Inspanningstest <!-- sections --></p></div>"
+          },
+          "section": [
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+                  "valueString": "%context.where(item.where(linkId='019d3db2-e0c4-7fff-854c-95b40a1d03e7').item.where(linkId='019cae08-1c3a-7aa7-99b8-b65a55f18c29').answer.value ~ %factory.Coding('http://snomed.info/sct', '373066001'))"
+                }
+              ],
+              "text": {
+                "status": "generated",
+                "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">met behulp van een regadenoson stress test.</div>"
+              }
+            },
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+                  "valueString": "%context.where(item.where(linkId='019d3db2-e0c4-7fff-854c-95b40a1d03e7').item.where(linkId='019cae08-1c3a-7aa7-99b8-b65a55f18c29').answer.value !~ %factory.Coding('http://snomed.info/sct', '373066001') and item.where(linkId='019d3db2-e0c4-7fff-854c-95b40a1d03e7').item.where(linkId='019d3dae-17e0-7fff-84fb-868b50067657').answer.value ~ %factory.Coding('http://snomed.info/sct', '373066001'))"
+                }
+              ],
+              "text": {
+                "status": "generated",
+                "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">op een ligfiets.</div>"
+              }
+            },
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+                  "valueString": "%context.where(item.where(linkId='019d3db2-e0c4-7fff-854c-95b40a1d03e7').item.where(linkId='019cae08-1c3a-7aa7-99b8-b65a55f18c29').answer.value !~ %factory.Coding('http://snomed.info/sct', '373066001') and item.where(linkId='019d3db2-e0c4-7fff-854c-95b40a1d03e7').item.where(linkId='019d3dae-17e0-7fff-84fb-868b50067657').answer.value !~ %factory.Coding('http://snomed.info/sct', '373066001'))"
+                }
+              ],
+              "text": {
+                "status": "generated",
+                "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">op fiets.</div>"
+              }
+            }
+          ]
+        },
+        {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+              "valueString": "%resource.item.where(linkId='019c4706-3d88-799c-8767-fed5898075e1').where(item.where(linkId='019d3db2-e0c4-7fff-854c-95b40a1d03e7').item.where(linkId='019cae08-1c3a-7aa7-99b8-b65a55f18c29').answer.value !~ %factory.Coding('http://snomed.info/sct', '373066001')).item.where(linkId='019cadf7-0fe6-7aa7-97ae-bfb0dff20e15')"
+            }
+          ],
+          "title": "Protocol",
+          "text": {
+            "status": "generated",
+            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Start aan {{%context.item.where(linkId='019c4706-3fe6-799c-8768-c3b0a8a4738c').answer.value}} W met een {{iif(%context.item.where(linkId='019cae04-716c-7aa7-9964-e193ddec2553').answer.value ~ %factory.Coding('http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes', '019cae06-4d63-7aa7-9977-6b19b8fcda3c'), 'stapsgewijze', 'geleidelijke')}} stijging van {{%context.item.where(linkId='019c470a-ab62-799c-87be-08a3df69201b').answer.value}} W per {{%context.item.where(linkId='019c4711-bd82-799c-87e1-a44056478612').answer.value}} minuten.</p></div>"
+          }
+        },
+        {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+              "valueString": "%resource.item.where(linkId='019c4706-3d88-799c-8767-fed5898075e1').where(item.where(linkId='019d3db2-e0c4-7fff-854c-95b40a1d03e7').item.where(linkId='019cae08-1c3a-7aa7-99b8-b65a55f18c29').answer.value !~ %factory.Coding('http://snomed.info/sct', '373066001')).item.where(linkId='019d1f04-a852-7330-8782-9df409bbe060')"
+            }
+          ],
+          "title": "Inspanning",
+          "text": {
+            "status": "generated",
+            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Inspanning van {{%context.item.where(linkId='019c4722-e62a-799c-89e3-2c97936302a0').answer.value}} minuten en {{%context.item.where(linkId='019d2e97-3144-7bbf-aee2-c6efd27ea4e9').answer.value}} seconden met een piekbelasting van {{%context.item.where(linkId='019c4722-fbce-799c-89ea-66b34dcaa3ac').answer.value}} W.</p><p>Reden voor stoppen van de test: {{%context.item.where(linkId='019c47f8-7000-799c-91c6-78452dea92e8').answer.value.display || join: ', '}}.</p></div>"
+          }
+        },
+        {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+              "valueString": "%resource.item.where(linkId='019c4706-3d88-799c-8767-fed5898075e1')"
+            }
+          ],
+          "title": "Bloeddruk en hartslag",
+          "text": {
+            "status": "generated",
+            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Maximale bloeddruk: {{%context.item.where(linkId='019cae00-ccb5-7aa7-98d8-d36646c999be').item.where(linkId='019c4781-6e9b-799c-8b9b-34802222313f').answer.value}}/{{%context.item.where(linkId='019cae00-ccb5-7aa7-98d8-d36646c999be').item.where(linkId='019c4783-92fe-799c-8bf0-bb4495251181').answer.value}} mmHg en maximale hartslag: {{%context.item.where(linkId='019db547-c962-7009-8baf-e510f6db2569').item.where(linkId='019db547-cba8-7009-8bb0-07b539cf1857').answer.value}}{{iif(%context.item.where(linkId='019db547-c962-7009-8baf-e510f6db2569').item.where(linkId='019c6b40-3452-777a-be3a-dd349ad2c387').answer.value.exists(), ', ' + %context.item.where(linkId='019db547-c962-7009-8baf-e510f6db2569').item.where(linkId='019c6b40-3452-777a-be3a-dd349ad2c387').answer.value.display, ' (' + %context.item.where(linkId='019db547-c962-7009-8baf-e510f6db2569').item.where(linkId='019db547-cba8-7009-8bb0-156a90a26a89').answer.value.toString() + '% van verwachtte maximum)')}}.</p></div>"
+          }
+        },
+        {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+              "valueString": "%resource.item.where(linkId='019c4706-3d88-799c-8767-fed5898075e1')"
+            }
+          ],
+          "title": "Repolarisatie",
+          "text": {
+            "status": "generated",
+            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><!-- sections --></div>"
+          },
+          "section": [
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+                  "valueString": "%context.where(item.where(linkId='019c4793-d723-799c-8c94-cd1b531f9db7').answer.value ~ %factory.Coding('http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes', '019c4798-d1de-799c-8ccc-811b82b62467'))"
+                }
+              ],
+              "text": {
+                "status": "generated",
+                "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Repolarisatie: geen significante wijzigingen.</p></div>"
+              }
+            },
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+                  "valueString": "%context.where(item.where(linkId='019c4793-d723-799c-8c94-cd1b531f9db7').answer.value ~ %factory.Coding('http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes', '019c47ab-3c28-799c-8d6e-f1ea6006833d'))"
+                }
+              ],
+              "text": {
+                "status": "generated",
+                "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Repolarisatie: J punt daling.</p></div>"
+              }
+            },
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+                  "valueString": "%context.where(item.where(linkId='019c4793-d723-799c-8c94-cd1b531f9db7').answer.value ~ %factory.Coding('http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes', '019c47aa-f82c-799c-8d6d-8c7686e1a858'))"
+                }
+              ],
+              "text": {
+                "status": "generated",
+                "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Repolarisatie: ST wijziging.</p><p>{{%context.item.where(linkId='019c4793-d723-799c-8c94-cd1b531f9db7').answer.item.where(linkId='019d1f6c-3076-722f-aa97-873d56c4a093').item.where(linkId='019c8ef4-5c19-799c-a485-bd9b43e4137d').answer.value.display}} {{%context.item.where(linkId='019c4793-d723-799c-8c94-cd1b531f9db7').answer.item.where(linkId='019d1f6c-3076-722f-aa97-873d56c4a093').item.where(linkId='019c47a7-9ae4-799c-8d54-c67b61699b73').answer.value.display}} van {{%context.item.where(linkId='019c4793-d723-799c-8c94-cd1b531f9db7').answer.item.where(linkId='019d1f6c-3076-722f-aa97-873d56c4a093').item.where(linkId='019c47ac-8b40-799c-8d81-c6b0c5d27d87').answer.value}} mm ({{%context.item.where(linkId='019c4793-d723-799c-8c94-cd1b531f9db7').answer.item.where(linkId='019d1f6c-3076-722f-aa97-873d56c4a093').item.where(linkId='019c6b54-0b22-777a-be95-745085be605a').answer.value.display}} segment) in afleidingen: {{%context.item.where(linkId='019c4793-d723-799c-8c94-cd1b531f9db7').answer.item.where(linkId='019d1f6c-3076-722f-aa97-873d56c4a093').item.where(linkId='019c47ae-0724-799c-8d96-534c9cf7391f').answer.value.display || join: ', '}}.</p></div>"
+              }
+            },
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+                  "valueString": "%context.where(item.where(linkId='019c4793-d723-799c-8c94-cd1b531f9db7').answer.value ~ %factory.Coding('http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes', '019cd6d9-59b6-7000-80f2-46c15fbb9d0e'))"
+                }
+              ],
+              "text": {
+                "status": "generated",
+                "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Repolarisatie: niet te beoordelen door {{%context.item.where(linkId='019c4793-d723-799c-8c94-cd1b531f9db7').answer.item.where(linkId='019c479b-b403-799c-8ce4-9701188c1cc8').answer.value.display || join: ', '}}.</p></div>"
+              }
+            }
+          ]
+        },
+        {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+              "valueString": "%resource.item.where(linkId='019c4706-3d88-799c-8767-fed5898075e1')"
+            }
+          ],
+          "title": "Ritmestoornissen",
+          "text": {
+            "status": "generated",
+            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><!-- sections --></div>"
+          },
+          "section": [
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+                  "valueString": "%context.where(item.where(linkId='019d1efe-6153-7330-86ec-e8360dcc5883').item.where(linkId='019c47c6-92ae-799c-900c-0a0c2a9fbbf0').answer.value.where($this ~ %factory.Coding('http://snomed.info/sct', '373067005')).exists() and item.where(linkId='019d1efe-6153-7330-86ec-e8360dcc5883').item.where(linkId='019c47c6-92ae-799c-900c-0a0c2a9fbbf0').answer.value.where($this ~ %factory.Coding('http://snomed.info/sct', '251176006')).exists().not() and item.where(linkId='019d1efe-6153-7330-86ec-e8360dcc5883').item.where(linkId='019c47c6-92ae-799c-900c-0a0c2a9fbbf0').answer.value.where($this ~ %factory.Coding('http://snomed.info/sct', '233917008')).exists().not() and item.where(linkId='019d1efe-6153-7330-86ec-e8360dcc5883').item.where(linkId='019c47c6-92ae-799c-900c-0a0c2a9fbbf0').answer.value.where($this !~ %factory.Coding('http://snomed.info/sct', '373067005') and $this !~ %factory.Coding('http://snomed.info/sct', '251176006') and $this !~ %factory.Coding('http://snomed.info/sct', '233917008')).exists().not())"
+                }
+              ],
+              "text": {
+                "status": "generated",
+                "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Geen ritmestoornissen.</p></div>"
+              }
+            },
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+                  "valueString": "%context.where(item.where(linkId='019d1efe-6153-7330-86ec-e8360dcc5883').item.where(linkId='019c47c6-92ae-799c-900c-0a0c2a9fbbf0').answer.value.where($this !~ %factory.Coding('http://snomed.info/sct', '373067005') and $this !~ %factory.Coding('http://snomed.info/sct', '251176006') and $this !~ %factory.Coding('http://snomed.info/sct', '233917008')).exists())"
+                }
+              ],
+              "text": {
+                "status": "generated",
+                "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Ritmestoornissen: {{%context.item.where(linkId='019d1efe-6153-7330-86ec-e8360dcc5883').item.where(linkId='019c47c6-92ae-799c-900c-0a0c2a9fbbf0').answer.value.where($this !~ %factory.Coding('http://snomed.info/sct', '373067005') and $this !~ %factory.Coding('http://snomed.info/sct', '251176006') and $this !~ %factory.Coding('http://snomed.info/sct', '233917008')).display || join: ', '}}.</p></div>"
+              }
+            },
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+                  "valueString": "%context.where(item.where(linkId='019d1efe-6153-7330-86ec-e8360dcc5883').item.where(linkId='019c47c6-92ae-799c-900c-0a0c2a9fbbf0').answer.value.where($this ~ %factory.Coding('http://snomed.info/sct', '251176006')).exists())"
+                }
+              ],
+              "text": {
+                "status": "generated",
+                "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Ventriculaire extrasystolen ({{%context.item.where(linkId='019d1efe-6153-7330-86ec-e8360dcc5883').item.where(linkId='019c47c6-92ae-799c-900c-0a0c2a9fbbf0').answer.where(value ~ %factory.Coding('http://snomed.info/sct', '251176006')).item.where(linkId='019c47d4-d820-799c-90ab-40eefcca48dc').answer.value.display || join: ', '}}).</p></div>"
+              }
+            },
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+                  "valueString": "%context.where(item.where(linkId='019d1efe-6153-7330-86ec-e8360dcc5883').item.where(linkId='019c47c6-92ae-799c-900c-0a0c2a9fbbf0').answer.value.where($this ~ %factory.Coding('http://snomed.info/sct', '233917008')).exists())"
+                }
+              ],
+              "text": {
+                "status": "generated",
+                "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>AV-blok: {{%context.item.where(linkId='019d1efe-6153-7330-86ec-e8360dcc5883').item.where(linkId='019c47c6-92ae-799c-900c-0a0c2a9fbbf0').answer.where(value ~ %factory.Coding('http://snomed.info/sct', '233917008')).item.where(linkId='019cd74e-0653-7000-82fa-853daf5dd419').answer.value.display || join: ', '}}.</p></div>"
+              }
+            }
+          ]
+        },
+        {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+              "valueString": "%resource.item.where(linkId='019c4706-3d88-799c-8767-fed5898075e1')"
+            }
+          ],
+          "title": "Samenvattend besluit",
+          "text": {
+            "status": "generated",
+            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><!-- sections --></div>"
+          },
+          "section": [
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+                  "valueString": "%context.where(item.where(linkId='019d1efe-6153-7330-86ec-e8360dcc5883').item.where(linkId='019c47c6-92ae-799c-900c-0a0c2a9fbbf0').answer.value.count() = 1 and item.where(linkId='019d1efe-6153-7330-86ec-e8360dcc5883').item.where(linkId='019c47c6-92ae-799c-900c-0a0c2a9fbbf0').answer.value.where($this ~ %factory.Coding('http://snomed.info/sct', '373067005')).exists() and item.where(linkId='019d1f04-a852-7330-8782-9df409bbe060').item.where(linkId='019c47f8-7000-799c-91c6-78452dea92e8').answer.value.count() = 1 and item.where(linkId='019d1f04-a852-7330-8782-9df409bbe060').item.where(linkId='019c47f8-7000-799c-91c6-78452dea92e8').answer.value.where($this ~ %factory.Coding('http://snomed.info/sct', '84229001')).exists() and item.where(linkId='019c4793-d723-799c-8c94-cd1b531f9db7').answer.value ~ %factory.Coding('http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes', '019c4798-d1de-799c-8ccc-811b82b62467'))"
+                }
+              ],
+              "text": {
+                "status": "generated",
+                "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Klinisch en elektrocardiografisch negatieve inspanningstest zonder ritmestoornissen.</p></div>"
+              }
+            },
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+                  "valueString": "%context.where((item.where(linkId='019d1efe-6153-7330-86ec-e8360dcc5883').item.where(linkId='019c47c6-92ae-799c-900c-0a0c2a9fbbf0').answer.value.count() = 1 and item.where(linkId='019d1efe-6153-7330-86ec-e8360dcc5883').item.where(linkId='019c47c6-92ae-799c-900c-0a0c2a9fbbf0').answer.value.where($this ~ %factory.Coding('http://snomed.info/sct', '373067005')).exists() and item.where(linkId='019d1f04-a852-7330-8782-9df409bbe060').item.where(linkId='019c47f8-7000-799c-91c6-78452dea92e8').answer.value.count() = 1 and item.where(linkId='019d1f04-a852-7330-8782-9df409bbe060').item.where(linkId='019c47f8-7000-799c-91c6-78452dea92e8').answer.value.where($this ~ %factory.Coding('http://snomed.info/sct', '84229001')).exists() and item.where(linkId='019c4793-d723-799c-8c94-cd1b531f9db7').answer.value ~ %factory.Coding('http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes', '019c4798-d1de-799c-8ccc-811b82b62467')).not() and (item.where(linkId='019d1f04-a852-7330-8782-9df409bbe060').item.where(linkId='019c47f8-7000-799c-91c6-78452dea92e8').answer.value.where($this ~ %factory.Coding('http://snomed.info/sct', '4568003')).exists() and item.where(linkId='019c4793-d723-799c-8c94-cd1b531f9db7').answer.value ~ %factory.Coding('http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes', '019c47aa-f82c-799c-8d6d-8c7686e1a858')))"
+                }
+              ],
+              "text": {
+                "status": "generated",
+                "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Klinisch en elektrocardiografisch afwijkende inspanningstest.</p></div>"
+              }
+            },
+            {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+                  "valueString": "%context.where((item.where(linkId='019d1efe-6153-7330-86ec-e8360dcc5883').item.where(linkId='019c47c6-92ae-799c-900c-0a0c2a9fbbf0').answer.value.count() = 1 and item.where(linkId='019d1efe-6153-7330-86ec-e8360dcc5883').item.where(linkId='019c47c6-92ae-799c-900c-0a0c2a9fbbf0').answer.value.where($this ~ %factory.Coding('http://snomed.info/sct', '373067005')).exists() and item.where(linkId='019d1f04-a852-7330-8782-9df409bbe060').item.where(linkId='019c47f8-7000-799c-91c6-78452dea92e8').answer.value.count() = 1 and item.where(linkId='019d1f04-a852-7330-8782-9df409bbe060').item.where(linkId='019c47f8-7000-799c-91c6-78452dea92e8').answer.value.where($this ~ %factory.Coding('http://snomed.info/sct', '84229001')).exists() and item.where(linkId='019c4793-d723-799c-8c94-cd1b531f9db7').answer.value ~ %factory.Coding('http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes', '019c4798-d1de-799c-8ccc-811b82b62467')).not() and (item.where(linkId='019d1f04-a852-7330-8782-9df409bbe060').item.where(linkId='019c47f8-7000-799c-91c6-78452dea92e8').answer.value.where($this ~ %factory.Coding('http://snomed.info/sct', '4568003')).exists() and item.where(linkId='019c4793-d723-799c-8c94-cd1b531f9db7').answer.value ~ %factory.Coding('http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes', '019c47aa-f82c-799c-8d6d-8c7686e1a858')).not() and item.where(linkId='019daeed-d5cf-7aa5-ae7a-55f29782be60').answer.value.exists())"
+                }
+              ],
+              "text": {
+                "status": "generated",
+                "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>{{%context.item.where(linkId='019daeed-d5cf-7aa5-ae7a-55f29782be60').answer.value}}</p></div>"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "extension": [
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/variable",
+      "valueExpression": {
+        "expression": "QuestionnaireResponse.item.where(linkId='019c4706-3d88-799c-8767-fed5898075e1').item.where(linkId='019cadf7-0fe6-7aa7-97ae-bfb0dff20e15').item.where(linkId='019cae04-716c-7aa7-9964-e193ddec2553').answer.value.display",
+        "description": "\n           question: Soort protocol - type: coding\n         - multi: None - options: stapsgewijze belasting, ramp protocol",
+        "language": "text/fhirpath",
+        "name": "soortprotocol"
+      }
+    },
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/variable",
+      "valueExpression": {
+        "expression": "QuestionnaireResponse.item.where(linkId='019c4706-3d88-799c-8767-fed5898075e1').item.where(linkId='019cadf7-0fe6-7aa7-97ae-bfb0dff20e15').item.where(linkId='019c4706-3fe6-799c-8768-c3b0a8a4738c').answer.value",
+        "description": "\n           question: Fietsproef start wattage - type: decimal\n         - unit: watt",
+        "language": "text/fhirpath",
+        "name": "fietsproefstartwattage"
+      }
+    },
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/variable",
+      "valueExpression": {
+        "expression": "QuestionnaireResponse.item.where(linkId='019c4706-3d88-799c-8767-fed5898075e1').item.where(linkId='019cadf7-0fe6-7aa7-97ae-bfb0dff20e15').item.where(linkId='019c470a-ab62-799c-87be-08a3df69201b').answer.value",
+        "description": "\n           question: Stijging van  - type: decimal\n         - unit: watt",
+        "language": "text/fhirpath",
+        "name": "stijgingvan"
+      }
+    },
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/variable",
+      "valueExpression": {
+        "expression": "QuestionnaireResponse.item.where(linkId='019c4706-3d88-799c-8767-fed5898075e1').item.where(linkId='019cadf7-0fe6-7aa7-97ae-bfb0dff20e15').item.where(linkId='019c4711-bd82-799c-87e1-a44056478612').answer.value",
+        "description": "\n           question: Per - type: decimal\n         - unit: /min",
+        "language": "text/fhirpath",
+        "name": "per"
+      }
+    },
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/variable",
+      "valueExpression": {
+        "expression": "QuestionnaireResponse.item.where(linkId='019c4706-3d88-799c-8767-fed5898075e1').item.where(linkId='019d1f04-a852-7330-8782-9df409bbe060').item.where(linkId='019c4722-e62a-799c-89e3-2c97936302a0').answer.value",
+        "description": "\n           question: Duur inspanning - type: decimal\n         - unit: minuten",
+        "language": "text/fhirpath",
+        "name": "duurinspanning"
+      }
+    },
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/variable",
+      "valueExpression": {
+        "expression": "QuestionnaireResponse.item.where(linkId='019c4706-3d88-799c-8767-fed5898075e1').item.where(linkId='019d1f04-a852-7330-8782-9df409bbe060').item.where(linkId='019d2e97-3144-7bbf-aee2-c6efd27ea4e9').answer.value",
+        "description": "",
+        "language": "text/fhirpath",
+        "name": "seconden"
+      }
+    },
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/variable",
+      "valueExpression": {
+        "expression": "QuestionnaireResponse.item.where(linkId='019c4706-3d88-799c-8767-fed5898075e1').item.where(linkId='019d1f04-a852-7330-8782-9df409bbe060').item.where(linkId='019c4722-fbce-799c-89ea-66b34dcaa3ac').answer.value",
+        "description": "\n           question: Piekbelasting - type: decimal\n         - unit: watt",
+        "language": "text/fhirpath",
+        "name": "piekbelasting"
+      }
+    },
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/variable",
+      "valueExpression": {
+        "expression": "QuestionnaireResponse.item.where(linkId='019c4706-3d88-799c-8767-fed5898075e1').item.where(linkId='019d1f04-a852-7330-8782-9df409bbe060').item.where(linkId='019d3db1-499e-7fff-851f-489b78ca6c2b').answer.value",
+        "description": "\n           question: % voorspelde hartslag - type: decimal\n         - unit: %",
+        "language": "text/fhirpath",
+        "name": "voorspeldehartslag"
+      }
+    },
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/variable",
+      "valueExpression": {
+        "expression": "QuestionnaireResponse.item.where(linkId='019c4706-3d88-799c-8767-fed5898075e1').item.where(linkId='019d1f04-a852-7330-8782-9df409bbe060').item.where(linkId='019c47f8-7000-799c-91c6-78452dea92e8').answer.value.display",
+        "description": "\n           question: Reden van stoppen - type: coding\n         - multi: True - options: vermoeidheid, retrosternale pijn, dyspnoe, locomotorische last, bloeddrukdaling, arteriële hypertensie, Optreden ritmestoornissen, Optreden belangrijke ischemie, ST heffing, submaximale test",
+        "language": "text/fhirpath",
+        "name": "redenvanstoppen"
+      }
+    },
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/variable",
+      "valueExpression": {
+        "expression": "QuestionnaireResponse.item.where(linkId='019c4706-3d88-799c-8767-fed5898075e1').item.where(linkId='019cae00-ccb5-7aa7-98d8-d36646c999be').item.where(linkId='019c4781-6e9b-799c-8b9b-34802222313f').answer.value",
+        "description": "\n           question: Max syst bloeddruk - type: decimal\n         - unit: mmHg",
+        "language": "text/fhirpath",
+        "name": "maxsystbloeddruk"
+      }
+    },
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/variable",
+      "valueExpression": {
+        "expression": "QuestionnaireResponse.item.where(linkId='019c4706-3d88-799c-8767-fed5898075e1').item.where(linkId='019cae00-ccb5-7aa7-98d8-d36646c999be').item.where(linkId='019c4783-92fe-799c-8bf0-bb4495251181').answer.value",
+        "description": "\n           question: Max diast bloeddruk - type: decimal\n         - unit: mmHg",
+        "language": "text/fhirpath",
+        "name": "maxdiastbloeddruk"
+      }
+    },
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/variable",
+      "valueExpression": {
+        "expression": "QuestionnaireResponse.item.where(linkId='019c4706-3d88-799c-8767-fed5898075e1').item.where(linkId='019cae00-ccb5-7aa7-98d8-d36646c999be').item.where(linkId='019c4722-ab9a-799c-89d7-d63ae4523168').answer.value",
+        "description": "\n           question: Max hartslag - type: decimal\n         - unit: /min",
+        "language": "text/fhirpath",
+        "name": "maxhartslag"
+      }
+    },
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/variable",
+      "valueExpression": {
+        "expression": "QuestionnaireResponse.item.where(linkId='019c4706-3d88-799c-8767-fed5898075e1').item.where(linkId='019cae00-ccb5-7aa7-98d8-d36646c999be').item.where(linkId='019c6b40-3452-777a-be3a-dd349ad2c387').answer.value.display",
+        "description": "\n           question: Interpretatie maximale hartslag - type: coding\n         - multi: None - options: onder betablokkade, onvoldoende betablokkade, onvolledige betablokkade, goede betablokkade, te sterke betablokkade, onder bradycardiserende calciumantagonist",
+        "language": "text/fhirpath",
+        "name": "interpretatiemaximalehartslag"
+      }
+    },
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/variable",
+      "valueExpression": {
+        "expression": "QuestionnaireResponse.item.where(linkId='019c4706-3d88-799c-8767-fed5898075e1').item.where(linkId='019c4793-d723-799c-8c94-cd1b531f9db7').answer.value.display",
+        "description": "\n           question: Repolarisatie - type: coding\n         - multi: True - options: geen wijzigingen, J punt daling, ST wijziging, niet te beoordelen",
+        "language": "text/fhirpath",
+        "name": "repolarisatie"
+      }
+    },
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/variable",
+      "valueExpression": {
+        "expression": "QuestionnaireResponse.item.where(linkId='019c4706-3d88-799c-8767-fed5898075e1').item.where(linkId='019c4793-d723-799c-8c94-cd1b531f9db7').answer.item.where(linkId='019c479b-b403-799c-8ce4-9701188c1cc8').answer.value.display",
+        "description": "\n           question: Niet te beoordelen door: - type: coding\n         - multi: None - options: Pacemaker, volledig linker bundeltakblok, Inspanningsgebonden linker bundeltakblok, ICD (defibrillator), Digitalis impregnatie, Wolff-Parkinson-White",
+        "language": "text/fhirpath",
+        "name": "niettebeoordelendoor"
+      }
+    },
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/variable",
+      "valueExpression": {
+        "expression": "QuestionnaireResponse.item.where(linkId='019c4706-3d88-799c-8767-fed5898075e1').item.where(linkId='019c4793-d723-799c-8c94-cd1b531f9db7').answer.item.where(linkId='019d1f6c-3076-722f-aa97-873d56c4a093').item.where(linkId='019c47a7-9ae4-799c-8d54-c67b61699b73').answer.value.display",
+        "description": "\n           question: 019c47a7-9ae4-799c-8d54-c67b61699b73 - type: coding\n         - multi: None - options: ST heffing, ST daling",
+        "language": "text/fhirpath",
+        "name": "019c47a7-9ae4-799c-8d54-c67b61699b73"
+      }
+    },
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/variable",
+      "valueExpression": {
+        "expression": "QuestionnaireResponse.item.where(linkId='019c4706-3d88-799c-8767-fed5898075e1').item.where(linkId='019c4793-d723-799c-8c94-cd1b531f9db7').answer.item.where(linkId='019d1f6c-3076-722f-aa97-873d56c4a093').item.where(linkId='019c47ac-8b40-799c-8d81-c6b0c5d27d87').answer.value",
+        "description": "\n           question: Maximale ST wijziging - type: decimal\n         - unit: mm",
+        "language": "text/fhirpath",
+        "name": "maximalestwijziging"
+      }
+    },
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/variable",
+      "valueExpression": {
+        "expression": "QuestionnaireResponse.item.where(linkId='019c4706-3d88-799c-8767-fed5898075e1').item.where(linkId='019c4793-d723-799c-8c94-cd1b531f9db7').answer.item.where(linkId='019d1f6c-3076-722f-aa97-873d56c4a093').item.where(linkId='019c6b54-0b22-777a-be95-745085be605a').answer.value.display",
+        "description": "\n           question: Slope ST segment - type: coding\n         - multi: None - options: stijgend, horizontaal, dalend",
+        "language": "text/fhirpath",
+        "name": "slopestsegment"
+      }
+    },
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/variable",
+      "valueExpression": {
+        "expression": "QuestionnaireResponse.item.where(linkId='019c4706-3d88-799c-8767-fed5898075e1').item.where(linkId='019c4793-d723-799c-8c94-cd1b531f9db7').answer.item.where(linkId='019d1f6c-3076-722f-aa97-873d56c4a093').item.where(linkId='019c47ae-0724-799c-8d96-534c9cf7391f').answer.value.display",
+        "description": "\n           question: Aanwezig in afleidingen:  - type: coding\n         - multi: None - options: V1, V2, V3, V4, V5, V6, I, II, III, aVR, aVL, AVF",
+        "language": "text/fhirpath",
+        "name": "aanweziginafleidingen"
+      }
+    },
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/variable",
+      "valueExpression": {
+        "expression": "QuestionnaireResponse.item.where(linkId='019c4706-3d88-799c-8767-fed5898075e1').item.where(linkId='019c4793-d723-799c-8c94-cd1b531f9db7').answer.item.where(linkId='019d1f6c-3076-722f-aa97-873d56c4a093').item.where(linkId='019c8ef4-5c19-799c-a485-bd9b43e4137d').answer.value.display",
+        "description": "\n           question: Interpretatie - type: coding\n         - multi: None - options: niet significant, rand significant, significant",
+        "language": "text/fhirpath",
+        "name": "interpretatie"
+      }
+    },
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/variable",
+      "valueExpression": {
+        "expression": "QuestionnaireResponse.item.where(linkId='019c4706-3d88-799c-8767-fed5898075e1').item.where(linkId='019d1efe-6153-7330-86ec-e8360dcc5883').item.where(linkId='019c47c6-92ae-799c-900c-0a0c2a9fbbf0').answer.value.display",
+        "description": "\n           question: Ritmestoornissen - type: coding\n         - multi: True - options: geen, ventriculaire extrasystolen, supraventriculaire extrasystole, extrasystolen, atriumfibrilatie, atriale flutter: typisch, atriale flutter: atypisch, supraventriculaire tachycardie, niet-aanhoudende ventrikel tacycardie, aanhoudende ventriculaire tachycardie, ventrikelfibrillatie, AV-blok",
+        "language": "text/fhirpath",
+        "name": "ritmestoornissen"
+      }
+    },
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/variable",
+      "valueExpression": {
+        "expression": "QuestionnaireResponse.item.where(linkId='019c4706-3d88-799c-8767-fed5898075e1').item.where(linkId='019d1efe-6153-7330-86ec-e8360dcc5883').item.where(linkId='019c47d4-d820-799c-90ab-40eefcca48dc').answer.value.display",
+        "description": "\n           question: Ventriculaire extrasystolen - type: coding\n         - multi: None - options: zeldzame ventriculaire extrasystolen, frequente ventriculaire extrasystolen, unifocaal ventriculaire extrasystolen, multifocale ventriculaire extrasystolen, couplet ventriculair, triplet ventriculair, nemen af bij inspanning, nemen toe bij inspanning",
+        "language": "text/fhirpath",
+        "name": "ventriculaireextrasystolen"
+      }
+    },
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/variable",
+      "valueExpression": {
+        "expression": "QuestionnaireResponse.item.where(linkId='019c4706-3d88-799c-8767-fed5898075e1').item.where(linkId='019d1efe-6153-7330-86ec-e8360dcc5883').item.where(linkId='019cd74e-0653-7000-82fa-853daf5dd419').answer.value.display",
+        "description": "\n           question: AV-blok (mooie tekstgeneratie) - type: coding\n         - multi: None - options: eerstegraads atrioventriculair blok, tweedegraads atrioventriculair blok (Mobitz type 1), tweedegraads atrioventriculair blok (Mobitz type 2), derdegraads atrioventriculair blok, verdwijnt bij inspanning, treedt op bij inspanning",
+        "language": "text/fhirpath",
+        "name": "avblokmooietekstgeneratie"
+      }
+    },
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/variable",
+      "valueExpression": {
+        "expression": "QuestionnaireResponse.item.where(linkId='019c4706-3d88-799c-8767-fed5898075e1').item.where(linkId='019d1f10-2e2e-7330-8882-58c6448c0c49').answer.value",
+        "description": "\n           question: Besluit 1 - type: text\n        ",
+        "language": "text/fhirpath",
+        "name": "besluit1"
+      }
+    },
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/variable",
+      "valueExpression": {
+        "expression": "QuestionnaireResponse.item.where(linkId='019c4706-3d88-799c-8767-fed5898075e1').item.where(linkId='019d1f16-b3f6-7330-88b7-a854e5117462').answer.value",
+        "description": "\n           question: Besluit 2 - type: text\n        ",
+        "language": "text/fhirpath",
+        "name": "besluit2"
+      }
+    },
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/variable",
+      "valueExpression": {
+        "expression": "QuestionnaireResponse.item.where(linkId='019c4706-3d88-799c-8767-fed5898075e1').item.where(linkId='019d3db2-e0c4-7fff-854c-95b40a1d03e7').item.where(linkId='019cae08-1c3a-7aa7-99b8-b65a55f18c29').answer.value.display",
+        "description": "\n           question: Regadenoson stress test - type: coding\n         - multi: None - options: ja, nee",
+        "language": "text/fhirpath",
+        "name": "regadenosonstresstest"
+      }
+    },
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/variable",
+      "valueExpression": {
+        "expression": "QuestionnaireResponse.item.where(linkId='019c4706-3d88-799c-8767-fed5898075e1').item.where(linkId='019d3db2-e0c4-7fff-854c-95b40a1d03e7').item.where(linkId='019d3dae-17e0-7fff-84fb-868b50067657').answer.value.display",
+        "description": "\n           question: Ligfiets - type: coding\n         - multi: None - options: ja, nee",
+        "language": "text/fhirpath",
+        "name": "ligfiets"
+      }
+    },
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/variable",
+      "valueExpression": {
+        "expression": "QuestionnaireResponse.item.where(linkId='019c4706-3d88-799c-8767-fed5898075e1').item.where(linkId='019d3db2-e0c4-7fff-854c-95b40a1d03e7').item.where(linkId='019d6870-0942-7666-abed-f626d68a5490').answer.value.display",
+        "description": "\n           question: Spiro - type: coding\n         - multi: None - options: ja, nee",
+        "language": "text/fhirpath",
+        "name": "spiro"
+      }
+    },
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/variable",
+      "valueExpression": {
+        "expression": "QuestionnaireResponse.item.where(linkId='019c4706-3d88-799c-8767-fed5898075e1').item.where(linkId='019d6870-2ee5-7666-abf2-84d50a0d88a5').answer.value",
+        "description": "\n           question: Nieuwe blok toevoegen voor spiro (kijk naar verschillende artsen om data punten te kennen) - type: string\n        ",
+        "language": "text/fhirpath",
+        "name": "nieuwebloktoevoegenvoorspirokijknaarverschillendeartsenomdatapuntentekennen"
+      }
+    },
+    {
+      "url": "http://fhir.tiro.health/StructureDefinition/narrative-template",
+      "valueExpression": {
+        "expression": "{%- comment -%} === SECTION 1: HEADER === {%- endcomment -%}\n{%- assign root = QuestionnaireResponse | fhirpath: \"item.where(linkId='019c4706-3d88-799c-8767-fed5898075e1')\" | first -%}\n{%- assign test_type_group = root | fhirpath: \"item.where(linkId='019d3db2-e0c4-7fff-854c-95b40a1d03e7')\" | first -%}\n{%- assign ligfiets = test_type_group | fhirpath: \"item.where(linkId='019d3dae-17e0-7fff-84fb-868b50067657').answer[0].valueCoding.display\" | first -%}\n{%- assign regadenoson = test_type_group | fhirpath: \"item.where(linkId='019cae08-1c3a-7aa7-99b8-b65a55f18c29').answer[0].valueCoding.display\" | first -%}\n{%- assign spiro = test_type_group | fhirpath: \"item.where(linkId='019d6870-0942-7666-abed-f626d68a5490').answer[0].valueCoding.display\" | first -%}\n\n{%- if regadenoson == \"ja\" -%}\n<div>Regadenoson stresstest. Dit is géén fietsproef.</div>\n{%- else -%}\n<div>Inspanningstest op {%- if ligfiets == \"ja\" %} een ligfiets{%- else %} fiets{%- endif -%}{%- if spiro == \"ja\" %} met spiroergometrie{%- endif -%}.</div>\n{%- endif -%}\n\n{%- comment -%} === SECTION 2: PROTOCOL === {%- endcomment -%}\n{%- assign protocol_group = root | fhirpath: \"item.where(linkId='019cadf7-0fe6-7aa7-97ae-bfb0dff20e15')\" | first -%}\n{%- assign soort_protocol = protocol_group | fhirpath: \"item.where(linkId='019cae04-716c-7aa7-9964-e193ddec2553').answer[0].valueCoding.display\" | first -%}\n{%- assign start_wattage = protocol_group | fhirpath: \"item.where(linkId='019c4706-3fe6-799c-8768-c3b0a8a4738c').answer[0].valueDecimal\" | first -%}\n{%- assign stijging = protocol_group | fhirpath: \"item.where(linkId='019c470a-ab62-799c-87be-08a3df69201b').answer[0].valueDecimal\" | first -%}\n{%- assign per_min = protocol_group | fhirpath: \"item.where(linkId='019c4711-bd82-799c-87e1-a44056478612').answer[0].valueDecimal\" | first -%}\n\n<div>Start aan {{ start_wattage | default: \"XXX\" }}W met een\n{%- if soort_protocol -%}\n  {%- if soort_protocol == \"stapsgewijze belasting\" %} stapsgewijze\n  {%- elsif soort_protocol == \"ramp protocol\" %} geleidelijke\n  {%- endif -%}\n{%- else %} XXX\n{%- endif %} stijging van {{ stijging | default: \"XXX\" }} W per {{ per_min | default: \"XXX\" }} minuten.</div>\n\n{%- comment -%} === SECTION 3: INSPANNING === {%- endcomment -%}\n{%- assign inspanning_group = root | fhirpath: \"item.where(linkId='019d1f04-a852-7330-8782-9df409bbe060')\" | first -%}\n{%- assign duur = inspanning_group | fhirpath: \"item.where(linkId='019c4722-e62a-799c-89e3-2c97936302a0').answer[0].valueDecimal\" | first -%}\n{%- assign seconden = inspanning_group | fhirpath: \"item.where(linkId='019d2e97-3144-7bbf-aee2-c6efd27ea4e9').answer[0].valueDecimal\" | first -%}\n{%- assign piekbelasting = inspanning_group | fhirpath: \"item.where(linkId='019c4722-fbce-799c-89ea-66b34dcaa3ac').answer[0].valueDecimal\" | first -%}\n{%- assign reden_stoppen = inspanning_group | fhirpath: \"item.where(linkId='019c47f8-7000-799c-91c6-78452dea92e8').answer.valueCoding.display\" -%}\n\n<div>Inspanning van {{ duur | default: \"XXX\" }} minuten\n{%- if seconden %} (en {{ seconden }} seconden){%- endif %} met een piekbelasting van {{ piekbelasting | default: \"XXX\" }} W.</div>\n\n{%- if reden_stoppen.size > 0 -%}\n<div>Reden voor stoppen van de test: {{ reden_stoppen | join: \", \" }}.</div>\n{%- else -%}\n<div>Reden voor stoppen van de test: XXX.</div>\n{%- endif -%}\n\n{%- comment -%} === SECTION 4: BLOEDDRUK & HARTSLAG === {%- endcomment -%}\n{%- assign bloeddruk_group = root | fhirpath: \"item.where(linkId='019cae00-ccb5-7aa7-98d8-d36646c999be')\" | first -%}\n{%- assign max_syst = bloeddruk_group | fhirpath: \"item.where(linkId='019c4781-6e9b-799c-8b9b-34802222313f').answer[0].valueDecimal\" | first -%}\n{%- assign max_diast = bloeddruk_group | fhirpath: \"item.where(linkId='019c4783-92fe-799c-8bf0-bb4495251181').answer[0].valueDecimal\" | first -%}\n\n{%- assign hartslag_group = root | fhirpath: \"item.where(linkId='019db547-c962-7009-8baf-e510f6db2569')\" | first -%}\n{%- assign max_hartslag = hartslag_group | fhirpath: \"item.where(linkId='019db547-cba8-7009-8bb0-07b539cf1857').answer[0].valueDecimal\" | first -%}\n{%- assign pct_max_hartslag = hartslag_group | fhirpath: \"item.where(linkId='019db547-cba8-7009-8bb0-156a90a26a89').answer[0].valueDecimal\" | first -%}\n\n{%- assign interpretatie_hartslag = hartslag_group | fhirpath: \"item.where(linkId='019c6b40-3452-777a-be3a-dd349ad2c387').answer[0].valueCoding.display\" | first -%}\n\n{%- if interpretatie_hartslag == \"onder betablokkade\" -%}\n  {%- assign interpretatie_tekst = \"onder betablokkade\" -%}\n{%- elsif interpretatie_hartslag == \"onvoldoende betablokkade\" -%}\n  {%- assign interpretatie_tekst = \"Wijzend op onvoldoende betablokkade\" -%}\n{%- elsif interpretatie_hartslag == \"onvolledige betablokkade\" -%}\n  {%- assign interpretatie_tekst = \"Wijzend op onvolledige betablokkade\" -%}\n{%- elsif interpretatie_hartslag == \"goede betablokkade\" -%}\n  {%- assign interpretatie_tekst = \"Wijzend op goede betablokkade\" -%}\n{%- elsif interpretatie_hartslag == \"te sterke betablokkade\" -%}\n  {%- assign interpretatie_tekst = \"Wijzend op te sterke betablokkade\" -%}\n{%- elsif interpretatie_hartslag == \"onder bradycardiserende calciumantagonist\" -%}\n  {%- assign interpretatie_tekst = \"Onder bradycardiserende calciumantagonist\" -%}\n{%- endif -%}\n\n<div>Maximale bloeddruk: {{ max_syst | default: \"XXX\" }}/{{ max_diast | default: \"XXX\" }} mmHg en maximale hartslag: {{ max_hartslag | default: \"XXX\" }}/min ({{ pct_max_hartslag | default: \"XXX\" }}% van verwachte maximum){%- if interpretatie_tekst %}, {{ interpretatie_tekst }}{%- endif %}.</div>\n\n{%- comment -%} === SECTION 5: REPOLARISATIE === {%- endcomment -%}\n{%- assign repolarisatie_item = root | fhirpath: \"item.where(linkId='019c4793-d723-799c-8c94-cd1b531f9db7')\" | first -%}\n{%- assign repolarisatie = repolarisatie_item | fhirpath: \"answer[0].valueCoding.display\" | first -%}\n\n{%- if repolarisatie == \"geen wijzigingen\" or repolarisatie == \"Geen wijzigingen\" -%}\n<div>Repolarisatie: geen significante wijzigingen.</div>\n\n{%- elsif repolarisatie == \"J punt daling\" -%}\n<div>Repolarisatie: J punt daling.</div>\n\n{%- elsif repolarisatie == \"ST wijziging\" -%}\n{%- assign st_group = repolarisatie_item | fhirpath: \"answer[0].item.where(linkId='019d1f6c-3076-722f-aa97-873d56c4a093')\" | first -%}\n{%- assign st_type = st_group | fhirpath: \"item.where(linkId='019c47a7-9ae4-799c-8d54-c67b61699b73').answer[0].valueCoding.display\" | first -%}\n{%- assign st_mm = st_group | fhirpath: \"item.where(linkId='019c47ac-8b40-799c-8d81-c6b0c5d27d87').answer[0].valueDecimal\" | first -%}\n{%- assign st_slope = st_group | fhirpath: \"item.where(linkId='019c6b54-0b22-777a-be95-745085be605a').answer[0].valueCoding.display\" | first -%}\n{%- assign st_afleidingen = st_group | fhirpath: \"item.where(linkId='019c47ae-0724-799c-8d96-534c9cf7391f').answer.valueCoding.display\" -%}\n{%- assign st_interpretatie = st_group | fhirpath: \"item.where(linkId='019c8ef4-5c19-799c-a485-bd9b43e4137d').answer[0].valueCoding.display\" | first -%}\n\n{%- if st_type or st_mm or st_slope or st_afleidingen.size > 0 or st_interpretatie -%}\n<div>Repolarisatie: {{ st_interpretatie | default: \"XXX\" }} {{ st_type | default: \"XXX\" }} van {{ st_mm | default: \"XXX\" }}mm ({{ st_slope | default: \"XXX\" }} segment) in afleidingen: {{ st_afleidingen | join: \", \" | default: \"XXX\" }}.</div>\n{%- else -%}\n<div>Repolarisatie: ST wijziging.</div>\n{%- endif -%}\n\n{%- elsif repolarisatie == \"niet te beoordelen\" -%}\n{%- assign niet_beoordeel_reden = repolarisatie_item | fhirpath: \"answer[0].item.where(linkId='019c479b-b403-799c-8ce4-9701188c1cc8').answer[0].valueCoding.display\" | first -%}\n\n{%- if niet_beoordeel_reden == \"Pacemaker\" -%}\n  {%- assign niet_beoordeel_tekst = \"aanwezigheid van een pacemaker\" -%}\n{%- elsif niet_beoordeel_reden == \"ICD (defibrillator)\" -%}\n  {%- assign niet_beoordeel_tekst = \"aanwezigheid van een defibrillator\" -%}\n{%- elsif niet_beoordeel_reden == \"volledig linker bundeltakblok\" -%}\n  {%- assign niet_beoordeel_tekst = \"volledig linker bundeltakblok\" -%}\n{%- elsif niet_beoordeel_reden == \"Inspanningsgebonden linker bundeltakblok\" -%}\n  {%- assign niet_beoordeel_tekst = \"inspanningsgebonden linker bundeltakblok\" -%}\n{%- elsif niet_beoordeel_reden == \"Digitalis impregnatie\" -%}\n  {%- assign niet_beoordeel_tekst = \"digitalis impregnatie\" -%}\n{%- elsif niet_beoordeel_reden == \"Wolff-Parkinson-White\" -%}\n  {%- assign niet_beoordeel_tekst = \"Wolff-Parkinson White syndroom\" -%}\n{%- else -%}\n  {%- assign niet_beoordeel_tekst = \"XXX\" -%}\n{%- endif -%}\n\n<div>Repolarisatie: niet te beoordelen door {{ niet_beoordeel_tekst }}.</div>\n\n{%- else -%}\n<div>Repolarisatie: XXX.</div>\n{%- endif -%}\n\n{%- comment -%} === SECTION 6: RITMESTOORNISSEN === {%- endcomment -%}\n{%- assign ritme_group = root | fhirpath: \"item.where(linkId='019d1efe-6153-7330-86ec-e8360dcc5883')\" | first -%}\n{%- assign ritmestoornissen = ritme_group | fhirpath: \"item.where(linkId='019c47c6-92ae-799c-900c-0a0c2a9fbbf0').answer.valueCoding.display\" -%}\n{%- assign ventr_extrasystolen_raw = ritme_group | fhirpath: \"item.where(linkId='019c47d4-d820-799c-90ab-40eefcca48dc').answer.valueCoding.display\" -%}\n{%- assign av_blok_raw = ritme_group | fhirpath: \"item.where(linkId='019cd74e-0653-7000-82fa-853daf5dd419').answer.valueCoding.display\" -%}\n\n{%- comment -%} Map ventriculaire extrasystolen options to short form {%- endcomment -%}\n{%- assign ventr_mapped = \"\" -%}\n{%- for v in ventr_extrasystolen_raw -%}\n  {%- if v == \"zeldzame ventriculaire extrasystolen\" -%}{%- assign ventr_mapped = ventr_mapped | append: \"zeldzaam,\" -%}\n  {%- elsif v == \"frequente ventriculaire extrasystolen\" -%}{%- assign ventr_mapped = ventr_mapped | append: \"frequent,\" -%}\n  {%- elsif v == \"unifocaal ventriculaire extrasystolen\" -%}{%- assign ventr_mapped = ventr_mapped | append: \"unifocaal,\" -%}\n  {%- elsif v == \"multifocale ventriculaire extrasystolen\" -%}{%- assign ventr_mapped = ventr_mapped | append: \"multifocaal,\" -%}\n  {%- elsif v == \"couplet ventriculair\" -%}{%- assign ventr_mapped = ventr_mapped | append: \"ventriculair couplet,\" -%}\n  {%- elsif v == \"triplet ventriculair\" -%}{%- assign ventr_mapped = ventr_mapped | append: \"ventriculair triplet,\" -%}\n  {%- elsif v == \"nemen af bij inspanning\" -%}{%- assign ventr_mapped = ventr_mapped | append: \"afnemend bij inspanning,\" -%}\n  {%- elsif v == \"nemen toe bij inspanning\" -%}{%- assign ventr_mapped = ventr_mapped | append: \"toenemend bij inspanning,\" -%}\n  {%- endif -%}\n{%- endfor -%}\n{%- assign ventr_mapped = ventr_mapped | remove_last: \",\" | split: \",\" -%}\n\n{%- comment -%} Map AV-blok options to short form {%- endcomment -%}\n{%- assign av_mapped = \"\" -%}\n{%- for a in av_blok_raw -%}\n  {%- if a == \"eerstegraads atrioventriculair blok\" -%}{%- assign av_mapped = av_mapped | append: \"eerstegraads,\" -%}\n  {%- elsif a == \"tweedegraads atrioventriculair blok (Mobitz type 1)\" -%}{%- assign av_mapped = av_mapped | append: \"tweedegraads Mobitz type 1,\" -%}\n  {%- elsif a == \"tweedegraads atrioventriculair blok (Mobitz type 2)\" -%}{%- assign av_mapped = av_mapped | append: \"tweedegraads Mobitz type 2,\" -%}\n  {%- elsif a == \"derdegraads atrioventriculair blok\" -%}{%- assign av_mapped = av_mapped | append: \"derdegraads,\" -%}\n  {%- elsif a == \"verdwijnt bij inspanning\" -%}{%- assign av_mapped = av_mapped | append: \"verdwijnt bij inspanning,\" -%}\n  {%- elsif a == \"treedt op bij inspanning\" -%}{%- assign av_mapped = av_mapped | append: \"treedt op bij inspanning,\" -%}\n  {%- endif -%}\n{%- endfor -%}\n{%- assign av_mapped = av_mapped | remove_last: \",\" | split: \",\" -%}\n\n{%- if ritmestoornissen.size > 0 -%}\n  {%- if ritmestoornissen.first == \"geen\" -%}\n<div>Ritmestoornissen: geen.</div>\n  {%- else -%}\n<div>Ritmestoornissen: {% for r in ritmestoornissen -%}{%- if forloop.first == false %}, {% endif -%}{{- r -}}\n{%- if r == \"ventriculaire extrasystolen\" -%}{%- if ventr_mapped.size > 0 and ventr_mapped.first != \"\" %} ({{ ventr_mapped | join: \", \" }}){%- endif -%}{%- endif -%}\n{%- if r == \"AV-blok\" -%}{%- if av_mapped.size > 0 and av_mapped.first != \"\" %} ({{ av_mapped | join: \", \" }}){%- endif -%}{%- endif -%}\n{%- endfor -%}.</div>\n  {%- endif -%}\n{%- else -%}\n<div>Ritmestoornissen: XXX.</div>\n{%- endif -%}\n\n{%- comment -%} === SECTION 7: BESLUIT === {%- endcomment -%}\n{%- assign besluit = root | fhirpath: \"item.where(linkId='019daeed-d5cf-7aa5-ae7a-55f29782be60').answer[0].valueString\" | first -%}\n{%- assign besluit1 = root | fhirpath: \"item.where(linkId='019d1f10-2e2e-7330-8882-58c6448c0c49').answer[0].valueString\" | first -%}\n{%- assign besluit2 = root | fhirpath: \"item.where(linkId='019d1f16-b3f6-7330-88b7-a854e5117462').answer[0].valueString\" | first -%}\n<br/>\n{%- if besluit1 -%}\n<div>{{ besluit1 }}</div>\n{%- elsif besluit2 -%}\n<div>{{ besluit2 }}</div>\n{%- elsif besluit -%}\n<div>{{ besluit }}</div>\n{%- endif -%}\n",
+        "language": "text/liquid"
+      }
+    },
+    {
+      "url": "http://fhir.tiro.health/StructureDefinition/questionnaire-preset",
+      "valueReference": {
+        "reference": "#preset-1",
+        "display": "Fiets 50W/25W-2MIN"
+      }
+    },
+    {
+      "url": "http://fhir.tiro.health/StructureDefinition/questionnaire-preset",
+      "valueReference": {
+        "reference": "#preset-2",
+        "display": "Fiets 50W/25W-1.5MIN"
+      }
+    },
+    {
+      "url": "http://fhir.tiro.health/StructureDefinition/questionnaire-preset",
+      "valueReference": {
+        "reference": "#preset-3",
+        "display": "Fiets 50W/50W-2MIN"
+      }
+    },
+    {
+      "url": "http://fhir.tiro.health/StructureDefinition/questionnaire-preset",
+      "valueReference": {
+        "reference": "#preset-4",
+        "display": "Fiets 50W/50W-1.5MIN"
+      }
+    },
+    {
+      "url": "http://fhir.tiro.health/StructureDefinition/questionnaire-preset",
+      "valueReference": {
+        "reference": "#preset-5",
+        "display": "Fiets 25W/10W-1MIN"
+      }
+    },
+    {
+      "url": "http://fhir.tiro.health/StructureDefinition/questionnaire-preset",
+      "valueReference": {
+        "reference": "#preset-6",
+        "display": "Regadenoson"
+      }
+    },
+    {
+      "url": "http://fhir.tiro.health/StructureDefinition/questionnaire-preset",
+      "valueReference": {
+        "reference": "#preset-7",
+        "display": "Fiets 30W/10W-1MIN"
+      }
+    },
+    {
+      "url": "http://fhir.tiro.health/StructureDefinition/questionnaire-preset",
+      "valueReference": {
+        "reference": "#preset-8",
+        "display": "Fiets 80W/40W-3MIN"
+      }
+    },
+    {
+      "url": "http://fhir.tiro.health/StructureDefinition/questionnaire-preset",
+      "valueReference": {
+        "reference": "#preset-9",
+        "display": "ligfiets"
+      }
+    },
+    {
+      "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtract",
+      "extension": [
+        {
+          "url": "template",
+          "valueReference": {
+            "reference": "#composition-template"
+          }
+        }
+      ]
+    }
+  ],
+  "item": [
+    {
+      "enableWhen": [],
+      "enableBehavior": "any",
+      "disabledDisplay": "hidden",
+      "linkId": "019c4706-3d88-799c-8767-fed5898075e1",
+      "type": "group",
+      "text": "Inspanningstest",
+      "code": [
+        {
+          "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/technical-key",
+          "code": "inspanningstest",
+          "display": "inspanningstest"
+        }
+      ],
+      "item": [
+        {
+          "enableWhen": [
+            {
+              "question": "019cae08-1c3a-7aa7-99b8-b65a55f18c29",
+              "operator": "=",
+              "answerCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "373067005",
+                "display": "nee"
+              }
+            }
+          ],
+          "enableBehavior": "all",
+          "disabledDisplay": "hidden",
+          "linkId": "019cadf7-0fe6-7aa7-97ae-bfb0dff20e15",
+          "type": "group",
+          "text": "",
+          "code": [
+            {
+              "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/technical-key",
+              "code": "019cadf7-0fe6-7aa7-97ae-bfb0dff20e15",
+              "display": "019cadf7-0fe6-7aa7-97ae-bfb0dff20e15"
+            }
+          ],
+          "item": [
+            {
+              "linkId": "019cae04-716c-7aa7-9964-e193ddec2553",
+              "type": "coding",
+              "text": "Soort protocol",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/technical-key",
+                  "code": "soort_protocol",
+                  "display": "soort_protocol"
+                }
+              ],
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "chips",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "chips"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+                  "valueExpression": {
+                    "name": "019cae04-716c-7aa7-9964-e193ddec2553",
+                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueCoding.display -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                    "language": "text/liquid"
+                  }
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                    "code": "019cae06-4d63-7aa7-9977-6b19b8fcda3c",
+                    "display": "stapsgewijze belasting"
+                  },
+                  "initialSelected": false
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                    "code": "019cae06-93ea-7aa7-9978-21eacda189a5",
+                    "display": "ramp protocol"
+                  },
+                  "initialSelected": false
+                }
+              ]
+            },
+            {
+              "linkId": "019c4706-3fe6-799c-8768-c3b0a8a4738c",
+              "type": "decimal",
+              "text": "Fietsproef start wattage",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/technical-key",
+                  "code": "fietsproef_start_wattage",
+                  "display": "fietsproef_start_wattage"
+                }
+              ],
+              "required": false,
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "decimal-field",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "decimal-field"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+                  "valueExpression": {
+                    "name": "019c4706-3fe6-799c-8768-c3b0a8a4738c",
+                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer_display = item.answer[0].valueDecimal -%}\n{%- assign Answer_unit = item | unit -%}\n{%- if Answer_display -%}\n{%- assign Answer = Answer_display | append: ' ' | append: Answer_unit -%}\n{%- endif -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                    "language": "text/liquid"
+                  }
+                },
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-unit",
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                    "code": "019c470a-8e05-799c-87af-5a2c3fd1a312",
+                    "display": "watt"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "019c470a-ab62-799c-87be-08a3df69201b",
+              "type": "decimal",
+              "text": "Stijging van ",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/technical-key",
+                  "code": "stijging_van",
+                  "display": "stijging_van"
+                }
+              ],
+              "required": false,
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "decimal-field",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "decimal-field"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+                  "valueExpression": {
+                    "name": "019c470a-ab62-799c-87be-08a3df69201b",
+                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer_display = item.answer[0].valueDecimal -%}\n{%- assign Answer_unit = item | unit -%}\n{%- if Answer_display -%}\n{%- assign Answer = Answer_display | append: ' ' | append: Answer_unit -%}\n{%- endif -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                    "language": "text/liquid"
+                  }
+                },
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-unit",
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                    "code": "019c8ef0-6ce9-799c-a3cf-3b1cdf737cf4",
+                    "display": "watt"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "019c4711-bd82-799c-87e1-a44056478612",
+              "type": "decimal",
+              "text": "Per",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/technical-key",
+                  "code": "per",
+                  "display": "per"
+                }
+              ],
+              "required": false,
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "decimal-field",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "decimal-field"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+                  "valueExpression": {
+                    "name": "019c4711-bd82-799c-87e1-a44056478612",
+                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer_display = item.answer[0].valueDecimal -%}\n{%- assign Answer_unit = item | unit -%}\n{%- if Answer_display -%}\n{%- assign Answer = Answer_display | append: ' ' | append: Answer_unit -%}\n{%- endif -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                    "language": "text/liquid"
+                  }
+                },
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-unit",
+                  "valueCoding": {
+                    "system": "http://unitsofmeasure.org",
+                    "code": "/min",
+                    "display": "/min"
+                  }
+                }
+              ]
+            }
+          ],
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "compact-list",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "compact-list"
+                  }
+                ]
+              }
+            },
+            {
+              "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+              "valueExpression": {
+                "name": "019cadf7-0fe6-7aa7-97ae-bfb0dff20e15",
+                "expression": "{%- assign soort_protocol = item | fhirpath : \"item.where(linkId='019cae04-716c-7aa7-9964-e193ddec2553')\" | first -%}\n{%- assign fietsproef_start_wattage = item | fhirpath : \"item.where(linkId='019c4706-3fe6-799c-8768-c3b0a8a4738c')\" | first -%}\n{%- assign stijging_van = item | fhirpath : \"item.where(linkId='019c470a-ab62-799c-87be-08a3df69201b')\" | first -%}\n{%- assign per = item | fhirpath : \"item.where(linkId='019c4711-bd82-799c-87e1-a44056478612')\" | first -%}\n{%- if item.text -%}\n{%- assign GroupTitle = item.text -%}\n<h2>{{ GroupTitle }}</h2>\n{%- endif -%}\n{%- render \"019cae04-716c-7aa7-9964-e193ddec2553\", item:soort_protocol -%}\n{%- render \"019c4706-3fe6-799c-8768-c3b0a8a4738c\", item:fietsproef_start_wattage -%}\n{%- render \"019c470a-ab62-799c-87be-08a3df69201b\", item:stijging_van -%}\n{%- render \"019c4711-bd82-799c-87e1-a44056478612\", item:per -%}\n",
+                "language": "text/liquid"
+              }
+            }
+          ]
+        },
+        {
+          "enableWhen": [
+            {
+              "question": "019cae08-1c3a-7aa7-99b8-b65a55f18c29",
+              "operator": "=",
+              "answerCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "373067005",
+                "display": "nee"
+              }
+            }
+          ],
+          "enableBehavior": "all",
+          "disabledDisplay": "hidden",
+          "linkId": "019d1f04-a852-7330-8782-9df409bbe060",
+          "type": "group",
+          "text": "",
+          "code": [
+            {
+              "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/technical-key",
+              "code": "019d1f04-a852-7330-8782-9df409bbe060",
+              "display": "019d1f04-a852-7330-8782-9df409bbe060"
+            }
+          ],
+          "item": [
+            {
+              "linkId": "019c4722-e62a-799c-89e3-2c97936302a0",
+              "type": "decimal",
+              "text": "Duur inspanning",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/technical-key",
+                  "code": "duur_inspanning",
+                  "display": "duur_inspanning"
+                }
+              ],
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "decimal-field",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "decimal-field"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+                  "valueExpression": {
+                    "name": "019c4722-e62a-799c-89e3-2c97936302a0",
+                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer_display = item.answer[0].valueDecimal -%}\n{%- assign Answer_unit = item | unit -%}\n{%- if Answer_display -%}\n{%- assign Answer = Answer_display | append: ' ' | append: Answer_unit -%}\n{%- endif -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                    "language": "text/liquid"
+                  }
+                },
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-unit",
+                  "valueCoding": {
+                    "system": "http://unitsofmeasure.org",
+                    "code": "min",
+                    "display": "minuten"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "019d2e97-3144-7bbf-aee2-c6efd27ea4e9",
+              "type": "decimal",
+              "text": "Seconden",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/technical-key",
+                  "code": "seconden",
+                  "display": "seconden"
+                }
+              ],
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "decimal-field",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "decimal-field"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+                  "valueExpression": {
+                    "name": "019d2e97-3144-7bbf-aee2-c6efd27ea4e9",
+                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer_display = item.answer[0].valueDecimal -%}\n{%- assign Answer_unit = item | unit -%}\n{%- if Answer_display -%}\n{%- assign Answer = Answer_display | append: ' ' | append: Answer_unit -%}\n{%- endif -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                    "language": "text/liquid"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "019c4722-fbce-799c-89ea-66b34dcaa3ac",
+              "type": "decimal",
+              "text": "Piekbelasting",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/technical-key",
+                  "code": "piekbelasting",
+                  "display": "piekbelasting"
+                }
+              ],
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "decimal-field",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "decimal-field"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+                  "valueExpression": {
+                    "name": "019c4722-fbce-799c-89ea-66b34dcaa3ac",
+                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer_display = item.answer[0].valueDecimal -%}\n{%- assign Answer_unit = item | unit -%}\n{%- if Answer_display -%}\n{%- assign Answer = Answer_display | append: ' ' | append: Answer_unit -%}\n{%- endif -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                    "language": "text/liquid"
+                  }
+                },
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-unit",
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                    "code": "019c8ef7-dfd2-799c-a4b0-9deeddfbde08",
+                    "display": "watt"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "019c47f8-7000-799c-91c6-78452dea92e8",
+              "type": "coding",
+              "text": "Reden van stoppen",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/technical-key",
+                  "code": "reden_van_stoppen",
+                  "display": "reden_van_stoppen"
+                }
+              ],
+              "required": true,
+              "repeats": true,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "combobox",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "combobox"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+                  "valueExpression": {
+                    "name": "019c47f8-7000-799c-91c6-78452dea92e8",
+                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer | map: 'valueCoding' | map: 'display' | join: ', ' -%}\n{%- if Answer and Answer != '' -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                    "language": "text/liquid"
+                  }
+                }
+              ],
+              "answerConstraint": "optionsOrType",
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "84229001",
+                    "display": "vermoeidheid"
+                  },
+                  "initialSelected": true
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "4568003",
+                    "display": "retrosternale pijn"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "267036007",
+                    "display": "dyspnoe"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                    "code": "019d2ab5-ec9d-7ee3-909d-3261a9a973e3",
+                    "display": "locomotorische last"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                    "code": "019c47fa-d959-799c-91d5-81380a6ea23c",
+                    "display": "bloeddrukdaling"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "1201005",
+                    "display": "arteriële hypertensie"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                    "code": "019c47fa-505d-799c-91d4-109483110a3a",
+                    "display": "Optreden ritmestoornissen"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                    "code": "019c47fa-9f57-799c-91d4-cd87c8e277bd",
+                    "display": "Optreden belangrijke ischemie"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                    "code": "019c47fb-7d78-799c-91d7-9b2c1ba0adcf",
+                    "display": "ST heffing"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                    "code": "019c47fb-db60-799c-91d8-50514167892b",
+                    "display": "submaximale test"
+                  }
+                }
+              ]
+            }
+          ],
+          "required": true,
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "compact-list",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "compact-list"
+                  }
+                ]
+              }
+            },
+            {
+              "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+              "valueExpression": {
+                "name": "019d1f04-a852-7330-8782-9df409bbe060",
+                "expression": "{%- assign duur_inspanning = item | fhirpath : \"item.where(linkId='019c4722-e62a-799c-89e3-2c97936302a0')\" | first -%}\n{%- assign seconden = item | fhirpath : \"item.where(linkId='019d2e97-3144-7bbf-aee2-c6efd27ea4e9')\" | first -%}\n{%- assign piekbelasting = item | fhirpath : \"item.where(linkId='019c4722-fbce-799c-89ea-66b34dcaa3ac')\" | first -%}\n{%- assign reden_van_stoppen = item | fhirpath : \"item.where(linkId='019c47f8-7000-799c-91c6-78452dea92e8')\" | first -%}\n{%- if item.text -%}\n{%- assign GroupTitle = item.text -%}\n<h2>{{ GroupTitle }}</h2>\n{%- endif -%}\n{%- render \"019c4722-e62a-799c-89e3-2c97936302a0\", item:duur_inspanning -%}\n{%- render \"019d2e97-3144-7bbf-aee2-c6efd27ea4e9\", item:seconden -%}\n{%- render \"019c4722-fbce-799c-89ea-66b34dcaa3ac\", item:piekbelasting -%}\n{%- render \"019c47f8-7000-799c-91c6-78452dea92e8\", item:reden_van_stoppen -%}\n",
+                "language": "text/liquid"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "019cae00-ccb5-7aa7-98d8-d36646c999be",
+          "type": "group",
+          "text": "",
+          "code": [
+            {
+              "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/technical-key",
+              "code": "019cae00-ccb5-7aa7-98d8-d36646c999be",
+              "display": "019cae00-ccb5-7aa7-98d8-d36646c999be"
+            }
+          ],
+          "item": [
+            {
+              "linkId": "019c4781-6e9b-799c-8b9b-34802222313f",
+              "type": "decimal",
+              "text": "Max syst bloeddruk",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/technical-key",
+                  "code": "max_syst_bloeddruk",
+                  "display": "max_syst_bloeddruk"
+                }
+              ],
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "decimal-field",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "decimal-field"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+                  "valueExpression": {
+                    "name": "019c4781-6e9b-799c-8b9b-34802222313f",
+                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer_display = item.answer[0].valueDecimal -%}\n{%- assign Answer_unit = item | unit -%}\n{%- if Answer_display -%}\n{%- assign Answer = Answer_display | append: ' ' | append: Answer_unit -%}\n{%- endif -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                    "language": "text/liquid"
+                  }
+                },
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-unit",
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                    "code": "019d686e-184f-7666-abe1-2c1cbba1a242",
+                    "display": "mmHg"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "019c4783-92fe-799c-8bf0-bb4495251181",
+              "type": "decimal",
+              "text": "Max diast bloeddruk",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/technical-key",
+                  "code": "max_diast_bloeddruk",
+                  "display": "max_diast_bloeddruk"
+                }
+              ],
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "decimal-field",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "decimal-field"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+                  "valueExpression": {
+                    "name": "019c4783-92fe-799c-8bf0-bb4495251181",
+                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer_display = item.answer[0].valueDecimal -%}\n{%- assign Answer_unit = item | unit -%}\n{%- if Answer_display -%}\n{%- assign Answer = Answer_display | append: ' ' | append: Answer_unit -%}\n{%- endif -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                    "language": "text/liquid"
+                  }
+                },
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-unit",
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                    "code": "019c4785-1f70-799c-8c20-af68c53e91a2",
+                    "display": "mmHg"
+                  }
+                }
+              ]
+            }
+          ],
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "compact-list",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "compact-list"
+                  }
+                ]
+              }
+            },
+            {
+              "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+              "valueExpression": {
+                "name": "019cae00-ccb5-7aa7-98d8-d36646c999be",
+                "expression": "{%- assign max_syst_bloeddruk = item | fhirpath : \"item.where(linkId='019c4781-6e9b-799c-8b9b-34802222313f')\" | first -%}\n{%- assign max_diast_bloeddruk = item | fhirpath : \"item.where(linkId='019c4783-92fe-799c-8bf0-bb4495251181')\" | first -%}\n{%- if item.text -%}\n{%- assign GroupTitle = item.text -%}\n<h2>{{ GroupTitle }}</h2>\n{%- endif -%}\n{%- render \"019c4781-6e9b-799c-8b9b-34802222313f\", item:max_syst_bloeddruk -%}\n{%- render \"019c4783-92fe-799c-8bf0-bb4495251181\", item:max_diast_bloeddruk -%}\n",
+                "language": "text/liquid"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "019db547-c962-7009-8baf-e510f6db2569",
+          "type": "group",
+          "text": "",
+          "code": [
+            {
+              "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/technical-key",
+              "code": "019db547-c962-7009-8baf-e510f6db2569",
+              "display": "019db547-c962-7009-8baf-e510f6db2569"
+            }
+          ],
+          "item": [
+            {
+              "linkId": "019db547-cba8-7009-8bb0-07b539cf1857",
+              "type": "decimal",
+              "text": "Maximaal bereikte hartslag",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/technical-key",
+                  "code": "maximaal_bereikte_hartslag",
+                  "display": "maximaal_bereikte_hartslag"
+                }
+              ],
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "decimal-field",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "decimal-field"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+                  "valueExpression": {
+                    "name": "019db547-cba8-7009-8bb0-07b539cf1857",
+                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer_display = item.answer[0].valueDecimal -%}\n{%- assign Answer_unit = item | unit -%}\n{%- if Answer_display -%}\n{%- assign Answer = Answer_display | append: ' ' | append: Answer_unit -%}\n{%- endif -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                    "language": "text/liquid"
+                  }
+                },
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-unit",
+                  "valueCoding": {
+                    "system": "http://unitsofmeasure.org",
+                    "code": "/min",
+                    "display": "bpm"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "019db547-cba8-7009-8bb0-156a90a26a89",
+              "type": "decimal",
+              "text": "% van maximale hartslag",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/technical-key",
+                  "code": "van_maximale_hartslag",
+                  "display": "van_maximale_hartslag"
+                }
+              ],
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-calculatedExpression",
+                  "valueExpression": {
+                    "expression": "iif(%bereikte_hartslag.exists() and %leeftijd.exists(), (%bereikte_hartslag / (220 - %leeftijd) * 100).round(1), {})",
+                    "language": "text/fhirpath"
+                  }
+                },
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "decimal-field",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "decimal-field"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+                  "valueExpression": {
+                    "name": "019db547-cba8-7009-8bb0-156a90a26a89",
+                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer_display = item.answer[0].valueDecimal -%}\n{%- assign Answer_unit = item | unit -%}\n{%- if Answer_display -%}\n{%- assign Answer = Answer_display | append: ' ' | append: Answer_unit -%}\n{%- endif -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                    "language": "text/liquid"
+                  }
+                },
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-unit",
+                  "valueCoding": {
+                    "system": "http://unitsofmeasure.org",
+                    "code": "%",
+                    "display": "%"
+                  }
+                },
+                {
+                  "url": "http://fhir.tiro.health/StructureDefinition/questionnaire-item-includeInGroupSummary",
+                  "valueBoolean": true
+                }
+              ]
+            },
+            {
+              "linkId": "019db547-cba8-7009-8baf-f058749c51ee",
+              "type": "decimal",
+              "text": "Leeftijd",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/technical-key",
+                  "code": "leeftijd",
+                  "display": "leeftijd"
+                }
+              ],
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-initialExpression",
+                  "valueExpression": {
+                    "expression": "iif(%patient.birthDate.exists(), %patient.birthDate.duration(today(), 'year').round(0), {})",
+                    "language": "text/fhirpath"
+                  }
+                },
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "decimal-field",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "decimal-field"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+                  "valueExpression": {
+                    "name": "019db547-cba8-7009-8baf-f058749c51ee",
+                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer_display = item.answer[0].valueDecimal -%}\n{%- assign Answer_unit = item | unit -%}\n{%- if Answer_display -%}\n{%- assign Answer = Answer_display | append: ' ' | append: Answer_unit -%}\n{%- endif -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                    "language": "text/liquid"
+                  }
+                },
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-unit",
+                  "valueCoding": {
+                    "system": "http://unitsofmeasure.org",
+                    "code": "a",
+                    "display": "jaar"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "019c6b40-3452-777a-be3a-dd349ad2c387",
+              "type": "coding",
+              "text": "Interpretatie maximale hartslag",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/technical-key",
+                  "code": "interpretatie_maximale_hartslag",
+                  "display": "interpretatie_maximale_hartslag"
+                }
+              ],
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "combobox",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "combobox"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+                  "valueExpression": {
+                    "name": "019c6b40-3452-777a-be3a-dd349ad2c387",
+                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueCoding.display -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                    "language": "text/liquid"
+                  }
+                }
+              ],
+              "answerConstraint": "optionsOnly",
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                    "code": "019c6b40-c7bf-777a-be43-2c4cf2b13577",
+                    "display": "onder betablokkade"
+                  },
+                  "initialSelected": false,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                      "valueBoolean": false
+                    }
+                  ]
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                    "code": "019c6b41-a887-777a-be46-08b799866ff5",
+                    "display": "onvoldoende betablokkade"
+                  },
+                  "initialSelected": false,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                      "valueBoolean": false
+                    }
+                  ]
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                    "code": "019c6b41-7654-777a-be45-517caaecbfd4",
+                    "display": "onvolledige betablokkade"
+                  },
+                  "initialSelected": false,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                      "valueBoolean": false
+                    }
+                  ]
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                    "code": "019c6b41-4b8b-777a-be44-9a9b15b79f25",
+                    "display": "goede betablokkade"
+                  },
+                  "initialSelected": false,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                      "valueBoolean": false
+                    }
+                  ]
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                    "code": "019c6b41-d0f0-777a-be46-c5b7ab809d2d",
+                    "display": "te sterke betablokkade"
+                  },
+                  "initialSelected": false,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                      "valueBoolean": false
+                    }
+                  ]
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                    "code": "019c6b41-0aac-777a-be43-e1f6069b883e",
+                    "display": "onder bradycardiserende calciumantagonist"
+                  },
+                  "initialSelected": false,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                      "valueBoolean": false
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/variable",
+              "valueExpression": {
+                "expression": "item.where(text='Leeftijd').answer.value",
+                "language": "text/fhirpath",
+                "name": "leeftijd"
+              }
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/variable",
+              "valueExpression": {
+                "expression": "item.where(text='Maximaal bereikte hartslag').answer.value",
+                "language": "text/fhirpath",
+                "name": "bereikte_hartslag"
+              }
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/variable",
+              "valueExpression": {
+                "expression": "iif(%leeftijd.exists(), 220 - %leeftijd, {})",
+                "language": "text/fhirpath",
+                "name": "maximale_hartslag"
+              }
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "compact-list",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "compact-list"
+                  }
+                ]
+              }
+            },
+            {
+              "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+              "valueExpression": {
+                "name": "019db547-c962-7009-8baf-e510f6db2569",
+                "expression": "{%- assign maximaal_bereikte_hartslag = item | fhirpath : \"item.where(linkId='019db547-cba8-7009-8bb0-07b539cf1857')\" | first -%}\n{%- assign van_maximale_hartslag = item | fhirpath : \"item.where(linkId='019db547-cba8-7009-8bb0-156a90a26a89')\" | first -%}\n{%- assign leeftijd = item | fhirpath : \"item.where(linkId='019db547-cba8-7009-8baf-f058749c51ee')\" | first -%}\n{%- assign interpretatie_maximale_hartslag = item | fhirpath : \"item.where(linkId='019c6b40-3452-777a-be3a-dd349ad2c387')\" | first -%}\n{%- if item.text -%}\n{%- assign GroupTitle = item.text -%}\n<h2>{{ GroupTitle }}</h2>\n{%- endif -%}\n{%- render \"019db547-cba8-7009-8bb0-07b539cf1857\", item:maximaal_bereikte_hartslag -%}\n{%- render \"019db547-cba8-7009-8bb0-156a90a26a89\", item:van_maximale_hartslag -%}\n{%- render \"019db547-cba8-7009-8baf-f058749c51ee\", item:leeftijd -%}\n{%- render \"019c6b40-3452-777a-be3a-dd349ad2c387\", item:interpretatie_maximale_hartslag -%}\n",
+                "language": "text/liquid"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "019c4793-d723-799c-8c94-cd1b531f9db7",
+          "type": "coding",
+          "text": "Repolarisatie",
+          "code": [
+            {
+              "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/technical-key",
+              "code": "repolarisatie",
+              "display": "repolarisatie"
+            }
+          ],
+          "item": [
+            {
+              "enableWhen": [
+                {
+                  "question": "019c4793-d723-799c-8c94-cd1b531f9db7",
+                  "operator": "=",
+                  "answerCoding": {
+                    "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                    "code": "019cd6d9-59b6-7000-80f2-46c15fbb9d0e",
+                    "display": "niet te beoordelen"
+                  }
+                }
+              ],
+              "enableBehavior": "all",
+              "disabledDisplay": "hidden",
+              "linkId": "019c479b-b403-799c-8ce4-9701188c1cc8",
+              "type": "coding",
+              "text": "Niet te beoordelen door:",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/technical-key",
+                  "code": "niet_te_beoordelen_door",
+                  "display": "niet_te_beoordelen_door"
+                }
+              ],
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "chips",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "chips"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+                  "valueExpression": {
+                    "name": "019c479b-b403-799c-8ce4-9701188c1cc8",
+                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueCoding.display -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                    "language": "text/liquid"
+                  }
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                    "code": "019c479c-3de5-799c-8ceb-f1f339cebfa3",
+                    "display": "Pacemaker"
+                  },
+                  "initialSelected": false
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "6180003",
+                    "display": "volledig linker bundeltakblok"
+                  },
+                  "initialSelected": false
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                    "code": "019c479c-6952-799c-8cec-ad30ef7369ad",
+                    "display": "Inspanningsgebonden linker bundeltakblok"
+                  },
+                  "initialSelected": false
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "72506001",
+                    "display": "ICD (defibrillator)"
+                  },
+                  "initialSelected": false
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                    "code": "019c479c-9cc4-799c-8ced-62d41c127611",
+                    "display": "Digitalis impregnatie"
+                  },
+                  "initialSelected": false
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "74390002",
+                    "display": "Wolff-Parkinson-White"
+                  },
+                  "initialSelected": false
+                }
+              ]
+            },
+            {
+              "enableWhen": [
+                {
+                  "question": "019c4793-d723-799c-8c94-cd1b531f9db7",
+                  "operator": "=",
+                  "answerCoding": {
+                    "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                    "code": "019c47aa-f82c-799c-8d6d-8c7686e1a858",
+                    "display": "ST wijziging"
+                  }
+                }
+              ],
+              "enableBehavior": "all",
+              "disabledDisplay": "hidden",
+              "linkId": "019d1f6c-3076-722f-aa97-873d56c4a093",
+              "type": "group",
+              "text": "",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/technical-key",
+                  "code": "019d1f6c-3076-722f-aa97-873d56c4a093",
+                  "display": "019d1f6c-3076-722f-aa97-873d56c4a093"
+                }
+              ],
+              "item": [
+                {
+                  "linkId": "019c47a7-9ae4-799c-8d54-c67b61699b73",
+                  "type": "coding",
+                  "text": "",
+                  "code": [
+                    {
+                      "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/technical-key",
+                      "code": "019c47a7-9ae4-799c-8d54-c67b61699b73",
+                      "display": "019c47a7-9ae4-799c-8d54-c67b61699b73"
+                    }
+                  ],
+                  "repeats": false,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                      "valueCodeableConcept": {
+                        "text": "radio",
+                        "coding": [
+                          {
+                            "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                            "code": "radio"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+                      "valueExpression": {
+                        "name": "019c47a7-9ae4-799c-8d54-c67b61699b73",
+                        "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueCoding.display -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                        "language": "text/liquid"
+                      }
+                    }
+                  ],
+                  "answerOption": [
+                    {
+                      "valueCoding": {
+                        "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                        "code": "019c47aa-561e-799c-8d69-068ac496ceaa",
+                        "display": "ST daling"
+                      },
+                      "initialSelected": false,
+                      "extension": [
+                        {
+                          "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                          "valueBoolean": false
+                        }
+                      ]
+                    },
+                    {
+                      "valueCoding": {
+                        "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                        "code": "019c47a9-e09a-799c-8d65-8a45f576185a",
+                        "display": "ST heffing"
+                      },
+                      "initialSelected": false,
+                      "extension": [
+                        {
+                          "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                          "valueBoolean": false
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "linkId": "019c47ac-8b40-799c-8d81-c6b0c5d27d87",
+                  "type": "decimal",
+                  "text": "Maximale ST wijziging",
+                  "code": [
+                    {
+                      "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/technical-key",
+                      "code": "maximale_st_wijziging",
+                      "display": "maximale_st_wijziging"
+                    }
+                  ],
+                  "repeats": false,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                      "valueCodeableConcept": {
+                        "text": "decimal-field",
+                        "coding": [
+                          {
+                            "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                            "code": "decimal-field"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+                      "valueExpression": {
+                        "name": "019c47ac-8b40-799c-8d81-c6b0c5d27d87",
+                        "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer_display = item.answer[0].valueDecimal -%}\n{%- assign Answer_unit = item | unit -%}\n{%- if Answer_display -%}\n{%- assign Answer = Answer_display | append: ' ' | append: Answer_unit -%}\n{%- endif -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                        "language": "text/liquid"
+                      }
+                    },
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-unit",
+                      "valueCoding": {
+                        "system": "http://unitsofmeasure.org",
+                        "code": "mm",
+                        "display": "mm"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "linkId": "019c6b54-0b22-777a-be95-745085be605a",
+                  "type": "coding",
+                  "text": "Slope ST segment",
+                  "code": [
+                    {
+                      "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/technical-key",
+                      "code": "slope_st_segment",
+                      "display": "slope_st_segment"
+                    }
+                  ],
+                  "repeats": false,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                      "valueCodeableConcept": {
+                        "text": "combobox",
+                        "coding": [
+                          {
+                            "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                            "code": "combobox"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+                      "valueExpression": {
+                        "name": "019c6b54-0b22-777a-be95-745085be605a",
+                        "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueCoding.display -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                        "language": "text/liquid"
+                      }
+                    }
+                  ],
+                  "answerOption": [
+                    {
+                      "valueCoding": {
+                        "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                        "code": "019c6b5f-4498-777a-bee2-4160a3a81c29",
+                        "display": "stijgend"
+                      },
+                      "initialSelected": false,
+                      "extension": [
+                        {
+                          "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                          "valueBoolean": false
+                        }
+                      ]
+                    },
+                    {
+                      "valueCoding": {
+                        "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                        "code": "019c6b5e-7ff8-777a-bedf-708716d3f85f",
+                        "display": "horizontaal"
+                      },
+                      "initialSelected": false,
+                      "extension": [
+                        {
+                          "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                          "valueBoolean": false
+                        }
+                      ]
+                    },
+                    {
+                      "valueCoding": {
+                        "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                        "code": "019c6b5e-dd95-777a-bee1-8a62de4b2855",
+                        "display": "dalend"
+                      },
+                      "initialSelected": false,
+                      "extension": [
+                        {
+                          "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                          "valueBoolean": false
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "linkId": "019c47ae-0724-799c-8d96-534c9cf7391f",
+                  "type": "coding",
+                  "text": "Aanwezig in afleidingen: ",
+                  "code": [
+                    {
+                      "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/technical-key",
+                      "code": "aanwezig_in_afleidingen",
+                      "display": "aanwezig_in_afleidingen"
+                    }
+                  ],
+                  "repeats": true,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                      "valueCodeableConcept": {
+                        "text": "combobox",
+                        "coding": [
+                          {
+                            "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                            "code": "combobox"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+                      "valueExpression": {
+                        "name": "019c47ae-0724-799c-8d96-534c9cf7391f",
+                        "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer | map: 'valueCoding' | map: 'display' | join: ', ' -%}\n{%- if Answer and Answer != '' -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                        "language": "text/liquid"
+                      }
+                    }
+                  ],
+                  "answerOption": [
+                    {
+                      "valueCoding": {
+                        "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                        "code": "019c47b0-d39b-799c-8da7-cfe9b10e3fbb",
+                        "display": "V1"
+                      }
+                    },
+                    {
+                      "valueCoding": {
+                        "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                        "code": "019c47b0-effb-799c-8da8-86682da410b0",
+                        "display": "V2"
+                      }
+                    },
+                    {
+                      "valueCoding": {
+                        "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                        "code": "019c47b1-04a8-799c-8da9-3a4d72048ce7",
+                        "display": "V3"
+                      }
+                    },
+                    {
+                      "valueCoding": {
+                        "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                        "code": "019c47b1-170b-799c-8da9-f77dfdcd8a47",
+                        "display": "V4"
+                      }
+                    },
+                    {
+                      "valueCoding": {
+                        "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                        "code": "019c47b1-2e3c-799c-8daa-a8d3f4adedd6",
+                        "display": "V5"
+                      }
+                    },
+                    {
+                      "valueCoding": {
+                        "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                        "code": "019c47b1-3eef-799c-8dab-607148e965dd",
+                        "display": "V6"
+                      }
+                    },
+                    {
+                      "valueCoding": {
+                        "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                        "code": "019c47b1-56de-799c-8dac-1abae4291e60",
+                        "display": "I"
+                      }
+                    },
+                    {
+                      "valueCoding": {
+                        "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                        "code": "019c47b1-6bd5-799c-8dac-d30fe508960a",
+                        "display": "II"
+                      }
+                    },
+                    {
+                      "valueCoding": {
+                        "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                        "code": "019c47b1-85d0-799c-8dad-886edda11242",
+                        "display": "III"
+                      }
+                    },
+                    {
+                      "valueCoding": {
+                        "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                        "code": "019c47b1-9ffc-799c-8dae-40acec170381",
+                        "display": "aVR"
+                      }
+                    },
+                    {
+                      "valueCoding": {
+                        "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                        "code": "019c47b1-c18d-799c-8dae-fb542992c033",
+                        "display": "aVL"
+                      }
+                    },
+                    {
+                      "valueCoding": {
+                        "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                        "code": "019c47b1-e625-799c-8daf-b28408b0817b",
+                        "display": "AVF"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "linkId": "019c8ef4-5c19-799c-a485-bd9b43e4137d",
+                  "type": "coding",
+                  "text": "Interpretatie",
+                  "code": [
+                    {
+                      "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/technical-key",
+                      "code": "interpretatie",
+                      "display": "interpretatie"
+                    }
+                  ],
+                  "repeats": false,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                      "valueCodeableConcept": {
+                        "text": "radio",
+                        "coding": [
+                          {
+                            "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                            "code": "radio"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+                      "valueExpression": {
+                        "name": "019c8ef4-5c19-799c-a485-bd9b43e4137d",
+                        "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueCoding.display -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                        "language": "text/liquid"
+                      }
+                    }
+                  ],
+                  "answerOption": [
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "371928007",
+                        "display": "niet significant"
+                      },
+                      "initialSelected": false,
+                      "extension": [
+                        {
+                          "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                          "valueBoolean": false
+                        }
+                      ]
+                    },
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "371927002",
+                        "display": "rand significant"
+                      },
+                      "initialSelected": false,
+                      "extension": [
+                        {
+                          "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                          "valueBoolean": false
+                        }
+                      ]
+                    },
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "386134007",
+                        "display": "significant"
+                      },
+                      "initialSelected": false,
+                      "extension": [
+                        {
+                          "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                          "valueBoolean": false
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "compact-list",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "compact-list"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+                  "valueExpression": {
+                    "name": "019d1f6c-3076-722f-aa97-873d56c4a093",
+                    "expression": "{%- assign 019c47a7-9ae4-799c-8d54-c67b61699b73 = item | fhirpath : \"item.where(linkId='019c47a7-9ae4-799c-8d54-c67b61699b73')\" | first -%}\n{%- assign maximale_st_wijziging = item | fhirpath : \"item.where(linkId='019c47ac-8b40-799c-8d81-c6b0c5d27d87')\" | first -%}\n{%- assign slope_st_segment = item | fhirpath : \"item.where(linkId='019c6b54-0b22-777a-be95-745085be605a')\" | first -%}\n{%- assign aanwezig_in_afleidingen = item | fhirpath : \"item.where(linkId='019c47ae-0724-799c-8d96-534c9cf7391f')\" | first -%}\n{%- assign interpretatie = item | fhirpath : \"item.where(linkId='019c8ef4-5c19-799c-a485-bd9b43e4137d')\" | first -%}\n{%- if item.text -%}\n{%- assign GroupTitle = item.text -%}\n<h2>{{ GroupTitle }}</h2>\n{%- endif -%}\n{%- render \"019c47a7-9ae4-799c-8d54-c67b61699b73\", item:019c47a7-9ae4-799c-8d54-c67b61699b73 -%}\n{%- render \"019c47ac-8b40-799c-8d81-c6b0c5d27d87\", item:maximale_st_wijziging -%}\n{%- render \"019c6b54-0b22-777a-be95-745085be605a\", item:slope_st_segment -%}\n{%- render \"019c47ae-0724-799c-8d96-534c9cf7391f\", item:aanwezig_in_afleidingen -%}\n{%- render \"019c8ef4-5c19-799c-a485-bd9b43e4137d\", item:interpretatie -%}\n",
+                    "language": "text/liquid"
+                  }
+                }
+              ]
+            }
+          ],
+          "required": true,
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "chips",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "chips"
+                  }
+                ]
+              }
+            },
+            {
+              "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+              "valueExpression": {
+                "name": "019c4793-d723-799c-8c94-cd1b531f9db7",
+                "expression": "{%- assign answer = item.answer[index] -%}\n{%- assign niet_te_beoordelen_door = answer | fhirpath : \"item.where(linkId='019c479b-b403-799c-8ce4-9701188c1cc8')\" | first -%}\n{%- assign 019d1f6c-3076-722f-aa97-873d56c4a093 = answer | fhirpath : \"item.where(linkId='019d1f6c-3076-722f-aa97-873d56c4a093')\" | first -%}\n{%- assign Answer = item.answer[index].valueCoding.display -%}\n{%- assign Question = item.text | default: item.linkId -%}\n{%- if index == 0 -%}\n<div>{{ Question }}</div>\n{%- endif -%}\n{%- if Answer -%}\n<div>- {{Answer}}</div>\n{%- endif -%}\n{%- render \"019c479b-b403-799c-8ce4-9701188c1cc8\", item:niet_te_beoordelen_door -%}\n{%- render \"019d1f6c-3076-722f-aa97-873d56c4a093\", item:019d1f6c-3076-722f-aa97-873d56c4a093 -%}\n",
+                "language": "text/liquid"
+              }
+            }
+          ],
+          "answerConstraint": "optionsOnly",
+          "answerOption": [
+            {
+              "valueCoding": {
+                "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                "code": "019c4798-d1de-799c-8ccc-811b82b62467",
+                "display": "geen wijzigingen"
+              },
+              "initialSelected": true,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                  "valueBoolean": false
+                }
+              ]
+            },
+            {
+              "valueCoding": {
+                "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                "code": "019c47ab-3c28-799c-8d6e-f1ea6006833d",
+                "display": "J punt daling"
+              },
+              "initialSelected": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                  "valueBoolean": false
+                }
+              ]
+            },
+            {
+              "valueCoding": {
+                "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                "code": "019c47aa-f82c-799c-8d6d-8c7686e1a858",
+                "display": "ST wijziging"
+              },
+              "initialSelected": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                  "valueBoolean": false
+                }
+              ]
+            },
+            {
+              "valueCoding": {
+                "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                "code": "019cd6d9-59b6-7000-80f2-46c15fbb9d0e",
+                "display": "niet te beoordelen"
+              },
+              "initialSelected": false
+            }
+          ],
+          "initial": [
+            {
+              "valueCoding": {
+                "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                "code": "019c4798-d1de-799c-8ccc-811b82b62467",
+                "display": "Geen wijzigingen"
+              }
+            }
+          ]
+        },
+        {
+          "enableBehavior": "all",
+          "disabledDisplay": "protected",
+          "linkId": "019d1efe-6153-7330-86ec-e8360dcc5883",
+          "type": "group",
+          "text": "",
+          "code": [
+            {
+              "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/technical-key",
+              "code": "019d1efe-6153-7330-86ec-e8360dcc5883",
+              "display": "019d1efe-6153-7330-86ec-e8360dcc5883"
+            }
+          ],
+          "item": [
+            {
+              "linkId": "019c47c6-92ae-799c-900c-0a0c2a9fbbf0",
+              "type": "coding",
+              "text": "Ritmestoornissen",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/technical-key",
+                  "code": "ritmestoornissen",
+                  "display": "ritmestoornissen"
+                }
+              ],
+              "required": true,
+              "repeats": true,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "checkbox",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "checkbox"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+                  "valueExpression": {
+                    "name": "019c47c6-92ae-799c-900c-0a0c2a9fbbf0",
+                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer | map: 'valueCoding' | map: 'display' | join: ', ' -%}\n{%- if Answer and Answer != '' -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                    "language": "text/liquid"
+                  }
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373067005",
+                    "display": "geen"
+                  },
+                  "initialSelected": true,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                      "valueBoolean": true
+                    }
+                  ]
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "251176006",
+                    "display": "ventriculaire extrasystolen"
+                  },
+                  "initialSelected": false,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                      "valueBoolean": false
+                    }
+                  ]
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "63593006",
+                    "display": "supraventriculaire extrasystole"
+                  },
+                  "initialSelected": false,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                      "valueBoolean": false
+                    }
+                  ]
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "29717002",
+                    "display": "extrasystolen"
+                  },
+                  "initialSelected": false,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                      "valueBoolean": false
+                    }
+                  ]
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "49436004",
+                    "display": "atriumfibrilatie"
+                  },
+                  "initialSelected": false,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                      "valueBoolean": false
+                    }
+                  ]
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "720448006",
+                    "display": "atriale flutter: typisch"
+                  },
+                  "initialSelected": false,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                      "valueBoolean": false
+                    }
+                  ]
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "15964901000119107",
+                    "display": "atriale flutter: atypisch"
+                  },
+                  "initialSelected": false,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                      "valueBoolean": false
+                    }
+                  ]
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "6456007",
+                    "display": "supraventriculaire tachycardie"
+                  },
+                  "initialSelected": false,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                      "valueBoolean": false
+                    }
+                  ]
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "444658006",
+                    "display": "niet-aanhoudende ventrikel tacycardie"
+                  },
+                  "initialSelected": false,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                      "valueBoolean": false
+                    }
+                  ]
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "426525004",
+                    "display": "aanhoudende ventriculaire tachycardie"
+                  },
+                  "initialSelected": false,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                      "valueBoolean": false
+                    }
+                  ]
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "71908006",
+                    "display": "ventrikelfibrillatie"
+                  },
+                  "initialSelected": false,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                      "valueBoolean": false
+                    }
+                  ]
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "233917008",
+                    "display": "AV-blok"
+                  },
+                  "initialSelected": false,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                      "valueBoolean": false
+                    }
+                  ]
+                }
+              ],
+              "initial": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373067005",
+                    "display": "geen"
+                  }
+                }
+              ]
+            },
+            {
+              "enableWhen": [
+                {
+                  "question": "019c47c6-92ae-799c-900c-0a0c2a9fbbf0",
+                  "operator": "=",
+                  "answerCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "251176006",
+                    "display": "ventriculaire extrasystolen"
+                  }
+                }
+              ],
+              "enableBehavior": "all",
+              "disabledDisplay": "hidden",
+              "linkId": "019c47d4-d820-799c-90ab-40eefcca48dc",
+              "type": "coding",
+              "text": "Ventriculaire extrasystolen",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/technical-key",
+                  "code": "ventriculaire_extrasystolen",
+                  "display": "ventriculaire_extrasystolen"
+                }
+              ],
+              "repeats": true,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "checkbox",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "checkbox"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+                  "valueExpression": {
+                    "name": "019c47d4-d820-799c-90ab-40eefcca48dc",
+                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer | map: 'valueCoding' | map: 'display' | join: ', ' -%}\n{%- if Answer and Answer != '' -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                    "language": "text/liquid"
+                  }
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                    "code": "019d2ab7-37f0-7ee3-90a0-9c8e0d871efd",
+                    "display": "zeldzame ventriculaire extrasystolen"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                    "code": "019d2ab7-9f71-7ee3-90a2-235ffb74a1cd",
+                    "display": "frequente ventriculaire extrasystolen"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "27337007",
+                    "display": "unifocaal ventriculaire extrasystolen"
+                  },
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                      "valueBoolean": false
+                    }
+                  ]
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "10626002",
+                    "display": "multifocale ventriculaire extrasystolen"
+                  },
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                      "valueBoolean": false
+                    }
+                  ]
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "251182009",
+                    "display": "couplet ventriculair"
+                  },
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                      "valueBoolean": false
+                    }
+                  ]
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "1222539006",
+                    "display": "triplet ventriculair"
+                  },
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                      "valueBoolean": false
+                    }
+                  ]
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                    "code": "019c47e0-1d52-799c-912b-ef0eaff78263",
+                    "display": "nemen af bij inspanning"
+                  },
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                      "valueBoolean": false
+                    }
+                  ]
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                    "code": "019c6b36-36bc-777a-bcfd-f8fe1bb5b524",
+                    "display": "nemen toe bij inspanning"
+                  },
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                      "valueBoolean": false
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "enableWhen": [
+                {
+                  "question": "019c47c6-92ae-799c-900c-0a0c2a9fbbf0",
+                  "operator": "=",
+                  "answerCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "233917008",
+                    "display": "AV-blok"
+                  }
+                }
+              ],
+              "enableBehavior": "all",
+              "disabledDisplay": "hidden",
+              "linkId": "019cd74e-0653-7000-82fa-853daf5dd419",
+              "type": "coding",
+              "text": "AV-blok (mooie tekstgeneratie)",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/technical-key",
+                  "code": "av-blok",
+                  "display": "av-blok"
+                }
+              ],
+              "repeats": true,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "checkbox",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "checkbox"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+                  "valueExpression": {
+                    "name": "019cd74e-0653-7000-82fa-853daf5dd419",
+                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer | map: 'valueCoding' | map: 'display' | join: ', ' -%}\n{%- if Answer and Answer != '' -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                    "language": "text/liquid"
+                  }
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "270492004",
+                    "display": "eerstegraads atrioventriculair blok"
+                  },
+                  "initialSelected": false,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                      "valueBoolean": false
+                    }
+                  ]
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "54016002",
+                    "display": "tweedegraads atrioventriculair blok (Mobitz type 1)"
+                  },
+                  "initialSelected": false,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                      "valueBoolean": false
+                    }
+                  ]
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "28189009",
+                    "display": "tweedegraads atrioventriculair blok (Mobitz type 2)"
+                  },
+                  "initialSelected": false,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                      "valueBoolean": false
+                    }
+                  ]
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "27885002",
+                    "display": "derdegraads atrioventriculair blok"
+                  },
+                  "initialSelected": false,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                      "valueBoolean": false
+                    }
+                  ]
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                    "code": "019d1f67-1651-722f-aa72-63677056c255",
+                    "display": "verdwijnt bij inspanning"
+                  },
+                  "initialSelected": false,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                      "valueBoolean": false
+                    }
+                  ]
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                    "code": "019d1f67-40b1-722f-aa73-e85c6982e267",
+                    "display": "treedt op bij inspanning"
+                  },
+                  "initialSelected": false,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                      "valueBoolean": false
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "required": true,
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "compact-list",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "compact-list"
+                  }
+                ]
+              }
+            },
+            {
+              "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+              "valueExpression": {
+                "name": "019d1efe-6153-7330-86ec-e8360dcc5883",
+                "expression": "{%- assign ritmestoornissen = item | fhirpath : \"item.where(linkId='019c47c6-92ae-799c-900c-0a0c2a9fbbf0')\" | first -%}\n{%- assign ventriculaire_extrasystolen = item | fhirpath : \"item.where(linkId='019c47d4-d820-799c-90ab-40eefcca48dc')\" | first -%}\n{%- assign av-blok = item | fhirpath : \"item.where(linkId='019cd74e-0653-7000-82fa-853daf5dd419')\" | first -%}\n{%- if item.text -%}\n{%- assign GroupTitle = item.text -%}\n<h2>{{ GroupTitle }}</h2>\n{%- endif -%}\n{%- render \"019c47c6-92ae-799c-900c-0a0c2a9fbbf0\", item:ritmestoornissen -%}\n{%- render \"019c47d4-d820-799c-90ab-40eefcca48dc\", item:ventriculaire_extrasystolen -%}\n{%- render \"019cd74e-0653-7000-82fa-853daf5dd419\", item:av-blok -%}\n",
+                "language": "text/liquid"
+              }
+            }
+          ]
+        },
+        {
+          "enableWhen": [
+            {
+              "question": "019c47c6-92ae-799c-900c-0a0c2a9fbbf0",
+              "operator": "=",
+              "answerCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "373067005",
+                "display": "geen"
+              }
+            },
+            {
+              "question": "019c47f8-7000-799c-91c6-78452dea92e8",
+              "operator": "=",
+              "answerCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "84229001",
+                "display": "vermoeidheid"
+              }
+            },
+            {
+              "question": "019c4793-d723-799c-8c94-cd1b531f9db7",
+              "operator": "=",
+              "answerCoding": {
+                "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                "code": "019c4798-d1de-799c-8ccc-811b82b62467",
+                "display": "Geen wijzigingen"
+              }
+            }
+          ],
+          "enableBehavior": "all",
+          "disabledDisplay": "hidden",
+          "linkId": "019d1f10-2e2e-7330-8882-58c6448c0c49",
+          "type": "text",
+          "text": "Besluit 1",
+          "code": [
+            {
+              "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/technical-key",
+              "code": "besluit_1",
+              "display": "besluit_1"
+            }
+          ],
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "textarea",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "textarea"
+                  }
+                ]
+              }
+            },
+            {
+              "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+              "valueExpression": {
+                "name": "019d1f10-2e2e-7330-8882-58c6448c0c49",
+                "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueString -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                "language": "text/liquid"
+              }
+            }
+          ],
+          "initial": [
+            {
+              "valueString": "Klinisch en elektrocardiografisch negatieve inspanningstest zonder ritmestoornissen"
+            }
+          ]
+        },
+        {
+          "enableWhen": [
+            {
+              "question": "019c47f8-7000-799c-91c6-78452dea92e8",
+              "operator": "=",
+              "answerCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "4568003",
+                "display": "retrosternale pijn"
+              }
+            },
+            {
+              "question": "019c4793-d723-799c-8c94-cd1b531f9db7",
+              "operator": "=",
+              "answerCoding": {
+                "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                "code": "019c47aa-f82c-799c-8d6d-8c7686e1a858",
+                "display": "ST wijziging"
+              }
+            }
+          ],
+          "enableBehavior": "all",
+          "disabledDisplay": "hidden",
+          "linkId": "019d1f16-b3f6-7330-88b7-a854e5117462",
+          "type": "text",
+          "text": "Besluit 2",
+          "code": [
+            {
+              "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/technical-key",
+              "code": "besluit_2",
+              "display": "besluit_2"
+            }
+          ],
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "textarea",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "textarea"
+                  }
+                ]
+              }
+            },
+            {
+              "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+              "valueExpression": {
+                "name": "019d1f16-b3f6-7330-88b7-a854e5117462",
+                "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueString -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                "language": "text/liquid"
+              }
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/entryFormat",
+              "valueString": "samenvattend besluit"
+            }
+          ],
+          "initial": [
+            {
+              "valueString": "Klinisch en elektrocardiografisch afwijkende inspanningstest"
+            }
+          ]
+        },
+        {
+          "enableWhen": [
+            {
+              "question": "019d1f16-b3f6-7330-88b7-a854e5117462",
+              "operator": "exists",
+              "answerBoolean": false
+            },
+            {
+              "question": "019d1f10-2e2e-7330-8882-58c6448c0c49",
+              "operator": "exists",
+              "answerBoolean": false
+            }
+          ],
+          "enableBehavior": "all",
+          "disabledDisplay": "hidden",
+          "linkId": "019daeed-d5cf-7aa5-ae7a-55f29782be60",
+          "type": "text",
+          "text": "Besluit",
+          "code": [
+            {
+              "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/technical-key",
+              "code": "besluit",
+              "display": "besluit"
+            }
+          ],
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "textarea",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "textarea"
+                  }
+                ]
+              }
+            },
+            {
+              "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+              "valueExpression": {
+                "name": "019daeed-d5cf-7aa5-ae7a-55f29782be60",
+                "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueString -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                "language": "text/liquid"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "019d3db2-e0c4-7fff-854c-95b40a1d03e7",
+          "type": "group",
+          "text": "",
+          "code": [
+            {
+              "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/technical-key",
+              "code": "019d3db2-e0c4-7fff-854c-95b40a1d03e7",
+              "display": "019d3db2-e0c4-7fff-854c-95b40a1d03e7"
+            }
+          ],
+          "item": [
+            {
+              "linkId": "019cae08-1c3a-7aa7-99b8-b65a55f18c29",
+              "type": "coding",
+              "text": "Regadenoson stress test",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/technical-key",
+                  "code": "regadenoson_stress_test",
+                  "display": "regadenoson_stress_test"
+                }
+              ],
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "dropdown",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "dropdown"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+                  "valueExpression": {
+                    "name": "019cae08-1c3a-7aa7-99b8-b65a55f18c29",
+                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueCoding.display -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                    "language": "text/liquid"
+                  }
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373066001",
+                    "display": "ja"
+                  },
+                  "initialSelected": false,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                      "valueBoolean": false
+                    }
+                  ]
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373067005",
+                    "display": "nee"
+                  },
+                  "initialSelected": true,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                      "valueBoolean": false
+                    }
+                  ]
+                }
+              ],
+              "initial": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373067005",
+                    "display": "nee"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "019d3dae-17e0-7fff-84fb-868b50067657",
+              "type": "coding",
+              "text": "Ligfiets",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/technical-key",
+                  "code": "ligfiets",
+                  "display": "ligfiets"
+                }
+              ],
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "dropdown",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "dropdown"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+                  "valueExpression": {
+                    "name": "019d3dae-17e0-7fff-84fb-868b50067657",
+                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueCoding.display -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                    "language": "text/liquid"
+                  }
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373066001",
+                    "display": "ja"
+                  },
+                  "initialSelected": false,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                      "valueBoolean": false
+                    }
+                  ]
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373067005",
+                    "display": "nee"
+                  },
+                  "initialSelected": true,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                      "valueBoolean": false
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "linkId": "019d6870-0942-7666-abed-f626d68a5490",
+              "type": "coding",
+              "text": "Spiro",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/technical-key",
+                  "code": "spiro",
+                  "display": "spiro"
+                }
+              ],
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "dropdown",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "dropdown"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+                  "valueExpression": {
+                    "name": "019d6870-0942-7666-abed-f626d68a5490",
+                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueCoding.display -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                    "language": "text/liquid"
+                  }
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373066001",
+                    "display": "ja"
+                  },
+                  "initialSelected": false,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                      "valueBoolean": false
+                    }
+                  ]
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373067005",
+                    "display": "nee"
+                  },
+                  "initialSelected": true,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                      "valueBoolean": false
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "compact-list",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "compact-list"
+                  }
+                ]
+              }
+            },
+            {
+              "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+              "valueExpression": {
+                "name": "019d3db2-e0c4-7fff-854c-95b40a1d03e7",
+                "expression": "{%- assign regadenoson_stress_test = item | fhirpath : \"item.where(linkId='019cae08-1c3a-7aa7-99b8-b65a55f18c29')\" | first -%}\n{%- assign ligfiets = item | fhirpath : \"item.where(linkId='019d3dae-17e0-7fff-84fb-868b50067657')\" | first -%}\n{%- assign spiro = item | fhirpath : \"item.where(linkId='019d6870-0942-7666-abed-f626d68a5490')\" | first -%}\n{%- if item.text -%}\n{%- assign GroupTitle = item.text -%}\n<h2>{{ GroupTitle }}</h2>\n{%- endif -%}\n{%- render \"019cae08-1c3a-7aa7-99b8-b65a55f18c29\", item:regadenoson_stress_test -%}\n{%- render \"019d3dae-17e0-7fff-84fb-868b50067657\", item:ligfiets -%}\n{%- render \"019d6870-0942-7666-abed-f626d68a5490\", item:spiro -%}\n",
+                "language": "text/liquid"
+              }
+            }
+          ]
+        }
+      ],
+      "required": true,
+      "repeats": false,
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+          "valueCodeableConcept": {
+            "text": "block",
+            "coding": [
+              {
+                "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                "code": "block"
+              }
+            ]
+          }
+        },
+        {
+          "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+          "valueExpression": {
+            "name": "019c4706-3d88-799c-8767-fed5898075e1",
+            "expression": "{%- assign 019cadf7-0fe6-7aa7-97ae-bfb0dff20e15 = item | fhirpath : \"item.where(linkId='019cadf7-0fe6-7aa7-97ae-bfb0dff20e15')\" | first -%}\n{%- assign 019d1f04-a852-7330-8782-9df409bbe060 = item | fhirpath : \"item.where(linkId='019d1f04-a852-7330-8782-9df409bbe060')\" | first -%}\n{%- assign 019cae00-ccb5-7aa7-98d8-d36646c999be = item | fhirpath : \"item.where(linkId='019cae00-ccb5-7aa7-98d8-d36646c999be')\" | first -%}\n{%- assign 019db547-c962-7009-8baf-e510f6db2569 = item | fhirpath : \"item.where(linkId='019db547-c962-7009-8baf-e510f6db2569')\" | first -%}\n{%- assign repolarisatie = item | fhirpath : \"item.where(linkId='019c4793-d723-799c-8c94-cd1b531f9db7')\" | first -%}\n{%- assign 019d1efe-6153-7330-86ec-e8360dcc5883 = item | fhirpath : \"item.where(linkId='019d1efe-6153-7330-86ec-e8360dcc5883')\" | first -%}\n{%- assign besluit_1 = item | fhirpath : \"item.where(linkId='019d1f10-2e2e-7330-8882-58c6448c0c49')\" | first -%}\n{%- assign besluit_2 = item | fhirpath : \"item.where(linkId='019d1f16-b3f6-7330-88b7-a854e5117462')\" | first -%}\n{%- assign besluit = item | fhirpath : \"item.where(linkId='019daeed-d5cf-7aa5-ae7a-55f29782be60')\" | first -%}\n{%- assign 019d3db2-e0c4-7fff-854c-95b40a1d03e7 = item | fhirpath : \"item.where(linkId='019d3db2-e0c4-7fff-854c-95b40a1d03e7')\" | first -%}\n{%- if item.text -%}\n{%- assign GroupTitle = item.text -%}\n<h2>{{ GroupTitle }}</h2>\n{%- endif -%}\n{%- render \"019cadf7-0fe6-7aa7-97ae-bfb0dff20e15\", item:019cadf7-0fe6-7aa7-97ae-bfb0dff20e15 -%}\n{%- render \"019d1f04-a852-7330-8782-9df409bbe060\", item:019d1f04-a852-7330-8782-9df409bbe060 -%}\n{%- render \"019cae00-ccb5-7aa7-98d8-d36646c999be\", item:019cae00-ccb5-7aa7-98d8-d36646c999be -%}\n{%- render \"019db547-c962-7009-8baf-e510f6db2569\", item:019db547-c962-7009-8baf-e510f6db2569 -%}\n{%- for answer in repolarisatie.answer -%}\n{%- render \"019c4793-d723-799c-8c94-cd1b531f9db7\", item:repolarisatie, index:forloop.index0 -%}\n{%- endfor -%}\n{%- render \"019d1efe-6153-7330-86ec-e8360dcc5883\", item:019d1efe-6153-7330-86ec-e8360dcc5883 -%}\n{%- render \"019d1f10-2e2e-7330-8882-58c6448c0c49\", item:besluit_1 -%}\n{%- render \"019d1f16-b3f6-7330-88b7-a854e5117462\", item:besluit_2 -%}\n{%- render \"019daeed-d5cf-7aa5-ae7a-55f29782be60\", item:besluit -%}\n{%- render \"019d3db2-e0c4-7fff-854c-95b40a1d03e7\", item:019d3db2-e0c4-7fff-854c-95b40a1d03e7 -%}\n",
+            "language": "text/liquid"
+          }
+        }
+      ]
+    }
+  ]
+}

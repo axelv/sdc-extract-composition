@@ -49,6 +49,75 @@ FHIRPATH_PATTERN = re.compile(r"\{\{(.+?)\}\}")
 # Use R4 model for proper FHIR type resolution (including value[x] polymorphism)
 R4_MODEL = fhir_models["r4"]
 
+# Pattern for %factory.Coding('system', 'code') calls
+_FACTORY_CODING_PATTERN = re.compile(
+    r"%factory\.Coding\(\s*'([^']+)'\s*,\s*'([^']+)'\s*\)"
+)
+
+
+def _coding_equival(left: list, right: list) -> list:
+    """Coding-aware ~ that compares code + system (when both present), ignoring display.
+
+    fhirpathpy's default ~ does exact dict comparison, which fails when one
+    side has extra fields like ``display``. FHIR equivalence semantics for
+    Coding match on ``code`` + ``system`` (when both present) and ignore
+    ``display``. Falls back to plain equality for non-Coding values.
+    """
+    if not left or not right:
+        return [not left and not right]
+
+    a, b = left[0], right[0]
+    if isinstance(a, dict) and isinstance(b, dict) and "code" in a and "code" in b:
+        if a["code"] != b["code"]:
+            return [False]
+        a_sys, b_sys = a.get("system"), b.get("system")
+        if a_sys is not None and b_sys is not None and a_sys != b_sys:
+            return [False]
+        return [True]
+
+    return [a == b]
+
+
+def _coding_not_equival(left: list, right: list) -> list:
+    """Negated Coding-aware ~ — mirrors ``(left ~ right).not()``.
+
+    fhirpathpy's native ``!~`` does dict inequality, which spuriously reports
+    codings as different when one side has fields the other doesn't (e.g. a
+    QR's valueCoding carries ``display`` but the synthesized factory Coding
+    doesn't). Reusing the ``~`` semantics keeps both operators consistent.
+    """
+    eq = _coding_equival(left, right)
+    return [not v for v in eq]
+
+
+_EVAL_OPTIONS = {
+    "userInvocationTable": {
+        "~": {"fn": _coding_equival, "arity": {2: ["Any", "Any"]}},
+        "!~": {"fn": _coding_not_equival, "arity": {2: ["Any", "Any"]}},
+    },
+}
+
+
+def _rewrite_factory_calls(expression: str) -> tuple[str, dict[str, Any]]:
+    """Replace %factory.Coding(...) calls with synthetic context variables.
+
+    Returns ``(rewritten_expression, extra_context_vars)``. The synthesized
+    Codings include only the ``code`` field so ``~`` equivalence works even
+    when the QR's valueCoding has no system (common with form-filler output).
+    """
+    extra_context: dict[str, Any] = {}
+    counter = 0
+
+    def replacer(match: re.Match[str]) -> str:
+        nonlocal counter
+        code = match.group(2)
+        var_name = f"_coding_{counter}"
+        counter += 1
+        extra_context[var_name] = {"code": code}
+        return f"%{var_name}"
+
+    return _FACTORY_CODING_PATTERN.sub(replacer, expression), extra_context
+
 
 class FHIRContext(TypedDict, total=False):
     """Context for FHIRPath evaluation with base path support."""
@@ -101,12 +170,13 @@ def evaluate_fhirpath(
     if base:
         expression = combine_expression(base, expression)
 
+    expression, extra = _rewrite_factory_calls(expression)
     # fhirpathpy expects context keys WITHOUT the % prefix
-    fhir_context: dict[str, Any] = {
-        "resource": resource,
-    }
+    fhir_context: dict[str, Any] = {"resource": resource, **extra}
 
-    result = fhirpathpy.evaluate(resource, expression, fhir_context, R4_MODEL)
+    result = fhirpathpy.evaluate(
+        resource, expression, fhir_context, R4_MODEL, _EVAL_OPTIONS
+    )
     assert isinstance(result, list), "FHIRPath evaluation should return a list"
 
     if not result:
@@ -127,8 +197,11 @@ def evaluate_fhirpath_list(
     if base:
         expression = combine_expression(base, expression)
 
-    fhir_context: dict[str, Any] = {"resource": resource}
-    result = fhirpathpy.evaluate(resource, expression, fhir_context, R4_MODEL)
+    expression, extra = _rewrite_factory_calls(expression)
+    fhir_context: dict[str, Any] = {"resource": resource, **extra}
+    result = fhirpathpy.evaluate(
+        resource, expression, fhir_context, R4_MODEL, _EVAL_OPTIONS
+    )
     assert isinstance(result, list), "FHIRPath evaluation should return a list"
     return result
 

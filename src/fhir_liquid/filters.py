@@ -127,6 +127,14 @@ def _codeable_text(value: Any) -> str | None:
     return None
 
 
+def _join(value: Any, separator: str = ", ") -> str:
+    if value is None or value == "":
+        return ""
+    if isinstance(value, list):
+        return separator.join(_scalar_str(item) for item in value)
+    return _scalar_str(value)
+
+
 def _scalar_str(value: Any) -> str:
     """Coerce a FHIRPath result to a string for filter input.
 
@@ -149,6 +157,7 @@ FILTERS: dict[str, FilterFn] = {
     "prepend": _prepend,
     "markdownify": _markdownify,
     "designation": _designation,
+    "join": _join,
 }
 
 

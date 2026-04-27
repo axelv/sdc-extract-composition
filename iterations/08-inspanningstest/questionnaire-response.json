@@ -1,0 +1,296 @@
+{
+  "resourceType": "QuestionnaireResponse",
+  "questionnaire": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624",
+  "status": "completed",
+  "authored": "2026-04-27T10:00:00Z",
+  "item": [
+    {
+      "linkId": "019c4706-3d88-799c-8767-fed5898075e1",
+      "text": "Inspanningstest",
+      "item": [
+        {
+          "linkId": "019cadf7-0fe6-7aa7-97ae-bfb0dff20e15",
+          "item": [
+            {
+              "linkId": "019cae04-716c-7aa7-9964-e193ddec2553",
+              "text": "Soort protocol",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                    "code": "019cae06-4d63-7aa7-9977-6b19b8fcda3c",
+                    "display": "stapsgewijze belasting"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "019c4706-3fe6-799c-8768-c3b0a8a4738c",
+              "text": "Fietsproef start wattage",
+              "answer": [{"valueDecimal": 50}]
+            },
+            {
+              "linkId": "019c470a-ab62-799c-87be-08a3df69201b",
+              "text": "Stijging van",
+              "answer": [{"valueDecimal": 25}]
+            },
+            {
+              "linkId": "019c4711-bd82-799c-87e1-a44056478612",
+              "text": "Per",
+              "answer": [{"valueDecimal": 2}]
+            }
+          ]
+        },
+        {
+          "linkId": "019d1f04-a852-7330-8782-9df409bbe060",
+          "item": [
+            {
+              "linkId": "019c4722-e62a-799c-89e3-2c97936302a0",
+              "text": "Duur inspanning",
+              "answer": [{"valueDecimal": 8}]
+            },
+            {
+              "linkId": "019d2e97-3144-7bbf-aee2-c6efd27ea4e9",
+              "text": "Seconden",
+              "answer": [{"valueDecimal": 30}]
+            },
+            {
+              "linkId": "019c4722-fbce-799c-89ea-66b34dcaa3ac",
+              "text": "Piekbelasting",
+              "answer": [{"valueDecimal": 175}]
+            },
+            {
+              "linkId": "019c47f8-7000-799c-91c6-78452dea92e8",
+              "text": "Reden van stoppen",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "4568003",
+                    "display": "retrosternale pijn"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "84229001",
+                    "display": "vermoeidheid"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "linkId": "019cae00-ccb5-7aa7-98d8-d36646c999be",
+          "item": [
+            {
+              "linkId": "019c4781-6e9b-799c-8b9b-34802222313f",
+              "text": "Max syst bloeddruk",
+              "answer": [{"valueDecimal": 180}]
+            },
+            {
+              "linkId": "019c4783-92fe-799c-8bf0-bb4495251181",
+              "text": "Max diast bloeddruk",
+              "answer": [{"valueDecimal": 90}]
+            }
+          ]
+        },
+        {
+          "linkId": "019db547-c962-7009-8baf-e510f6db2569",
+          "item": [
+            {
+              "linkId": "019db547-cba8-7009-8bb0-07b539cf1857",
+              "text": "Maximaal bereikte hartslag",
+              "answer": [{"valueDecimal": 165}]
+            },
+            {
+              "linkId": "019db547-cba8-7009-8bb0-156a90a26a89",
+              "text": "% van maximale hartslag",
+              "answer": [{"valueDecimal": 95}]
+            },
+            {
+              "linkId": "019db547-cba8-7009-8baf-f058749c51ee",
+              "text": "Leeftijd",
+              "answer": [{"valueDecimal": 47}]
+            }
+          ]
+        },
+        {
+          "linkId": "019c4793-d723-799c-8c94-cd1b531f9db7",
+          "text": "Repolarisatie",
+          "answer": [
+            {
+              "valueCoding": {
+                "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                "code": "019c47aa-f82c-799c-8d6d-8c7686e1a858",
+                "display": "ST wijziging"
+              },
+              "item": [
+                {
+                  "linkId": "019d1f6c-3076-722f-aa97-873d56c4a093",
+                  "item": [
+                    {
+                      "linkId": "019c47a7-9ae4-799c-8d54-c67b61699b73",
+                      "answer": [
+                        {
+                          "valueCoding": {
+                            "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                            "code": "019c47aa-561e-799c-8d69-068ac496ceaa",
+                            "display": "ST daling"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "linkId": "019c47ac-8b40-799c-8d81-c6b0c5d27d87",
+                      "text": "Maximale ST wijziging",
+                      "answer": [{"valueDecimal": 1.5}]
+                    },
+                    {
+                      "linkId": "019c6b54-0b22-777a-be95-745085be605a",
+                      "text": "Slope ST segment",
+                      "answer": [
+                        {
+                          "valueCoding": {
+                            "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                            "code": "019c6b5e-dd95-777a-bee1-8a62de4b2855",
+                            "display": "dalend"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "linkId": "019c47ae-0724-799c-8d96-534c9cf7391f",
+                      "text": "Aanwezig in afleidingen",
+                      "answer": [
+                        {
+                          "valueCoding": {
+                            "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                            "code": "019c47b1-170b-799c-8da9-f77dfdcd8a47",
+                            "display": "V4"
+                          }
+                        },
+                        {
+                          "valueCoding": {
+                            "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                            "code": "019c47b1-2e3c-799c-8daa-a8d3f4adedd6",
+                            "display": "V5"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "linkId": "019c8ef4-5c19-799c-a485-bd9b43e4137d",
+                      "text": "Interpretatie",
+                      "answer": [
+                        {
+                          "valueCoding": {
+                            "system": "http://snomed.info/sct",
+                            "code": "386134007",
+                            "display": "significant"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "linkId": "019d1efe-6153-7330-86ec-e8360dcc5883",
+          "item": [
+            {
+              "linkId": "019c47c6-92ae-799c-900c-0a0c2a9fbbf0",
+              "text": "Ritmestoornissen",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "251176006",
+                    "display": "ventriculaire extrasystolen"
+                  },
+                  "item": [
+                    {
+                      "linkId": "019c47d4-d820-799c-90ab-40eefcca48dc",
+                      "text": "Ventriculaire extrasystolen",
+                      "answer": [
+                        {
+                          "valueCoding": {
+                            "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                            "code": "019d2ab7-37f0-7ee3-90a0-9c8e0d871efd",
+                            "display": "zeldzame ventriculaire extrasystolen"
+                          }
+                        },
+                        {
+                          "valueCoding": {
+                            "system": "http://templates.tiro.health/templates/e609837ea4d849b394fba5e84bfab624/custom-codes",
+                            "code": "019c47e0-1d52-799c-912b-ef0eaff78263",
+                            "display": "nemen af bij inspanning"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "linkId": "019daeed-d5cf-7aa5-ae7a-55f29782be60",
+          "text": "Besluit",
+          "answer": [
+            {"valueString": "Klinisch en elektrocardiografisch afwijkende inspanningstest met significante ST daling in V4-V5."}
+          ]
+        },
+        {
+          "linkId": "019d3db2-e0c4-7fff-854c-95b40a1d03e7",
+          "item": [
+            {
+              "linkId": "019cae08-1c3a-7aa7-99b8-b65a55f18c29",
+              "text": "Regadenoson stress test",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373067005",
+                    "display": "nee"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "019d3dae-17e0-7fff-84fb-868b50067657",
+              "text": "Ligfiets",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373067005",
+                    "display": "nee"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "019d6870-0942-7666-abed-f626d68a5490",
+              "text": "Spiro",
+              "answer": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373067005",
+                    "display": "nee"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
