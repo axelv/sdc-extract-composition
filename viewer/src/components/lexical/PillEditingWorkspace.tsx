@@ -126,7 +126,9 @@ export function PillEditingWorkspace({
           {shape && (
             <span className="pill-editing-workspace-type" title={shapeTitle(shape)}>
               <span className="pill-editing-workspace-type-linkid">
-                {shape.linkIds.join(", ")}
+                {shape.linkIds
+                  .map((id) => index?.resolveItemText(id) ?? id)
+                  .join(" → ")}
               </span>
               <span className="pill-editing-workspace-type-sep">·</span>
               <span className="pill-editing-workspace-type-shape">
