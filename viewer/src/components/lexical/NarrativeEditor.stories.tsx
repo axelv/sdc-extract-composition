@@ -19,7 +19,7 @@ import { PillEditingWorkspace } from "./PillEditingWorkspace";
 import { QuestionnaireIndexProvider } from "./QuestionnaireIndexContext";
 import { WasmQuestionnaireIndexProvider } from "./WasmQuestionnaireIndexContext";
 
-import questionnaireJson from "../../iterations/01-liquid-template/questionnaire-extract.json";
+import questionnaireJson from "../../../../iterations/01-liquid-template/questionnaire-extract.json";
 
 const SAMPLE_QUESTIONNAIRE = questionnaireJson as unknown as Questionnaire;
 
