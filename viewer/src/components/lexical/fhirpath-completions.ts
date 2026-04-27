@@ -81,10 +81,33 @@ export function getFhirPathCompletions(
   wasmQuestionnaireIndex: WasmQuestionnaireIndex | null,
   questionnaireIndex?: QuestionnaireIndex,
 ): CompletionItem[] {
-  // TODO: Use wasmQuestionnaireIndex.generate_completions() once implemented in fhirpath-rs
-  // Currently returns empty for all expressions ("%resource", "%resource.item", etc.)
-  // For now, generate completions from questionnaire index directly
-  const itemCompletions = generateItemCompletions(questionnaireIndex);
+  const wasm: CompletionItem[] = [];
 
-  return [...STUB_COMPLETIONS, ...itemCompletions];
+  if (wasmQuestionnaireIndex) {
+    // Get completions for %resource (all questionnaire items)
+    try {
+      const resourceItems = wasmQuestionnaireIndex.generate_completions("%resource") as CompletionItem[];
+      wasm.push(...resourceItems);
+    } catch {
+      // Ignore errors
+    }
+
+    // Also get context-specific completions if available
+    if (contextExpression && contextExpression !== "%resource") {
+      try {
+        const contextItems = wasmQuestionnaireIndex.generate_completions(contextExpression) as CompletionItem[];
+        wasm.push(...contextItems);
+      } catch {
+        // Ignore errors
+      }
+    }
+  }
+
+  // Fall back to JS-generated completions if WASM returns nothing
+  if (wasm.length === 0) {
+    const itemCompletions = generateItemCompletions(questionnaireIndex);
+    return [...STUB_COMPLETIONS, ...itemCompletions];
+  }
+
+  return [...STUB_COMPLETIONS, ...wasm];
 }
