@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Context Badge Placement Options</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .section {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 8px;
+      position: relative;
+    }
+    .section-title {
+      font-weight: 500;
+      color: #111827;
+      font-size: 14px;
+    }
+    .section-content {
+      color: #6b7280;
+      font-size: 13px;
+      margin-top: 6px;
+    }
+    .delete-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      color: #9ca3af;
+      font-size: 18px;
+      cursor: pointer;
+    }
+    .option-box {
+      background: #f9fafb;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+    .option-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 12px;
+    }
+    .option-desc {
+      font-size: 12px;
+      color: #6b7280;
+      margin-bottom: 16px;
+    }
+
+    /* Option 1: Left border with icon */
+    .opt1 .section {
+      border-left: 3px solid #60a5fa;
+      padding-left: 14px;
+    }
+    .opt1 .context-icon {
+      position: absolute;
+      left: -11px;
+      top: 12px;
+      width: 18px;
+      height: 18px;
+      background: #60a5fa;
+      color: white;
+      border-radius: 50%;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .opt1 .section.conditional {
+      border-left-color: #a78bfa;
+    }
+    .opt1 .section.conditional .context-icon {
+      background: #a78bfa;
+    }
+    .opt1 .section.repeating {
+      border-left-color: #4ade80;
+    }
+    .opt1 .section.repeating .context-icon {
+      background: #4ade80;
+    }
+
+    /* Option 2: Inline with title */
+    .opt2 .context-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 3px;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+    .opt2 .context-badge.conditional {
+      background: #f3e8ff;
+      color: #7c3aed;
+    }
+    .opt2 .context-badge.repeating {
+      background: #dcfce7;
+      color: #16a34a;
+    }
+
+    /* Option 3: Top bar/strip */
+    .opt3 .section {
+      padding-top: 0;
+      overflow: hidden;
+    }
+    .opt3 .context-bar {
+      margin: 0 -16px 10px -16px;
+      padding: 4px 16px;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .opt3 .context-bar.conditional {
+      background: #f3e8ff;
+      color: #7c3aed;
+    }
+    .opt3 .context-bar.repeating {
+      background: #dcfce7;
+      color: #16a34a;
+    }
+
+    /* Option 4: Bottom right, subtle */
+    .opt4 .context-badge {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 3px;
+      opacity: 0.7;
+    }
+    .opt4 .context-badge.conditional {
+      background: #f3e8ff;
+      color: #7c3aed;
+    }
+    .opt4 .context-badge.repeating {
+      background: #dcfce7;
+      color: #16a34a;
+    }
+
+    /* Option 5: Icon only in title row */
+    .opt5 .section-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .opt5 .context-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 4px;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .opt5 .context-icon.conditional {
+      background: #f3e8ff;
+      color: #7c3aed;
+    }
+    .opt5 .context-icon.repeating {
+      background: #dcfce7;
+      color: #16a34a;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen p-8">
+  <div class="max-w-2xl mx-auto">
+    <h1 class="text-xl font-bold text-gray-900 mb-2">Context Badge Placement</h1>
+    <p class="text-gray-500 text-sm mb-8">5 options - which feels best?</p>
+
+    <!-- Option 1: Left border with icon -->
+    <div class="option-box opt1">
+      <div class="option-label">Option 1: Left border + icon</div>
+      <div class="option-desc">Context shown as colored left border with small icon bubble</div>
+
+      <div class="section conditional">
+        <span class="context-icon">⎇</span>
+        <span class="delete-btn">&times;</span>
+        <div class="section-title">Preop Anamnese</div>
+        <div class="section-content">Patient history including symptoms...</div>
+      </div>
+      <div class="section repeating">
+        <span class="context-icon">↻</span>
+        <span class="delete-btn">&times;</span>
+        <div class="section-title">Medications</div>
+        <div class="section-content">Medication name and dosage.</div>
+      </div>
+    </div>
+
+    <!-- Option 2: Inline with title -->
+    <div class="option-box opt2">
+      <div class="option-label">Option 2: Inline with title</div>
+      <div class="option-desc">Small badge right after the title text</div>
+
+      <div class="section">
+        <span class="delete-btn">&times;</span>
+        <div class="section-title">
+          Preop Anamnese
+          <span class="context-badge conditional">⎇ Preop Anamnese</span>
+        </div>
+        <div class="section-content">Patient history including symptoms...</div>
+      </div>
+      <div class="section">
+        <span class="delete-btn">&times;</span>
+        <div class="section-title">
+          Medications
+          <span class="context-badge repeating">↻ Medications</span>
+        </div>
+        <div class="section-content">Medication name and dosage.</div>
+      </div>
+    </div>
+
+    <!-- Option 3: Top bar/strip -->
+    <div class="option-box opt3">
+      <div class="option-label">Option 3: Top bar</div>
+      <div class="option-desc">Full-width colored strip at top of section</div>
+
+      <div class="section">
+        <div class="context-bar conditional">⎇ If: Preop Anamnese</div>
+        <span class="delete-btn">&times;</span>
+        <div class="section-title">Preop Anamnese</div>
+        <div class="section-content">Patient history including symptoms...</div>
+      </div>
+      <div class="section">
+        <div class="context-bar repeating">↻ For each: Medications</div>
+        <span class="delete-btn">&times;</span>
+        <div class="section-title">Medications</div>
+        <div class="section-content">Medication name and dosage.</div>
+      </div>
+    </div>
+
+    <!-- Option 4: Bottom right -->
+    <div class="option-box opt4">
+      <div class="option-label">Option 4: Bottom right</div>
+      <div class="option-desc">Subtle badge in bottom right corner (out of the way)</div>
+
+      <div class="section" style="padding-bottom: 28px;">
+        <span class="delete-btn">&times;</span>
+        <div class="section-title">Preop Anamnese</div>
+        <div class="section-content">Patient history including symptoms...</div>
+        <span class="context-badge conditional">⎇ Preop Anamnese</span>
+      </div>
+      <div class="section" style="padding-bottom: 28px;">
+        <span class="delete-btn">&times;</span>
+        <div class="section-title">Medications</div>
+        <div class="section-content">Medication name and dosage.</div>
+        <span class="context-badge repeating">↻ Medications</span>
+      </div>
+    </div>
+
+    <!-- Option 5: Icon before title -->
+    <div class="option-box opt5">
+      <div class="option-label">Option 5: Icon before title</div>
+      <div class="option-desc">Just an icon before the title (minimal, hover for details)</div>
+
+      <div class="section">
+        <span class="delete-btn">&times;</span>
+        <div class="section-header">
+          <span class="context-icon conditional" title="If: Preop Anamnese">⎇</span>
+          <span class="section-title">Preop Anamnese</span>
+        </div>
+        <div class="section-content">Patient history including symptoms...</div>
+      </div>
+      <div class="section">
+        <span class="delete-btn">&times;</span>
+        <div class="section-header">
+          <span class="context-icon repeating" title="For each: Medications">↻</span>
+          <span class="section-title">Medications</span>
+        </div>
+        <div class="section-content">Medication name and dosage.</div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

@@ -25,6 +25,7 @@ export function Modal({ open, onClose, title, children }: ModalProps) {
   return createPortal(
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+      onClick={(e) => e.stopPropagation()}
       onMouseDown={(e) => {
         if (panelRef.current && !panelRef.current.contains(e.target as Node)) {
           onClose();

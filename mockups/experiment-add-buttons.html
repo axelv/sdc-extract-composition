@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Section Button Designs</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .option-box {
+      background: #f9fafb;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 32px;
+    }
+    .option-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 4px;
+    }
+    .option-desc {
+      font-size: 12px;
+      color: #6b7280;
+      margin-bottom: 16px;
+    }
+
+    /* Base section styles */
+    .section {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-left: 3px solid #a78bfa;
+      border-radius: 8px;
+      padding: 12px 16px;
+      position: relative;
+    }
+    .section.none { border-left-color: #60a5fa; }
+    .section.repeating { border-left-color: #4ade80; }
+    .section-title {
+      font-weight: 500;
+      color: #111827;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+    .section-content {
+      color: #6b7280;
+      font-size: 13px;
+    }
+    .context-icon {
+      position: absolute;
+      left: -11px;
+      top: 12px;
+      width: 18px;
+      height: 18px;
+      background: #a78bfa;
+      color: white;
+      border-radius: 50%;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .section.none .context-icon { background: #60a5fa; }
+    .section.repeating .context-icon { background: #4ade80; }
+    .pill {
+      display: inline-block;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1d4ed8;
+      padding: 0px 6px;
+      border-radius: 10px;
+      font-size: 11px;
+    }
+    .children {
+      margin-top: 12px;
+      padding-left: 16px;
+    }
+    .children .section {
+      margin-bottom: 8px;
+    }
+
+    /* ========== OPTION 1: Corner icons ========== */
+    .opt1 .section-wrap {
+      position: relative;
+      margin-bottom: 8px;
+    }
+    .opt1 .add-sibling {
+      position: absolute;
+      bottom: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 20px;
+      height: 20px;
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 50%;
+      color: #9ca3af;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      transition: all 0.15s;
+      z-index: 5;
+    }
+    .opt1 .section-wrap:hover .add-sibling {
+      opacity: 1;
+    }
+    .opt1 .add-sibling:hover {
+      background: #f3f4f6;
+      border-color: #d1d5db;
+      color: #6b7280;
+    }
+    .opt1 .add-child {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      padding: 2px 6px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 4px;
+      color: #9ca3af;
+      font-size: 9px;
+      cursor: pointer;
+      opacity: 0;
+      transition: all 0.15s;
+    }
+    .opt1 .section:hover .add-child {
+      opacity: 1;
+    }
+    .opt1 .add-child:hover {
+      background: #f3f4f6;
+      color: #6b7280;
+    }
+
+    /* ========== OPTION 2: Gutter icons ========== */
+    .opt2 .section-wrap {
+      position: relative;
+      margin-bottom: 8px;
+      padding-left: 24px;
+    }
+    .opt2 .gutter {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding-top: 8px;
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+    .opt2 .section-wrap:hover .gutter {
+      opacity: 1;
+    }
+    .opt2 .gutter-btn {
+      width: 16px;
+      height: 16px;
+      background: #f3f4f6;
+      border-radius: 3px;
+      color: #9ca3af;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .opt2 .gutter-btn:hover {
+      background: #e5e7eb;
+      color: #6b7280;
+    }
+    .opt2 .gutter-btn span {
+      font-size: 8px;
+    }
+
+    /* ========== OPTION 3: Single dropdown ========== */
+    .opt3 .section-wrap {
+      position: relative;
+      margin-bottom: 8px;
+    }
+    .opt3 .add-menu-trigger {
+      position: absolute;
+      bottom: -10px;
+      right: 16px;
+      width: 20px;
+      height: 20px;
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 50%;
+      color: #9ca3af;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      transition: all 0.15s;
+    }
+    .opt3 .section-wrap:hover .add-menu-trigger {
+      opacity: 1;
+    }
+    .opt3 .add-menu {
+      position: absolute;
+      bottom: -10px;
+      right: 40px;
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 4px;
+      display: none;
+      z-index: 10;
+    }
+    .opt3 .add-menu-trigger:hover + .add-menu,
+    .opt3 .add-menu:hover {
+      display: block;
+    }
+    .opt3 .add-menu button {
+      display: block;
+      width: 100%;
+      padding: 4px 10px;
+      font-size: 11px;
+      color: #374151;
+      text-align: left;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    .opt3 .add-menu button:hover {
+      background: #f3f4f6;
+    }
+
+    /* ========== OPTION 4: Inline text links ========== */
+    .opt4 .section-wrap {
+      position: relative;
+      margin-bottom: 4px;
+    }
+    .opt4 .section {
+      padding-bottom: 24px;
+    }
+    .opt4 .add-links {
+      position: absolute;
+      bottom: 6px;
+      left: 16px;
+      display: flex;
+      gap: 12px;
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+    .opt4 .section:hover .add-links {
+      opacity: 1;
+    }
+    .opt4 .add-links a {
+      font-size: 10px;
+      color: #9ca3af;
+      cursor: pointer;
+    }
+    .opt4 .add-links a:hover {
+      color: #6b7280;
+    }
+
+    /* ========== OPTION 5: Floating toolbar ========== */
+    .opt5 .section-wrap {
+      position: relative;
+      margin-bottom: 12px;
+    }
+    .opt5 .toolbar {
+      position: absolute;
+      top: 50%;
+      right: -32px;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+    .opt5 .section-wrap:hover .toolbar {
+      opacity: 1;
+    }
+    .opt5 .toolbar button {
+      width: 24px;
+      height: 24px;
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 4px;
+      color: #9ca3af;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .opt5 .toolbar button:hover {
+      background: #f3f4f6;
+      border-color: #d1d5db;
+      color: #6b7280;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen p-8">
+  <div class="max-w-2xl mx-auto">
+    <h1 class="text-xl font-bold text-gray-900 mb-2">Add Section Designs</h1>
+    <p class="text-gray-500 text-sm mb-8">5 options showing both sibling + subsection buttons together</p>
+
+    <!-- Option 1: Corner icons -->
+    <div class="option-box opt1">
+      <div class="option-label">Option 1: Bottom center + corner</div>
+      <div class="option-desc">Circle + between sections (sibling), small "child" button in corner (subsection)</div>
+
+      <div class="section-wrap">
+        <div class="section">
+          <span class="context-icon">⎇</span>
+          <div class="section-title">Anamnese</div>
+          <div class="section-content"><strong>Hand:</strong> <span class="pill">Hand</span></div>
+          <span class="add-child">+ child</span>
+        </div>
+        <span class="add-sibling">+</span>
+      </div>
+      <div class="section-wrap">
+        <div class="section none">
+          <span class="context-icon">—</span>
+          <div class="section-title">Klinisch Onderzoek</div>
+          <div class="section-content">Examination findings.</div>
+          <span class="add-child">+ child</span>
+        </div>
+        <span class="add-sibling">+</span>
+      </div>
+    </div>
+
+    <!-- Option 2: Gutter icons -->
+    <div class="option-box opt2">
+      <div class="option-label">Option 2: Left gutter icons</div>
+      <div class="option-desc">Icons in the left margin: ↓ for sibling below, → for child</div>
+
+      <div class="section-wrap">
+        <div class="gutter">
+          <button class="gutter-btn" title="Add sibling">↓</button>
+          <button class="gutter-btn" title="Add child">→</button>
+        </div>
+        <div class="section">
+          <span class="context-icon">⎇</span>
+          <div class="section-title">Anamnese</div>
+          <div class="section-content"><strong>Hand:</strong> <span class="pill">Hand</span></div>
+        </div>
+      </div>
+      <div class="section-wrap">
+        <div class="gutter">
+          <button class="gutter-btn" title="Add sibling">↓</button>
+          <button class="gutter-btn" title="Add child">→</button>
+        </div>
+        <div class="section none">
+          <span class="context-icon">—</span>
+          <div class="section-title">Klinisch Onderzoek</div>
+          <div class="section-content">Examination findings.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Option 3: Single dropdown -->
+    <div class="option-box opt3">
+      <div class="option-label">Option 3: Single + with dropdown</div>
+      <div class="option-desc">One + button, hover shows menu with both options</div>
+
+      <div class="section-wrap">
+        <div class="section">
+          <span class="context-icon">⎇</span>
+          <div class="section-title">Anamnese</div>
+          <div class="section-content"><strong>Hand:</strong> <span class="pill">Hand</span></div>
+        </div>
+        <span class="add-menu-trigger">+</span>
+        <div class="add-menu">
+          <button>↓ Add section below</button>
+          <button>→ Add subsection</button>
+        </div>
+      </div>
+      <div class="section-wrap">
+        <div class="section none">
+          <span class="context-icon">—</span>
+          <div class="section-title">Klinisch Onderzoek</div>
+          <div class="section-content">Examination findings.</div>
+        </div>
+        <span class="add-menu-trigger">+</span>
+        <div class="add-menu">
+          <button>↓ Add section below</button>
+          <button>→ Add subsection</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Option 4: Inline text links -->
+    <div class="option-box opt4">
+      <div class="option-label">Option 4: Inline text links</div>
+      <div class="option-desc">Small text links inside the section footer</div>
+
+      <div class="section-wrap">
+        <div class="section">
+          <span class="context-icon">⎇</span>
+          <div class="section-title">Anamnese</div>
+          <div class="section-content"><strong>Hand:</strong> <span class="pill">Hand</span></div>
+          <div class="add-links">
+            <a>+ sibling</a>
+            <a>+ child</a>
+          </div>
+        </div>
+      </div>
+      <div class="section-wrap">
+        <div class="section none">
+          <span class="context-icon">—</span>
+          <div class="section-title">Klinisch Onderzoek</div>
+          <div class="section-content">Examination findings.</div>
+          <div class="add-links">
+            <a>+ sibling</a>
+            <a>+ child</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Option 5: Floating toolbar -->
+    <div class="option-box opt5">
+      <div class="option-label">Option 5: Side toolbar</div>
+      <div class="option-desc">Toolbar appears on the right side on hover</div>
+
+      <div class="section-wrap" style="margin-right: 40px;">
+        <div class="section">
+          <span class="context-icon">⎇</span>
+          <div class="section-title">Anamnese</div>
+          <div class="section-content"><strong>Hand:</strong> <span class="pill">Hand</span></div>
+        </div>
+        <div class="toolbar">
+          <button title="Add sibling below">↓</button>
+          <button title="Add child">→</button>
+        </div>
+      </div>
+      <div class="section-wrap" style="margin-right: 40px;">
+        <div class="section none">
+          <span class="context-icon">—</span>
+          <div class="section-title">Klinisch Onderzoek</div>
+          <div class="section-content">Examination findings.</div>
+        </div>
+        <div class="toolbar">
+          <button title="Add sibling below">↓</button>
+          <button title="Add child">→</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

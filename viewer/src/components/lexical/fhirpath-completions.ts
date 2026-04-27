@@ -1,4 +1,5 @@
 import type { QuestionnaireIndex as WasmQuestionnaireIndex } from "fhirpath-rs";
+import type { QuestionnaireIndex } from "../../utils/questionnaire-index";
 
 export interface CompletionItem {
   label: string;
@@ -9,6 +10,7 @@ export interface CompletionItem {
   kind: "value" | "code" | "display";
 }
 
+// Only entry-point variables - the rest comes from WASM generate_completions
 export const STUB_COMPLETIONS: CompletionItem[] = [
   {
     label: "%context",
@@ -28,20 +30,60 @@ export const STUB_COMPLETIONS: CompletionItem[] = [
   },
 ];
 
+function generateItemCompletions(
+  questionnaireIndex: QuestionnaireIndex | undefined,
+): CompletionItem[] {
+  if (!questionnaireIndex) return [];
+
+  const completions: CompletionItem[] = [];
+
+  for (const [linkId, info] of questionnaireIndex.items) {
+    const text = info.text || linkId;
+    const isChoice = info.type === "choice" || info.type === "open-choice";
+
+    // %resource.item.where(linkId='xxx').answer.value
+    completions.push({
+      label: text,
+      detail: `linkId: ${linkId}`,
+      insert_text: `%resource.item.where(linkId='${linkId}').answer.value`,
+      filter_text: `${text} ${linkId} resource`,
+      sort_text: `10-${text}`,
+      kind: "value",
+    });
+
+    // For choice items, add .display and .code variants
+    if (isChoice) {
+      completions.push({
+        label: `${text} (display)`,
+        detail: `linkId: ${linkId}`,
+        insert_text: `%resource.item.where(linkId='${linkId}').answer.valueCoding.display`,
+        filter_text: `${text} ${linkId} display`,
+        sort_text: `11-${text}`,
+        kind: "display",
+      });
+      completions.push({
+        label: `${text} (code)`,
+        detail: `linkId: ${linkId}`,
+        insert_text: `%resource.item.where(linkId='${linkId}').answer.valueCoding.code`,
+        filter_text: `${text} ${linkId} code`,
+        sort_text: `12-${text}`,
+        kind: "code",
+      });
+    }
+  }
+
+  return completions;
+}
+
 export function getFhirPathCompletions(
   contextExpression: string | null | undefined,
   wasmQuestionnaireIndex: WasmQuestionnaireIndex | null,
+  questionnaireIndex?: QuestionnaireIndex,
 ): CompletionItem[] {
-  const wasm: CompletionItem[] = [];
-  if (wasmQuestionnaireIndex && contextExpression) {
-    try {
-      const items = wasmQuestionnaireIndex.generate_completions(
-        contextExpression,
-      ) as CompletionItem[];
-      wasm.push(...items);
-    } catch (e) {
-      console.error("[FhirPathCompletions]", e);
-    }
-  }
-  return [...STUB_COMPLETIONS, ...wasm];
+  // TODO: Use wasmQuestionnaireIndex.generate_completions() once implemented in fhirpath-rs
+  // Currently returns empty for all expressions ("%resource", "%resource.item", etc.)
+  // For now, generate completions from questionnaire index directly
+  const itemCompletions = generateItemCompletions(questionnaireIndex);
+
+  return [...STUB_COMPLETIONS, ...itemCompletions];
 }

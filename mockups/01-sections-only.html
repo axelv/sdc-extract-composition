@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Composition Editor</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .section {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      transition: all 0.15s;
+      cursor: pointer;
+      position: relative;
+    }
+    .section:hover {
+      border-top-color: #d1d5db;
+      border-right-color: #d1d5db;
+      border-bottom-color: #d1d5db;
+    }
+    .section-clickable {
+      padding: 10px 16px;
+      min-height: 52px;
+    }
+    .section-wrapper:hover > .section {
+      background: #f9fafb;
+    }
+    .section-wrapper:has(.section-wrapper:hover) > .section,
+    .section-wrapper:has(.add-between:hover) > .section,
+    .section:has(.add-between:hover) {
+      background: white !important;
+    }
+    .section-title {
+      font-weight: 500;
+      color: #111827;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+    .section-content {
+      color: #6b7280;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .section-content.empty {
+      color: #d1d5db;
+      font-style: italic;
+    }
+    .section-children {
+      padding: 8px 12px 28px 12px;
+    }
+    .section-children:empty {
+      display: none;
+    }
+    .section-children .section-wrapper {
+      margin-bottom: 2px;
+    }
+    .section-children .section-wrapper {
+      margin-bottom: 4px;
+    }
+    /* Add section between (centered + circle) */
+    .add-between {
+      position: relative;
+      height: 2px;
+      margin: 0;
+      z-index: 20;
+    }
+    .add-between .plus {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 20px;
+      height: 20px;
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 50%;
+      cursor: pointer;
+      opacity: 0;
+      transition: all 0.15s;
+      padding: 4px;
+    }
+    .add-between .plus svg {
+      width: 100%;
+      height: 100%;
+      stroke: #9ca3af;
+    }
+    .section-wrapper:hover + .add-between .plus,
+    .add-between:hover .plus {
+      opacity: 1;
+    }
+    /* Hide parent add-between when hovering a nested section card or add-between */
+    .section-wrapper:has(.section-children .section:hover) + .add-between .plus,
+    .section-wrapper:has(.section-children .add-between:hover) + .add-between .plus {
+      opacity: 0 !important;
+      pointer-events: none;
+    }
+    .add-between .plus:hover {
+      background: #f3f4f6;
+      border-color: #d1d5db;
+    }
+    .add-between .plus:hover svg {
+      stroke: #6b7280;
+    }
+
+
+    /* Add subsection button (bottom right) */
+    .subsection-btn {
+      position: absolute;
+      right: 8px;
+      bottom: 4px;
+      padding: 3px 8px;
+      font-size: 9px;
+      color: #9ca3af;
+      background: white;
+      border: 1px dashed #d1d5db;
+      border-radius: 4px;
+      cursor: pointer;
+      opacity: 0;
+      transition: all 0.15s;
+    }
+    .section:hover > .subsection-btn {
+      opacity: 1;
+    }
+    /* Hide parent buttons when hovering a nested section card or add-between */
+    .section:has(.section-children .section:hover) > .subsection-btn,
+    .section:has(.section-children .add-between:hover) > .subsection-btn {
+      opacity: 0 !important;
+      pointer-events: none;
+    }
+    .subsection-btn:hover {
+      background: #f3f4f6;
+      border-color: #9ca3af;
+      color: #6b7280;
+    }
+    .delete-btn {
+      position: absolute;
+      top: 4px;
+      right: 8px;
+      opacity: 0;
+      padding: 2px 6px;
+      color: #9ca3af;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.15s;
+      background: transparent;
+      border-radius: 4px;
+      line-height: 1;
+      z-index: 5;
+    }
+    .section:hover > .delete-btn {
+      opacity: 1;
+    }
+    /* Hide parent delete when hovering a nested section card */
+    .section:has(.section-children .section:hover) > .delete-btn {
+      opacity: 0 !important;
+      pointer-events: none;
+    }
+    .delete-btn:hover {
+      color: #ef4444;
+    }
+    .section-wrapper {
+      position: relative;
+      margin-bottom: 2px;
+    }
+
+    /* Context indicator - left border + icon (balanced palette) */
+    .section {
+      border-left: 3px solid #6b9fd4;
+    }
+    .section.conditional {
+      border-left-color: #9b8cc9;
+    }
+    .section.repeating {
+      border-left-color: #5fb090;
+    }
+    .section.custom {
+      border-left-color: #d4a85a;
+    }
+    .context-icon {
+      position: absolute;
+      left: -11px;
+      top: 12px;
+      width: 18px;
+      height: 18px;
+      background: #6b9fd4;
+      color: white;
+      border-radius: 50%;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .section.conditional > .context-icon {
+      background: #9b8cc9;
+    }
+    .section.repeating > .context-icon {
+      background: #5fb090;
+    }
+    .section.custom > .context-icon {
+      background: #d4a85a;
+    }
+    .context-badge .icon {
+      font-size: 12px;
+    }
+
+    /* Editor panel */
+    .editor-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+    .editor-overlay.hidden {
+      display: none;
+    }
+    .editor-panel {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+      width: 600px;
+      max-width: 90vw;
+      max-height: 80vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .editor-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .editor-body {
+      padding: 20px;
+      flex: 1;
+      overflow-y: auto;
+    }
+    .editor-footer {
+      padding: 16px 20px;
+      border-top: 1px solid #e5e7eb;
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+    .editor-title-input {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    .editor-title-input:focus {
+      outline: none;
+      border-color: #3b82f6;
+    }
+    .editor-title-input::placeholder {
+      color: #d1d5db;
+      font-style: italic;
+    }
+    .editor-content {
+      width: 100%;
+      min-height: 150px;
+      padding: 12px;
+      border: 1px solid #e5e7eb;
+      border-radius: 0 0 6px 6px;
+      border-top: none;
+      font-size: 14px;
+      line-height: 1.8;
+    }
+    .editor-content:focus {
+      outline: none;
+    }
+
+    /* Formula bar */
+    .formula-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px 6px 0 0;
+      font-size: 12px;
+    }
+    .formula-bar-label {
+      color: #6b7280;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .formula-bar-input {
+      flex: 1;
+      border: none;
+      background: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 12px;
+      color: #374151;
+    }
+    .formula-bar-input:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px #3b82f6;
+    }
+    .formula-bar-input::placeholder {
+      color: #9ca3af;
+      font-family: system-ui;
+    }
+
+    /* Pills in readonly view (balanced palette) */
+    .pill {
+      display: inline-block;
+      background: #e8f2fc;
+      border: 1px solid #7eb3e0;
+      color: #2d6aa0;
+      padding: 0px 6px;
+      border-radius: 10px;
+      font-size: 11px;
+      white-space: nowrap;
+      user-select: none;
+      vertical-align: baseline;
+    }
+    .pill.custom {
+      background: #fef6e0;
+      border: 1px dashed #e0b44a;
+      color: #946b1a;
+    }
+
+    /* Pills in editor - interactive */
+    .editor-content .pill {
+      cursor: pointer;
+      transition: all 0.1s;
+    }
+    .editor-content .pill:hover {
+      background: #d4e6f8;
+    }
+    .editor-content .pill.selected {
+      box-shadow: 0 0 0 2px #4a9ad4;
+    }
+    .editor-content .pill.custom:hover {
+      background: #fcefc8;
+    }
+
+    /* Autocomplete menu */
+    .autocomplete-menu {
+      position: absolute;
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+      max-height: 250px;
+      overflow-y: auto;
+      width: 280px;
+      z-index: 200;
+    }
+    .autocomplete-menu.hidden {
+      display: none;
+    }
+    .autocomplete-group {
+      padding: 6px 10px;
+      font-size: 10px;
+      font-weight: 600;
+      color: #6b7280;
+      background: #f9fafb;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .autocomplete-item {
+      padding: 8px 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .autocomplete-item:hover, .autocomplete-item.selected {
+      background: #f3f4f6;
+    }
+    .autocomplete-item .label {
+      font-size: 13px;
+      color: #111827;
+    }
+    .autocomplete-item .type {
+      font-size: 10px;
+      color: #9ca3af;
+    }
+    .editor-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 500;
+      color: #6b7280;
+      margin-bottom: 6px;
+    }
+    .editor-hint {
+      font-size: 11px;
+      color: #9ca3af;
+      margin-top: 4px;
+    }
+    .editor-section {
+      margin-bottom: 20px;
+    }
+    .editor-section:last-child {
+      margin-bottom: 0;
+    }
+    .btn {
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-secondary {
+      background: white;
+      border: 1px solid #e5e7eb;
+      color: #374151;
+    }
+    .btn-secondary:hover {
+      background: #f9fafb;
+      border-color: #d1d5db;
+    }
+    .btn-primary {
+      background: #111827;
+      border: 1px solid #111827;
+      color: white;
+    }
+    .btn-primary:hover {
+      background: #1f2937;
+    }
+
+    /* Context type buttons */
+    .context-type-group {
+      display: flex;
+      gap: 8px;
+    }
+    .context-type-btn {
+      flex: 1;
+      padding: 10px 12px;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      background: white;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s;
+    }
+    .context-type-btn:hover {
+      border-color: #d1d5db;
+      background: #f9fafb;
+    }
+    .context-type-btn.selected {
+      border-color: #3b82f6;
+      background: #eff6ff;
+    }
+    .context-type-btn .icon {
+      font-size: 18px;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .context-type-btn .label {
+      font-size: 12px;
+      font-weight: 500;
+      color: #374151;
+    }
+    .context-type-btn .desc {
+      font-size: 10px;
+      color: #9ca3af;
+    }
+
+    /* Context source select */
+    .context-source-row {
+      margin-top: 12px;
+    }
+    .context-source-row.hidden {
+      display: none;
+    }
+    .context-source-select {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      font-size: 13px;
+      background: white;
+    }
+    .context-source-select:focus {
+      outline: none;
+      border-color: #3b82f6;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen p-8">
+  <div class="max-w-2xl mx-auto">
+    <div class="mb-6 flex items-start justify-between">
+      <div>
+        <h1 class="text-xl font-bold text-gray-900">Consultatieverslag - Handchirurgie</h1>
+        <p class="text-gray-500 text-sm mt-1">SDC Template Editor — Click any section to edit</p>
+      </div>
+      <div class="flex items-center gap-4 text-xs text-gray-500">
+        <div class="flex items-center gap-1.5">
+          <span class="w-4 h-4 rounded-full text-white flex items-center justify-center text-[10px]" style="background:#6b9fd4">—</span>
+          <span>Always</span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <span class="w-4 h-4 rounded-full text-white flex items-center justify-center text-[10px]" style="background:#9b8cc9">⎇</span>
+          <span>If exists</span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <span class="w-4 h-4 rounded-full text-white flex items-center justify-center text-[10px]" style="background:#5fb090">↻</span>
+          <span>For each</span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <span class="w-4 h-4 rounded-full text-white flex items-center justify-center text-[10px]" style="background:#d4a85a">⎇</span>
+          <span>Custom</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="root" class="sections-container"></div>
+  </div>
+
+  <!-- Editor Panel -->
+  <div id="editorOverlay" class="editor-overlay hidden" onclick="if(event.target===this)closeEditor()">
+    <div class="editor-panel">
+      <div class="editor-header">
+        <span class="font-semibold text-gray-900">Edit Section</span>
+        <button onclick="closeEditor()" class="text-gray-400 hover:text-gray-600 text-xl">&times;</button>
+      </div>
+      <div class="editor-body">
+        <!-- Context -->
+        <div class="editor-section">
+          <label class="editor-label">Context</label>
+          <div class="context-type-group">
+            <button type="button" class="context-type-btn" data-type="none" onclick="selectContextType('none')">
+              <span class="icon">—</span>
+              <span class="label">None</span>
+              <span class="desc">Always show</span>
+            </button>
+            <button type="button" class="context-type-btn" data-type="conditional" onclick="selectContextType('conditional')">
+              <span class="icon">⎇</span>
+              <span class="label">Conditional</span>
+              <span class="desc">Show if exists</span>
+            </button>
+            <button type="button" class="context-type-btn" data-type="repeating" onclick="selectContextType('repeating')">
+              <span class="icon">↻</span>
+              <span class="label">Repeating</span>
+              <span class="desc">For each item</span>
+            </button>
+            <button type="button" class="context-type-btn" data-type="custom" onclick="selectContextType('custom')">
+              <span class="icon">{}</span>
+              <span class="label">Custom</span>
+              <span class="desc">FHIRPath</span>
+            </button>
+          </div>
+
+          <!-- Conditional source -->
+          <div id="conditionalSourceRow" class="context-source-row hidden">
+            <label class="editor-label">If this answer exists:</label>
+            <select id="conditionalSource" class="context-source-select">
+              <option value="">Select a question...</option>
+              <optgroup label="Question Groups">
+                <option value="preop-an">Preop Anamnese</option>
+                <option value="preop-ko">Preop KO</option>
+                <option value="preop-to">Preop TO</option>
+                <option value="postop-an">Postop Anamnese</option>
+                <option value="postop-ko">Postop KO</option>
+              </optgroup>
+              <optgroup label="Questions">
+                <option value="infiltraties">Infiltraties</option>
+                <option value="diabetes">Diabetes</option>
+                <option value="roken">Roken</option>
+              </optgroup>
+            </select>
+          </div>
+
+          <!-- Repeating source -->
+          <div id="repeatingSourceRow" class="context-source-row hidden">
+            <label class="editor-label">For every item in:</label>
+            <select id="repeatingSource" class="context-source-select">
+              <option value="">Select a repeating group...</option>
+              <option value="medications">Medications</option>
+              <option value="findings">Findings</option>
+              <option value="procedures">Procedures</option>
+            </select>
+          </div>
+
+          <!-- Custom expression -->
+          <div id="customSourceRow" class="context-source-row hidden">
+            <label class="editor-label">FHIRPath expression:</label>
+            <input type="text" id="customExpression" class="editor-title-input" placeholder="%resource.item.where(linkId='...')">
+            <div class="editor-hint">Advanced: enter a custom FHIRPath expression</div>
+          </div>
+        </div>
+
+        <!-- Title -->
+        <div class="editor-section">
+          <label class="editor-label">Title</label>
+          <input type="text" id="editorTitle" class="editor-title-input" placeholder="No heading">
+          <div class="editor-hint">Leave empty for no heading</div>
+        </div>
+
+        <!-- Content -->
+        <div class="editor-section">
+          <label class="editor-label">Content</label>
+          <div class="formula-bar">
+            <span class="formula-bar-label">fx</span>
+            <input type="text" id="formulaBar" class="formula-bar-input" placeholder="Select a field to see its expression...">
+          </div>
+          <div id="editorContent" class="editor-content" contenteditable="true" oninput="handleContentInput(event)"></div>
+          <div class="editor-hint">Type <kbd style="background:#e5e7eb;padding:1px 4px;border-radius:3px;font-size:11px">/</kbd> to insert a field, or <kbd style="background:#e5e7eb;padding:1px 4px;border-radius:3px;font-size:11px">{{"{{"}}</kbd> for custom FHIRPath</div>
+        </div>
+
+        <!-- Autocomplete menu (hidden by default) -->
+        <div id="autocompleteMenu" class="autocomplete-menu hidden">
+          <div class="autocomplete-group">From context</div>
+          <div class="autocomplete-item" data-label="Hand" data-expr="%context.item.where(linkId='hand').answer.value">
+            <span class="label">Hand</span>
+            <span class="type">choice</span>
+          </div>
+          <div class="autocomplete-item" data-label="Klacht" data-expr="%context.item.where(linkId='klacht').answer.value">
+            <span class="label">Klacht</span>
+            <span class="type">text</span>
+          </div>
+          <div class="autocomplete-item" data-label="Nachtelijke tintelingen" data-expr="%context.item.where(linkId='nachtelijke-tintelingen').answer.value">
+            <span class="label">Nachtelijke tintelingen</span>
+            <span class="type">boolean</span>
+          </div>
+          <div class="autocomplete-group">From questionnaire</div>
+          <div class="autocomplete-item" data-label="Preop KO / Drukpijn" data-expr="%resource.item.where(linkId='preop-ko').item.where(linkId='drukpijn').answer.value">
+            <span class="label">Preop KO / Drukpijn</span>
+            <span class="type">boolean</span>
+          </div>
+          <div class="autocomplete-item" data-label="Postop / Pijn" data-expr="%resource.item.where(linkId='postop-an').item.where(linkId='pijn').answer.value">
+            <span class="label">Postop / Pijn</span>
+            <span class="type">choice</span>
+          </div>
+          <div class="autocomplete-group">Other</div>
+          <div class="autocomplete-item" data-custom="true" style="color: #b45309;">
+            <span class="label">{} Custom FHIRPath...</span>
+            <span class="type">expression</span>
+          </div>
+        </div>
+      </div>
+      <div class="editor-footer">
+        <button class="btn btn-secondary" onclick="closeEditor()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveEditor()">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Available context sources (from questionnaire)
+    const contextSources = {
+      'preop-an': { label: 'Preop Anamnese', type: 'group' },
+      'preop-ko': { label: 'Preop KO', type: 'group' },
+      'preop-to': { label: 'Preop TO', type: 'group' },
+      'postop-an': { label: 'Postop Anamnese', type: 'group' },
+      'postop-ko': { label: 'Postop KO', type: 'group' },
+      'medications': { label: 'Medications', type: 'repeating' },
+      'findings': { label: 'Findings', type: 'repeating' },
+    };
+
+    let sections = [
+      {
+        id: '1',
+        title: 'Patient',
+        content: `Patiënt ​<span class="pill" contenteditable="false" data-expression="%resource.item.where(linkId='patient-name').answer.value">Naam</span>​, geboren op ​<span class="pill" contenteditable="false" data-expression="%resource.item.where(linkId='patient-dob').answer.value">Geboortedatum</span>​, werd gezien op consultatie op ​<span class="pill" contenteditable="false" data-expression="%resource.authored">Datum</span>​.`,
+        context: null,
+        children: []
+      },
+      {
+        id: '2',
+        title: 'Preoperatieve Beoordeling',
+        content: ``,
+        context: { type: 'conditional', source: 'preop-an' },
+        children: [
+          {
+            id: '2-1',
+            title: 'Anamnese',
+            content: `<strong>Aangedane hand:</strong> ​<span class="pill" contenteditable="false" data-expression="%context.item.where(linkId='hand').answer.value">Hand</span>​<br><strong>Hoofdklacht:</strong> ​<span class="pill" contenteditable="false" data-expression="%context.item.where(linkId='klacht').answer.value">Klacht</span>​<br><strong>Duur klachten:</strong> ​<span class="pill" contenteditable="false" data-expression="%context.item.where(linkId='duur').answer.value">Duur</span>​<br>Patiënt rapporteert ​<span class="pill" contenteditable="false" data-expression="%context.item.where(linkId='nachtelijke-tintelingen').answer.value.iif($this, 'wel', 'geen')">wel/geen</span>​ nachtelijke tintelingen.`,
+            context: null,
+            children: []
+          },
+          {
+            id: '2-2',
+            title: 'Klinisch Onderzoek',
+            content: `<strong>Tinel:</strong> ​<span class="pill" contenteditable="false" data-expression="%context.item.where(linkId='tinel').answer.value">Tinel</span>​ | <strong>Phalen:</strong> ​<span class="pill" contenteditable="false" data-expression="%context.item.where(linkId='phalen').answer.value">Phalen</span>​ | <strong>Thenar atrofie:</strong> ​<span class="pill" contenteditable="false" data-expression="%context.item.where(linkId='thenar').answer.value">Thenar</span>​`,
+            context: { type: 'conditional', source: 'preop-ko' },
+            children: []
+          },
+          {
+            id: '2-3',
+            title: '',
+            content: `Bijkomende opmerking: ​<span class="pill custom" contenteditable="false" data-expression="%context.item.where(linkId='preop-opmerking').answer.value">opmerking</span>​`,
+            context: { type: 'custom', source: "%resource.item.where(linkId='preop-an').item.where(linkId='preop-opmerking').exists()" },
+            children: []
+          }
+        ]
+      },
+      {
+        id: '3',
+        title: 'Voorgeschreven Medicatie',
+        content: `• ​<span class="pill" contenteditable="false" data-expression="%context.item.where(linkId='med-name').answer.value">Medicatie</span>​ ​<span class="pill" contenteditable="false" data-expression="%context.item.where(linkId='med-dose').answer.value">Dosis</span>​ — ​<span class="pill" contenteditable="false" data-expression="%context.item.where(linkId='med-freq').answer.value">Frequentie</span>​`,
+        context: { type: 'repeating', source: 'medications' },
+        children: []
+      },
+      {
+        id: '4',
+        title: 'Ingrepen',
+        content: `​<span class="pill" contenteditable="false" data-expression="%context.item.where(linkId='procedure-name').answer.value">Ingreep</span>​ uitgevoerd op ​<span class="pill" contenteditable="false" data-expression="%context.item.where(linkId='procedure-date').answer.value">Datum</span>​.<br>Lateraliteit: ​<span class="pill" contenteditable="false" data-expression="%context.item.where(linkId='procedure-side').answer.value">Zijde</span>​ | Anesthesie: ​<span class="pill" contenteditable="false" data-expression="%context.item.where(linkId='anesthesie').answer.value">Type</span>​`,
+        context: { type: 'repeating', source: 'procedures' },
+        children: [
+          {
+            id: '4-1',
+            title: '',
+            content: `<em>Complicatie:</em> ​<span class="pill custom" contenteditable="false" data-expression="%context.item.where(linkId='complicatie').answer.value">beschrijving</span>​`,
+            context: { type: 'conditional', source: 'complicatie' },
+            children: []
+          }
+        ]
+      },
+      {
+        id: '5',
+        title: 'Conclusie & Plan',
+        content: `<strong>Diagnose:</strong> ​<span class="pill" contenteditable="false" data-expression="%resource.item.where(linkId='diagnose').answer.value">Diagnose</span>​<br><strong>Advies:</strong> Controle na ​<span class="pill" contenteditable="false" data-expression="%resource.item.where(linkId='followup-weeks').answer.value">X</span>​ weken. ​<span class="pill custom" contenteditable="false" data-expression="%resource.item.where(linkId='extra-instructies').answer.value.iif($this.exists(), 'Bijzondere instructies: ' + $this, '')">instructies</span>​`,
+        context: null,
+        children: []
+      }
+    ];
+
+    let editingId = null;
+    let currentContextType = 'none';
+
+    function render() {
+      document.getElementById('root').innerHTML = renderSectionsWithDividers(sections, null, 0);
+    }
+
+    function renderSectionsWithDividers(list, parentId, depth) {
+      let html = '';
+      html += renderAddBetween(parentId, 0);
+      list.forEach((s, i) => {
+        html += renderSection(s, depth);
+        html += renderAddBetween(parentId, i + 1);
+      });
+      return html;
+    }
+
+    function renderAddBetween(parentId, index) {
+      const parentArg = parentId ? `'${parentId}'` : 'null';
+      return `
+        <div class="add-between">
+          <span class="plus" onclick="event.stopPropagation(); addSectionAt(${parentArg}, ${index})">
+            <svg viewBox="0 0 12 12" fill="none" stroke-width="2">
+              <line x1="6" y1="1" x2="6" y2="11"/>
+              <line x1="1" y1="6" x2="11" y2="6"/>
+            </svg>
+          </span>
+        </div>
+      `;
+    }
+
+    function renderSection(section, depth) {
+      const hasChildren = section.children.length > 0;
+      const hasContent = section.content && section.content.trim();
+      const hasTitle = section.title && section.title.trim();
+      const hasContext = section.context && section.context.type && section.context.source;
+
+      const titleHtml = hasTitle
+        ? `<span class="section-title">${section.title}</span>`
+        : '';
+
+      const contentClass = hasContent ? 'section-content' : 'section-content empty';
+      const contentText = hasContent ? section.content : 'Click to add content...';
+
+      let contextClass = '';
+      let icon = '—';
+      if (hasContext) {
+        const contextType = section.context.type;
+        const isRepeating = contextType === 'repeating';
+        const isCustom = contextType === 'custom';
+        contextClass = isRepeating ? 'repeating' : (isCustom ? 'custom' : 'conditional');
+        icon = isRepeating ? '↻' : (isCustom ? '{}' : '⎇');
+      }
+      const contextIconHtml = `<span class="context-icon">${icon}</span>`;
+
+      const childrenHtml = hasChildren
+        ? `<div class="section-children" onclick="if(event.target === this) openEditor('${section.id}')">${renderSectionsWithDividers(section.children, section.id, depth + 1)}</div>`
+        : '';
+
+      return `
+        <div class="section-wrapper" data-depth="${depth}">
+          <div class="section ${contextClass}" data-id="${section.id}" onclick="event.stopPropagation(); openEditor('${section.id}')">
+            ${contextIconHtml}
+            <button class="delete-btn" onclick="event.stopPropagation(); deleteSection('${section.id}')">&times;</button>
+            <div class="section-clickable">
+              ${hasTitle ? `<div class="section-title">${section.title}</div>` : ''}
+              <div class="${contentClass}">${contentText}</div>
+            </div>
+            ${childrenHtml}
+            <button class="subsection-btn" onclick="event.stopPropagation(); addSection('${section.id}')">+ subsection</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function findSection(list, id) {
+      for (const s of list) {
+        if (s.id === id) return s;
+        const found = findSection(s.children, id);
+        if (found) return found;
+      }
+      return null;
+    }
+
+    function addSection(parentId) {
+      const newSection = {
+        id: String(Date.now()),
+        title: '',
+        content: '',
+        context: null,
+        children: []
+      };
+
+      if (parentId) {
+        const parent = findSection(sections, parentId);
+        if (parent) parent.children.push(newSection);
+      } else {
+        sections.push(newSection);
+      }
+      render();
+    }
+
+    function addSectionAt(parentId, index) {
+      const newSection = {
+        id: String(Date.now()),
+        title: '',
+        content: '',
+        context: null,
+        children: []
+      };
+
+      if (parentId) {
+        const parent = findSection(sections, parentId);
+        if (parent) parent.children.splice(index, 0, newSection);
+      } else {
+        sections.splice(index, 0, newSection);
+      }
+      render();
+    }
+
+    function deleteSection(id) {
+      function removeFrom(list) {
+        const idx = list.findIndex(s => s.id === id);
+        if (idx >= 0) {
+          list.splice(idx, 1);
+          return true;
+        }
+        for (const s of list) {
+          if (removeFrom(s.children)) return true;
+        }
+        return false;
+      }
+      removeFrom(sections);
+      render();
+    }
+
+    function selectContextType(type) {
+      currentContextType = type;
+      document.querySelectorAll('.context-type-btn').forEach(btn => {
+        btn.classList.toggle('selected', btn.dataset.type === type);
+      });
+      document.getElementById('conditionalSourceRow').classList.toggle('hidden', type !== 'conditional');
+      document.getElementById('repeatingSourceRow').classList.toggle('hidden', type !== 'repeating');
+      document.getElementById('customSourceRow').classList.toggle('hidden', type !== 'custom');
+    }
+
+    function openEditor(id) {
+      editingId = id;
+      const section = findSection(sections, id);
+      if (!section) return;
+
+      // Set context type
+      const contextType = section.context?.type || 'none';
+      selectContextType(contextType);
+
+      // Set context source based on type
+      document.getElementById('conditionalSource').value = '';
+      document.getElementById('repeatingSource').value = '';
+      document.getElementById('customExpression').value = '';
+
+      if (section.context?.source) {
+        if (contextType === 'conditional') {
+          document.getElementById('conditionalSource').value = section.context.source;
+        } else if (contextType === 'repeating') {
+          document.getElementById('repeatingSource').value = section.context.source;
+        } else if (contextType === 'custom') {
+          document.getElementById('customExpression').value = section.context.source;
+        }
+      }
+
+      // Set title and content
+      document.getElementById('editorTitle').value = section.title || '';
+      document.getElementById('editorContent').innerHTML = section.content || '';
+      document.getElementById('formulaBar').value = '';
+
+      // Setup pill click handlers in editor
+      document.querySelectorAll('#editorContent .pill').forEach(pill => {
+        pill.onclick = (e) => selectPill(pill, e);
+      });
+
+      document.getElementById('editorOverlay').classList.remove('hidden');
+    }
+
+    function closeEditor() {
+      editingId = null;
+      document.getElementById('editorOverlay').classList.add('hidden');
+    }
+
+    function saveEditor() {
+      if (!editingId) return;
+      const section = findSection(sections, editingId);
+      if (!section) return;
+
+      // Save context
+      let contextSource = '';
+      if (currentContextType === 'conditional') {
+        contextSource = document.getElementById('conditionalSource').value;
+      } else if (currentContextType === 'repeating') {
+        contextSource = document.getElementById('repeatingSource').value;
+      } else if (currentContextType === 'custom') {
+        contextSource = document.getElementById('customExpression').value.trim();
+      }
+
+      if (currentContextType !== 'none' && contextSource) {
+        section.context = { type: currentContextType, source: contextSource };
+      } else {
+        section.context = null;
+      }
+
+      // Save title and content
+      section.title = document.getElementById('editorTitle').value.trim();
+      section.content = document.getElementById('editorContent').innerHTML.trim();
+
+      closeEditor();
+      render();
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeEditor();
+        hideAutocomplete();
+      }
+    });
+
+    // Autocomplete & Pills
+    let selectedPillExpression = null;
+
+    function handleContentInput(event) {
+      const content = event.target;
+      const text = content.innerText;
+      const lastChar = text.slice(-1);
+
+      if (lastChar === '/') {
+        showAutocomplete();
+      } else {
+        hideAutocomplete();
+      }
+
+      // Check for custom {{ }} input
+      checkForCustomExpression(content);
+    }
+
+    function showAutocomplete() {
+      const menu = document.getElementById('autocompleteMenu');
+      menu.classList.remove('hidden');
+    }
+
+    function hideAutocomplete() {
+      document.getElementById('autocompleteMenu').classList.add('hidden');
+    }
+
+    function insertPill(label, expression) {
+      const content = document.getElementById('editorContent');
+      // Remove the "/" trigger
+      content.innerHTML = content.innerHTML.replace(/\/$/, '');
+
+      const pill = createPillHtml(label, expression, false);
+      content.innerHTML += pill + '&nbsp;';
+      hideAutocomplete();
+      content.focus();
+    }
+
+    function insertCustomPill() {
+      const expression = prompt('Enter FHIRPath expression:', "%context.item.where(linkId='').answer.value");
+      if (expression) {
+        const content = document.getElementById('editorContent');
+        content.innerHTML = content.innerHTML.replace(/\/$/, '');
+
+        const pill = createPillHtml('custom', expression, true);
+        content.innerHTML += pill + '&nbsp;';
+        content.focus();
+      }
+      hideAutocomplete();
+    }
+
+    function createPillHtml(label, expression, isCustom) {
+      const customClass = isCustom ? ' custom' : '';
+      // Zero-width spaces (​) around the pill allow cursor positioning
+      return `​<span class="pill${customClass}" contenteditable="false" data-expression="${expression.replace(/"/g, '&quot;')}">${label}</span>​`;
+    }
+
+    function selectPill(pillEl, event) {
+      event.stopPropagation();
+
+      // Deselect previous
+      document.querySelectorAll('.pill.selected').forEach(p => p.classList.remove('selected'));
+
+      // Select this one
+      pillEl.classList.add('selected');
+      selectedPillExpression = pillEl.dataset.expression;
+
+      // Show in formula bar
+      document.getElementById('formulaBar').value = selectedPillExpression;
+    }
+
+    function checkForCustomExpression(content) {
+      const html = content.innerHTML;
+      const match = html.match(/\{\{([^}]+)\}\}/);
+      if (match) {
+        const expression = match[1];
+        const pill = createPillHtml('custom', expression, true);
+        content.innerHTML = html.replace(/\{\{[^}]+\}\}/, pill + '&nbsp;');
+      }
+    }
+
+    // Update formula bar on input
+    document.getElementById('formulaBar')?.addEventListener('change', (e) => {
+      const selectedPill = document.querySelector('.pill.selected');
+      if (selectedPill) {
+        selectedPill.dataset.expression = e.target.value;
+      }
+    });
+
+    // Click outside deselects pill
+    document.getElementById('editorContent')?.addEventListener('click', (e) => {
+      if (!e.target.classList.contains('pill')) {
+        document.querySelectorAll('.pill.selected').forEach(p => p.classList.remove('selected'));
+        document.getElementById('formulaBar').value = '';
+      }
+    });
+
+    // Autocomplete item clicks
+    document.querySelectorAll('.autocomplete-item').forEach(item => {
+      item.addEventListener('click', () => {
+        if (item.dataset.custom) {
+          insertCustomPill();
+        } else if (item.dataset.label && item.dataset.expr) {
+          insertPill(item.dataset.label, item.dataset.expr);
+        }
+      });
+    });
+
+    render();
+  </script>
+</body>
+</html>
