@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useId, useState, type FormEvent } from "react";
 import type { AnswerOption } from "../../utils/questionnaire-index";
 import { useQuestionnaireIndex } from "./QuestionnaireIndexContext";
 import { useQuestionnaireMutable } from "./QuestionnaireMutableContext";
@@ -67,6 +67,7 @@ function CodeRow({ linkId, coding }: CodeRowProps) {
   const mutable = useQuestionnaireMutable();
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState("");
+  const inputId = useId();
 
   if (!mutable) {
     return (
@@ -97,7 +98,8 @@ function CodeRow({ linkId, coding }: CodeRowProps) {
     setDraft("");
   };
 
-  const save = () => {
+  const submit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     if (!coding.system) return;
     const trimmed = draft.trim();
     if (!trimmed) return;
@@ -166,11 +168,21 @@ function CodeRow({ linkId, coding }: CodeRowProps) {
         </div>
       )}
       {editing && (
-        <div className="synonyms-edit-form">
-          <label className="synonyms-edit-label">
+        <form
+          className="synonyms-edit-form"
+          onSubmit={submit}
+          onKeyDown={(ev) => {
+            if (ev.key === "Escape") {
+              ev.preventDefault();
+              cancelEdit();
+            }
+          }}
+        >
+          <label className="synonyms-edit-label" htmlFor={inputId}>
             Render code <code>{coding.code}</code> as:
           </label>
           <input
+            id={inputId}
             type="text"
             className="synonyms-edit-input"
             value={draft}
@@ -179,19 +191,22 @@ function CodeRow({ linkId, coding }: CodeRowProps) {
             autoFocus
           />
           <div className="synonyms-edit-actions">
-            <button type="button" className="synonyms-button" onClick={cancelEdit}>
+            <button
+              type="button"
+              className="synonyms-button"
+              onClick={cancelEdit}
+            >
               Cancel
             </button>
             <button
-              type="button"
+              type="submit"
               className="synonyms-button synonyms-button-primary"
-              onClick={save}
               disabled={draft.trim().length === 0}
             >
               Save
             </button>
           </div>
-        </div>
+        </form>
       )}
     </li>
   );
