@@ -52,7 +52,11 @@ if (Symbol.dispose) QuestionnaireIndex.prototype[Symbol.dispose] = Questionnaire
 /**
  * Analyze a FHIRPath expression in the context of a Questionnaire.
  *
- * Returns `{ annotations: Annotation[], diagnostics: Diagnostic[] }`.
+ * Returns `{ annotations: Annotation[], diagnostics: Diagnostic[],
+ * inferred_type: string, inferred_cardinality: string }`. The inferred
+ * fields are snake_case enum values (`"boolean"`, `"coding"`,
+ * `"singleton"`, `"collection"`, `"unknown"`, …) and are filled
+ * unconditionally — UI hosts can use them for hover/badge metadata.
  * Span offsets are UTF-16 code units, suitable for
  * `String.prototype.slice` and CodeMirror/Monaco position math.
  *

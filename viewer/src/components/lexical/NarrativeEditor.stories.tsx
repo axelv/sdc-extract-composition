@@ -20,14 +20,10 @@ import { QuestionnaireIndexProvider } from "./QuestionnaireIndexContext";
 import { QuestionnaireProvider } from "./QuestionnaireContext";
 import { WasmQuestionnaireIndexProvider } from "./WasmQuestionnaireIndexContext";
 
-<<<<<<< worktree-synonym-map
 // Use the nested-choice-questions iteration: it has answerOption.valueCoding
 // entries (with `system`+`code`+`display`) on the `laterality` linkId, so the
 // SynonymsPanel has codes to surface for renaming.
 import questionnaireJson from "../../iterations/03-nested-choice-questions/questionnaire-extract.json";
-=======
-import questionnaireJson from "../../../../iterations/01-liquid-template/questionnaire-extract.json";
->>>>>>> main
 
 const SAMPLE_QUESTIONNAIRE = questionnaireJson as unknown as Questionnaire;
 

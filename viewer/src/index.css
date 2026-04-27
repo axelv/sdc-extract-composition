@@ -103,6 +103,7 @@ html, body, #root {
   font-size: 0.7em;
   line-height: 1;
   padding: 0;
+  cursor: pointer;
 }
 
 /*

@@ -10,6 +10,44 @@ export interface Span {
   end: number;
 }
 
+/**
+ * Inferred result type of a FHIRPath expression.
+ *
+ * `unknown` means the analyzer could not determine the type with confidence —
+ * UI hosts should treat it as "no information" rather than "any type".
+ */
+export type InferredType =
+  | "boolean"
+  | "string"
+  | "integer"
+  | "decimal"
+  | "date"
+  | "date_time"
+  | "time"
+  | "quantity"
+  | "coding"
+  | "unknown";
+
+/**
+ * Inferred cardinality of a FHIRPath expression's result.
+ *
+ * `unknown` means the analyzer could not determine the cardinality with
+ * confidence.
+ */
+export type Cardinality = "singleton" | "collection" | "unknown";
+
+/**
+ * How precisely an annotation attributes to its linkId scope.
+ *
+ * Omitted on the wire when `full` (the precise default) — only present when
+ * a positional selector or scope-widening / opaque op has degraded precision.
+ */
+export type Attribution =
+  | "full"
+  | "partial_positional"
+  | "widened_scope"
+  | "unattributable";
+
 export type AnnotationKind =
   | {
       type: "answer_reference";
@@ -27,18 +65,41 @@ export type AnnotationKind =
 export interface Annotation {
   span: Span;
   kind: AnnotationKind;
+  /** Present only when not `"full"`. */
+  attribution?: Attribution;
 }
+
+export type DiagnosticCode =
+  | "unknown_link_id"
+  | "unreachable_link_id"
+  | "invalid_accessor_for_type"
+  | "missing_accessor_for_coding"
+  | "item_reference_targets_leaf"
+  | "context_unreachable_from_parent"
+  | "expression_not_attributable"
+  | "expression_type_mismatch"
+  | "expression_cardinality_mismatch";
 
 export interface Diagnostic {
   span: Span;
-  severity: "error" | "warning";
-  code: string;
+  severity: "error" | "warning" | "info";
+  code: DiagnosticCode;
   message: string;
 }
 
 export interface AnalysisResult {
   annotations: Annotation[];
   diagnostics: Diagnostic[];
+  /**
+   * Inferred result type of the expression. Always populated; `"unknown"`
+   * when inference can't determine the type with confidence.
+   */
+  inferred_type: InferredType;
+  /**
+   * Inferred cardinality of the expression's result. Always populated;
+   * `"unknown"` when inference can't determine the cardinality with confidence.
+   */
+  inferred_cardinality: Cardinality;
 }
 
 /** Parse a FHIRPath expression string into an AST object. */
@@ -63,15 +124,33 @@ export class QuestionnaireIndex {
 }
 
 /**
+ * Resolve `%context` references in a FHIRPath expression at the AST level.
+ *
+ * Parses both expressions, replaces every `%context` reference in `expr` with
+ * the parsed `base_expr` AST, and returns the serialized result. Returns
+ * `expr` unchanged when no `%context` reference exists.
+ */
+export function resolve_context(expr: string, base_expr: string): string;
+
+/**
  * Analyze a FHIRPath expression in the context of a Questionnaire.
  *
- * Returns annotations and validation diagnostics.
+ * Returns annotations, validation diagnostics, and the inferred result type
+ * and cardinality. The inferred fields are filled unconditionally and are
+ * suitable for UI metadata (hover, badges).
+ *
+ * `expected_result_type` and `expected_cardinality` are validation hints —
+ * when set, the analyzer emits `expression_type_mismatch` /
+ * `expression_cardinality_mismatch` on a definite mismatch. `"unknown"`
+ * inference results are silent.
  */
 export function analyze_expression(
   expr: string,
   index: QuestionnaireIndex,
   scope_link_id?: string,
   parent_context_expr?: string,
+  expected_result_type?: InferredType,
+  expected_cardinality?: Cardinality,
 ): AnalysisResult;
 
 export type InitInput =

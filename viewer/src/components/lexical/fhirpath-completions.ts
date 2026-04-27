@@ -40,12 +40,13 @@ function generateItemCompletions(
   for (const [linkId, info] of questionnaireIndex.items) {
     const text = info.text || linkId;
     const isChoice = info.type === "choice" || info.type === "open-choice";
+    const path = info.path;
 
-    // %resource.item.where(linkId='xxx').answer.value
+    // Use the full path for nested items
     completions.push({
       label: text,
       detail: `linkId: ${linkId}`,
-      insert_text: `%resource.item.where(linkId='${linkId}').answer.value`,
+      insert_text: `${path}.answer.value`,
       filter_text: `${text} ${linkId} resource`,
       sort_text: `10-${text}`,
       kind: "value",
@@ -56,7 +57,7 @@ function generateItemCompletions(
       completions.push({
         label: `${text} (display)`,
         detail: `linkId: ${linkId}`,
-        insert_text: `%resource.item.where(linkId='${linkId}').answer.valueCoding.display`,
+        insert_text: `${path}.answer.valueCoding.display`,
         filter_text: `${text} ${linkId} display`,
         sort_text: `11-${text}`,
         kind: "display",
@@ -64,7 +65,7 @@ function generateItemCompletions(
       completions.push({
         label: `${text} (code)`,
         detail: `linkId: ${linkId}`,
-        insert_text: `%resource.item.where(linkId='${linkId}').answer.valueCoding.code`,
+        insert_text: `${path}.answer.valueCoding.code`,
         filter_text: `${text} ${linkId} code`,
         sort_text: `12-${text}`,
         kind: "code",
@@ -80,10 +81,33 @@ export function getFhirPathCompletions(
   wasmQuestionnaireIndex: WasmQuestionnaireIndex | null,
   questionnaireIndex?: QuestionnaireIndex,
 ): CompletionItem[] {
-  // TODO: Use wasmQuestionnaireIndex.generate_completions() once implemented in fhirpath-rs
-  // Currently returns empty for all expressions ("%resource", "%resource.item", etc.)
-  // For now, generate completions from questionnaire index directly
-  const itemCompletions = generateItemCompletions(questionnaireIndex);
+  const wasm: CompletionItem[] = [];
 
-  return [...STUB_COMPLETIONS, ...itemCompletions];
+  if (wasmQuestionnaireIndex) {
+    // Get completions for %resource (all questionnaire items)
+    try {
+      const resourceItems = wasmQuestionnaireIndex.generate_completions("%resource") as CompletionItem[];
+      wasm.push(...resourceItems);
+    } catch {
+      // Ignore errors
+    }
+
+    // Also get context-specific completions if available
+    if (contextExpression && contextExpression !== "%resource") {
+      try {
+        const contextItems = wasmQuestionnaireIndex.generate_completions(contextExpression) as CompletionItem[];
+        wasm.push(...contextItems);
+      } catch {
+        // Ignore errors
+      }
+    }
+  }
+
+  // Fall back to JS-generated completions if WASM returns nothing
+  if (wasm.length === 0) {
+    const itemCompletions = generateItemCompletions(questionnaireIndex);
+    return [...STUB_COMPLETIONS, ...itemCompletions];
+  }
+
+  return [...STUB_COMPLETIONS, ...wasm];
 }
