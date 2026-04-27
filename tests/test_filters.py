@@ -152,6 +152,54 @@ def test_render_unknown_filter_raises(qr):
         )
 
 
+# --- default filter --------------------------------------------------------
+
+
+def test_default_used_when_head_is_empty(qr):
+    out = render_template(
+        "{{ %context.item.where(linkId='missing').answer.value || default: '(none)' }}",
+        _ctx(qr),
+    )
+    assert out == "(none)"
+
+
+def test_default_passes_through_when_value_present(qr):
+    out = render_template(
+        "{{ %context.item.where(linkId='name').answer.value || default: '(none)' }}",
+        _ctx(qr),
+    )
+    assert out == "alice"
+
+
+def test_default_chains_with_subsequent_filters(qr):
+    out = render_template(
+        "{{ %context.item.where(linkId='missing').answer.value "
+        "|| default: 'unknown' || upcase }}",
+        _ctx(qr),
+    )
+    assert out == "UNKNOWN"
+
+
+def test_default_preserves_boolean_false():
+    qr_bool = {
+        "resourceType": "QuestionnaireResponse",
+        "item": [
+            {
+                "linkId": "root",
+                "item": [
+                    {"linkId": "flag", "answer": [{"valueBoolean": False}]},
+                ],
+            }
+        ],
+    }
+    # FHIR treats `false` as a real value — the default must NOT kick in.
+    out = render_template(
+        "{{ %context.item.where(linkId='flag').answer.value || default: 'n/a' }}",
+        {"resource": qr_bool, "base": "%resource.item.where(linkId='root')"},
+    )
+    assert out == "false"
+
+
 # --- designation filter ----------------------------------------------------
 
 from fhir_liquid.designation import ContainedSupplementResolver

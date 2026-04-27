@@ -57,6 +57,7 @@ Filters use `||` instead of the standard `|`:
 - `markdownify` - Convert markdown to HTML
 - `upcase` / `downcase` - Case conversion
 - `prepend` - Prepend text to a value
+- `default: "fallback"` - Emit `fallback` when the FHIRPath head is empty (`""`, `None`, or `[]`); booleans pass through unchanged
 
 ### Additional FHIRPath Functions
 
