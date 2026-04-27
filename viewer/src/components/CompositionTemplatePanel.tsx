@@ -3,8 +3,10 @@ import type { Composition } from "../types";
 import type { QuestionnaireIndex } from "../utils/questionnaire-index";
 import { CompositionView } from "./CompositionView";
 import { RawCompositionView } from "./RawCompositionView";
+import { EditorView } from "./EditorView";
+import { AnalyzeExpressionDebug } from "./AnalyzeExpressionDebug";
 
-type Tab = "template" | "structure";
+type Tab = "template" | "editor" | "structure" | "debug";
 
 interface CompositionTemplatePanelProps {
   composition: Composition;
@@ -13,8 +15,14 @@ interface CompositionTemplatePanelProps {
   onSectionHtmlChange?: (sectionPath: number[], newDivHtml: string) => void;
   onSectionTitleChange?: (sectionPath: number[], newTitle: string) => void;
   onContextExpressionChange?: (sectionPath: number[], newExpression: string) => void;
-  onAddSection?: (parentPath: number[]) => void;
+  onAddSection?: (parentPath: number[], insertIndex?: number) => void;
   onRemoveSection?: (sectionPath: number[]) => void;
+  onSectionChange?: (
+    sectionPath: number[],
+    newDivHtml: string,
+    newTitle: string,
+    newContextExpression: string
+  ) => void;
 }
 
 function downloadJson(data: unknown, filename: string) {
@@ -38,6 +46,7 @@ export function CompositionTemplatePanel({
   onContextExpressionChange,
   onAddSection,
   onRemoveSection,
+  onSectionChange,
 }: CompositionTemplatePanelProps) {
   const [tab, setTab] = useState<Tab>("template");
 
@@ -52,7 +61,7 @@ export function CompositionTemplatePanel({
         <h2 className="panel-title">Template</h2>
         <div className="flex items-center gap-2">
           <div className="flex gap-1 bg-gray-100 rounded p-0.5">
-            {(["template", "structure"] as const).map((t) => (
+            {(["template", "editor", "structure", "debug"] as const).map((t) => (
               <button
                 key={t}
                 onClick={() => setTab(t)}
@@ -62,7 +71,7 @@ export function CompositionTemplatePanel({
                     : "text-gray-500 hover:text-gray-700"
                 }`}
               >
-                {t === "template" ? "Template" : "Structure"}
+                {t === "template" ? "Template" : t === "editor" ? "Editor" : t === "structure" ? "Structure" : "Debug"}
               </button>
             ))}
           </div>
@@ -76,7 +85,7 @@ export function CompositionTemplatePanel({
         </div>
       </div>
       <div className="panel-body">
-        {tab === "template" ? (
+        {tab === "template" && (
           <CompositionView
             composition={composition}
             questionnaireIndex={questionnaireIndex}
@@ -87,8 +96,21 @@ export function CompositionTemplatePanel({
             onAddSection={onAddSection}
             onRemoveSection={onRemoveSection}
           />
-        ) : (
+        )}
+        {tab === "editor" && onSectionChange && onAddSection && onRemoveSection && (
+          <EditorView
+            composition={composition}
+            questionnaireIndex={questionnaireIndex}
+            onSectionChange={onSectionChange}
+            onAddSection={onAddSection}
+            onRemoveSection={onRemoveSection}
+          />
+        )}
+        {tab === "structure" && (
           <RawCompositionView composition={composition} />
+        )}
+        {tab === "debug" && (
+          <AnalyzeExpressionDebug />
         )}
       </div>
     </div>

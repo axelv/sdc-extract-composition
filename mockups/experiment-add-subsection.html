@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Subsection Button Options</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .section {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-left: 3px solid #a78bfa;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 8px;
+      position: relative;
+    }
+    .section-title {
+      font-weight: 500;
+      color: #111827;
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+    .section-content {
+      color: #6b7280;
+      font-size: 13px;
+    }
+    .context-icon {
+      position: absolute;
+      left: -11px;
+      top: 12px;
+      width: 18px;
+      height: 18px;
+      background: #a78bfa;
+      color: white;
+      border-radius: 50%;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .option-box {
+      background: #f9fafb;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+    .option-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 4px;
+    }
+    .option-desc {
+      font-size: 12px;
+      color: #6b7280;
+      margin-bottom: 16px;
+    }
+    .pill {
+      display: inline-block;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1d4ed8;
+      padding: 0px 6px;
+      border-radius: 10px;
+      font-size: 11px;
+    }
+
+    /* Option 1: Small text link */
+    .opt1 .add-link {
+      color: #9ca3af;
+      font-size: 11px;
+      cursor: pointer;
+      margin-top: 8px;
+      display: inline-block;
+    }
+    .opt1 .add-link:hover {
+      color: #6b7280;
+    }
+
+    /* Option 2: Icon only, bottom-left */
+    .opt2 .section {
+      position: relative;
+    }
+    .opt2 .add-icon {
+      position: absolute;
+      bottom: 8px;
+      left: 8px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #f3f4f6;
+      color: #9ca3af;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .opt2 .add-icon:hover {
+      background: #e5e7eb;
+      color: #6b7280;
+    }
+
+    /* Option 3: Hover reveal */
+    .opt3 .section {
+      position: relative;
+    }
+    .opt3 .add-hover {
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 2px 10px;
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      color: #9ca3af;
+      font-size: 10px;
+      cursor: pointer;
+      opacity: 0;
+      transition: all 0.15s;
+    }
+    .opt3 .section:hover .add-hover {
+      opacity: 1;
+    }
+    .opt3 .add-hover:hover {
+      background: #f9fafb;
+      color: #6b7280;
+      border-color: #d1d5db;
+    }
+
+    /* Option 4: Thin divider line with + */
+    .opt4 .add-divider {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 4px 0;
+      cursor: pointer;
+    }
+    .opt4 .add-divider .line {
+      flex: 1;
+      height: 1px;
+      background: #e5e7eb;
+    }
+    .opt4 .add-divider .plus {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #f3f4f6;
+      color: #9ca3af;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }
+    .opt4 .add-divider:hover .plus {
+      background: #e5e7eb;
+      color: #6b7280;
+    }
+    .opt4 .add-divider:hover .line {
+      background: #d1d5db;
+    }
+
+    /* Option 5: Right-aligned small button */
+    .opt5 .add-right {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 6px;
+    }
+    .opt5 .add-right button {
+      padding: 2px 8px;
+      background: transparent;
+      border: 1px dashed #d1d5db;
+      border-radius: 4px;
+      color: #9ca3af;
+      font-size: 10px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .opt5 .add-right button:hover {
+      background: #f9fafb;
+      border-color: #9ca3af;
+      color: #6b7280;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen p-8">
+  <div class="max-w-2xl mx-auto">
+    <h1 class="text-xl font-bold text-gray-900 mb-2">Add Subsection Button</h1>
+    <p class="text-gray-500 text-sm mb-8">5 compact alternatives - which takes the least space while staying usable?</p>
+
+    <!-- Option 1: Small text link -->
+    <div class="option-box opt1">
+      <div class="option-label">Option 1: Small text link</div>
+      <div class="option-desc">Minimal footprint, just text</div>
+
+      <div class="section">
+        <span class="context-icon">⎇</span>
+        <div class="section-title">Preop Anamnese</div>
+        <div class="section-content"><strong>Hand:</strong> <span class="pill">Hand</span> <strong>Klacht:</strong> <span class="pill">Klacht</span></div>
+        <span class="add-link">+ add</span>
+      </div>
+    </div>
+
+    <!-- Option 2: Icon only -->
+    <div class="option-box opt2">
+      <div class="option-label">Option 2: Small icon button</div>
+      <div class="option-desc">Just a + icon in the corner</div>
+
+      <div class="section">
+        <span class="context-icon">⎇</span>
+        <div class="section-title">Preop Anamnese</div>
+        <div class="section-content"><strong>Hand:</strong> <span class="pill">Hand</span> <strong>Klacht:</strong> <span class="pill">Klacht</span></div>
+        <span class="add-icon" title="Add subsection">+</span>
+      </div>
+    </div>
+
+    <!-- Option 3: Hover reveal -->
+    <div class="option-box opt3">
+      <div class="option-label">Option 3: Hover to reveal</div>
+      <div class="option-desc">Hidden until you hover the section (hover me!)</div>
+
+      <div class="section">
+        <span class="context-icon">⎇</span>
+        <div class="section-title">Preop Anamnese</div>
+        <div class="section-content"><strong>Hand:</strong> <span class="pill">Hand</span> <strong>Klacht:</strong> <span class="pill">Klacht</span></div>
+        <span class="add-hover">+ subsection</span>
+      </div>
+    </div>
+
+    <!-- Option 4: Divider with + -->
+    <div class="option-box opt4">
+      <div class="option-label">Option 4: Thin divider line</div>
+      <div class="option-desc">Subtle line with small + button</div>
+
+      <div class="section">
+        <span class="context-icon">⎇</span>
+        <div class="section-title">Preop Anamnese</div>
+        <div class="section-content"><strong>Hand:</strong> <span class="pill">Hand</span> <strong>Klacht:</strong> <span class="pill">Klacht</span></div>
+      </div>
+      <div class="add-divider">
+        <span class="line"></span>
+        <span class="plus">+</span>
+        <span class="line"></span>
+      </div>
+    </div>
+
+    <!-- Option 5: Right-aligned small button -->
+    <div class="option-box opt5">
+      <div class="option-label">Option 5: Right-aligned mini button</div>
+      <div class="option-desc">Small dashed button aligned right</div>
+
+      <div class="section">
+        <span class="context-icon">⎇</span>
+        <div class="section-title">Preop Anamnese</div>
+        <div class="section-content"><strong>Hand:</strong> <span class="pill">Hand</span> <strong>Klacht:</strong> <span class="pill">Klacht</span></div>
+        <div class="add-right">
+          <button>+ add</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

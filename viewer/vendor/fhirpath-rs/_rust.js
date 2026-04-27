@@ -53,18 +53,28 @@ if (Symbol.dispose) QuestionnaireIndex.prototype[Symbol.dispose] = Questionnaire
  * Analyze a FHIRPath expression in the context of a Questionnaire.
  *
  * Returns `{ annotations: Annotation[], diagnostics: Diagnostic[] }`.
+ * Span offsets are UTF-16 code units, suitable for
+ * `String.prototype.slice` and CodeMirror/Monaco position math.
  *
  * - `expr` -- the FHIRPath expression string
  * - `index` -- a `QuestionnaireIndex` built from the Questionnaire
  * - `scope_link_id` -- optional linkId of the item scope (for reachability checks)
  * - `parent_context_expr` -- optional parent context expression (raw FHIRPath)
+ * - `expected_result_type` -- optional snake_case type name (e.g. "boolean",
+ *   "coding"). When set, the analyzer infers the expression's result type
+ *   and emits `expression_type_mismatch` on a definite mismatch.
+ * - `expected_cardinality` -- optional snake_case cardinality
+ *   ("singleton" or "collection"). When set, emits
+ *   `expression_cardinality_mismatch` on a definite mismatch.
  * @param {string} expr
  * @param {QuestionnaireIndex} index
  * @param {string | null} [scope_link_id]
  * @param {string | null} [parent_context_expr]
+ * @param {string | null} [expected_result_type]
+ * @param {string | null} [expected_cardinality]
  * @returns {any}
  */
-export function analyze_expression(expr, index, scope_link_id, parent_context_expr) {
+export function analyze_expression(expr, index, scope_link_id, parent_context_expr, expected_result_type, expected_cardinality) {
     const ptr0 = passStringToWasm0(expr, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
     const len0 = WASM_VECTOR_LEN;
     _assertClass(index, QuestionnaireIndex);
@@ -72,7 +82,11 @@ export function analyze_expression(expr, index, scope_link_id, parent_context_ex
     var len1 = WASM_VECTOR_LEN;
     var ptr2 = isLikeNone(parent_context_expr) ? 0 : passStringToWasm0(parent_context_expr, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
     var len2 = WASM_VECTOR_LEN;
-    const ret = wasm.analyze_expression(ptr0, len0, index.__wbg_ptr, ptr1, len1, ptr2, len2);
+    var ptr3 = isLikeNone(expected_result_type) ? 0 : passStringToWasm0(expected_result_type, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+    var len3 = WASM_VECTOR_LEN;
+    var ptr4 = isLikeNone(expected_cardinality) ? 0 : passStringToWasm0(expected_cardinality, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+    var len4 = WASM_VECTOR_LEN;
+    const ret = wasm.analyze_expression(ptr0, len0, index.__wbg_ptr, ptr1, len1, ptr2, len2, ptr3, len3, ptr4, len4);
     if (ret[2]) {
         throw takeFromExternrefTable0(ret[1]);
     }
@@ -83,7 +97,9 @@ export function analyze_expression(expr, index, scope_link_id, parent_context_ex
  * Annotate a FHIRPath expression, extracting answer references,
  * item references, and coded values.
  *
- * Returns `Annotation[]` as a JavaScript value.
+ * Returns `Annotation[]` as a JavaScript value. Span offsets are
+ * UTF-16 code units, suitable for `String.prototype.slice` and
+ * CodeMirror/Monaco position math.
  * @param {string} expr
  * @returns {any}
  */
@@ -112,6 +128,39 @@ export function parse(expr) {
         throw takeFromExternrefTable0(ret[1]);
     }
     return takeFromExternrefTable0(ret[0]);
+}
+
+/**
+ * Resolve `%context` references in a FHIRPath expression at the AST level.
+ *
+ * Parses both expressions, replaces every `%context` reference in `expr`
+ * with the parsed `base_expr` AST, and returns the serialized result.
+ * Returns `expr` unchanged when no `%context` reference exists.
+ * @param {string} expr
+ * @param {string} base_expr
+ * @returns {string}
+ */
+export function resolve_context(expr, base_expr) {
+    let deferred4_0;
+    let deferred4_1;
+    try {
+        const ptr0 = passStringToWasm0(expr, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const len0 = WASM_VECTOR_LEN;
+        const ptr1 = passStringToWasm0(base_expr, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const len1 = WASM_VECTOR_LEN;
+        const ret = wasm.resolve_context(ptr0, len0, ptr1, len1);
+        var ptr3 = ret[0];
+        var len3 = ret[1];
+        if (ret[3]) {
+            ptr3 = 0; len3 = 0;
+            throw takeFromExternrefTable0(ret[2]);
+        }
+        deferred4_0 = ptr3;
+        deferred4_1 = len3;
+        return getStringFromWasm0(ptr3, len3);
+    } finally {
+        wasm.__wbindgen_free(deferred4_0, deferred4_1, 1);
+    }
 }
 function __wbg_get_imports() {
     const import0 = {

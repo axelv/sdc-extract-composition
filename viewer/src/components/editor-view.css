@@ -1,0 +1,286 @@
+/* Editor View - Card-based section layout */
+
+:root {
+  --editor-context-always: #6b9fd4;
+  --editor-context-conditional: #9b8cc9;
+  --editor-context-repeating: #5fb090;
+  --editor-context-custom: #d4a85a;
+}
+
+/* Section wrapper */
+.editor-section-wrapper {
+  position: relative;
+  margin-bottom: 2px;
+}
+
+/* Section card */
+.editor-section {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  transition: all 0.15s;
+  cursor: pointer;
+  position: relative;
+  border-left: 3px solid var(--editor-context-always);
+}
+
+.editor-section:hover {
+  border-top-color: #d1d5db;
+  border-right-color: #d1d5db;
+  border-bottom-color: #d1d5db;
+}
+
+.editor-section-wrapper:hover > .editor-section {
+  background: #f9fafb;
+}
+
+/* Prevent parent highlight when child is hovered */
+.editor-section-wrapper:has(.editor-section-wrapper:hover) > .editor-section,
+.editor-section-wrapper:has(.editor-add-between:hover) > .editor-section,
+.editor-section:has(.editor-add-between:hover) {
+  background: white !important;
+}
+
+/* Context type border colors */
+.editor-section[data-context="always"] {
+  border-left-color: var(--editor-context-always);
+}
+.editor-section[data-context="conditional"] {
+  border-left-color: var(--editor-context-conditional);
+}
+.editor-section[data-context="repeating"] {
+  border-left-color: var(--editor-context-repeating);
+}
+.editor-section[data-context="custom"] {
+  border-left-color: var(--editor-context-custom);
+}
+
+/* Clickable content area */
+.editor-section-clickable {
+  padding: 10px 16px;
+  min-height: 52px;
+}
+
+/* Section title */
+.editor-section-title {
+  font-weight: 500;
+  color: #111827;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+/* Section content */
+.editor-section-content {
+  color: #6b7280;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.editor-section-content.empty {
+  color: #d1d5db;
+  font-style: italic;
+}
+
+/* Children container */
+.editor-section-children {
+  padding: 8px 12px 28px 12px;
+}
+
+.editor-section-children:empty {
+  display: none;
+}
+
+.editor-section-children .editor-section-wrapper {
+  margin-bottom: 4px;
+}
+
+/* Context icon badge */
+.editor-context-icon {
+  position: absolute;
+  left: -11px;
+  top: 12px;
+  width: 18px;
+  height: 18px;
+  background: var(--editor-context-always);
+  color: white;
+  border-radius: 50%;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.editor-section[data-context="always"] > .editor-context-icon {
+  background: var(--editor-context-always);
+}
+.editor-section[data-context="conditional"] > .editor-context-icon {
+  background: var(--editor-context-conditional);
+}
+.editor-section[data-context="repeating"] > .editor-context-icon {
+  background: var(--editor-context-repeating);
+}
+.editor-section[data-context="custom"] > .editor-context-icon {
+  background: var(--editor-context-custom);
+}
+
+/* Delete button */
+.editor-delete-btn {
+  position: absolute;
+  top: 4px;
+  right: 8px;
+  opacity: 0;
+  padding: 2px 6px;
+  color: #9ca3af;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.15s;
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  line-height: 1;
+  z-index: 5;
+}
+
+.editor-section:hover > .editor-delete-btn {
+  opacity: 1;
+}
+
+/* Hide parent delete when hovering nested section */
+.editor-section:has(.editor-section-children .editor-section:hover) > .editor-delete-btn {
+  opacity: 0 !important;
+  pointer-events: none;
+}
+
+.editor-delete-btn:hover {
+  color: #ef4444;
+}
+
+/* Add subsection button */
+.editor-subsection-btn {
+  position: absolute;
+  right: 8px;
+  bottom: 4px;
+  padding: 3px 8px;
+  font-size: 9px;
+  color: #9ca3af;
+  background: white;
+  border: 1px dashed #d1d5db;
+  border-radius: 4px;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.15s;
+}
+
+.editor-section:hover > .editor-subsection-btn {
+  opacity: 1;
+}
+
+/* Hide parent buttons when hovering nested section or add-between */
+.editor-section:has(.editor-section-children .editor-section:hover) > .editor-subsection-btn,
+.editor-section:has(.editor-section-children .editor-add-between:hover) > .editor-subsection-btn {
+  opacity: 0 !important;
+  pointer-events: none;
+}
+
+.editor-subsection-btn:hover {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+  color: #6b7280;
+}
+
+/* Add section between (centered + circle) */
+.editor-add-between {
+  position: relative;
+  height: 2px;
+  margin: 0;
+  z-index: 20;
+}
+
+.editor-add-between .editor-add-btn {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 50%;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.15s;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.editor-add-between .editor-add-btn svg {
+  width: 100%;
+  height: 100%;
+  stroke: #9ca3af;
+}
+
+.editor-section-wrapper:hover + .editor-add-between .editor-add-btn,
+.editor-add-between:hover .editor-add-btn {
+  opacity: 1;
+}
+
+/* Hide parent add-between when hovering nested section or add-between */
+.editor-section-wrapper:has(.editor-section-children .editor-section:hover) + .editor-add-between .editor-add-btn,
+.editor-section-wrapper:has(.editor-section-children .editor-add-between:hover) + .editor-add-between .editor-add-btn {
+  opacity: 0 !important;
+  pointer-events: none;
+}
+
+.editor-add-between .editor-add-btn:hover {
+  background: #f3f4f6;
+  border-color: #d1d5db;
+}
+
+.editor-add-between .editor-add-btn:hover svg {
+  stroke: #6b7280;
+}
+
+/* Pills in editor view (balanced palette) */
+.editor-section .fhirpath-pill,
+.section-editor .fhirpath-pill {
+  display: inline-block;
+  background: #e8f2fc;
+  border: 1px solid #7eb3e0;
+  border-bottom: 1px solid #7eb3e0;
+  color: #2d6aa0;
+  padding: 1px 6px;
+  border-radius: 10px;
+  font-size: 11px;
+  white-space: nowrap;
+  user-select: none;
+  vertical-align: baseline;
+}
+
+/* Legend */
+.editor-legend {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.editor-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.editor-legend-icon {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+}

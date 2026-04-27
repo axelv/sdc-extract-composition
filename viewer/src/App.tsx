@@ -143,29 +143,55 @@ function App() {
   );
 
   const handleAddSection = useCallback(
-    (parentPath: number[]) => {
+    (parentPath: number[], insertIndex?: number) => {
       setComposition((prev) => {
         if (!prev) return prev;
         const updated = structuredClone(prev);
         const newSection = {
-          title: "New Section",
+          title: "",
           text: {
-            status: "generated",
+            status: "generated" as const,
             div: '<div xmlns="http://www.w3.org/1999/xhtml"></div>',
           },
         };
         if (parentPath.length === 0) {
-          updated.section = [...(updated.section ?? []), newSection];
+          const sections = updated.section ?? [];
+          if (insertIndex !== undefined) {
+            sections.splice(insertIndex, 0, newSection);
+            updated.section = sections;
+          } else {
+            updated.section = [...sections, newSection];
+          }
         } else {
           const parent = navigateToSection(updated, parentPath);
           if (parent) {
-            parent.section = [...(parent.section ?? []), newSection];
+            const sections = parent.section ?? [];
+            if (insertIndex !== undefined) {
+              sections.splice(insertIndex, 0, newSection);
+              parent.section = sections;
+            } else {
+              parent.section = [...sections, newSection];
+            }
           }
         }
         return updated;
       });
     },
     []
+  );
+
+  const handleSectionChange = useCallback(
+    (
+      sectionPath: number[],
+      newDivHtml: string,
+      newTitle: string,
+      newContextExpression: string
+    ) => {
+      handleSectionHtmlChange(sectionPath, newDivHtml);
+      handleSectionTitleChange(sectionPath, newTitle);
+      handleContextExpressionChange(sectionPath, newContextExpression);
+    },
+    [handleSectionHtmlChange, handleSectionTitleChange, handleContextExpressionChange]
   );
 
   const handleRemoveSection = useCallback(
@@ -266,6 +292,7 @@ function App() {
                 onContextExpressionChange={handleContextExpressionChange}
                 onAddSection={handleAddSection}
                 onRemoveSection={handleRemoveSection}
+                onSectionChange={handleSectionChange}
               />
             </Panel>
             <PanelResizeHandle className="panel-resize-handle" />

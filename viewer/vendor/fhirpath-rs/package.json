@@ -5,10 +5,10 @@
   "files": [
     "_rust_bg.wasm",
     "_rust.js",
-    "_rust.d.ts"
+    "fhirpath_wasm.d.ts"
   ],
   "main": "_rust.js",
-  "types": "_rust.d.ts",
+  "types": "fhirpath_wasm.d.ts",
   "sideEffects": [
     "./snippets/*"
   ]

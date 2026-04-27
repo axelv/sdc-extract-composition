@@ -52,7 +52,6 @@ TEMPLATE_EXTRACT_CONTEXT_URL = (
     "http://hl7.org/fhir/uv/sdc/StructureDefinition/"
     "sdc-questionnaire-templateExtractContext"
 )
-EMPTY_PLACEHOLDER = "/"
 
 # Pattern for %factory.Coding('system', 'code') calls
 FACTORY_CODING_PATTERN = re.compile(
@@ -128,7 +127,7 @@ def extract_div_content(div: str) -> str:
 def render_value(value: object) -> str:
     """Convert a FHIRPath result to a display string."""
     if value is None:
-        return EMPTY_PLACEHOLDER
+        return ""
 
     if isinstance(value, dict):
         if "display" in value:
@@ -141,13 +140,13 @@ def render_value(value: object) -> str:
 
     if isinstance(value, list):
         if not value:
-            return EMPTY_PLACEHOLDER
+            return ""
         rendered = [render_value(v) for v in value if v is not None]
-        non_empty = [r for r in rendered if r != EMPTY_PLACEHOLDER]
-        return ", ".join(non_empty) if non_empty else EMPTY_PLACEHOLDER
+        non_empty = [r for r in rendered if r]
+        return ", ".join(non_empty)
 
     if isinstance(value, str):
-        return value.strip() if value.strip() else EMPTY_PLACEHOLDER
+        return value.strip()
 
     return str(value)
 
@@ -169,6 +168,7 @@ def _render_single(
     section: dict[str, Any],
     resource: dict[str, Any],
     base: str | None,
+    depth: int = 2,
 ) -> str | None:
     """Render one section instance with a resolved base path."""
     section_text = section.get("text", {}).get("div", "")
@@ -178,7 +178,7 @@ def _render_single(
     # Recursively render child sections
     child_parts = []
     for child in section.get("section", []):
-        child_html = _render_section_content(child, resource, parent_base=base)
+        child_html = _render_section_content(child, resource, parent_base=base, depth=depth + 1)
         if child_html is not None:
             child_parts.append(child_html)
 
@@ -191,6 +191,12 @@ def _render_single(
     elif SECTIONS_PLACEHOLDER in inner:
         inner = inner.replace(SECTIONS_PLACEHOLDER, "")
 
+    # Add heading if title exists
+    title = section.get("title", "").strip()
+    if title:
+        heading_level = min(depth, 6)  # Cap at h6
+        inner = f"<h{heading_level}>{html.escape(title)}</h{heading_level}>\n{inner}"
+
     return inner
 
 
@@ -198,6 +204,7 @@ def _render_section_content(
     section: dict[str, Any],
     resource: dict[str, Any],
     parent_base: str | None = None,
+    depth: int = 2,
 ) -> str | None:
     """Resolve a section's context and render it.
 
@@ -220,32 +227,33 @@ def _render_section_content(
         items = evaluate(resource, effective_base)
         if not items:
             return None
+        # Single False means condition not met - skip rendering
+        if len(items) == 1 and items[0] is False:
+            return None
         if len(items) > 1:
             parts = []
             for i in range(len(items)):
                 indexed_base = f"{effective_base}[{i}]"
-                part = _render_single(section, resource, indexed_base)
+                part = _render_single(section, resource, indexed_base, depth)
                 if part is not None:
                     parts.append(part)
             return "\n".join(parts) if parts else None
 
-    return _render_single(section, resource, effective_base)
+    return _render_single(section, resource, effective_base, depth)
 
 
 def render_section(
     section: dict[str, Any],
     resource: dict[str, Any],
 ) -> str | None:
-    """Render a top-level Composition section, wrapped in <section><h2>."""
-    content = _render_section_content(section, resource)
+    """Render a top-level Composition section, wrapped in <section>."""
+    content = _render_section_content(section, resource, depth=2)
     if content is None:
         return None
 
-    title = section.get("title", "Untitled")
     section_id = section.get("id", "")
     return (
         f'<section data-section-id="{html.escape(section_id)}">\n'
-        f"<h2>{html.escape(title)}</h2>\n"
         f"{content}\n"
         f"</section>"
     )
