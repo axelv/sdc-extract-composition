@@ -7,7 +7,7 @@ because ``|`` is the FHIRPath union operator. This module implements:
 - A tiny literal parser for filter arguments (quoted strings, ints,
   floats, booleans)
 - A registry of the spec-minimum filters: ``upcase``, ``downcase``,
-  ``prepend``, ``markdownify``
+  ``prepend``, ``markdownify``, ``default``
 """
 
 from __future__ import annotations
@@ -59,6 +59,18 @@ def _prepend(value: Any, prefix: str) -> str:
 
 def _markdownify(value: Any) -> str:
     return _markdown.markdown(_scalar_str(value))
+
+
+def _default(value: Any, fallback: Any) -> Any:
+    """Standard Liquid ``default`` filter: emit ``fallback`` when ``value`` is empty.
+
+    Empty here means the FHIRPath head returned no results (``""`` per
+    ``evaluate_fhirpath``), an explicit ``None``, or an empty list. Booleans
+    pass through unchanged — FHIR treats ``false`` as a meaningful value.
+    """
+    if value is None or value == "" or value == []:
+        return fallback
+    return value
 
 
 def _designation(
@@ -148,6 +160,7 @@ FILTERS: dict[str, FilterFn] = {
     "downcase": _downcase,
     "prepend": _prepend,
     "markdownify": _markdownify,
+    "default": _default,
     "designation": _designation,
 }
 
