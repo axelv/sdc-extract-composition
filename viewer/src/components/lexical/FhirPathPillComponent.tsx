@@ -3,7 +3,9 @@ import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext
 import { useLexicalNodeSelection } from "@lexical/react/useLexicalNodeSelection";
 import { mergeRegister } from "@lexical/utils";
 import {
+  $createNodeSelection,
   $getNodeByKey,
+  $setSelection,
   CLICK_COMMAND,
   COMMAND_PRIORITY_LOW,
   KEY_BACKSPACE_COMMAND,
@@ -11,6 +13,7 @@ import {
   type NodeKey,
 } from "lexical";
 import { segmentExpressionToHtml } from "../../utils/expression-pills";
+import { useWasmReady } from "../../utils/wasm-init";
 import { useQuestionnaireIndex } from "./QuestionnaireIndexContext";
 
 interface FhirPathPillComponentProps {
@@ -24,9 +27,10 @@ export function FhirPathPillComponent({
 }: FhirPathPillComponentProps) {
   const [editor] = useLexicalComposerContext();
   const pillRef = useRef<HTMLElement>(null);
-  const [isSelected, setSelected, clearSelection] =
-    useLexicalNodeSelection(nodeKey);
+  const [isSelected] = useLexicalNodeSelection(nodeKey);
   const questionnaireIndex = useQuestionnaireIndex();
+  // Subscribe so the pill label recomputes when wasm finishes loading.
+  useWasmReady();
 
   useEffect(() => {
     return mergeRegister(
@@ -34,16 +38,22 @@ export function FhirPathPillComponent({
         CLICK_COMMAND,
         (event: MouseEvent) => {
           if (
-            pillRef.current &&
-            pillRef.current.contains(event.target as Node)
+            !pillRef.current ||
+            !pillRef.current.contains(event.target as Node)
           ) {
-            clearSelection();
-            setSelected(true);
-            return true;
+            return false;
           }
-          return false;
+          event.preventDefault();
+          editor.update(() => {
+            const node = $getNodeByKey(nodeKey);
+            if (!node) return;
+            const selection = $createNodeSelection();
+            selection.add(nodeKey);
+            $setSelection(selection);
+          });
+          return true;
         },
-        COMMAND_PRIORITY_LOW
+        COMMAND_PRIORITY_LOW,
       ),
       editor.registerCommand(
         KEY_DELETE_COMMAND,
@@ -57,7 +67,7 @@ export function FhirPathPillComponent({
           }
           return false;
         },
-        COMMAND_PRIORITY_LOW
+        COMMAND_PRIORITY_LOW,
       ),
       editor.registerCommand(
         KEY_BACKSPACE_COMMAND,
@@ -71,10 +81,10 @@ export function FhirPathPillComponent({
           }
           return false;
         },
-        COMMAND_PRIORITY_LOW
-      )
+        COMMAND_PRIORITY_LOW,
+      ),
     );
-  }, [editor, isSelected, nodeKey, clearSelection, setSelected]);
+  }, [editor, isSelected, nodeKey]);
 
   const pillHtml = segmentExpressionToHtml(expression, questionnaireIndex);
 

@@ -1,0 +1,49 @@
+{
+  "resourceType": "QuestionnaireResponse",
+  "questionnaire": "http://example.org/Questionnaire/designation-demo",
+  "status": "completed",
+  "authored": "2026-04-26",
+  "item": [
+    {
+      "linkId": "diagnosis-section",
+      "item": [
+        {
+          "linkId": "primary-dx",
+          "answer": [
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "109006",
+                "display": "Concussion with brief loss of consciousness"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "secondary-dx",
+          "answer": [
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "271737000",
+                "display": "Anaemia"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "other-dx",
+          "answer": [
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "44054006",
+                "display": "Type 2 diabetes mellitus"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -30,12 +30,16 @@ from typing import Any, Required, TypedDict
 import fhirpathpy
 from fhirpathpy.models import models as fhir_models
 
+from fhir_liquid.designation import DesignationResolver
+from fhir_liquid.filters import FilterContext, apply_filters, split_filters
+
 __all__ = [
     "render_template",
     "evaluate_fhirpath",
     "evaluate_fhirpath_list",
     "combine_expression",
     "FHIRContext",
+    "DesignationResolver",
 ]
 
 # Pattern to match FHIRPath expressions: {{ ... }}
@@ -143,6 +147,8 @@ def _stringify(value: Any) -> str:
 def render_template(
     template_source: str,
     context: FHIRContext,
+    *,
+    designation_resolver: DesignationResolver | None = None,
 ) -> str:
     """Render a template by evaluating {{ FHIRPath }} expressions.
 
@@ -152,15 +158,26 @@ def render_template(
         context: FHIRContext dict with:
             - resource: The root FHIR resource (required)
             - base: Optional FHIRPath for %context resolution
+        designation_resolver: Optional resolver for the ``|| designation: ...``
+            filter. When omitted, ``designation`` falls back to the Coding's
+            own ``display`` value.
 
     Returns:
         The rendered template string with FHIRPath expressions evaluated.
     """
     resource = context["resource"]
     base = context.get("base")
+    filter_ctx = (
+        FilterContext(resolver=designation_resolver)
+        if designation_resolver is not None
+        else None
+    )
+
     def replace_expression(match: re.Match[str]) -> str:
-        expression = match.group(1).strip()
-        result = evaluate_fhirpath(expression, resource, base)
+        head, filters = split_filters(match.group(1))
+        result = evaluate_fhirpath(head, resource, base)
+        if filters:
+            result = apply_filters(result, filters, ctx=filter_ctx)
         return _stringify(result)
 
     return FHIRPATH_PATTERN.sub(replace_expression, template_source)
