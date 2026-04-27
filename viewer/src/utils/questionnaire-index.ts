@@ -18,6 +18,8 @@ export interface QuestionnaireItemInfo {
   linkId: string;
   text: string;
   type: string;
+  /** Full FHIRPath to reach this item (e.g. %resource.item.where(linkId='parent').item.where(linkId='child')) */
+  path: string;
   /** code → display from answerOption[].valueCoding */
   answerOptions: Map<string, string>;
   /** code → full Coding (preserves system, display) for supplement edits */
@@ -54,7 +56,7 @@ export function buildQuestionnaireIndex(
   const items = new Map<string, QuestionnaireItemInfo>();
   const linkIdTextMap = new Map<string, string>();
 
-  function walk(qItems: QuestionnaireItem[]) {
+  function walk(qItems: QuestionnaireItem[], parentPath: string = "%resource") {
     for (const item of qItems) {
       const answerOptions = new Map<string, string>();
       const answerCodings = new Map<string, AnswerOption>();
@@ -74,10 +76,12 @@ export function buildQuestionnaireIndex(
       }
 
       const text = item.text ?? item.linkId;
+      const path = `${parentPath}.item.where(linkId='${item.linkId}')`;
       items.set(item.linkId, {
         linkId: item.linkId,
         text,
         type: item.type ?? "group",
+        path,
         answerOptions,
         answerCodings,
       });
@@ -87,7 +91,7 @@ export function buildQuestionnaireIndex(
       }
 
       if (item.item) {
-        walk(item.item);
+        walk(item.item, path);
       }
     }
   }

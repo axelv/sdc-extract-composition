@@ -88,12 +88,25 @@ export function FhirPathPillComponent({
 
   const pillHtml = segmentExpressionToHtml(expression, questionnaireIndex);
 
+  const handleClick = (event: React.MouseEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+    editor.update(() => {
+      const node = $getNodeByKey(nodeKey);
+      if (!node) return;
+      const selection = $createNodeSelection();
+      selection.add(nodeKey);
+      $setSelection(selection);
+    });
+  };
+
   return (
     <code
       ref={pillRef}
       className={`fhirpath-pill${isSelected ? " fhirpath-pill-selected" : ""}`}
       title={expression}
       dangerouslySetInnerHTML={{ __html: pillHtml }}
+      onClick={handleClick}
     />
   );
 }

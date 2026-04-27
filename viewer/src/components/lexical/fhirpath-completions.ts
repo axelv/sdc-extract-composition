@@ -40,12 +40,13 @@ function generateItemCompletions(
   for (const [linkId, info] of questionnaireIndex.items) {
     const text = info.text || linkId;
     const isChoice = info.type === "choice" || info.type === "open-choice";
+    const path = info.path;
 
-    // %resource.item.where(linkId='xxx').answer.value
+    // Use the full path for nested items
     completions.push({
       label: text,
       detail: `linkId: ${linkId}`,
-      insert_text: `%resource.item.where(linkId='${linkId}').answer.value`,
+      insert_text: `${path}.answer.value`,
       filter_text: `${text} ${linkId} resource`,
       sort_text: `10-${text}`,
       kind: "value",
@@ -56,7 +57,7 @@ function generateItemCompletions(
       completions.push({
         label: `${text} (display)`,
         detail: `linkId: ${linkId}`,
-        insert_text: `%resource.item.where(linkId='${linkId}').answer.valueCoding.display`,
+        insert_text: `${path}.answer.valueCoding.display`,
         filter_text: `${text} ${linkId} display`,
         sort_text: `11-${text}`,
         kind: "display",
@@ -64,7 +65,7 @@ function generateItemCompletions(
       completions.push({
         label: `${text} (code)`,
         detail: `linkId: ${linkId}`,
-        insert_text: `%resource.item.where(linkId='${linkId}').answer.valueCoding.code`,
+        insert_text: `${path}.answer.valueCoding.code`,
         filter_text: `${text} ${linkId} code`,
         sort_text: `12-${text}`,
         kind: "code",

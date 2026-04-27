@@ -90,7 +90,7 @@ export class FhirPathPillNode extends DecoratorNode<ReactNode> {
   }
 
   isKeyboardSelectable(): boolean {
-    return true;
+    return false;
   }
 
   canInsertTextBefore(): boolean {
