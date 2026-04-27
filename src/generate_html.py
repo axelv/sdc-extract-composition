@@ -12,7 +12,13 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from fhir_liquid import combine_expression, evaluate_fhirpath_list, render_template
+from fhir_liquid import (
+    DesignationResolver,
+    combine_expression,
+    evaluate_fhirpath_list,
+    render_template,
+)
+from fhir_liquid.designation import ContainedSupplementResolver
 
 HTML_TEMPLATE = """<!DOCTYPE html>
 <html lang="nl">
@@ -183,6 +189,7 @@ def _render_single(
     section: dict[str, Any],
     resource: dict[str, Any],
     base: str | None,
+    resolver: DesignationResolver | None,
 ) -> str | None:
     """Render one section instance with a resolved base path.
 
@@ -194,13 +201,15 @@ def _render_single(
     if base:
         context["base"] = base
 
-    rendered = render_template(section_text, context)
+    rendered = render_template(section_text, context, designation_resolver=resolver)
     inner = extract_div_content(rendered)
 
     # Recursively render child sections
     child_parts = []
     for child in section.get("section", []):
-        child_html = _render_section_content(child, resource, parent_base=base)
+        child_html = _render_section_content(
+            child, resource, parent_base=base, resolver=resolver
+        )
         if child_html is not None:
             child_parts.append(child_html)
 
@@ -218,6 +227,7 @@ def _render_section_content(
     section: dict[str, Any],
     resource: dict[str, Any],
     parent_base: str | None = None,
+    resolver: DesignationResolver | None = None,
 ) -> str | None:
     """Resolve a section's context and render it, cloning for multi-valued contexts.
 
@@ -245,20 +255,21 @@ def _render_section_content(
             parts = []
             for i in range(len(items)):
                 indexed_base = f"{effective_base}[{i}]"
-                part = _render_single(section, resource, indexed_base)
+                part = _render_single(section, resource, indexed_base, resolver)
                 if part is not None:
                     parts.append(part)
             return "\n".join(parts) if parts else None
     # Single item or no base — render once
-    return _render_single(section, resource, effective_base)
+    return _render_single(section, resource, effective_base, resolver)
 
 
 def render_section(
     section: dict[str, Any],
     resource: dict[str, Any],
+    resolver: DesignationResolver | None = None,
 ) -> str | None:
     """Render a top-level Composition section, wrapped in <section><h2>...</h2>."""
-    content = _render_section_content(section, resource)
+    content = _render_section_content(section, resource, resolver=resolver)
     if content is None:
         return None
 
@@ -275,6 +286,7 @@ def generate_html(
     *,
     header_template: str = "",
     footer_template: str = "",
+    resolver: DesignationResolver | None = None,
 ) -> str:
     """Generate HTML from a Composition resource with evaluated FHIRPath expressions."""
     title = composition.get("title", "Composition")
@@ -282,12 +294,20 @@ def generate_html(
     sections_html = [
         html
         for section in composition.get("section", [])
-        if (html := render_section(section, resource)) is not None
+        if (html := render_section(section, resource, resolver=resolver)) is not None
     ]
 
     context = {"resource": resource}
-    header = render_template(header_template, context) if header_template else ""
-    footer = render_template(footer_template, context) if footer_template else ""
+    header = (
+        render_template(header_template, context, designation_resolver=resolver)
+        if header_template
+        else ""
+    )
+    footer = (
+        render_template(footer_template, context, designation_resolver=resolver)
+        if footer_template
+        else ""
+    )
 
     return HTML_TEMPLATE.format(
         title=title,
@@ -325,6 +345,9 @@ def main() -> None:
     # Extract composition template from questionnaire
     composition = load_composition(questionnaire)
 
+    # Build a designation resolver from any contained CodeSystem supplements.
+    resolver = ContainedSupplementResolver(questionnaire.get("contained", []))
+
     # Load optional header/footer templates
     header_path = iteration_path / "header.html"
     footer_path = iteration_path / "footer.html"
@@ -337,6 +360,7 @@ def main() -> None:
         response,
         header_template=header_template,
         footer_template=footer_template,
+        resolver=resolver,
     )
 
     # Write output

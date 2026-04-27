@@ -8,12 +8,20 @@ interface QuestionnaireItem {
   item?: QuestionnaireItem[];
 }
 
+export interface AnswerOption {
+  system?: string;
+  code: string;
+  display?: string;
+}
+
 export interface QuestionnaireItemInfo {
   linkId: string;
   text: string;
   type: string;
   /** code → display from answerOption[].valueCoding */
   answerOptions: Map<string, string>;
+  /** code → full Coding (preserves system, display) for supplement edits */
+  answerCodings: Map<string, AnswerOption>;
 }
 
 export interface QuestionnaireIndex {
@@ -22,6 +30,8 @@ export interface QuestionnaireIndex {
   linkIdTextMap: Map<string, string>;
   resolveItemText(linkId: string): string | null;
   resolveCodeDisplay(linkId: string, code: string): string | null;
+  resolveAnswerCoding(linkId: string, code: string): AnswerOption | null;
+  listAnswerCodings(linkId: string): AnswerOption[];
   resolveItemType(linkId: string): string | null;
 }
 
@@ -47,11 +57,19 @@ export function buildQuestionnaireIndex(
   function walk(qItems: QuestionnaireItem[]) {
     for (const item of qItems) {
       const answerOptions = new Map<string, string>();
+      const answerCodings = new Map<string, AnswerOption>();
       if (item.answerOption) {
         for (const opt of item.answerOption) {
-          if (opt.valueCoding?.code && opt.valueCoding.display) {
-            answerOptions.set(opt.valueCoding.code, opt.valueCoding.display);
+          const c = opt.valueCoding;
+          if (!c?.code) continue;
+          if (c.display) {
+            answerOptions.set(c.code, c.display);
           }
+          answerCodings.set(c.code, {
+            system: c.system,
+            code: c.code,
+            display: c.display,
+          });
         }
       }
 
@@ -61,6 +79,7 @@ export function buildQuestionnaireIndex(
         text,
         type: item.type ?? "group",
         answerOptions,
+        answerCodings,
       });
 
       if (item.text) {
@@ -86,6 +105,14 @@ export function buildQuestionnaireIndex(
     },
     resolveCodeDisplay(linkId: string, code: string): string | null {
       return items.get(linkId)?.answerOptions.get(code) ?? null;
+    },
+    resolveAnswerCoding(linkId: string, code: string): AnswerOption | null {
+      return items.get(linkId)?.answerCodings.get(code) ?? null;
+    },
+    listAnswerCodings(linkId: string): AnswerOption[] {
+      const info = items.get(linkId);
+      if (!info) return [];
+      return Array.from(info.answerCodings.values());
     },
     resolveItemType(linkId: string): string | null {
       return items.get(linkId)?.type ?? null;

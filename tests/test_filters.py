@@ -150,3 +150,167 @@ def test_render_unknown_filter_raises(qr):
             "{{ %context.item.where(linkId='name').answer.value || bogus }}",
             _ctx(qr),
         )
+
+
+# --- designation filter ----------------------------------------------------
+
+from fhir_liquid.designation import ContainedSupplementResolver
+
+
+SCT = "http://snomed.info/sct"
+SCT_FSN = "900000000000003001"
+
+
+@pytest.fixture
+def coding_qr() -> dict:
+    """A QR whose root section has one Coding-valued answer."""
+    return {
+        "resourceType": "QuestionnaireResponse",
+        "item": [
+            {
+                "linkId": "root",
+                "item": [
+                    {
+                        "linkId": "dx",
+                        "answer": [
+                            {
+                                "valueCoding": {
+                                    "system": SCT,
+                                    "code": "109006",
+                                    "display": "Concussion with brief loss of consciousness",
+                                }
+                            }
+                        ],
+                    },
+                    {
+                        "linkId": "dx-no-code",
+                        "answer": [{"valueCoding": {"display": "no code"}}],
+                    },
+                ],
+            }
+        ],
+    }
+
+
+@pytest.fixture
+def supplement_resolver() -> ContainedSupplementResolver:
+    return ContainedSupplementResolver(
+        [
+            {
+                "resourceType": "CodeSystem",
+                "url": "http://example.org/sct-fsn",
+                "status": "active",
+                "content": "supplement",
+                "supplements": SCT,
+                "concept": [
+                    {
+                        "code": "109006",
+                        "designation": [
+                            {
+                                "language": "en",
+                                "use": {"system": SCT, "code": SCT_FSN},
+                                "value": "Concussion with brief loss of consciousness (disorder)",
+                            }
+                        ],
+                    }
+                ],
+            }
+        ]
+    )
+
+
+def test_designation_resolves_fsn_from_supplement(coding_qr, supplement_resolver):
+    out = render_template(
+        "{{ %context.item.where(linkId='dx').answer.value || designation: \"fully-specified\" }}",
+        _ctx(coding_qr),
+        designation_resolver=supplement_resolver,
+    )
+    assert out == "Concussion with brief loss of consciousness (disorder)"
+
+
+def test_designation_falls_back_to_display_when_no_match(coding_qr, supplement_resolver):
+    # 'synonym' isn't in the supplement → fall back to Coding.display
+    out = render_template(
+        "{{ %context.item.where(linkId='dx').answer.value || designation: \"synonym\" }}",
+        _ctx(coding_qr),
+        designation_resolver=supplement_resolver,
+    )
+    assert out == "Concussion with brief loss of consciousness"
+
+
+def test_designation_falls_back_when_no_resolver_configured(coding_qr):
+    # No resolver → fall back to display
+    out = render_template(
+        "{{ %context.item.where(linkId='dx').answer.value || designation: \"fully-specified\" }}",
+        _ctx(coding_qr),
+    )
+    assert out == "Concussion with brief loss of consciousness"
+
+
+def test_designation_with_no_code_falls_back_to_display(coding_qr, supplement_resolver):
+    out = render_template(
+        "{{ %context.item.where(linkId='dx-no-code').answer.value || designation: \"fully-specified\" }}",
+        _ctx(coding_qr),
+        designation_resolver=supplement_resolver,
+    )
+    assert out == "no code"
+
+
+def test_designation_chains_with_other_filters(coding_qr, supplement_resolver):
+    out = render_template(
+        "{{ %context.item.where(linkId='dx').answer.value "
+        "|| designation: \"fully-specified\" || upcase }}",
+        _ctx(coding_qr),
+        designation_resolver=supplement_resolver,
+    )
+    assert out == "CONCUSSION WITH BRIEF LOSS OF CONSCIOUSNESS (DISORDER)"
+
+
+def test_designation_on_codeable_concept(supplement_resolver):
+    qr = {
+        "resourceType": "QuestionnaireResponse",
+        "item": [
+            {
+                "linkId": "root",
+                "item": [
+                    {
+                        "linkId": "dx",
+                        "answer": [
+                            {
+                                "valueCodeableConcept": {
+                                    "coding": [
+                                        {
+                                            "system": SCT,
+                                            "code": "109006",
+                                            "display": "Concussion",
+                                        }
+                                    ],
+                                    "text": "concussion",
+                                }
+                            }
+                        ],
+                    }
+                ],
+            }
+        ],
+    }
+    # fhirpathpy's R4 model doesn't unfold .value → valueCodeableConcept,
+    # so use the direct accessor — this is the recommended pattern when
+    # authors know the answer type is CodeableConcept.
+    out = render_template(
+        "{{ %context.item.where(linkId='dx').answer.valueCodeableConcept "
+        "|| designation: \"fully-specified\" }}",
+        {"resource": qr, "base": "%resource.item.where(linkId='root')"},
+        designation_resolver=supplement_resolver,
+    )
+    assert out == "Concussion with brief loss of consciousness (disorder)"
+
+
+def test_existing_filters_unaffected_by_resolver(qr, supplement_resolver):
+    # Sanity: passing a resolver doesn't change non-designation filters.
+    out = render_template(
+        "{{ %context.item.where(linkId='name').answer.value || upcase }}",
+        _ctx(qr),
+        designation_resolver=supplement_resolver,
+    )
+    assert out == "ALICE"

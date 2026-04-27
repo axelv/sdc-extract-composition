@@ -1,0 +1,138 @@
+{
+  "resourceType": "Questionnaire",
+  "id": "designation-demo",
+  "meta": {
+    "profile": [
+      "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-extr-template"
+    ]
+  },
+  "url": "http://example.org/Questionnaire/designation-demo",
+  "status": "active",
+  "title": "Designation supplement demo",
+  "contained": [
+    {
+      "resourceType": "CodeSystem",
+      "id": "snomed-fsn-supplement",
+      "url": "http://example.org/CodeSystem/snomed-fsn-supplement",
+      "status": "active",
+      "content": "supplement",
+      "supplements": "http://snomed.info/sct",
+      "concept": [
+        {
+          "code": "109006",
+          "designation": [
+            {
+              "language": "en",
+              "use": {
+                "system": "http://snomed.info/sct",
+                "code": "900000000000003001",
+                "display": "Fully specified name"
+              },
+              "value": "Concussion with brief loss of consciousness (disorder)"
+            },
+            {
+              "language": "nl",
+              "use": {
+                "system": "http://snomed.info/sct",
+                "code": "900000000000013009",
+                "display": "Synonym"
+              },
+              "value": "Hersenschudding met kortdurend bewustzijnsverlies"
+            }
+          ]
+        },
+        {
+          "code": "271737000",
+          "designation": [
+            {
+              "language": "en",
+              "use": {
+                "system": "http://snomed.info/sct",
+                "code": "900000000000003001",
+                "display": "Fully specified name"
+              },
+              "value": "Anaemia (disorder)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "resourceType": "Composition",
+      "id": "composition-template",
+      "status": "final",
+      "type": {
+        "coding": [
+          {
+            "system": "http://loinc.org",
+            "code": "11488-4",
+            "display": "Consultation note"
+          }
+        ]
+      },
+      "date": "2026-04-26",
+      "title": "Designation supplement demo",
+      "section": [
+        {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+              "valueString": "%resource.item.where(linkId='diagnosis-section')"
+            }
+          ],
+          "title": "Diagnosis",
+          "code": {
+            "coding": [
+              {
+                "system": "http://example.org/sections",
+                "code": "diagnosis",
+                "display": "Diagnosis"
+              }
+            ]
+          },
+          "text": {
+            "status": "generated",
+            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><dl><dt>Primary diagnosis (display)</dt><dd>{{%context.item.where(linkId='primary-dx').answer.value.display}}</dd><dt>Primary diagnosis (FSN)</dt><dd>{{%context.item.where(linkId='primary-dx').answer.value || designation: \"fully-specified\"}}</dd><dt>Primary diagnosis (synonym)</dt><dd>{{%context.item.where(linkId='primary-dx').answer.value || designation: \"synonym\"}}</dd><dt>Secondary diagnosis (display)</dt><dd>{{%context.item.where(linkId='secondary-dx').answer.value.display}}</dd><dt>Secondary diagnosis (FSN)</dt><dd>{{%context.item.where(linkId='secondary-dx').answer.value || designation: \"fully-specified\"}}</dd><dt>Unmapped diagnosis (FSN, falls back)</dt><dd>{{%context.item.where(linkId='other-dx').answer.value || designation: \"fully-specified\"}}</dd></dl></div>"
+          }
+        }
+      ]
+    }
+  ],
+  "extension": [
+    {
+      "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtract",
+      "extension": [
+        {
+          "url": "template",
+          "valueReference": {
+            "reference": "#composition-template"
+          }
+        }
+      ]
+    }
+  ],
+  "item": [
+    {
+      "linkId": "diagnosis-section",
+      "text": "Diagnosis section",
+      "type": "group",
+      "item": [
+        {
+          "linkId": "primary-dx",
+          "text": "Primary diagnosis",
+          "type": "choice"
+        },
+        {
+          "linkId": "secondary-dx",
+          "text": "Secondary diagnosis",
+          "type": "choice"
+        },
+        {
+          "linkId": "other-dx",
+          "text": "Other diagnosis",
+          "type": "choice"
+        }
+      ]
+    }
+  ]
+}

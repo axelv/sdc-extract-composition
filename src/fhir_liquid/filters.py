@@ -12,12 +12,17 @@ because ``|`` is the FHIRPath union operator. This module implements:
 
 from __future__ import annotations
 
+import inspect
+from dataclasses import dataclass
 from typing import Any, Callable
 
 import markdown as _markdown
 
+from fhir_liquid.designation import DesignationResolver
+
 __all__ = [
     "FILTERS",
+    "FilterContext",
     "FilterInvocation",
     "split_filters",
     "apply_filters",
@@ -25,6 +30,19 @@ __all__ = [
 
 
 FilterFn = Callable[..., Any]
+
+
+@dataclass(frozen=True)
+class FilterContext:
+    """Shared services available to filters that opt in via a ``ctx`` kwarg.
+
+    Existing filters (``upcase``, ``downcase``, etc.) ignore this; they keep
+    their plain ``(value, *args)`` signature. Filters that need a resolver or
+    questionnaire context declare ``ctx: FilterContext | None = None`` and
+    are invoked with ``ctx`` passed by keyword.
+    """
+
+    resolver: DesignationResolver | None = None
 
 
 def _upcase(value: Any) -> str:
@@ -41,6 +59,72 @@ def _prepend(value: Any, prefix: str) -> str:
 
 def _markdownify(value: Any) -> str:
     return _markdown.markdown(_scalar_str(value))
+
+
+def _designation(
+    value: Any,
+    use: str,
+    *,
+    ctx: FilterContext | None = None,
+) -> str:
+    """Resolve an alternative display for a Coding/CodeableConcept.
+
+    Looks up ``designation.use == use`` via the configured resolver.
+    Falls back to the Coding's primary ``display`` (or CodeableConcept's
+    ``text`` / first coding's display) when no match is found, so a present
+    Coding never renders as empty.
+    """
+    coding = _coerce_coding(value)
+    if coding is None:
+        return _scalar_str(value)
+
+    system = coding.get("system")
+    code = coding.get("code")
+    fallback = coding.get("display") or _codeable_text(value) or ""
+
+    if not code:
+        return fallback
+    if ctx is None or ctx.resolver is None:
+        return fallback
+
+    hit = ctx.resolver.resolve(system, code, use)
+    if hit is not None:
+        return hit
+    return fallback
+
+
+def _coerce_coding(value: Any) -> dict[str, Any] | None:
+    """Extract a single Coding-shaped dict from input.
+
+    Accepts a Coding dict ({code, system, display, ...}), a CodeableConcept
+    dict ({coding: [...], text: ...}) — first coding wins, or a single-element
+    list of either. Anything else returns ``None``.
+    """
+    if isinstance(value, list):
+        if len(value) != 1:
+            return None
+        value = value[0]
+    if not isinstance(value, dict):
+        return None
+    if "code" in value or "system" in value or "display" in value:
+        return value
+    codings = value.get("coding")
+    if isinstance(codings, list) and codings:
+        first = codings[0]
+        if isinstance(first, dict):
+            return first
+    return None
+
+
+def _codeable_text(value: Any) -> str | None:
+    """Pull ``CodeableConcept.text`` if present (used as last-ditch fallback)."""
+    if isinstance(value, list) and len(value) == 1:
+        value = value[0]
+    if isinstance(value, dict):
+        text = value.get("text")
+        if isinstance(text, str):
+            return text
+    return None
 
 
 def _scalar_str(value: Any) -> str:
@@ -64,7 +148,17 @@ FILTERS: dict[str, FilterFn] = {
     "downcase": _downcase,
     "prepend": _prepend,
     "markdownify": _markdownify,
+    "designation": _designation,
 }
+
+
+def _wants_ctx(fn: FilterFn) -> bool:
+    """A filter opts in to FilterContext by declaring a keyword-only ``ctx`` parameter."""
+    try:
+        sig = inspect.signature(fn)
+    except (TypeError, ValueError):
+        return False
+    return "ctx" in sig.parameters
 
 
 class FilterInvocation:
@@ -95,8 +189,18 @@ def split_filters(inner: str) -> tuple[str, list[FilterInvocation]]:
     return head, filters
 
 
-def apply_filters(value: Any, filters: list[FilterInvocation]) -> Any:
-    """Run ``value`` through each filter in order."""
+def apply_filters(
+    value: Any,
+    filters: list[FilterInvocation],
+    *,
+    ctx: FilterContext | None = None,
+) -> Any:
+    """Run ``value`` through each filter in order.
+
+    Filters that declare a ``ctx`` keyword parameter receive ``ctx``;
+    others are called with positional args only and remain unaware of the
+    surrounding context.
+    """
     for f in filters:
         fn = FILTERS.get(f.name)
         if fn is None:
@@ -104,7 +208,10 @@ def apply_filters(value: Any, filters: list[FilterInvocation]) -> Any:
                 f"Unknown filter {f.name!r}. "
                 f"Known filters: {sorted(FILTERS)}"
             )
-        value = fn(value, *f.args)
+        if ctx is not None and _wants_ctx(fn):
+            value = fn(value, *f.args, ctx=ctx)
+        else:
+            value = fn(value, *f.args)
     return value
 
 

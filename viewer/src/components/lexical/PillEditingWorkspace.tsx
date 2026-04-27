@@ -10,6 +10,9 @@ import {
 import { $isFhirPathPillNode } from "./FhirPathPillNode";
 import { FhirPathExpressionEditor } from "./FhirPathExpressionEditor";
 import { SynonymsPanel } from "./SynonymsPanel";
+import { inferAnswerShape } from "../../utils/expression-type";
+import { useQuestionnaireIndex } from "./QuestionnaireIndexContext";
+import { useWasmReady } from "../../utils/wasm-init";
 
 interface PillEditingWorkspaceProps {
   contextExpression?: string | null;
@@ -107,12 +110,31 @@ export function PillEditingWorkspace({
     };
   }, [editor, selected]);
 
+  // Re-render when wasm flips ready so the answer-shape badge updates.
+  useWasmReady();
+  const index = useQuestionnaireIndex();
+
   if (!selected) return null;
+
+  const shape = inferAnswerShape(selected.expression, index);
 
   return (
     <div ref={workspaceRef} className="pill-editing-workspace">
       <div className="pill-editing-workspace-section">
-        <div className="pill-editing-workspace-label">FHIRPATH</div>
+        <div className="pill-editing-workspace-label">
+          <span>FHIRPATH</span>
+          {shape && (
+            <span className="pill-editing-workspace-type" title={shapeTitle(shape)}>
+              <span className="pill-editing-workspace-type-linkid">
+                {shape.linkIds.join(", ")}
+              </span>
+              <span className="pill-editing-workspace-type-sep">·</span>
+              <span className="pill-editing-workspace-type-shape">
+                {shape.valueShape}
+              </span>
+            </span>
+          )}
+        </div>
         <FhirPathExpressionEditor
           key={selected.nodeKey}
           value={selected.expression}
@@ -120,7 +142,15 @@ export function PillEditingWorkspace({
           contextExpression={contextExpression}
         />
       </div>
-      <SynonymsPanel />
+      <SynonymsPanel expression={selected.expression} />
     </div>
   );
+}
+
+function shapeTitle(shape: ReturnType<typeof inferAnswerShape>): string {
+  if (!shape) return "";
+  const parts = [`reads ${shape.linkIds.join(", ")}`];
+  if (shape.itemType) parts.push(`item.type = ${shape.itemType}`);
+  parts.push(`value shape = ${shape.valueShape}`);
+  return parts.join(" • ");
 }
