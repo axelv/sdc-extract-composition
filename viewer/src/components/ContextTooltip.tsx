@@ -18,12 +18,13 @@ import {
 interface ContextTooltipProps {
   content: React.ReactNode;
   children: React.ReactNode;
+  triggerClassName?: string;
 }
 
 const ARROW_FILL = "#f9f8f6";
 const ARROW_STROKE = "#e0ddd6";
 
-export function ContextTooltip({ content, children }: ContextTooltipProps) {
+export function ContextTooltip({ content, children, triggerClassName }: ContextTooltipProps) {
   const [isOpen, setIsOpen] = useState(false);
   const arrowRef = useRef(null);
 
@@ -53,7 +54,11 @@ export function ContextTooltip({ content, children }: ContextTooltipProps) {
 
   return (
     <>
-      <div ref={refs.setReference} {...getReferenceProps()} className="cond-badge-trigger">
+      <div
+        ref={refs.setReference}
+        {...getReferenceProps()}
+        className={triggerClassName ? `cond-badge-trigger ${triggerClassName}` : "cond-badge-trigger"}
+      >
         {children}
       </div>
       {isOpen && (

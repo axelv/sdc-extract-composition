@@ -10,6 +10,8 @@ import { stripDivWrapper } from "../utils/parse-narrative";
 import { useWasmQuestionnaireIndex } from "./lexical/WasmQuestionnaireIndexContext";
 import { NarrativeHtml } from "./NarrativeHtml";
 import { AddBetweenButton } from "./AddBetweenButton";
+import { ContextBadge } from "./ContextBadge";
+import { ContextTooltip } from "./ContextTooltip";
 import { SectionEditorModal } from "./lexical/SectionEditorModal";
 
 interface EditorSectionCardProps {
@@ -78,7 +80,23 @@ export function EditorSectionCard({
           data-context={contextType}
           onClick={handleCardClick}
         >
-          <span className="editor-context-icon">{contextIcon}</span>
+          {contextExpr ? (
+            <ContextTooltip
+              triggerClassName="editor-context-icon-slot"
+              content={
+                <ContextBadge
+                  expression={contextExpr}
+                  questionnaireIndex={questionnaireIndex}
+                />
+              }
+            >
+              <span className="editor-context-icon">{contextIcon}</span>
+            </ContextTooltip>
+          ) : (
+            <span className="editor-context-icon-slot">
+              <span className="editor-context-icon">{contextIcon}</span>
+            </span>
+          )}
 
           <button
             className="editor-delete-btn"

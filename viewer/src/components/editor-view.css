@@ -94,33 +94,38 @@
   margin-bottom: 4px;
 }
 
-/* Context icon badge */
-.editor-context-icon {
+/* Context icon badge — slot owns absolute positioning so the icon
+   can be wrapped in a tooltip trigger without losing its layout. */
+.editor-context-icon-slot {
   position: absolute;
   left: -11px;
   top: 12px;
+  z-index: 10;
+  line-height: 0;
+}
+
+.editor-context-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 18px;
   height: 18px;
   background: var(--editor-context-always);
   color: white;
   border-radius: 50%;
   font-size: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
 }
 
-.editor-section[data-context="always"] > .editor-context-icon {
+.editor-section[data-context="always"] .editor-context-icon {
   background: var(--editor-context-always);
 }
-.editor-section[data-context="conditional"] > .editor-context-icon {
+.editor-section[data-context="conditional"] .editor-context-icon {
   background: var(--editor-context-conditional);
 }
-.editor-section[data-context="repeating"] > .editor-context-icon {
+.editor-section[data-context="repeating"] .editor-context-icon {
   background: var(--editor-context-repeating);
 }
-.editor-section[data-context="custom"] > .editor-context-icon {
+.editor-section[data-context="custom"] .editor-context-icon {
   background: var(--editor-context-custom);
 }
 
