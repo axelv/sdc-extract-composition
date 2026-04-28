@@ -1,4 +1,4 @@
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 
 interface ModalProps {
@@ -9,8 +9,6 @@ interface ModalProps {
 }
 
 export function Modal({ open, onClose, title, children }: ModalProps) {
-  const panelRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     if (!open) return;
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -27,13 +25,16 @@ export function Modal({ open, onClose, title, children }: ModalProps) {
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
       onClick={(e) => e.stopPropagation()}
       onMouseDown={(e) => {
-        if (panelRef.current && !panelRef.current.contains(e.target as Node)) {
+        // Only close when the mousedown lands on the backdrop itself.
+        // Children portaled outside the panel DOM (e.g. Lexical typeahead
+        // menus) still bubble React events here, so a contains() check on a
+        // panel ref would falsely treat them as outside-clicks.
+        if (e.target === e.currentTarget) {
           onClose();
         }
       }}
     >
       <div
-        ref={panelRef}
         className="bg-white rounded-lg shadow-xl max-w-3xl w-full max-h-[80vh] flex flex-col mx-4"
       >
         <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 shrink-0">
