@@ -119,6 +119,23 @@ def test_render_chained_filters(qr):
     assert out == "patient: ALICE"
 
 
+def test_render_append(qr):
+    out = render_template(
+        "{{ %context.item.where(linkId='name').answer.value || append: ' (patient)' }}",
+        _ctx(qr),
+    )
+    assert out == "alice (patient)"
+
+
+def test_render_prepend_and_append(qr):
+    out = render_template(
+        "{{ %context.item.where(linkId='name').answer.value "
+        "|| prepend: '[' || append: ']' }}",
+        _ctx(qr),
+    )
+    assert out == "[alice]"
+
+
 def test_render_empty_result_through_filter(qr):
     out = render_template(
         "{{ %context.item.where(linkId='missing').answer.value || upcase }}",

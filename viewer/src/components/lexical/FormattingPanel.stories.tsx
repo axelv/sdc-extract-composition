@@ -181,8 +181,8 @@ export const StringWithFilters: Story = {
   },
 };
 
-export const StringWithPrepend: Story = {
-  name: "String — prepend",
+export const StringWithPrefix: Story = {
+  name: "String — prefix",
   args: {
     questionnaire: Q_EDITOR,
     initialExpression: `${STRING_EXPR} || prepend: '≈ '`,
@@ -194,6 +194,14 @@ export const NumericWithDefault: Story = {
   args: {
     questionnaire: Q_PATHOLOGY,
     initialExpression: `${INTEGER_EXPR} || default: '—'`,
+  },
+};
+
+export const DecimalWithUnit: Story = {
+  name: "Decimal — unit suffix",
+  args: {
+    questionnaire: Q_PATHOLOGY,
+    initialExpression: `${DECIMAL_EXPR} || append: ' cm'`,
   },
 };
 

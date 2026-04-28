@@ -57,6 +57,10 @@ def _prepend(value: Any, prefix: str) -> str:
     return f"{prefix}{_scalar_str(value)}"
 
 
+def _append(value: Any, suffix: str) -> str:
+    return f"{_scalar_str(value)}{suffix}"
+
+
 def _markdownify(value: Any) -> str:
     return _markdown.markdown(_scalar_str(value))
 
@@ -155,6 +159,7 @@ FILTERS: dict[str, FilterFn] = {
     "upcase": _upcase,
     "downcase": _downcase,
     "prepend": _prepend,
+    "append": _append,
     "markdownify": _markdownify,
     "designation": _designation,
     "join": _join,

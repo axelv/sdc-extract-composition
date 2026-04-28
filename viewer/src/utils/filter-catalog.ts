@@ -49,9 +49,16 @@ export const FILTER_CATALOG: FilterSpec[] = [
   },
   {
     name: "prepend",
-    label: "Prepend",
-    description: "Add a prefix in front of the rendered value.",
+    label: "Prefix",
+    description: "Add text in front of the rendered value.",
     args: [{ name: "prefix", kind: "string", placeholder: "≈ " }],
+    applicableTo: ANY_SCALAR,
+  },
+  {
+    name: "append",
+    label: "Suffix",
+    description: "Add text after the rendered value.",
+    args: [{ name: "suffix", kind: "string", placeholder: " cm" }],
     applicableTo: ANY_SCALAR,
   },
   {
