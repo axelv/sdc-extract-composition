@@ -46,6 +46,10 @@ const SAMPLE_DIV_HTML = `<div xmlns="http://www.w3.org/1999/xhtml">
 
 const EMPTY_DIV_HTML = `<div xmlns="http://www.w3.org/1999/xhtml"><p></p></div>`;
 
+const PARAGRAPHLESS_TEXT_DIV_HTML = `<div xmlns="http://www.w3.org/1999/xhtml">met behulp van een regadenoson stress test.</div>`;
+
+const PARAGRAPHLESS_PILL_DIV_HTML = `<div xmlns="http://www.w3.org/1999/xhtml">met behulp van een {{%context.item.where(linkId='laterality').answer.value}} stress test.</div>`;
+
 interface NarrativeEditorHarnessProps {
   questionnaire: Questionnaire;
   contextExpression: string;
@@ -224,4 +228,17 @@ export const RootContext: Story = {
     contextExpression: CONTEXT_PRESETS["Root (%resource)"],
     divHtml: EMPTY_DIV_HTML,
   },
+};
+
+// Narrative content with raw text directly inside the outer xhtml <div> —
+// no <p> or other block wrapper. The Lexical RootNode rejects bare TextNodes,
+// so HtmlImportPlugin must group them into a paragraph during import.
+export const ParagraphlessText: Story = {
+  args: { divHtml: PARAGRAPHLESS_TEXT_DIV_HTML },
+};
+
+// Same as above but with an inline FHIRPath pill in the middle of the text.
+// Exercises the wrap-inline-runs path with a mix of text and DecoratorNode.
+export const ParagraphlessTextWithPill: Story = {
+  args: { divHtml: PARAGRAPHLESS_PILL_DIV_HTML },
 };

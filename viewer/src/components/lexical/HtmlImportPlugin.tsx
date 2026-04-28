@@ -1,7 +1,13 @@
 import { useEffect } from "react";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { $generateNodesFromDOM } from "@lexical/html";
-import { $getRoot } from "lexical";
+import {
+  $createParagraphNode,
+  $getRoot,
+  $isElementNode,
+  type LexicalNode,
+  type ParagraphNode,
+} from "lexical";
 import { stripDivWrapper } from "../../utils/parse-narrative";
 
 interface HtmlImportPluginProps {
@@ -22,6 +28,31 @@ function preprocessPills(html: string): string {
       .replace(/>/g, "&gt;");
     return `<code data-fhirpath-expression="${escaped}">\u200B</code>`;
   });
+}
+
+/**
+ * Group inline runs (text, pills, inline elements) into paragraphs so the
+ * results can be appended to RootNode, which only accepts non-inline children.
+ */
+function wrapInlineRuns(nodes: LexicalNode[]): LexicalNode[] {
+  const result: LexicalNode[] = [];
+  let paragraph: ParagraphNode | null = null;
+
+  for (const node of nodes) {
+    const isBlock = $isElementNode(node) && !node.isInline();
+    if (isBlock) {
+      paragraph = null;
+      result.push(node);
+    } else {
+      if (!paragraph) {
+        paragraph = $createParagraphNode();
+        result.push(paragraph);
+      }
+      paragraph.append(node);
+    }
+  }
+
+  return result;
 }
 
 /**
@@ -46,7 +77,7 @@ export function HtmlImportPlugin({ divHtml }: HtmlImportPluginProps) {
       );
 
       const nodes = $generateNodesFromDOM(editor, dom);
-      root.append(...nodes);
+      root.append(...wrapInlineRuns(nodes));
     });
   }, [editor, divHtml]);
 
