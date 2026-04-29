@@ -4,6 +4,7 @@ interface QuestionnaireItem {
   linkId: string;
   text?: string;
   type?: string;
+  repeats?: boolean;
   answerOption?: { valueCoding?: { system?: string; code: string; display?: string } }[];
   item?: QuestionnaireItem[];
 }
@@ -18,6 +19,8 @@ export interface QuestionnaireItemInfo {
   linkId: string;
   text: string;
   type: string;
+  /** Whether this item can repeat (multiple answers) */
+  repeats: boolean;
   /** Full FHIRPath to reach this item (e.g. %resource.item.where(linkId='parent').item.where(linkId='child')) */
   path: string;
   /** code → display from answerOption[].valueCoding */
@@ -35,6 +38,7 @@ export interface QuestionnaireIndex {
   resolveAnswerCoding(linkId: string, code: string): AnswerOption | null;
   listAnswerCodings(linkId: string): AnswerOption[];
   resolveItemType(linkId: string): string | null;
+  resolveItemRepeats(linkId: string): boolean;
 }
 
 /**
@@ -81,6 +85,7 @@ export function buildQuestionnaireIndex(
         linkId: item.linkId,
         text,
         type: item.type ?? "group",
+        repeats: item.repeats ?? false,
         path,
         answerOptions,
         answerCodings,
@@ -120,6 +125,9 @@ export function buildQuestionnaireIndex(
     },
     resolveItemType(linkId: string): string | null {
       return items.get(linkId)?.type ?? null;
+    },
+    resolveItemRepeats(linkId: string): boolean {
+      return items.get(linkId)?.repeats ?? false;
     },
   };
 }

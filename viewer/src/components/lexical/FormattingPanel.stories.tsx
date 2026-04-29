@@ -11,7 +11,7 @@ import { FormattingPanel } from "./FormattingPanel";
 
 import iter03 from "../../iterations/03-nested-choice-questions/questionnaire-extract.json";
 import iter05 from "../../iterations/05-pathology/questionnaire-extract.json";
-import iter08editor from "../../iterations/08-editor-test/questionnaire-extract.json";
+import iter08editor from "../../iterations/demo-example/questionnaire-extract.json";
 
 const Q_CHOICE = iter03 as unknown as Questionnaire;
 const Q_PATHOLOGY = iter05 as unknown as Questionnaire;

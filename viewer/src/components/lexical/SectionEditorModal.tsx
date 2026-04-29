@@ -88,7 +88,10 @@ export function SectionEditorModal({
   }, [open, initialTitle, initialContextExpression]);
 
   // Build the actual expression from current config
-  const contextExpression = formatContextExpression(contextConfig);
+  const contextExpression = formatContextExpression(contextConfig, questionnaireIndex);
+
+  // Effective context for completions: section's own context OR parent's if section has no context
+  const effectiveContextExpression = contextExpression || parentContextExpression || null;
 
   const handleModeChange = useCallback((mode: ContextMode) => {
     switch (mode) {
@@ -250,7 +253,7 @@ export function SectionEditorModal({
             <HistoryPlugin />
             <HtmlImportPlugin divHtml={divHtml} />
             <FhirPathAutocompletePlugin
-              contextExpression={contextExpression}
+              contextExpression={effectiveContextExpression}
             />
             <EditorRefPlugin editorRef={editorRef} />
             <PillEditingWorkspace />

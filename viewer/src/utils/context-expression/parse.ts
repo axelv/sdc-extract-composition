@@ -7,24 +7,45 @@
 
 import type { CombineMode, Condition, ContextConfig } from "./types";
 
-// Pattern: %(context|resource).repeat(item).where(linkId='X').answer.exists()
-const EXISTS_PATTERN =
+// Pattern: %(context|resource).repeat(item).where(linkId='X').answer.exists() - old format
+const EXISTS_REPEAT_PATTERN =
   /^%(context|resource)\.repeat\(item\)\.where\(linkId='([^']+)'\)\.answer\.exists\(\)$/;
 
-// Pattern: %(context|resource).repeat(item).where(linkId='X').answer.exists().not()
-const NOT_EXISTS_PATTERN =
+// Pattern: %(context|resource)...item.where(linkId='X').answer.exists() - new format
+// Matches both simple %context.item.where(linkId='X') and full paths
+const EXISTS_ITEM_PATTERN =
+  /^%(context|resource)(?:\.item\.where\(linkId='[^']+'\))*\.item\.where\(linkId='([^']+)'\)\.answer\.exists\(\)$/;
+
+// Pattern: %(context|resource).repeat(item).where(linkId='X').answer.exists().not() - old format
+const NOT_EXISTS_REPEAT_PATTERN =
   /^%(context|resource)\.repeat\(item\)\.where\(linkId='([^']+)'\)\.answer\.exists\(\)\.not\(\)$/;
 
-// Pattern: %(context|resource).repeat(item).where(linkId='X').answer.value ~ %factory.Coding('system', 'code')
-const EQUALS_PATTERN =
+// Pattern: %(context|resource)...item.where(linkId='X').answer.exists().not() - new format
+const NOT_EXISTS_ITEM_PATTERN =
+  /^%(context|resource)(?:\.item\.where\(linkId='[^']+'\))*\.item\.where\(linkId='([^']+)'\)\.answer\.exists\(\)\.not\(\)$/;
+
+// Pattern: %(context|resource).repeat(item).where(linkId='X').answer.value ~ %factory.Coding('system', 'code') - old format
+const EQUALS_REPEAT_PATTERN =
   /^%(context|resource)\.repeat\(item\)\.where\(linkId='([^']+)'\)\.answer\.value\s*~\s*%factory\.Coding\('([^']+)',\s*'([^']+)'\)$/;
 
-// Pattern: (%(context|resource).repeat(item).where(linkId='X').answer.value ~ %factory.Coding('system', 'code')).not()
-const NOT_EQUALS_PATTERN =
+// Pattern: %(context|resource)...item.where(linkId='X').answer.value ~ %factory.Coding(...) - new format
+const EQUALS_ITEM_PATTERN =
+  /^%(context|resource)(?:\.item\.where\(linkId='[^']+'\))*\.item\.where\(linkId='([^']+)'\)\.answer\.value\s*~\s*%factory\.Coding\('([^']+)',\s*'([^']+)'\)$/;
+
+// Pattern: (%(context|resource).repeat(item).where(linkId='X').answer.value ~ %factory.Coding('system', 'code')).not() - old format
+const NOT_EQUALS_REPEAT_PATTERN =
   /^\(%(context|resource)\.repeat\(item\)\.where\(linkId='([^']+)'\)\.answer\.value\s*~\s*%factory\.Coding\('([^']+)',\s*'([^']+)'\)\)\.not\(\)$/;
 
+// Pattern: (%(context|resource)...item.where(linkId='X').answer.value ~ %factory.Coding(...)).not() - new format
+const NOT_EQUALS_ITEM_PATTERN =
+  /^\(%(context|resource)(?:\.item\.where\(linkId='[^']+'\))*\.item\.where\(linkId='([^']+)'\)\.answer\.value\s*~\s*%factory\.Coding\('([^']+)',\s*'([^']+)'\)\)\.not\(\)$/;
+
 // Pattern: %context.repeat(item).where(linkId='X') or %resource.repeat(item).where(linkId='X')
-const FOR_EACH_PATTERN = /^%(context|resource)\.repeat\(item\)\.where\(linkId='([^']+)'\)$/;
+const FOR_EACH_REPEAT_PATTERN = /^%(context|resource)\.repeat\(item\)\.where\(linkId='([^']+)'\)$/;
+
+// Pattern: %(context|resource).item.where(linkId='...')...item.where(linkId='X') - new format
+// Matches paths like %resource.item.where(linkId='medications').item.where(linkId='medication')
+const FOR_EACH_ITEM_PATTERN = /^%(context|resource)(?:\.item\.where\(linkId='[^']+'\))+$/;
 
 // Pattern: %context.where(...)
 const CONTEXT_WHERE_PATTERN = /^%context\.where\((.+)\)$/s;
@@ -32,7 +53,8 @@ const CONTEXT_WHERE_PATTERN = /^%context\.where\((.+)\)$/s;
 function parseCondition(expr: string): Condition | null {
   const trimmed = expr.trim();
 
-  let match = trimmed.match(EXISTS_PATTERN);
+  // Try exists patterns (old and new)
+  let match = trimmed.match(EXISTS_REPEAT_PATTERN) ?? trimmed.match(EXISTS_ITEM_PATTERN);
   if (match) {
     return {
       linkId: match[2],
@@ -41,7 +63,8 @@ function parseCondition(expr: string): Condition | null {
     };
   }
 
-  match = trimmed.match(NOT_EXISTS_PATTERN);
+  // Try not-exists patterns (old and new)
+  match = trimmed.match(NOT_EXISTS_REPEAT_PATTERN) ?? trimmed.match(NOT_EXISTS_ITEM_PATTERN);
   if (match) {
     return {
       linkId: match[2],
@@ -50,7 +73,8 @@ function parseCondition(expr: string): Condition | null {
     };
   }
 
-  match = trimmed.match(EQUALS_PATTERN);
+  // Try equals patterns (old and new)
+  match = trimmed.match(EQUALS_REPEAT_PATTERN) ?? trimmed.match(EQUALS_ITEM_PATTERN);
   if (match) {
     return {
       linkId: match[2],
@@ -60,7 +84,8 @@ function parseCondition(expr: string): Condition | null {
     };
   }
 
-  match = trimmed.match(NOT_EQUALS_PATTERN);
+  // Try not-equals patterns (old and new)
+  match = trimmed.match(NOT_EQUALS_REPEAT_PATTERN) ?? trimmed.match(NOT_EQUALS_ITEM_PATTERN);
   if (match) {
     return {
       linkId: match[2],
@@ -134,13 +159,32 @@ export function parseContextExpression(expr: string): ContextConfig {
     return { mode: "always" };
   }
 
-  const forEachMatch = trimmed.match(FOR_EACH_PATTERN);
-  if (forEachMatch) {
+  // Try old repeat(item) format
+  const forEachRepeatMatch = trimmed.match(FOR_EACH_REPEAT_PATTERN);
+  if (forEachRepeatMatch) {
     return {
       mode: "for-each",
-      linkId: forEachMatch[2],
-      scope: forEachMatch[1] as "context" | "resource",
+      linkId: forEachRepeatMatch[2],
+      scope: forEachRepeatMatch[1] as "context" | "resource",
     };
+  }
+
+  // Try new .item.where() format - extract last linkId from the path
+  const forEachItemMatch = trimmed.match(FOR_EACH_ITEM_PATTERN);
+  if (forEachItemMatch) {
+    // Extract the last linkId from the chain
+    const linkIdMatches = trimmed.match(/\.where\(linkId='([^']+)'\)/g);
+    if (linkIdMatches && linkIdMatches.length > 0) {
+      const lastMatch = linkIdMatches[linkIdMatches.length - 1];
+      const linkId = lastMatch.match(/linkId='([^']+)'/)?.[1];
+      if (linkId) {
+        return {
+          mode: "for-each",
+          linkId,
+          scope: forEachItemMatch[1] as "context" | "resource",
+        };
+      }
+    }
   }
 
   const whereMatch = trimmed.match(CONTEXT_WHERE_PATTERN);

@@ -37,7 +37,7 @@
           "extension": [
             {
               "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-              "valueString": "%context.where(%resource.repeat(item).where(linkId='allergy-details').answer.exists())"
+              "valueString": "%context.where(%resource.item.where(linkId='allergy-details').answer.exists())"
             }
           ],
           "title": "Allergies (If has allergies)",
@@ -50,13 +50,13 @@
           "extension": [
             {
               "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-              "valueString": "%resource.repeat(item).where(linkId='medication')"
+              "valueString": "%resource.item.where(linkId='medications').item.where(linkId='medication')"
             }
           ],
           "title": "Medication (Repeating)",
           "text": {
             "status": "generated",
-            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>• {{%context.item.where(linkId='med-name').answer.value}} - {{%context.item.where(linkId='med-dose').answer.value}}</p></div>"
+            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>• {{%context.item.where(linkId='med-name').answer.value}} ({{%context.item.where(linkId='med-type').answer.value.display}}) - {{%context.item.where(linkId='med-dose').answer.value}}</p></div>"
           }
         }
       ]
