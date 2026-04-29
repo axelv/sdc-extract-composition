@@ -94,11 +94,15 @@ def _join(value: Any, separator: str = ", ") -> str:
 
 
 def _map_filter(value: Any, *args: Any) -> Any:
-    """Map coded values to custom text.
+    """Map coded values or strings to custom text.
 
     Args come as alternating pairs: code1, text1, code2, text2, ...
-    If the value's code matches, return the mapped text.
-    Empty mapped text means "use original display".
+    Supports:
+    - Coding objects: matches on the .code property
+    - Strings: matches case-insensitively (for display values)
+    - Lists of either: processes each element
+
+    Empty mapped text means "use original display/value".
     """
     # DEBUG: uncomment next line to see what filter receives in output
     # return f"[DEBUG map: value={value!r}, args={args!r}]"
@@ -106,42 +110,42 @@ def _map_filter(value: Any, *args: Any) -> Any:
     if value is None or value == "":
         return value
 
-    # Build mapping dict from alternating args
+    # Build mapping dicts from alternating args
+    # Keep original case for output, lowercase for matching strings
     mappings: dict[str, str] = {}
+    mappings_lower: dict[str, str] = {}
     for i in range(0, len(args) - 1, 2):
         code = str(args[i])
         text = str(args[i + 1])
         mappings[code] = text
+        mappings_lower[code.lower()] = text
 
-    # Handle Coding (dict with code field)
-    if isinstance(value, dict) and "code" in value:
-        code = value.get("code", "")
-        if code in mappings:
-            mapped = mappings[code]
-            return mapped if mapped else value.get("display", code)
-        return value.get("display", code)
+    def map_single(val: Any) -> Any:
+        # Handle Coding (dict with code field) - match on code exactly
+        if isinstance(val, dict) and "code" in val:
+            code = val.get("code", "")
+            if code in mappings:
+                mapped = mappings[code]
+                return mapped if mapped else val.get("display", code)
+            return val.get("display", code)
 
-    # Handle list of Codings - return list, use || join to combine
+        # Handle string - match case-insensitively
+        val_str = _scalar_str(val)
+        val_lower = val_str.lower()
+        if val_lower in mappings_lower:
+            mapped = mappings_lower[val_lower]
+            return mapped if mapped else val_str
+        # Also try exact match on code (for when string IS the code)
+        if val_str in mappings:
+            mapped = mappings[val_str]
+            return mapped if mapped else val_str
+        return val_str
+
+    # Handle list - process each element
     if isinstance(value, list):
-        results = []
-        for item in value:
-            if isinstance(item, dict) and "code" in item:
-                code = item.get("code", "")
-                if code in mappings:
-                    mapped = mappings[code]
-                    results.append(mapped if mapped else item.get("display", code))
-                else:
-                    results.append(item.get("display", code))
-            else:
-                results.append(_scalar_str(item))
-        return results
+        return [map_single(item) for item in value]
 
-    # Fallback: treat value as a code directly
-    code_str = _scalar_str(value)
-    if code_str in mappings:
-        mapped = mappings[code_str]
-        return mapped if mapped else code_str
-    return code_str
+    return map_single(value)
 
 
 FILTERS: dict[str, FilterFn] = {
