@@ -117,6 +117,12 @@ export interface CompletionItem {
   kind: "value" | "code" | "display";
   link_id: string;
   item_type: string;
+  /**
+   * `true` if any item on the path from the Questionnaire root down to and
+   * including the target item has `repeats: true`. UI hosts can use this to
+   * warn that the chain may collapse multiple instances into a single list.
+   */
+  traverses_repeating: boolean;
 }
 
 /** Index built from a FHIR Questionnaire, used for expression analysis. */
