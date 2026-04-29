@@ -55,20 +55,34 @@ export function EditorView({
       </div>
 
       <div className="sections-container">
-        <AddBetweenButton onClick={() => onAddSection([], 0)} />
-        {sections.map((section, i) => (
-          <div key={i}>
-            <EditorSectionCard
-              section={section}
-              sectionPath={[i]}
-              questionnaireIndex={questionnaireIndex}
-              onSectionChange={onSectionChange}
-              onAddSection={onAddSection}
-              onRemoveSection={onRemoveSection}
-            />
-            <AddBetweenButton onClick={() => onAddSection([], i + 1)} />
+        {sections.length === 0 ? (
+          <div className="empty-state">
+            <p className="empty-state-text">No sections yet</p>
+            <button
+              className="empty-state-btn"
+              onClick={() => onAddSection([], 0)}
+            >
+              + Add first section
+            </button>
           </div>
-        ))}
+        ) : (
+          <>
+            <AddBetweenButton onClick={() => onAddSection([], 0)} />
+            {sections.map((section, i) => (
+              <div key={i}>
+                <EditorSectionCard
+                  section={section}
+                  sectionPath={[i]}
+                  questionnaireIndex={questionnaireIndex}
+                  onSectionChange={onSectionChange}
+                  onAddSection={onAddSection}
+                  onRemoveSection={onRemoveSection}
+                />
+                <AddBetweenButton onClick={() => onAddSection([], i + 1)} />
+              </div>
+            ))}
+          </>
+        )}
       </div>
     </div>
   );

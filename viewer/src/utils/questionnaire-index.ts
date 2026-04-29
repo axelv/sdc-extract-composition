@@ -96,7 +96,9 @@ export function buildQuestionnaireIndex(
       }
 
       if (item.item) {
-        walk(item.item, path);
+        // In QuestionnaireResponse, if parent is NOT a group, children are inside .answer.item
+        const childPath = item.type === "group" ? path : `${path}.answer`;
+        walk(item.item, childPath);
       }
     }
   }

@@ -40,6 +40,7 @@ export function QuestionnaireFormPanel({
     <div className="panel-container">
       <div className="panel-header">
         <h2 className="panel-title">Questionnaire</h2>
+        {/* QR loading hidden for now
         <div className="flex items-center gap-2">
           {hasResponse && (
             <span className="text-xs text-green-600 font-medium">has QR</span>
@@ -58,6 +59,7 @@ export function QuestionnaireFormPanel({
             className="hidden"
           />
         </div>
+        */}
       </div>
       <div className="panel-body">
         <TiroFormFiller

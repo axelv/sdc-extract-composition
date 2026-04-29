@@ -1,4 +1,6 @@
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
+import { JsonView, defaultStyles } from "react-json-view-lite";
+import "react-json-view-lite/dist/index.css";
 import type { Composition } from "../types";
 import type { QuestionnaireIndex } from "../utils/questionnaire-index";
 import { CompositionView } from "./CompositionView";
@@ -15,6 +17,8 @@ interface CompositionTemplatePanelProps {
   onContextExpressionChange?: (sectionPath: number[], newExpression: string) => void;
   onAddSection?: (parentPath: number[], insertIndex?: number) => void;
   onRemoveSection?: (sectionPath: number[]) => void;
+  onClearSections?: () => void;
+  onImportComposition?: (composition: Composition) => void;
   onSectionChange?: (
     sectionPath: number[],
     newDivHtml: string,
@@ -44,14 +48,38 @@ export function CompositionTemplatePanel({
   onContextExpressionChange,
   onAddSection,
   onRemoveSection,
+  onClearSections,
+  onImportComposition,
   onSectionChange,
 }: CompositionTemplatePanelProps) {
   const [showJson, setShowJson] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleExport = useCallback(() => {
     const filename = `${composition.id ?? "composition"}.json`;
     downloadJson(composition, filename);
   }, [composition]);
+
+  const handleImport = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (!file || !onImportComposition) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const parsed = JSON.parse(reader.result as string);
+          if (parsed.resourceType === "Composition") {
+            onImportComposition(parsed as Composition);
+          }
+        } catch {
+          // ignore invalid JSON
+        }
+      };
+      reader.readAsText(file);
+      e.target.value = "";
+    },
+    [onImportComposition]
+  );
 
   // Reserved for future tab restoration
   void [CompositionView, RawCompositionView, AnalyzeExpressionDebug, showContext, onSectionHtmlChange, onSectionTitleChange, onContextExpressionChange];
@@ -68,6 +96,33 @@ export function CompositionTemplatePanel({
           >
             {"{ }"}
           </button>
+          {onClearSections && (
+            <button
+              onClick={onClearSections}
+              className="panel-header-btn"
+              title="Clear all sections"
+            >
+              Clear
+            </button>
+          )}
+          {onImportComposition && (
+            <>
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                className="panel-header-btn"
+                title="Import Composition from JSON"
+              >
+                Import
+              </button>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".json"
+                onChange={handleImport}
+                className="hidden"
+              />
+            </>
+          )}
           <button
             onClick={handleExport}
             className="panel-header-btn"
@@ -79,9 +134,9 @@ export function CompositionTemplatePanel({
       </div>
       <div className="panel-body">
         {showJson ? (
-          <pre className="text-xs font-mono text-gray-700 whitespace-pre-wrap">
-            {JSON.stringify(composition, null, 2)}
-          </pre>
+          <div className="text-xs">
+            <JsonView data={composition} style={defaultStyles} />
+          </div>
         ) : (
           onSectionChange && onAddSection && onRemoveSection && (
             <EditorView

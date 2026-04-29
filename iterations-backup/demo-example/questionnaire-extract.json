@@ -1,0 +1,148 @@
+{
+  "resourceType": "Questionnaire",
+  "id": "editor-test",
+  "meta": {
+    "profile": [
+      "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-extr-template"
+    ]
+  },
+  "url": "http://example.org/Questionnaire/editor-test",
+  "status": "active",
+  "title": "Editor Test (Always / If / Repeating)",
+  "contained": [
+    {
+      "resourceType": "Composition",
+      "id": "composition-template",
+      "status": "final",
+      "type": {
+        "coding": [
+          {
+            "system": "http://loinc.org",
+            "code": "11488-4",
+            "display": "Consultation note"
+          }
+        ]
+      },
+      "date": "2024-01-01",
+      "title": "Editor Test Report",
+      "section": [
+        {
+          "title": "Patient Info (Always)",
+          "text": {
+            "status": "generated",
+            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Patient: {{%resource.item.where(linkId='patient-name').answer.value}}</p><p>Date of birth: {{%resource.item.where(linkId='patient-dob').answer.value}}</p></div>"
+          }
+        },
+        {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+              "valueString": "%context.where(%resource.item.where(linkId='allergy-details').answer.exists())"
+            }
+          ],
+          "title": "Allergies (If has allergies)",
+          "text": {
+            "status": "generated",
+            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><strong>Warning:</strong> Patient has allergies!</p><p>Details: {{%resource.item.where(linkId='allergy-details').answer.value}}</p></div>"
+          }
+        },
+        {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+              "valueString": "%resource.item.where(linkId='medications').item.where(linkId='medication')"
+            }
+          ],
+          "title": "Medication (Repeating)",
+          "text": {
+            "status": "generated",
+            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>• {{%context.item.where(linkId='med-name').answer.value}} ({{%context.item.where(linkId='med-type').answer.value.display}}) - {{%context.item.where(linkId='med-dose').answer.value}}</p></div>"
+          }
+        }
+      ]
+    }
+  ],
+  "extension": [
+    {
+      "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtract",
+      "extension": [
+        {
+          "url": "template",
+          "valueReference": {
+            "reference": "#composition-template"
+          }
+        }
+      ]
+    }
+  ],
+  "item": [
+    {
+      "linkId": "patient-name",
+      "text": "Patient Name",
+      "type": "string"
+    },
+    {
+      "linkId": "patient-dob",
+      "text": "Date of Birth",
+      "type": "date"
+    },
+    {
+      "linkId": "allergy-details",
+      "text": "Allergy Details",
+      "type": "string"
+    },
+    {
+      "linkId": "medications",
+      "text": "Medications",
+      "type": "group",
+      "item": [
+        {
+          "linkId": "medication",
+          "text": "Medication",
+          "type": "group",
+          "repeats": true,
+          "item": [
+            {
+              "linkId": "med-type",
+              "text": "Medication Type",
+              "type": "coding",
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://example.org/medications",
+                    "code": "painkiller",
+                    "display": "Painkiller"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://example.org/medications",
+                    "code": "antibiotic",
+                    "display": "Antibiotic"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://example.org/medications",
+                    "code": "vitamin",
+                    "display": "Vitamin"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "med-name",
+              "text": "Medication Name",
+              "type": "string"
+            },
+            {
+              "linkId": "med-dose",
+              "text": "Dose",
+              "type": "string"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

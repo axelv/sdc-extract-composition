@@ -1,0 +1,7 @@
+{
+  "resourceType": "QuestionnaireResponse",
+  "id": "followup-pca-response",
+  "questionnaire": "Questionnaire/followup-pca",
+  "status": "completed",
+  "item": []
+}

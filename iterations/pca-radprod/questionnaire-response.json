@@ -1,0 +1,7 @@
+{
+  "resourceType": "QuestionnaireResponse",
+  "id": "pca-radprod-response",
+  "questionnaire": "Questionnaire/pca-radprod",
+  "status": "completed",
+  "item": []
+}

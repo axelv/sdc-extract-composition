@@ -1,0 +1,56 @@
+{
+  "resourceType": "QuestionnaireResponse",
+  "id": "editor-test-response",
+  "questionnaire": "http://example.org/Questionnaire/editor-test",
+  "status": "completed",
+  "authored": "2024-03-15",
+  "item": [
+    {
+      "linkId": "patient-name",
+      "answer": [{ "valueString": "Jan Janssen" }]
+    },
+    {
+      "linkId": "patient-dob",
+      "answer": [{ "valueDate": "1985-06-20" }]
+    },
+    {
+      "linkId": "has-allergies",
+      "answer": [{ "valueBoolean": true }]
+    },
+    {
+      "linkId": "allergy-details",
+      "answer": [{ "valueString": "Penicillin, Peanuts" }]
+    },
+    {
+      "linkId": "medications",
+      "item": [
+        {
+          "linkId": "medication",
+          "item": [
+            {
+              "linkId": "med-name",
+              "answer": [{ "valueString": "Aspirin" }]
+            },
+            {
+              "linkId": "med-dose",
+              "answer": [{ "valueString": "100mg daily" }]
+            }
+          ]
+        },
+        {
+          "linkId": "medication",
+          "item": [
+            {
+              "linkId": "med-name",
+              "answer": [{ "valueString": "Metformin" }]
+            },
+            {
+              "linkId": "med-dose",
+              "answer": [{ "valueString": "500mg twice daily" }]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

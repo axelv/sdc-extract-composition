@@ -1,0 +1,3184 @@
+{
+  "resourceType": "Questionnaire",
+  "id": "pca-radprod",
+  "title": "PCA Radprod",
+  "status": "draft",
+  "contained": [
+    {
+      "resourceType": "Composition",
+      "id": "template",
+      "status": "preliminary",
+      "type": {
+        "text": "PCA Radprod Report"
+      },
+      "title": "PCA Radprod",
+      "section": []
+    }
+  ],
+  "extension": [
+    {
+      "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtract",
+      "valueReference": {
+        "reference": "#template"
+      }
+    }
+  ],
+  "item": [
+    {
+      "linkId": "01979ca2-5788-722d-8d1b-8ef9653ebdd1",
+      "type": "group",
+      "text": "Operatieverslag radicale prostatectomie",
+      "code": [
+        {
+          "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+          "code": "operatieverslag_radicale_prostatectomie",
+          "display": "operatieverslag_radicale_prostatectomie"
+        }
+      ],
+      "item": [
+        {
+          "linkId": "01979ca3-38b4-722d-8d26-2fb6e2a134c7",
+          "type": "date",
+          "text": "Datum",
+          "code": [
+            {
+              "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+              "code": "radicale_prostatectomie_datum",
+              "display": "radicale_prostatectomie_datum"
+            }
+          ],
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "date-field",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "date-field"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "01979ca2-57aa-722d-8d1c-116621d5137e",
+          "type": "coding",
+          "text": "Radicale prostatectomie ",
+          "code": [
+            {
+              "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+              "code": "radicale_prostatectomie_type",
+              "display": "radicale_prostatectomie_type"
+            }
+          ],
+          "item": [
+            {
+              "enableWhen": [
+                {
+                  "question": "01979ca2-57aa-722d-8d1c-116621d5137e",
+                  "operator": "=",
+                  "answerCoding": {
+                    "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                    "code": "01979ca2-d0c2-722d-8d22-70aa96eab888",
+                    "display": "robot X/Xi"
+                  }
+                },
+                {
+                  "question": "01979ca2-57aa-722d-8d1c-116621d5137e",
+                  "operator": "=",
+                  "answerCoding": {
+                    "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                    "code": "01979ca2-e793-722d-8d23-1f09f64c8ca8",
+                    "display": "robot SP"
+                  }
+                }
+              ],
+              "enableBehavior": "any",
+              "disabledDisplay": "protected",
+              "linkId": "019aa08b-1e2b-7ddf-b2c4-91b09cdb1303",
+              "type": "group",
+              "text": "Installatie",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+                  "code": "installatie",
+                  "display": "installatie"
+                }
+              ],
+              "item": [
+                {
+                  "enableWhen": [
+                    {
+                      "question": "01979ca2-57aa-722d-8d1c-116621d5137e",
+                      "operator": "=",
+                      "answerCoding": {
+                        "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                        "code": "01979ca2-d0c2-722d-8d22-70aa96eab888",
+                        "display": "robot X/Xi"
+                      }
+                    },
+                    {
+                      "question": "01979ca2-57aa-722d-8d1c-116621d5137e",
+                      "operator": "=",
+                      "answerCoding": {
+                        "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                        "code": "01979ca2-e793-722d-8d23-1f09f64c8ca8",
+                        "display": "robot SP"
+                      }
+                    }
+                  ],
+                  "enableBehavior": "any",
+                  "disabledDisplay": "protected",
+                  "linkId": "0199b9a4-c96c-7008-89f0-f802a3113e5a",
+                  "type": "coding",
+                  "text": "Beensteunen",
+                  "code": [
+                    {
+                      "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+                      "code": "installatie_beensteunen",
+                      "display": "installatie_beensteunen"
+                    }
+                  ],
+                  "repeats": false,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                      "valueCodeableConcept": {
+                        "text": "chips",
+                        "coding": [
+                          {
+                            "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                            "code": "chips"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "answerOption": [
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "702037007",
+                        "display": "met beensteunen"
+                      }
+                    },
+                    {
+                      "valueCoding": {
+                        "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                        "code": "0199b9a6-544a-7008-89f8-72c7a105942d",
+                        "display": "zonder beensteunen"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "linkId": "019aa08b-bad4-7ddf-b2d5-33b9c6135a54",
+                  "type": "coding",
+                  "text": "Compressiekousen",
+                  "code": [
+                    {
+                      "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+                      "code": "installatie_compressiekousen",
+                      "display": "installatie_compressiekousen"
+                    }
+                  ],
+                  "repeats": false,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                      "valueCodeableConcept": {
+                        "text": "chips",
+                        "coding": [
+                          {
+                            "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                            "code": "chips"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "answerOption": [
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "348681001",
+                        "display": "met compressiekousen"
+                      }
+                    },
+                    {
+                      "valueCoding": {
+                        "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                        "code": "0199b9a7-2145-7008-89fb-f015e407bb3f",
+                        "display": "zonder compressiekousen"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "list",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "list"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ],
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "chips",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "chips"
+                  }
+                ]
+              }
+            }
+          ],
+          "answerOption": [
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "56116003",
+                "display": "open"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                "code": "01979ca2-d0c2-722d-8d22-70aa96eab888",
+                "display": "robot X/Xi"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                "code": "01979ca2-e793-722d-8d23-1f09f64c8ca8",
+                "display": "robot SP"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "01979d00-dcb2-733f-9f32-5d75cfd90bc7",
+          "type": "coding",
+          "text": "Antibiotica",
+          "code": [
+            {
+              "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+              "code": "antibiotica",
+              "display": "antibiotica"
+            }
+          ],
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "chips",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "chips"
+                  }
+                ]
+              }
+            }
+          ],
+          "answerConstraint": "optionsOrType",
+          "answerOption": [
+            {
+              "valueCoding": {
+                "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                "code": "01979d04-0c84-733f-9f3a-9815ee695888",
+                "display": "Ceftriaxone 1 gram IV"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "387470007",
+                "display": "Cefazoline 1 gram IV"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                "code": "01979d04-92b4-733f-9f3b-e9b1f241564e",
+                "display": "Cefazoline 1 gram IV + Metronidazole 500 mg"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "0199b9a7-b20d-7008-89fd-e5234601ccc9",
+          "type": "coding",
+          "text": "Incisie",
+          "code": [
+            {
+              "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+              "code": "incisie_richting",
+              "display": "incisie_richting"
+            }
+          ],
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "chips",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "chips"
+                  }
+                ]
+              }
+            }
+          ],
+          "answerOption": [
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "24020000",
+                "display": "horizontaal"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "33096000",
+                "display": "verticaal"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "0199b9a8-6cc5-7008-8a08-1650024cf3e8",
+          "type": "coding",
+          "text": "PPA onder narcose cT-stage",
+          "code": [
+            {
+              "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+              "code": "ct_stage",
+              "display": "ct_stage"
+            }
+          ],
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "dropdown",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "dropdown"
+                  }
+                ]
+              }
+            }
+          ],
+          "answerOption": [
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "1228892002",
+                "display": "cT1a"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "1228895000",
+                "display": "cT1b"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "1228899006",
+                "display": "cT1c"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "1228931008",
+                "display": "cT2a"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "1228934000",
+                "display": "cT2b"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "1228936003",
+                "display": "cT2c"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "1228939005",
+                "display": "cT3a"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "1228940007",
+                "display": "cT3b"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "1228944003",
+                "display": "cT4"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "0199b9aa-5b68-7008-8a30-a5ecb33ab75a",
+          "type": "coding",
+          "text": "Materiaal",
+          "code": [
+            {
+              "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+              "code": "materiaal",
+              "display": "materiaal"
+            }
+          ],
+          "repeats": true,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "dropdown",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "dropdown"
+                  }
+                ]
+              }
+            }
+          ],
+          "answerConstraint": "optionsOrType",
+          "answerOption": [
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "59746007",
+                "display": "naaldvoerder"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "64973003",
+                "display": "schaar"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                "code": "0199b9ab-8d95-7008-8a42-91f7345e4b2e",
+                "display": "maryland"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                "code": "0199b9ab-ac0d-7008-8a43-499fd9bb4984",
+                "display": "prograsp"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                "code": "0199b9ab-d078-7008-8a44-001c68907e53",
+                "display": "bipolar fenestrated"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                "code": "0199b9ab-ea75-7008-8a44-ba386700b3b5",
+                "display": "clipapplier"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                "code": "0199b9ab-ff9c-7008-8a45-729f11e6f2af",
+                "display": "vessal sealer"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "019aa08a-1668-7ddf-b2ad-8a6e1da27b1b",
+          "type": "group",
+          "text": "Zenuwsparend",
+          "code": [
+            {
+              "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+              "code": "zenuwsparend_1",
+              "display": "zenuwsparend_1"
+            }
+          ],
+          "item": [
+            {
+              "linkId": "01979ca5-f7b0-722d-8d53-b39a3afe5329",
+              "type": "coding",
+              "text": "Zenuwsparend",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+                  "code": "zenuwsparend",
+                  "display": "zenuwsparend"
+                }
+              ],
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "chips",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "chips"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373067005",
+                    "display": "nee"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373066001",
+                    "display": "ja"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "019aa08a-063d-7ddf-b2ab-30393e1c2066",
+              "type": "coding",
+              "text": "Zenuwsparend kant",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+                  "code": "zenwsparend_kant",
+                  "display": "zenwsparend_kant"
+                }
+              ],
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "chips",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "chips"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "7771000",
+                    "display": "links"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "24028007",
+                    "display": "rechts"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "51440002",
+                    "display": "bilateraal"
+                  }
+                }
+              ]
+            }
+          ],
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "list",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "list"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "0199b9af-02f1-7008-8a5f-4001a2f83da4",
+          "type": "coding",
+          "text": "Blaashals",
+          "code": [
+            {
+              "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+              "code": "blaashals",
+              "display": "blaashals"
+            }
+          ],
+          "item": [
+            {
+              "enableWhen": [
+                {
+                  "question": "0199b9af-02f1-7008-8a5f-4001a2f83da4",
+                  "operator": "=",
+                  "answerCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "255358001",
+                    "display": "vlot"
+                  }
+                },
+                {
+                  "question": "0199b9af-02f1-7008-8a5f-4001a2f83da4",
+                  "operator": "=",
+                  "answerCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "33540003",
+                    "display": "middenkwab"
+                  }
+                },
+                {
+                  "question": "0199b9af-02f1-7008-8a5f-4001a2f83da4",
+                  "operator": "=",
+                  "answerCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "90199006",
+                    "display": "na TUR"
+                  }
+                },
+                {
+                  "question": "0199b9af-02f1-7008-8a5f-4001a2f83da4",
+                  "operator": "=",
+                  "answerCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "67598001",
+                    "display": "na Milin"
+                  }
+                }
+              ],
+              "enableBehavior": "any",
+              "disabledDisplay": "protected",
+              "linkId": "0199b9b0-8549-7008-8a7b-f0b6ed6ba2ef",
+              "type": "coding",
+              "text": "Recoupe",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+                  "code": "blaashals_recoupe",
+                  "display": "blaashals_recoupe"
+                }
+              ],
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "chips",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "chips"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373066001",
+                    "display": "ja"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373067005",
+                    "display": "nee"
+                  }
+                }
+              ]
+            },
+            {
+              "enableWhen": [
+                {
+                  "question": "0199b9af-02f1-7008-8a5f-4001a2f83da4",
+                  "operator": "=",
+                  "answerCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "255358001",
+                    "display": "vlot"
+                  }
+                },
+                {
+                  "question": "0199b9af-02f1-7008-8a5f-4001a2f83da4",
+                  "operator": "=",
+                  "answerCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "33540003",
+                    "display": "middenkwab"
+                  }
+                },
+                {
+                  "question": "0199b9af-02f1-7008-8a5f-4001a2f83da4",
+                  "operator": "=",
+                  "answerCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "90199006",
+                    "display": "na TUR"
+                  }
+                },
+                {
+                  "question": "0199b9af-02f1-7008-8a5f-4001a2f83da4",
+                  "operator": "=",
+                  "answerCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "67598001",
+                    "display": "na Milin"
+                  }
+                }
+              ],
+              "enableBehavior": "any",
+              "disabledDisplay": "protected",
+              "linkId": "0199b9b0-e669-7008-8a86-489fbab13e79",
+              "type": "coding",
+              "text": "Blaashalssparend graad",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+                  "code": "blaashalssparend_graad",
+                  "display": "blaashalssparend_graad"
+                }
+              ],
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "chips",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "chips"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                    "code": "019b73d9-e918-7551-adc1-eb67b5ecef1e",
+                    "display": "1"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                    "code": "019b73d9-ef37-7551-adc2-a76147eb4b16",
+                    "display": "2"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                    "code": "019b73d9-f4d3-7551-adc3-593ce2ed22f1",
+                    "display": "3"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                    "code": "019b73d9-fc3f-7551-adc4-17d55c03625c",
+                    "display": "4"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                    "code": "019b73da-021e-7551-adc4-cca214eee4cf",
+                    "display": "5"
+                  }
+                }
+              ]
+            }
+          ],
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "chips",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "chips"
+                  }
+                ]
+              }
+            }
+          ],
+          "answerConstraint": "optionsOnly",
+          "answerOption": [
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "255358001",
+                "display": "vlot"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "33540003",
+                "display": "middenkwab"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "90199006",
+                "display": "na TUR"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "67598001",
+                "display": "na Milin"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "0199b9b5-4e0e-7008-8a9e-03761f71c354",
+          "type": "coding",
+          "text": "Approach",
+          "code": [
+            {
+              "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+              "code": "blaashals_approach",
+              "display": "blaashals_approach"
+            }
+          ],
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "chips",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "chips"
+                  }
+                ]
+              }
+            }
+          ],
+          "answerOption": [
+            {
+              "valueCoding": {
+                "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                "code": "0199b9b6-0df9-7008-8aa4-b322ec44a6f9",
+                "display": "zaadblaasjes eerst"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                "code": "0199b9b6-4660-7008-8aa5-6cadbd99e788",
+                "display": "na dissectie posterieure blaashals"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "0199b9b6-467a-7008-8aa5-fa3effe49459",
+          "type": "coding",
+          "text": "Resectie van zaadblaasjes",
+          "code": [
+            {
+              "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+              "code": "blaashals_resectie_zaadblaasjes",
+              "display": "blaashals_resectie_zaadblaasjes"
+            }
+          ],
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "chips",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "chips"
+                  }
+                ]
+              }
+            }
+          ],
+          "answerOption": [
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "255594003",
+                "display": "compleet"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "255599008",
+                "display": "incompleet"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "0199b9ba-58f3-7008-8b48-48e800424bb6",
+          "type": "group",
+          "text": "Dissectie posterieur vlak",
+          "code": [
+            {
+              "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+              "code": "dissectie_posterieur_vlak",
+              "display": "dissectie_posterieur_vlak"
+            }
+          ],
+          "item": [
+            {
+              "linkId": "0199b9ba-b574-7008-8b5d-883843c5fb6a",
+              "type": "coding",
+              "text": "Rechts",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+                  "code": "dissectie_posterieur_vlak_rechts",
+                  "display": "dissectie_posterieur_vlak_rechts"
+                }
+              ],
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "chips",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "chips"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                    "code": "0199b9bb-32d3-7008-8b6a-12499291f9c5",
+                    "display": "intrafasciaal"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                    "code": "0199b9b7-c728-7008-8abf-ae0a1d61a5df",
+                    "display": "interfasciaal"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                    "code": "0199b9b9-46ed-7008-8b22-1f98e919de5a",
+                    "display": "extrafasciaal"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "0199b9ba-e1c5-7008-8b64-13fb6ea74836",
+              "type": "coding",
+              "text": "Links",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+                  "code": "dissectie_posterieur_vlak_links",
+                  "display": "dissectie_posterieur_vlak_links"
+                }
+              ],
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "chips",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "chips"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                    "code": "0199b9bb-32d3-7008-8b6a-12499291f9c5",
+                    "display": "intrafasciaal"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                    "code": "0199b9b9-2d34-7008-8b21-678d0eab4ca1",
+                    "display": "interfasciaal"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                    "code": "0199b9b9-46ed-7008-8b22-1f98e919de5a",
+                    "display": "extrafasciaal"
+                  }
+                }
+              ]
+            }
+          ],
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "list",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "list"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "0199b9bc-f1ac-7008-8b74-55a21d239d0f",
+          "type": "coding",
+          "text": "Controle pedikel",
+          "code": [
+            {
+              "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+              "code": "pedikels_controle",
+              "display": "pedikels_controle"
+            }
+          ],
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "chips",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "chips"
+                  }
+                ]
+              }
+            }
+          ],
+          "answerOption": [
+            {
+              "valueCoding": {
+                "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                "code": "0199b9ab-ff9c-7008-8a45-729f11e6f2af",
+                "display": "vessal sealer"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "462671000",
+                "display": "hem-o-lock"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "463037002",
+                "display": "metalen clips"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "0199b9bd-7875-7008-8b7d-bd7d42bc992d",
+          "type": "group",
+          "text": "Neurovasculaire bundel",
+          "code": [
+            {
+              "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+              "code": "neurovasculaire_bundel",
+              "display": "neurovasculaire_bundel"
+            }
+          ],
+          "item": [
+            {
+              "linkId": "019aa063-0ab0-7ddf-b23b-a944ebb283c3",
+              "type": "group",
+              "text": "Rechts",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+                  "code": "rechts",
+                  "display": "rechts"
+                },
+                {
+                  "system": "http://snomed.info/sct",
+                  "code": "24028007",
+                  "display": "rechts"
+                }
+              ],
+              "item": [
+                {
+                  "linkId": "0199e215-2441-7330-ae4f-1543e042d955",
+                  "type": "coding",
+                  "text": "Zenuwsparend",
+                  "code": [
+                    {
+                      "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+                      "code": "neurovasculaire_bundel_rechts",
+                      "display": "neurovasculaire_bundel_rechts"
+                    }
+                  ],
+                  "repeats": false,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                      "valueCodeableConcept": {
+                        "text": "chips",
+                        "coding": [
+                          {
+                            "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                            "code": "chips"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "answerOption": [
+                    {
+                      "valueCoding": {
+                        "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                        "code": "0199b9bf-2669-7008-8bb4-79f76d19c88e",
+                        "display": "zenuwsparend"
+                      }
+                    },
+                    {
+                      "valueCoding": {
+                        "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                        "code": "0199e215-b643-7330-ae57-d7dcbb40cb84",
+                        "display": "niet-zenuwsparend"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "linkId": "019aa063-7b94-7ddf-b24c-fc441f53dad9",
+                  "type": "coding",
+                  "text": "Dissectierichting",
+                  "code": [
+                    {
+                      "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+                      "code": "neurovasculaire_bundel_rechts_dissectie",
+                      "display": "neurovasculaire_bundel_rechts_dissectie"
+                    }
+                  ],
+                  "repeats": false,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                      "valueCodeableConcept": {
+                        "text": "chips",
+                        "coding": [
+                          {
+                            "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                            "code": "chips"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "answerOption": [
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "103362004",
+                        "display": "antegraad"
+                      }
+                    },
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "103363009",
+                        "display": "retrograad"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "linkId": "019aa063-8265-7ddf-b24e-14be9a122b19",
+                  "type": "coding",
+                  "text": "Zenuwsparend graad",
+                  "code": [
+                    {
+                      "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+                      "code": "neurovasculaire_bundel_rechts_graad",
+                      "display": "neurovasculaire_bundel_rechts_graad"
+                    }
+                  ],
+                  "repeats": false,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                      "valueCodeableConcept": {
+                        "text": "chips",
+                        "coding": [
+                          {
+                            "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                            "code": "chips"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "answerOption": [
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "1157337001",
+                        "display": "1"
+                      }
+                    },
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "1157338006",
+                        "display": "2"
+                      }
+                    },
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "1157339003",
+                        "display": "3"
+                      }
+                    },
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "1157340001",
+                        "display": "4"
+                      }
+                    },
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "1157341002",
+                        "display": "5"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "compact-list",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "compact-list"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "019aa068-8a3c-7ddf-b291-db3ddec295ff",
+              "type": "group",
+              "text": "Links",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+                  "code": "links",
+                  "display": "links"
+                },
+                {
+                  "system": "http://snomed.info/sct",
+                  "code": "7771000",
+                  "display": "links"
+                }
+              ],
+              "item": [
+                {
+                  "linkId": "019aa068-8a3c-7ddf-b291-ec2593e16f79",
+                  "type": "coding",
+                  "text": "Zenuwsparend",
+                  "code": [
+                    {
+                      "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+                      "code": "neurovasculaire_bundel_links",
+                      "display": "neurovasculaire_bundel_links"
+                    }
+                  ],
+                  "repeats": false,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                      "valueCodeableConcept": {
+                        "text": "chips",
+                        "coding": [
+                          {
+                            "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                            "code": "chips"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "answerOption": [
+                    {
+                      "valueCoding": {
+                        "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                        "code": "0199b9bf-2669-7008-8bb4-79f76d19c88e",
+                        "display": "zenuwsparend"
+                      }
+                    },
+                    {
+                      "valueCoding": {
+                        "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                        "code": "0199e215-b643-7330-ae57-d7dcbb40cb84",
+                        "display": "niet-zenuwsparend"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "linkId": "019aa068-8a3c-7ddf-b291-fa363d847371",
+                  "type": "coding",
+                  "text": "Dissectierichting",
+                  "code": [
+                    {
+                      "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+                      "code": "neurovasculaire_bundel_links_dissectie",
+                      "display": "neurovasculaire_bundel_links_dissectie"
+                    }
+                  ],
+                  "repeats": false,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                      "valueCodeableConcept": {
+                        "text": "chips",
+                        "coding": [
+                          {
+                            "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                            "code": "chips"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "answerOption": [
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "103362004",
+                        "display": "antegraad"
+                      }
+                    },
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "103363009",
+                        "display": "retrograad"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "linkId": "019aa068-8a3c-7ddf-b292-0be4d6bfcf04",
+                  "type": "coding",
+                  "text": "Zenuwsparend graad",
+                  "code": [
+                    {
+                      "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+                      "code": "neurovasculaire_bundel_links_graad",
+                      "display": "neurovasculaire_bundel_links_graad"
+                    }
+                  ],
+                  "repeats": false,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                      "valueCodeableConcept": {
+                        "text": "chips",
+                        "coding": [
+                          {
+                            "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                            "code": "chips"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "answerOption": [
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "1157337001",
+                        "display": "1"
+                      }
+                    },
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "1157338006",
+                        "display": "2"
+                      }
+                    },
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "1157339003",
+                        "display": "3"
+                      }
+                    },
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "1157340001",
+                        "display": "4"
+                      }
+                    },
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "1157341002",
+                        "display": "5"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "compact-list",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "compact-list"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ],
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "list",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "list"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "0199b9c1-29eb-7008-8be1-ab520a33afe8",
+          "type": "group",
+          "text": "Apex",
+          "code": [
+            {
+              "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+              "code": "apex",
+              "display": "apex"
+            }
+          ],
+          "item": [
+            {
+              "linkId": "0199b9c4-6171-7008-8c1a-cf46281d0bf1",
+              "type": "coding",
+              "text": "Doornemen",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+                  "code": "apex_doornemen",
+                  "display": "apex_doornemen"
+                }
+              ],
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "chips",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "chips"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                    "code": "0199b9c4-a6d5-7008-8c22-2d8f81b76ddf",
+                    "display": "doornemen van apex op een scherpe/koude manier"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "119266004",
+                    "display": "coagulatie"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "0199b9c4-5918-7008-8c13-ed73bb950b03",
+              "type": "coding",
+              "text": "Recoupe",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+                  "code": "apex_recoupe",
+                  "display": "apex_recoupe"
+                }
+              ],
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "chips",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "chips"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373066001",
+                    "display": "ja"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373067005",
+                    "display": "nee"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "0199b9c4-32ea-7008-8c0d-08d035dd4ef0",
+              "type": "coding",
+              "text": "Urethrastomp",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+                  "code": "apex_urethrastomp",
+                  "display": "apex_urethrastomp"
+                }
+              ],
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "chips",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "chips"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "367450005",
+                    "display": "kort"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "255508009",
+                    "display": "middelmatig"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "255511005",
+                    "display": "lang"
+                  }
+                }
+              ]
+            }
+          ],
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "list",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "list"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "0199b9c5-86d0-7008-8c2f-ede300cbc266",
+          "type": "group",
+          "text": "Anastomose",
+          "code": [
+            {
+              "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+              "code": "anastomose",
+              "display": "anastomose"
+            }
+          ],
+          "item": [
+            {
+              "linkId": "0199b9c5-ebb8-7008-8c4e-c91a50ebe933",
+              "type": "coding",
+              "text": "Blaashalsreconstructie",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+                  "code": "anastomose_blaashalsreconstructie",
+                  "display": "anastomose_blaashalsreconstructie"
+                }
+              ],
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "chips",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "chips"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373066001",
+                    "display": "ja"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373067005",
+                    "display": "nee"
+                  }
+                }
+              ]
+            },
+            {
+              "enableWhen": [
+                {
+                  "question": "0199b9c5-ebb8-7008-8c4e-c91a50ebe933",
+                  "operator": "=",
+                  "answerCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373066001",
+                    "display": "ja"
+                  }
+                }
+              ],
+              "enableBehavior": "all",
+              "disabledDisplay": "protected",
+              "linkId": "0199b9c5-e0d9-7008-8c49-4be105d0b9e9",
+              "type": "coding",
+              "text": "Vorm incisie",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+                  "code": "anastomose_blaashalsreconstructie_techniek",
+                  "display": "anastomose_blaashalsreconstructie_techniek"
+                }
+              ],
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "chips",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "chips"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                    "code": "0199b9c2-439f-7008-8c02-14575698962f",
+                    "display": "fishmouth"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                    "code": "0199b9c6-a838-7008-8c63-388883a5171e",
+                    "display": "tennis racket"
+                  }
+                }
+              ]
+            },
+            {
+              "enableWhen": [
+                {
+                  "question": "0199b9c5-e0d9-7008-8c49-4be105d0b9e9",
+                  "operator": "=",
+                  "answerCoding": {
+                    "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                    "code": "0199b9c6-a838-7008-8c63-388883a5171e",
+                    "display": "tennis racket"
+                  }
+                }
+              ],
+              "enableBehavior": "all",
+              "disabledDisplay": "protected",
+              "linkId": "0199b9c5-da56-7008-8c44-256cd83ea8df",
+              "type": "coding",
+              "text": "Positie",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+                  "code": "blaashalsreconstructie_zijde",
+                  "display": "blaashalsreconstructie_zijde"
+                }
+              ],
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "chips",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "chips"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "255549009",
+                    "display": "anterieur"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "255551008",
+                    "display": "posterieur"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "0199b9c5-d33d-7008-8c3d-9ed79108f836",
+              "type": "coding",
+              "text": "Rocco stitch",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+                  "code": "rocco_stitch",
+                  "display": "rocco_stitch"
+                }
+              ],
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "chips",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "chips"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373066001",
+                    "display": "ja"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373067005",
+                    "display": "nee"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "0199b9c5-c42a-7008-8c38-73b5e54509be",
+              "type": "coding",
+              "text": "Draad",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+                  "code": "anastomose_draad",
+                  "display": "anastomose_draad"
+                }
+              ],
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "chips",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "chips"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "408099007",
+                    "display": "monofilament"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "702074006",
+                    "display": "barbed structure"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "0199b9c8-936f-7008-8c6a-afb0eaf6b0b3",
+              "type": "coding",
+              "text": "Lektest",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+                  "code": "anastomose_lektest",
+                  "display": "anastomose_lektest"
+                }
+              ],
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "chips",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "chips"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                    "code": "0199b9c9-b598-7008-8c92-1e0853742da6",
+                    "display": "geen lekkage"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                    "code": "0199b9c9-c9aa-7008-8c92-d13b2467c802",
+                    "display": "kleine lekkage"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                    "code": "0199b9c9-e07d-7008-8c93-8ee4c64bf93a",
+                    "display": "grote lekkage"
+                  }
+                }
+              ]
+            }
+          ],
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "list",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "list"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "0199b9c9-e09f-7008-8c94-1acb8941a1c4",
+          "type": "coding",
+          "text": "Hemostase NVB",
+          "code": [
+            {
+              "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+              "code": "hemostase",
+              "display": "hemostase"
+            }
+          ],
+          "repeats": true,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "chips",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "chips"
+                  }
+                ]
+              }
+            }
+          ],
+          "answerOption": [
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "119266004",
+                "display": "coagulatie"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "79486002",
+                "display": "overhechting"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                "code": "0199b9ca-9066-7008-8c9e-9691e3920400",
+                "display": "tachosil"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "0199b9ca-9085-7008-8c9f-20de244cd76a",
+          "type": "coding",
+          "text": "Sluiting",
+          "code": [
+            {
+              "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+              "code": "wondsluiting",
+              "display": "wondsluiting"
+            }
+          ],
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "chips",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "chips"
+                  }
+                ]
+              }
+            }
+          ],
+          "answerOption": [
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "257782005",
+                "display": "running"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "257781003",
+                "display": "interrupted"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "01979ca3-570d-722d-8d2a-33e13cf8a81a",
+          "type": "coding",
+          "text": "Extra ingrepen",
+          "code": [
+            {
+              "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+              "code": "extra_ingrepen",
+              "display": "extra_ingrepen"
+            }
+          ],
+          "item": [
+            {
+              "enableWhen": [
+                {
+                  "question": "01979ca3-570d-722d-8d2a-33e13cf8a81a",
+                  "operator": "=",
+                  "answerCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "44558001",
+                    "display": "liesbreukherstel"
+                  }
+                }
+              ],
+              "enableBehavior": "all",
+              "disabledDisplay": "hidden",
+              "linkId": "01979ca4-880c-722d-8d3b-838c20f18bac",
+              "type": "coding",
+              "text": "Liesbreukherstel",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+                  "code": "extra_ingrepen_liesbreukherstel_kant",
+                  "display": "extra_ingrepen_liesbreukherstel_kant"
+                }
+              ],
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "chips",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "chips"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "7771000",
+                    "display": "links"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "24028007",
+                    "display": "rechts"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "51440002",
+                    "display": "bilateraal"
+                  }
+                }
+              ]
+            },
+            {
+              "enableWhen": [
+                {
+                  "question": "01979ca3-570d-722d-8d2a-33e13cf8a81a",
+                  "operator": "=",
+                  "answerCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "44946007",
+                    "display": "navelbreukherstel"
+                  }
+                }
+              ],
+              "enableBehavior": "all",
+              "disabledDisplay": "hidden",
+              "linkId": "01979ca5-4a65-722d-8d48-67a97381dadf",
+              "type": "coding",
+              "text": "Navelbreukherstel",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+                  "code": "extra_ingrepen_navelbreukherstel_type",
+                  "display": "extra_ingrepen_navelbreukherstel_type"
+                }
+              ],
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "chips",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "chips"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "428649003",
+                    "display": "primair"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "719290008",
+                    "display": "netje"
+                  }
+                }
+              ]
+            }
+          ],
+          "repeats": true,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "checkbox",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "checkbox"
+                  }
+                ]
+              }
+            }
+          ],
+          "answerConstraint": "optionsOrType",
+          "answerOption": [
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "39270003",
+                "display": "adhesiolyse"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "58347006",
+                "display": "lymfadenectomie"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "44558001",
+                "display": "liesbreukherstel"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "44946007",
+                "display": "navelbreukherstel"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "47811009",
+                "display": "retzius dissectie"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                "code": "0199b9ac-d853-7008-8a47-e06f7ba2b9ef",
+                "display": "retzius sparend"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                "code": "0199b9ad-3103-7008-8a48-9bc2f98a8b41",
+                "display": "dissectie endopelviene fascia en puboprostatische ligamenten"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                "code": "0199b9ad-81c9-7008-8a49-573cbd2d0f1e",
+                "display": "endopelviene fascia en puboprostatische ligamenten sparend"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                "code": "0199b9ad-d4b9-7008-8a4a-0a780a74ce18",
+                "display": "afbinden en doornemen volgens Patel van dorsal vascular complex"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                "code": "0199b9ae-107d-7008-8a4a-c2d5c564a5b7",
+                "display": "doornemen en overhechten van dorsal vascular complex"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "01979ce4-6c4e-733f-9ebd-0457b5046560",
+          "type": "decimal",
+          "text": "Bloedverlies",
+          "code": [
+            {
+              "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+              "code": "bloedverlies_vo2max",
+              "display": "bloedverlies_vo2max"
+            }
+          ],
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "decimal-field",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "decimal-field"
+                  }
+                ]
+              }
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-unit",
+              "valueCoding": {
+                "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                "code": "01979ce5-b6ea-733f-9eca-65a1ded8ab49",
+                "display": "mL"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "01979ceb-9c3a-733f-9ef3-12f5fba675a3",
+          "type": "coding",
+          "text": "Moeilijksgraad (1=zeer vlot, 5=zeer moeilijk)",
+          "code": [
+            {
+              "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+              "code": "moelijkheidsgraad",
+              "display": "moelijkheidsgraad"
+            }
+          ],
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "chips",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "chips"
+                  }
+                ]
+              }
+            }
+          ],
+          "answerOption": [
+            {
+              "valueCoding": {
+                "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                "code": "019b73d9-7c1f-7551-adba-8ab016876487",
+                "display": "1"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                "code": "019b73d9-8425-7551-adbb-47d5088113b9",
+                "display": "2"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                "code": "019b73d9-8b0a-7551-adbb-fe8e1db09fd0",
+                "display": "3"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                "code": "019b73d9-90fb-7551-adbc-b3cb6ea08999",
+                "display": "4"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/custom-codes",
+                "code": "019b73d9-9bb4-7551-adbd-6afd5718091e",
+                "display": "5"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "01979cff-ad18-733f-9f23-bc32f75ace3e",
+          "type": "coding",
+          "text": "Reden complexiteit",
+          "code": [
+            {
+              "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+              "code": "reden_complexiteit",
+              "display": "reden_complexiteit"
+            }
+          ],
+          "repeats": true,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "chips",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "chips"
+                  }
+                ]
+              }
+            }
+          ],
+          "answerConstraint": "optionsOrType",
+          "answerOption": [
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "90199006",
+                "display": "status na TUR"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "67598001",
+                "display": "status na Millin"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "871005",
+                "display": "smal bekken"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "414916001",
+                "display": "obesitas"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "249607009",
+                "display": "grote prostaat"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "9713002",
+                "display": "prostatitis"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "6336005",
+                "display": "adhesies"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "33540003",
+                "display": "middenkwab"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "0199b9cc-f199-7008-8cb0-cd599a6b04e2",
+          "type": "group",
+          "text": "Macroscopisch aspect",
+          "code": [
+            {
+              "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+              "code": "macroscopisch_aspect",
+              "display": "macroscopisch_aspect"
+            }
+          ],
+          "item": [
+            {
+              "linkId": "0199b9cd-4e74-7008-8cd9-4f9f9d5d4ee8",
+              "type": "coding",
+              "text": "Palpabele tumor",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+                  "code": "macroscopisch_palpabele_tumor",
+                  "display": "macroscopisch_palpabele_tumor"
+                }
+              ],
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "chips",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "chips"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373066001",
+                    "display": "ja"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373067005",
+                    "display": "nee"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "0199b9cd-450c-7008-8cd4-22f0d31f3e00",
+              "type": "coding",
+              "text": "Macroscopisch snedevlak",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+                  "code": "macroscopisch_snedevlak",
+                  "display": "macroscopisch_snedevlak"
+                }
+              ],
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "chips",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "chips"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "260385009",
+                    "display": "negatief"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "10828004",
+                    "display": "positief"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "415684004",
+                    "display": "verdacht"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "0199b9cd-26de-7008-8cc0-e2c5ef5255ab",
+              "type": "coding",
+              "text": "Kapselincisie",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+                  "code": "macroscopisch_kapselincisie",
+                  "display": "macroscopisch_kapselincisie"
+                }
+              ],
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "chips",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "chips"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373066001",
+                    "display": "ja"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373067005",
+                    "display": "nee"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "0199b9cd-0b3f-7008-8cb6-e9fcbb44fd16",
+              "type": "coding",
+              "text": "Closed",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+                  "code": "macroscopisch_closed",
+                  "display": "macroscopisch_closed"
+                }
+              ],
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "chips",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "chips"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373066001",
+                    "display": "ja"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "373067005",
+                    "display": "nee"
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "0199b9ce-d57e-7008-8cef-146fff55cb15",
+              "type": "group",
+              "text": "Tumorlokalisatie",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+                  "code": "tumorlokalisatie",
+                  "display": "tumorlokalisatie"
+                }
+              ],
+              "item": [
+                {
+                  "linkId": "0199b9cf-466a-7008-8d0e-16346bc6f8a3",
+                  "type": "coding",
+                  "text": "Zijde",
+                  "code": [
+                    {
+                      "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+                      "code": "tumorlokalisatie_kant",
+                      "display": "tumorlokalisatie_kant"
+                    }
+                  ],
+                  "repeats": false,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                      "valueCodeableConcept": {
+                        "text": "chips",
+                        "coding": [
+                          {
+                            "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                            "code": "chips"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "answerOption": [
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "7771000",
+                        "display": "links"
+                      },
+                      "extension": [
+                        {
+                          "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                          "valueBoolean": false
+                        }
+                      ]
+                    },
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "24028007",
+                        "display": "rechts"
+                      },
+                      "extension": [
+                        {
+                          "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                          "valueBoolean": false
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "linkId": "0199b9cf-37ab-7008-8d04-732aefdadb93",
+                  "type": "coding",
+                  "text": "Niveau",
+                  "code": [
+                    {
+                      "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+                      "code": "tumorlokalisatie_segment",
+                      "display": "tumorlokalisatie_segment"
+                    }
+                  ],
+                  "repeats": false,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                      "valueCodeableConcept": {
+                        "text": "chips",
+                        "coding": [
+                          {
+                            "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                            "code": "chips"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "answerOption": [
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "68756004",
+                        "display": "apex"
+                      },
+                      "extension": [
+                        {
+                          "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                          "valueBoolean": false
+                        }
+                      ]
+                    },
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "717001004",
+                        "display": "midden"
+                      },
+                      "extension": [
+                        {
+                          "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                          "valueBoolean": false
+                        }
+                      ]
+                    },
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "36082003",
+                        "display": "basis"
+                      },
+                      "extension": [
+                        {
+                          "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                          "valueBoolean": false
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "linkId": "0199b9cf-0f36-7008-8cf3-45fa61afab15",
+                  "type": "coding",
+                  "text": "anterieur/posterieur",
+                  "code": [
+                    {
+                      "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+                      "code": "tumorlokalisatie_zijde",
+                      "display": "tumorlokalisatie_zijde"
+                    }
+                  ],
+                  "repeats": false,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                      "valueCodeableConcept": {
+                        "text": "chips",
+                        "coding": [
+                          {
+                            "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                            "code": "chips"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "answerOption": [
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "255549009",
+                        "display": "anterieur"
+                      },
+                      "extension": [
+                        {
+                          "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                          "valueBoolean": false
+                        }
+                      ]
+                    },
+                    {
+                      "valueCoding": {
+                        "system": "http://snomed.info/sct",
+                        "code": "255551008",
+                        "display": "posterieur"
+                      },
+                      "extension": [
+                        {
+                          "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                          "valueBoolean": false
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "repeats": true,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "table",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "table"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ],
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "list",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "list"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "0198791f-e515-7bbb-95e1-8c87d18cdfac",
+          "type": "group",
+          "text": "Tijden",
+          "code": [
+            {
+              "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+              "code": "tijden",
+              "display": "tijden"
+            }
+          ],
+          "item": [
+            {
+              "linkId": "01979cfe-792b-733f-9f0e-fa334bfd628a",
+              "type": "dateTime",
+              "text": "Start operatietijd",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+                  "code": "operatietijd_start",
+                  "display": "operatietijd_start"
+                }
+              ],
+              "required": false,
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "date-field",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "date-field"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "enableWhen": [
+                {
+                  "question": "01979ca2-57aa-722d-8d1c-116621d5137e",
+                  "operator": "!=",
+                  "answerCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "56116003",
+                    "display": "open"
+                  }
+                }
+              ],
+              "enableBehavior": "all",
+              "disabledDisplay": "protected",
+              "linkId": "01987920-3241-7bbb-95eb-9052e1ec1fc1",
+              "type": "dateTime",
+              "text": "Start consoletijd",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+                  "code": "consoletijd_start",
+                  "display": "consoletijd_start"
+                }
+              ],
+              "required": false,
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "date-field",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "date-field"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "enableWhen": [
+                {
+                  "question": "01979ca2-57aa-722d-8d1c-116621d5137e",
+                  "operator": "!=",
+                  "answerCoding": {
+                    "system": "http://snomed.info/sct",
+                    "code": "56116003",
+                    "display": "open"
+                  }
+                }
+              ],
+              "enableBehavior": "all",
+              "disabledDisplay": "protected",
+              "linkId": "01987916-e165-7bbb-957d-e2759fa77cdd",
+              "type": "dateTime",
+              "text": "Stop consoletijd",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+                  "code": "consoletijd_stop",
+                  "display": "consoletijd_stop"
+                }
+              ],
+              "required": false,
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "date-field",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "date-field"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "linkId": "01987920-4321-7bbb-95ec-8e4f90522d21",
+              "type": "dateTime",
+              "text": "Stop operatietijd",
+              "code": [
+                {
+                  "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+                  "code": "operatietijd_stop",
+                  "display": "operatietijd_stop"
+                }
+              ],
+              "required": false,
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "date-field",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "date-field"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ],
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "list",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "list"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "019ac427-7a4c-7336-958a-76a214a7d06b",
+          "type": "string",
+          "text": "Opmerking",
+          "code": [
+            {
+              "system": "http://templates.tiro.health/templates/64f799ae1e484c50a1e2e375777206f7/technical-key",
+              "code": "opmerking",
+              "display": "opmerking"
+            }
+          ],
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "textfield",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "textfield"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "repeats": false,
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+          "valueCodeableConcept": {
+            "text": "block",
+            "coding": [
+              {
+                "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                "code": "block"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

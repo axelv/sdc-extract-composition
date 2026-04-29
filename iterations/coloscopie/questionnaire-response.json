@@ -1,0 +1,232 @@
+{
+  "resourceType": "QuestionnaireResponse",
+  "questionnaire": "http://templates.tiro.health/templates/e7cec274dca44a8aa33777d8cd8b34e1",
+  "status": "completed",
+  "authored": "2026-04-09T10:30:00Z",
+  "item": [
+    {
+      "linkId": "group",
+      "item": [
+        {
+          "linkId": "datum-procedure",
+          "answer": [{"valueDate": "2026-04-09"}]
+        },
+        {
+          "linkId": "uitvoerende-arts",
+          "answer": [{"valueCoding": {"system": "http://snomed.info/sct", "code": "422097006", "display": "Dr. Janssens"}}]
+        },
+        {
+          "linkId": "verwijzer",
+          "answer": [
+            {
+              "valueCoding": {"code": "via-specialist-extern", "display": "via specialist extern"},
+              "item": [
+                {
+                  "linkId": "verwijzend-ziekenhuis",
+                  "answer": [
+                    {
+                      "valueCoding": {"display": "AZ Sint-Jan Brugge"},
+                      "item": [
+                        {
+                          "linkId": "verwijzende-specialist",
+                          "answer": [{"valueCoding": {"display": "Dr. Peeters"}}]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "linkId": "urgentie",
+          "answer": [{"valueCoding": {"code": "373067005", "display": "Nee"}}]
+        },
+        {
+          "linkId": "indicatie",
+          "answer": [{"valueCoding": {"display": "Surveillance na polypectomie"}}]
+        },
+        {
+          "linkId": "sedatie",
+          "answer": [
+            {
+              "valueCoding": {"code": "0192058a-9c01-7eed-9d3e-21a716d9fb7a", "display": "procedurele sedatie"},
+              "item": []
+            }
+          ]
+        },
+        {
+          "linkId": "bloedverdunners",
+          "answer": [{"valueCoding": {"code": "373067005", "display": "Nee"}}]
+        },
+        {
+          "linkId": "colonvoorbereiding",
+          "answer": [{"valueCoding": {"code": "goed", "display": "Goed"}}]
+        },
+        {
+          "linkId": "problemen-bij-voorbereiding",
+          "answer": [{"valueCoding": {"code": "373067005", "display": "geen"}}]
+        },
+        {
+          "linkId": "boston-bowel-preparation-scale",
+          "item": [
+            {"linkId": "rechter-colon", "answer": [{"valueInteger": 3}]},
+            {"linkId": "linker-colon", "answer": [{"valueInteger": 3}]},
+            {"linkId": "transversum", "answer": [{"valueInteger": 2}]},
+            {"linkId": "boston-bowel-preparation-scale-2", "answer": [{"valueInteger": 8}]},
+            {"linkId": "darmreiniging", "answer": [{"valueCoding": {"code": "adequaat", "display": "adequaat"}}]}
+          ]
+        },
+        {
+          "linkId": "caecum-bereikt",
+          "item": [
+            {
+              "linkId": "insertiediepte",
+              "answer": [{"valueCoding": {"code": "caecum", "display": "caecum"}}]
+            }
+          ]
+        },
+        {
+          "linkId": "terugtrektijd-min",
+          "answer": [{"valueInteger": 12}]
+        },
+        {
+          "linkId": "terugtrektijd-sec",
+          "answer": [{"valueInteger": 30}]
+        },
+        {
+          "linkId": "retrovisie-ascendens",
+          "answer": [{"valueCoding": {"code": "373066001", "display": "Ja"}}]
+        },
+        {
+          "linkId": "retrovisie-rectum",
+          "answer": [{"valueCoding": {"code": "373066001", "display": "Ja"}}]
+        }
+      ]
+    },
+    {
+      "linkId": "poliepen",
+      "item": [
+        {
+          "linkId": "poliep-en-aanwezig",
+          "answer": [{"valueCoding": {"code": "373066001", "display": "ja"}}]
+        },
+        {
+          "linkId": "poliep",
+          "item": [
+            {"linkId": "locatie", "answer": [{"valueCoding": {"display": "sigmoïd"}}]},
+            {"linkId": "afstand", "answer": [{"valueInteger": 25}]},
+            {"linkId": "architectuur", "answer": [{"valueCoding": {"code": "Paris 0-Is", "display": "Paris 0-Is"}}]},
+            {"linkId": "grootte", "answer": [{"valueCoding": {"code": "5-10mm", "display": "5-10 mm"}}]},
+            {
+              "linkId": "resectie",
+              "answer": [
+                {
+                  "valueCoding": {"code": "373066001", "display": "Ja"},
+                  "item": [
+                    {"linkId": "device", "answer": [{"valueCoding": {"code": "coldsnare", "display": "cold snare"}}]},
+                    {"linkId": "modaliteit", "answer": [{"valueCoding": {"display": "endoscopisch"}}]},
+                    {"linkId": "recuperatie", "answer": [{"valueCoding": {"code": "373066001", "display": "Ja"}}]},
+                    {"linkId": "potje-2", "answer": [{"valueString": "1"}]},
+                    {"linkId": "termale-ablatie-van-de-randen", "answer": [{"valueCoding": {"code": "373067005", "display": "Nee"}}]},
+                    {"linkId": "nabloeding", "answer": [{"valueCoding": {"code": "373067005", "display": "Nee"}}]},
+                    {"linkId": "markering", "answer": [{"valueCoding": {"code": "373067005", "display": "Nee"}}]}
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "linkId": "poliep",
+          "item": [
+            {"linkId": "locatie", "answer": [{"valueCoding": {"display": "colon ascendens"}}]},
+            {"linkId": "afstand", "answer": [{"valueInteger": 60}]},
+            {"linkId": "architectuur", "answer": [{"valueCoding": {"code": "Paris 0-Ip", "display": "Paris 0-Ip"}}]},
+            {"linkId": "grootte", "answer": [{"valueCoding": {"code": "10-20mm", "display": "10-20 mm"}}]},
+            {
+              "linkId": "resectie",
+              "answer": [
+                {
+                  "valueCoding": {"code": "373066001", "display": "Ja"},
+                  "item": [
+                    {"linkId": "lifting", "answer": [{"valueCoding": {"display": "positief"}}]},
+                    {"linkId": "device", "answer": [{"valueCoding": {"code": "hotsnare", "display": "hot snare"}}]},
+                    {"linkId": "modaliteit", "answer": [{"valueCoding": {"display": "endoscopisch"}}]},
+                    {"linkId": "biopten", "answer": [{"valueCoding": {"code": "373066001", "display": "Ja"}}]},
+                    {"linkId": "potje", "answer": [{"valueString": "2"}]},
+                    {"linkId": "recuperatie", "answer": [{"valueCoding": {"code": "373066001", "display": "Ja"}}]},
+                    {"linkId": "potje-2", "answer": [{"valueString": "3"}]},
+                    {"linkId": "termale-ablatie-van-de-randen", "answer": [{"valueCoding": {"code": "373066001", "display": "Ja"}}]},
+                    {
+                      "linkId": "nabloeding",
+                      "answer": [
+                        {
+                          "valueCoding": {"code": "373066001", "display": "Ja"},
+                          "item": [
+                            {"linkId": "succesvolle-hemostase", "answer": [{"valueCoding": {"code": "373066001", "display": "Ja"}}]},
+                            {"linkId": "modaliteit-2", "answer": [{"valueCoding": {"display": "clipplaatsing"}}]}
+                          ]
+                        }
+                      ]
+                    },
+                    {"linkId": "markering", "answer": [{"valueCoding": {"code": "373067005", "display": "Nee"}}]}
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "linkId": "divertikels",
+      "item": [
+        {
+          "linkId": "divertikels-2",
+          "answer": [{"valueCoding": {"code": "373066001", "display": "Ja"}}]
+        },
+        {
+          "linkId": "locatie-3",
+          "answer": [{"valueCoding": {"code": "60184004", "display": "sigmoïd"}}]
+        },
+        {
+          "linkId": "stenoserend",
+          "answer": [{"valueCoding": {"code": "373067005", "display": "Nee"}}]
+        },
+        {
+          "linkId": "tekenen-van-inflammatie",
+          "answer": []
+        }
+      ]
+    },
+    {
+      "linkId": "carcinoom",
+      "item": [
+        {
+          "linkId": "carcinoom-2",
+          "answer": [{"valueCoding": {"code": "373067005", "display": "Nee"}}]
+        }
+      ]
+    },
+    {
+      "linkId": "colitis-ulcerosa",
+      "item": [
+        {
+          "linkId": "colitis-ulcerosa-2",
+          "answer": [{"valueCoding": {"code": "373067005", "display": "Nee"}}]
+        }
+      ]
+    },
+    {
+      "linkId": "ziekte-van-crohn",
+      "item": [
+        {
+          "linkId": "group-2",
+          "answer": [{"valueCoding": {"code": "373067005", "display": "Nee"}}]
+        }
+      ]
+    }
+  ]
+}

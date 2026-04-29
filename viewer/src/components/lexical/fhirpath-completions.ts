@@ -14,29 +14,8 @@ export interface CompletionItem {
   traverses_repeating?: boolean;
 }
 
-// Only entry-point variables - the rest comes from WASM generate_completions
-export const STUB_COMPLETIONS: CompletionItem[] = [
-  {
-    label: "%context",
-    detail: "Current extraction context",
-    insert_text: "%context",
-    filter_text: "context",
-    sort_text: "00-context",
-    kind: "value",
-    link_id: "",
-    item_type: "",
-  },
-  {
-    label: "%resource",
-    detail: "The QuestionnaireResponse",
-    insert_text: "%resource",
-    filter_text: "resource",
-    sort_text: "00-resource",
-    kind: "value",
-    link_id: "",
-    item_type: "",
-  },
-];
+// No stub completions - UI handles context/resource scoping automatically
+const STUB_COMPLETIONS: CompletionItem[] = [];
 
 // WASM generate_completions emits insert_text relative to the supplied context
 // expression (e.g. "item.where(linkId='X').answer.value"). Pills need a
