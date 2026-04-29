@@ -6,11 +6,13 @@ const iterationModules = import.meta.glob(
   { eager: true, import: "default" }
 ) as Record<string, Questionnaire>;
 
-// Build a map of iteration name → Questionnaire
-const iterations = Object.entries(iterationModules).map(([path, data]) => {
-  const name = path.split("/").at(-2) ?? path;
-  return { name, data };
-});
+// Build a map of iteration name → Questionnaire (filtered to editor-test only for now)
+const iterations = Object.entries(iterationModules)
+  .map(([path, data]) => {
+    const name = path.split("/").at(-2) ?? path;
+    return { name, data };
+  })
+  .filter((it) => it.name.includes("editor-test"));
 
 /** Get iteration name from URL ?iteration= parameter */
 function getIterationFromUrl(): string | null {
@@ -27,7 +29,7 @@ function findIteration(name: string) {
 }
 
 /** Default iteration when none specified */
-const DEFAULT_ITERATION = "07-coloscopie";
+const DEFAULT_ITERATION = "08-editor-test";
 
 interface QuestionnaireLoaderProps {
   onLoad: (questionnaire: Questionnaire) => void;

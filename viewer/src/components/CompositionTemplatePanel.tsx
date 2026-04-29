@@ -6,12 +6,10 @@ import { RawCompositionView } from "./RawCompositionView";
 import { EditorView } from "./EditorView";
 import { AnalyzeExpressionDebug } from "./AnalyzeExpressionDebug";
 
-type Tab = "template" | "editor" | "structure" | "debug";
-
 interface CompositionTemplatePanelProps {
   composition: Composition;
   questionnaireIndex?: QuestionnaireIndex;
-  showContext: boolean;
+  showContext?: boolean;
   onSectionHtmlChange?: (sectionPath: number[], newDivHtml: string) => void;
   onSectionTitleChange?: (sectionPath: number[], newTitle: string) => void;
   onContextExpressionChange?: (sectionPath: number[], newExpression: string) => void;
@@ -40,7 +38,7 @@ function downloadJson(data: unknown, filename: string) {
 export function CompositionTemplatePanel({
   composition,
   questionnaireIndex,
-  showContext,
+  showContext = true,
   onSectionHtmlChange,
   onSectionTitleChange,
   onContextExpressionChange,
@@ -48,36 +46,31 @@ export function CompositionTemplatePanel({
   onRemoveSection,
   onSectionChange,
 }: CompositionTemplatePanelProps) {
-  const [tab, setTab] = useState<Tab>("template");
+  const [showJson, setShowJson] = useState(false);
 
   const handleExport = useCallback(() => {
     const filename = `${composition.id ?? "composition"}.json`;
     downloadJson(composition, filename);
   }, [composition]);
 
+  // Reserved for future tab restoration
+  void [CompositionView, RawCompositionView, AnalyzeExpressionDebug, showContext, onSectionHtmlChange, onSectionTitleChange, onContextExpressionChange];
+
   return (
     <div className="panel-container">
       <div className="panel-header">
-        <h2 className="panel-title">Template</h2>
-        <div className="flex items-center gap-2">
-          <div className="flex gap-1 bg-gray-100 rounded p-0.5">
-            {(["template", "editor", "structure", "debug"] as const).map((t) => (
-              <button
-                key={t}
-                onClick={() => setTab(t)}
-                className={`px-2 py-0.5 text-xs rounded transition-colors ${
-                  tab === t
-                    ? "bg-white shadow-sm text-gray-900 font-medium"
-                    : "text-gray-500 hover:text-gray-700"
-                }`}
-              >
-                {t === "template" ? "Template" : t === "editor" ? "Editor" : t === "structure" ? "Structure" : "Debug"}
-              </button>
-            ))}
-          </div>
+        <h2 className="panel-title">Composition</h2>
+        <div className="flex items-center gap-1">
+          <button
+            onClick={() => setShowJson(!showJson)}
+            className={`panel-header-btn ${showJson ? "active" : ""}`}
+            title="Toggle JSON view"
+          >
+            {"{ }"}
+          </button>
           <button
             onClick={handleExport}
-            className="px-2 py-0.5 text-xs rounded border border-gray-300 text-gray-600 hover:bg-gray-100 transition-colors"
+            className="panel-header-btn"
             title="Export Composition as JSON"
           >
             Export
@@ -85,32 +78,20 @@ export function CompositionTemplatePanel({
         </div>
       </div>
       <div className="panel-body">
-        {tab === "template" && (
-          <CompositionView
-            composition={composition}
-            questionnaireIndex={questionnaireIndex}
-            showContext={showContext}
-            onSectionHtmlChange={onSectionHtmlChange}
-            onSectionTitleChange={onSectionTitleChange}
-            onContextExpressionChange={onContextExpressionChange}
-            onAddSection={onAddSection}
-            onRemoveSection={onRemoveSection}
-          />
-        )}
-        {tab === "editor" && onSectionChange && onAddSection && onRemoveSection && (
-          <EditorView
-            composition={composition}
-            questionnaireIndex={questionnaireIndex}
-            onSectionChange={onSectionChange}
-            onAddSection={onAddSection}
-            onRemoveSection={onRemoveSection}
-          />
-        )}
-        {tab === "structure" && (
-          <RawCompositionView composition={composition} />
-        )}
-        {tab === "debug" && (
-          <AnalyzeExpressionDebug />
+        {showJson ? (
+          <pre className="text-xs font-mono text-gray-700 whitespace-pre-wrap">
+            {JSON.stringify(composition, null, 2)}
+          </pre>
+        ) : (
+          onSectionChange && onAddSection && onRemoveSection && (
+            <EditorView
+              composition={composition}
+              questionnaireIndex={questionnaireIndex}
+              onSectionChange={onSectionChange}
+              onAddSection={onAddSection}
+              onRemoveSection={onRemoveSection}
+            />
+          )
         )}
       </div>
     </div>

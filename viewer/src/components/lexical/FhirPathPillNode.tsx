@@ -76,11 +76,13 @@ export class FhirPathPillNode extends DecoratorNode<ReactNode> {
     };
   }
 
-  // HTML export: emit {{expression}} wrapped in a span
+  // HTML export: emit <code data-fhirpath-expression="...">{{expression}}</code>
+  // Store expression in data attribute to avoid HTML encoding issues with characters like =>
   exportDOM(_editor: LexicalEditor): DOMExportOutput {
-    const span = document.createElement("span");
-    span.textContent = `{{${this.__expression}}}`;
-    return { element: span };
+    const code = document.createElement("code");
+    code.setAttribute("data-fhirpath-expression", this.__expression);
+    code.textContent = `{{${this.__expression}}}`;
+    return { element: code };
   }
 
   // -- Behavior --

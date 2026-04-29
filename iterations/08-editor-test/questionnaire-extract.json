@@ -37,7 +37,7 @@
           "extension": [
             {
               "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-              "valueString": "%resource.item.where(linkId='allergy-details').answer.exists()"
+              "valueString": "%context.where(%resource.repeat(item).where(linkId='allergy-details').answer.exists())"
             }
           ],
           "title": "Allergies (If has allergies)",
@@ -50,7 +50,7 @@
           "extension": [
             {
               "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
-              "valueString": "%resource.item.where(linkId='medications').item.where(linkId='medication')"
+              "valueString": "%resource.repeat(item).where(linkId='medication')"
             }
           ],
           "title": "Medication (Repeating)",
@@ -102,6 +102,34 @@
           "type": "group",
           "repeats": true,
           "item": [
+            {
+              "linkId": "med-type",
+              "text": "Medication Type",
+              "type": "coding",
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "system": "http://example.org/medications",
+                    "code": "painkiller",
+                    "display": "Painkiller"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://example.org/medications",
+                    "code": "antibiotic",
+                    "display": "Antibiotic"
+                  }
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://example.org/medications",
+                    "code": "vitamin",
+                    "display": "Vitamin"
+                  }
+                }
+              ]
+            },
             {
               "linkId": "med-name",
               "text": "Medication Name",

@@ -42,6 +42,14 @@ export function formatExpression(parsed: ParsedExpression): string {
 
 export function formatFilter(f: FilterInvocation): string {
   if (f.args.length === 0) return f.name;
+  // Special formatting for map filter: use => syntax
+  if (f.name === "map") {
+    const pairs: string[] = [];
+    for (let i = 0; i + 1 < f.args.length; i += 2) {
+      pairs.push(`${formatLiteral(f.args[i])} => ${formatLiteral(f.args[i + 1])}`);
+    }
+    return pairs.length > 0 ? `map: ${pairs.join(", ")}` : "map";
+  }
   return `${f.name}: ${f.args.map(formatLiteral).join(", ")}`;
 }
 
@@ -57,6 +65,69 @@ export function getDesignationUse(parsed: ParsedExpression): string | null {
   if (!f) return null;
   const arg = f.args[0];
   return typeof arg === "string" ? arg : null;
+}
+
+/** Map filter stores mappings as alternating [code, text, code, text, ...] */
+export interface CodeMapping {
+  code: string;
+  text: string;
+}
+
+/** Get all code→text mappings from a `map` filter. */
+export function getMapMappings(parsed: ParsedExpression): CodeMapping[] {
+  const f = parsed.filters.find((x) => x.name === "map");
+  if (!f) return [];
+  const mappings: CodeMapping[] = [];
+  for (let i = 0; i + 1 < f.args.length; i += 2) {
+    const code = f.args[i];
+    const text = f.args[i + 1];
+    if (typeof code === "string" && typeof text === "string") {
+      mappings.push({ code, text });
+    }
+  }
+  return mappings;
+}
+
+/** Set or replace the `map` filter's mappings. Passing empty array removes the filter. */
+export function setMapMappings(
+  parsed: ParsedExpression,
+  mappings: CodeMapping[],
+): ParsedExpression {
+  const filters = [...parsed.filters];
+  const idx = filters.findIndex((f) => f.name === "map");
+
+  // Remove if no mappings
+  if (mappings.length === 0) {
+    if (idx === -1) return parsed;
+    filters.splice(idx, 1);
+    return { ...parsed, filters };
+  }
+
+  // Build args as alternating code, text pairs
+  const args: FilterLiteral[] = [];
+  for (const m of mappings) {
+    args.push(m.code, m.text);
+  }
+
+  const next: FilterInvocation = {
+    name: "map",
+    args,
+    source: formatMapFilter(mappings),
+  };
+
+  if (idx === -1) {
+    filters.push(next);
+  } else {
+    filters[idx] = next;
+  }
+  return { ...parsed, filters };
+}
+
+/** Format map filter with => syntax for readability */
+function formatMapFilter(mappings: CodeMapping[]): string {
+  if (mappings.length === 0) return "map";
+  const pairs = mappings.map(m => `${formatLiteral(m.code)} => ${formatLiteral(m.text)}`);
+  return `map: ${pairs.join(", ")}`;
 }
 
 /**
@@ -141,6 +212,22 @@ function parseFilter(segment: string): FilterInvocation {
   const argsPart = trimmed.slice(colon + 1);
   const argTokens = splitTopLevel(argsPart, ",");
   const allEmpty = argTokens.every((t) => t.trim() === "");
+
+  // Special handling for map filter: "code" => "text" pairs
+  if (name === "map" && !allEmpty) {
+    const args: FilterLiteral[] = [];
+    for (const token of argTokens) {
+      const arrowParts = splitTopLevel(token, "=>");
+      if (arrowParts.length === 2) {
+        args.push(parseLiteral(arrowParts[0]));
+        args.push(parseLiteral(arrowParts[1]));
+      } else if (arrowParts.length === 1 && arrowParts[0].trim()) {
+        args.push(parseLiteral(arrowParts[0]));
+      }
+    }
+    return { name: validateName(name), args, source: trimmed };
+  }
+
   const args = allEmpty ? [] : argTokens.map(parseLiteral);
   return { name: validateName(name), args, source: trimmed };
 }

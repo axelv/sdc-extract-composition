@@ -1,32 +1,20 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import {
-  $getNodeByKey,
   $getSelection,
   $isNodeSelection,
   $setSelection,
   type NodeKey,
 } from "lexical";
 import { $isFhirPathPillNode } from "./FhirPathPillNode";
-import { FhirPathExpressionEditor } from "./FhirPathExpressionEditor";
-import { FormattingPanel } from "./FormattingPanel";
-import { SynonymsPanel } from "./SynonymsPanel";
-import { inferAnswerShape } from "../../utils/expression-type";
-import { useQuestionnaireIndex } from "./QuestionnaireIndexContext";
-import { useWasmReady } from "../../utils/wasm-init";
-
-interface PillEditingWorkspaceProps {
-  contextExpression?: string | null;
-}
+import { AnswerMappingsPanel } from "./AnswerMappingsPanel";
 
 interface SelectedPill {
   nodeKey: NodeKey;
   expression: string;
 }
 
-export function PillEditingWorkspace({
-  contextExpression,
-}: PillEditingWorkspaceProps) {
+export function PillEditingWorkspace() {
   const [editor] = useLexicalComposerContext();
   const [selected, setSelected] = useState<SelectedPill | null>(null);
   const workspaceRef = useRef<HTMLDivElement | null>(null);
@@ -67,24 +55,9 @@ export function PillEditingWorkspace({
     });
   }, [editor]);
 
-  const handleChange = useCallback(
-    (value: string) => {
-      if (!selected) return;
-      editor.update(() => {
-        const node = $getNodeByKey(selected.nodeKey);
-        if ($isFhirPathPillNode(node)) {
-          node.setExpression(value);
-        }
-      });
-    },
-    [editor, selected],
-  );
-
   // While a pill is selected, dismiss the workspace on Escape or on a
   // mousedown outside both the narrative editor root and the workspace
-  // container. Clicks inside the CodeMirror side editor (and its tooltips,
-  // which CM6 mounts inside the cm-editor by default) stay inside the
-  // workspace ref, so they don't dismiss.
+  // container.
   useEffect(() => {
     if (!selected) return;
     const onMouseDown = (event: MouseEvent) => {
@@ -93,6 +66,11 @@ export function PillEditingWorkspace({
       const root = editor.getRootElement();
       if (root && root.contains(target)) return;
       if (workspaceRef.current && workspaceRef.current.contains(target)) return;
+      // Allow clicks anywhere inside the section editor modal (formula bar, buttons, etc.)
+      if (target instanceof Element && target.closest(".section-editor-modal")) return;
+      // Also check if active element is in section editor (for native select dropdowns)
+      const active = document.activeElement;
+      if (active instanceof Element && active.closest(".section-editor-modal")) return;
       editor.update(() => {
         $setSelection(null);
       });
@@ -111,54 +89,11 @@ export function PillEditingWorkspace({
     };
   }, [editor, selected]);
 
-  // Re-render when wasm flips ready so the answer-shape badge updates.
-  useWasmReady();
-  const index = useQuestionnaireIndex();
-
   if (!selected) return null;
-
-  const shape = inferAnswerShape(selected.expression, index);
 
   return (
     <div ref={workspaceRef} className="pill-editing-workspace">
-      <div className="pill-editing-workspace-section">
-        <div className="pill-editing-workspace-label">
-          <span>FHIRPATH</span>
-          {shape && (
-            <span className="pill-editing-workspace-type" title={shapeTitle(shape)}>
-              <span className="pill-editing-workspace-type-linkid">
-                {shape.linkIds
-                  .map((id) => index?.resolveItemText(id) ?? id)
-                  .join(" → ")}
-              </span>
-              <span className="pill-editing-workspace-type-sep">·</span>
-              <span className="pill-editing-workspace-type-shape">
-                {shape.valueShape}
-              </span>
-            </span>
-          )}
-        </div>
-        <FhirPathExpressionEditor
-          key={selected.nodeKey}
-          value={selected.expression}
-          onChange={handleChange}
-          contextExpression={contextExpression}
-        />
-      </div>
-      <FormattingPanel
-        expression={selected.expression}
-        shape={shape}
-        onChange={handleChange}
-      />
-      <SynonymsPanel expression={selected.expression} />
+      <AnswerMappingsPanel nodeKey={selected.nodeKey} expression={selected.expression} />
     </div>
   );
-}
-
-function shapeTitle(shape: ReturnType<typeof inferAnswerShape>): string {
-  if (!shape) return "";
-  const parts = [`reads ${shape.linkIds.join(", ")}`];
-  if (shape.itemType) parts.push(`item.type = ${shape.itemType}`);
-  parts.push(`value shape = ${shape.valueShape}`);
-  return parts.join(" • ");
 }

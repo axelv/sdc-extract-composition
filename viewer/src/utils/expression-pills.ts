@@ -193,14 +193,79 @@ export function segmentExpression(expr: string): ExpressionSegment[] {
 
   const segments = buildSegments(head, nonOverlapping);
   if (tail) {
+    // Strip map filter details for display (just show "|| map" not the mappings)
+    const displayTail = simplifyFiltersForDisplay(tail);
     segments.push({
       kind: "text",
       from: head.length,
       to: expr.length,
-      text: expr.slice(head.length),
+      text: displayTail,
     });
   }
   return segments;
+}
+
+/**
+ * Simplify filter tail for display by showing only filter names (no arguments).
+ * Shows max 2 filters, then "|| ..." if there are more.
+ * "|| default: 'MM' || prepend: 'test' || join: ', '" → "|| default || prepend || ..."
+ */
+function simplifyFiltersForDisplay(tail: string): string {
+  // Split on || (outside quotes)
+  const parts: string[] = [];
+  let buf = "";
+  let i = 0;
+  let quote: string | null = null;
+  while (i < tail.length) {
+    const ch = tail[i];
+    if (quote !== null) {
+      buf += ch;
+      if (ch === "\\" && i + 1 < tail.length) {
+        buf += tail[i + 1];
+        i += 2;
+        continue;
+      }
+      if (ch === quote) quote = null;
+      i += 1;
+      continue;
+    }
+    if (ch === "'" || ch === '"') {
+      quote = ch;
+      buf += ch;
+      i += 1;
+      continue;
+    }
+    if (ch === "|" && tail[i + 1] === "|") {
+      parts.push(buf);
+      buf = "";
+      i += 2;
+      continue;
+    }
+    buf += ch;
+    i += 1;
+  }
+  parts.push(buf);
+
+  // Simplify each filter part - extract just the filter name (before the colon)
+  const simplified = parts.map((part) => {
+    const trimmed = part.trim();
+    if (!trimmed) return "";
+    // Extract filter name (everything before the colon, if any)
+    const colonIdx = trimmed.indexOf(":");
+    if (colonIdx > 0) {
+      return trimmed.slice(0, colonIdx).trim();
+    }
+    return trimmed;
+  }).filter(Boolean);
+
+  // Show max 2 filters, then "..." if more
+  const maxFilters = 2;
+  if (simplified.length > maxFilters) {
+    const shown = simplified.slice(0, maxFilters);
+    return shown.map(p => ` || ${p}`).join("") + " || ...";
+  }
+
+  return simplified.map(p => ` || ${p}`).join("");
 }
 
 /**

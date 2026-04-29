@@ -80,7 +80,14 @@ export const FILTER_CATALOG: FilterSpec[] = [
     label: "Join",
     description: "Join multiple values with a separator.",
     args: [{ name: "separator", kind: "string", placeholder: ", " }],
-    applicableTo: ["list", ...STRINGY],
+    applicableTo: ["list", "Coding", ...STRINGY],
+  },
+  {
+    name: "map",
+    label: "Map",
+    description: "Map coded answers to custom narrative text.",
+    args: [],
+    applicableTo: ["Coding"],
   },
 ];
 
@@ -101,3 +108,6 @@ export function filtersForShape(valueShape: string | null): FilterSpec[] {
 
 /** Filters owned by another panel — never surface them in the formatting list. */
 export const HIDDEN_FILTERS: ReadonlySet<string> = new Set(["designation"]);
+
+/** Filters that have a separate config panel below the format row. */
+export const PANEL_FILTERS: ReadonlySet<string> = new Set(["map"]);

@@ -15,12 +15,12 @@ import { QuestionnaireFormPanel } from "./components/QuestionnaireFormPanel";
 import { CompositionTemplatePanel } from "./components/CompositionTemplatePanel";
 import { RenderedOutputPanel } from "./components/RenderedOutputPanel";
 import { WasmQuestionnaireIndexProvider } from "./components/lexical/WasmQuestionnaireIndexContext";
+import { DebugContext } from "./contexts/DebugContext";
 
 function App() {
   const [questionnaire, setQuestionnaire] = useState<Questionnaire | null>(
     null
   );
-  const [showContext, setShowContext] = useState(true);
   const [questionnaireResponse, setQuestionnaireResponse] = useState<Record<
     string,
     unknown
@@ -29,6 +29,7 @@ function App() {
   const [renderedHtml, setRenderedHtml] = useState<string | null>(null);
   const [renderErrors, setRenderErrors] = useState<string[]>([]);
   const [renderLoading, setRenderLoading] = useState(false);
+  const [debugMode, setDebugMode] = useState(false);
 
   // Derive composition from questionnaire
   useEffect(() => {
@@ -251,17 +252,16 @@ function App() {
           </h1>
           <QuestionnaireLoader onLoad={handleQuestionnaireLoad} />
         </div>
-        {composition && (
-          <label className="flex items-center gap-1.5 text-xs text-gray-500 cursor-pointer select-none">
-            <input
-              type="checkbox"
-              checked={showContext}
-              onChange={(e) => setShowContext(e.target.checked)}
-              className="rounded border-gray-300"
-            />
-            Context
-          </label>
-        )}
+        <button
+          onClick={() => setDebugMode(!debugMode)}
+          className={`px-3 py-1.5 text-xs rounded border transition-colors ${
+            debugMode
+              ? "bg-orange-100 border-orange-300 text-orange-700"
+              : "bg-gray-100 border-gray-300 text-gray-600 hover:bg-gray-200"
+          }`}
+        >
+          {debugMode ? "Debug ON" : "Debug"}
+        </button>
       </header>
 
       {/* Panels */}
@@ -272,39 +272,37 @@ function App() {
       )}
 
       {questionnaire && composition && (
-        <WasmQuestionnaireIndexProvider value={wasmQuestionnaireIndex}>
-          <PanelGroup orientation="horizontal" className="flex-1">
-            <Panel defaultSize={30} minSize={15}>
-              <QuestionnaireFormPanel
-                questionnaire={questionnaire}
-                onResponse={setQuestionnaireResponse}
-                hasResponse={questionnaireResponse !== null}
-              />
-            </Panel>
-            <PanelResizeHandle className="panel-resize-handle" />
-            <Panel defaultSize={35} minSize={15}>
-              <CompositionTemplatePanel
-                composition={composition}
-                questionnaireIndex={questionnaireIndex}
-                showContext={showContext}
-                onSectionHtmlChange={handleSectionHtmlChange}
-                onSectionTitleChange={handleSectionTitleChange}
-                onContextExpressionChange={handleContextExpressionChange}
-                onAddSection={handleAddSection}
-                onRemoveSection={handleRemoveSection}
-                onSectionChange={handleSectionChange}
-              />
-            </Panel>
-            <PanelResizeHandle className="panel-resize-handle" />
-            <Panel defaultSize={35} minSize={15}>
-              <RenderedOutputPanel
-                html={renderedHtml}
-                errors={renderErrors}
-                loading={renderLoading}
-              />
-            </Panel>
-          </PanelGroup>
-        </WasmQuestionnaireIndexProvider>
+        <DebugContext.Provider value={debugMode}>
+          <WasmQuestionnaireIndexProvider value={wasmQuestionnaireIndex}>
+            <PanelGroup orientation="horizontal" className="flex-1">
+              <Panel defaultSize={30} minSize={15}>
+                <QuestionnaireFormPanel
+                  questionnaire={questionnaire}
+                  onResponse={setQuestionnaireResponse}
+                  hasResponse={questionnaireResponse !== null}
+                />
+              </Panel>
+              <PanelResizeHandle className="panel-resize-handle" />
+              <Panel defaultSize={35} minSize={15}>
+                <CompositionTemplatePanel
+                  composition={composition}
+                  questionnaireIndex={questionnaireIndex}
+                  onAddSection={handleAddSection}
+                  onRemoveSection={handleRemoveSection}
+                  onSectionChange={handleSectionChange}
+                />
+              </Panel>
+              <PanelResizeHandle className="panel-resize-handle" />
+              <Panel defaultSize={35} minSize={15}>
+                <RenderedOutputPanel
+                  html={renderedHtml}
+                  errors={renderErrors}
+                  loading={renderLoading}
+                />
+              </Panel>
+            </PanelGroup>
+          </WasmQuestionnaireIndexProvider>
+        </DebugContext.Provider>
       )}
     </div>
   );
