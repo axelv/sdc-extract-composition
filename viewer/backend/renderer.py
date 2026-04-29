@@ -9,12 +9,249 @@ from __future__ import annotations
 
 import html
 import re
-from typing import Any
+from typing import Any, Callable
 
 import fhirpathpy
 from fhirpathpy.models import models as fhir_models
 
 R4_MODEL = fhir_models["r4"]
+
+# =============================================================================
+# Filter pipeline (copied from src/fhir_liquid/filters.py)
+# =============================================================================
+
+FilterFn = Callable[..., Any]
+
+
+class FilterInvocation:
+    __slots__ = ("name", "args")
+
+    def __init__(self, name: str, args: list[Any]) -> None:
+        self.name = name
+        self.args = args
+
+
+def _scalar_str(value: Any) -> str:
+    if value is None or value == "":
+        return ""
+    if isinstance(value, bool):
+        return str(value).lower()
+    if isinstance(value, dict):
+        # Handle Coding/Quantity/etc
+        if "display" in value:
+            return str(value["display"])
+        if "value" in value:
+            return str(value["value"])
+        if "code" in value:
+            return str(value["code"])
+        return str(value)
+    return str(value)
+
+
+def _apply_elementwise(fn):
+    """Decorator to make a filter apply element-wise to collections."""
+    def wrapper(value: Any, *args: Any) -> Any:
+        if isinstance(value, list):
+            return [fn(item, *args) for item in value]
+        return fn(value, *args)
+    return wrapper
+
+
+@_apply_elementwise
+def _upcase(value: Any) -> str:
+    return _scalar_str(value).upper()
+
+
+@_apply_elementwise
+def _downcase(value: Any) -> str:
+    return _scalar_str(value).lower()
+
+
+@_apply_elementwise
+def _prepend(value: Any, prefix: str) -> str:
+    s = _scalar_str(value)
+    return f"{prefix}{s}" if s else ""
+
+
+@_apply_elementwise
+def _append(value: Any, suffix: str) -> str:
+    s = _scalar_str(value)
+    return f"{s}{suffix}" if s else ""
+
+
+def _default(value: Any, fallback: Any) -> Any:
+    if value is None or value == "" or value == []:
+        return fallback
+    return value
+
+
+def _join(value: Any, separator: str = ", ") -> str:
+    if value is None or value == "":
+        return ""
+    if isinstance(value, list):
+        return separator.join(_scalar_str(item) for item in value)
+    return _scalar_str(value)
+
+
+def _map_filter(value: Any, *args: Any) -> Any:
+    """Map coded values to custom text.
+
+    Args come as alternating pairs: code1, text1, code2, text2, ...
+    If the value's code matches, return the mapped text.
+    Empty mapped text means "use original display".
+    """
+    # DEBUG: uncomment next line to see what filter receives in output
+    # return f"[DEBUG map: value={value!r}, args={args!r}]"
+
+    if value is None or value == "":
+        return value
+
+    # Build mapping dict from alternating args
+    mappings: dict[str, str] = {}
+    for i in range(0, len(args) - 1, 2):
+        code = str(args[i])
+        text = str(args[i + 1])
+        mappings[code] = text
+
+    # Handle Coding (dict with code field)
+    if isinstance(value, dict) and "code" in value:
+        code = value.get("code", "")
+        if code in mappings:
+            mapped = mappings[code]
+            return mapped if mapped else value.get("display", code)
+        return value.get("display", code)
+
+    # Handle list of Codings - return list, use || join to combine
+    if isinstance(value, list):
+        results = []
+        for item in value:
+            if isinstance(item, dict) and "code" in item:
+                code = item.get("code", "")
+                if code in mappings:
+                    mapped = mappings[code]
+                    results.append(mapped if mapped else item.get("display", code))
+                else:
+                    results.append(item.get("display", code))
+            else:
+                results.append(_scalar_str(item))
+        return results
+
+    # Fallback: treat value as a code directly
+    code_str = _scalar_str(value)
+    if code_str in mappings:
+        mapped = mappings[code_str]
+        return mapped if mapped else code_str
+    return code_str
+
+
+FILTERS: dict[str, FilterFn] = {
+    "upcase": _upcase,
+    "downcase": _downcase,
+    "prepend": _prepend,
+    "append": _append,
+    "default": _default,
+    "join": _join,
+    "map": _map_filter,
+}
+
+
+def _split_top_level(source: str, sep: str) -> list[str]:
+    parts: list[str] = []
+    buf: list[str] = []
+    i = 0
+    quote: str | None = None
+    n = len(source)
+    sep_len = len(sep)
+    while i < n:
+        ch = source[i]
+        if quote is not None:
+            buf.append(ch)
+            if ch == "\\" and i + 1 < n:
+                buf.append(source[i + 1])
+                i += 2
+                continue
+            if ch == quote:
+                quote = None
+            i += 1
+            continue
+        if ch in ("'", '"'):
+            quote = ch
+            buf.append(ch)
+            i += 1
+            continue
+        if source.startswith(sep, i):
+            parts.append("".join(buf))
+            buf = []
+            i += sep_len
+            continue
+        buf.append(ch)
+        i += 1
+    parts.append("".join(buf))
+    return parts
+
+
+def _parse_literal(token: str) -> Any:
+    t = token.strip()
+    if not t:
+        return ""
+    if len(t) >= 2 and t[0] == t[-1] and t[0] in ("'", '"'):
+        return t[1:-1]
+    if t == "true":
+        return True
+    if t == "false":
+        return False
+    try:
+        if "." in t or "e" in t or "E" in t:
+            return float(t)
+        return int(t)
+    except ValueError:
+        return t
+
+
+def _parse_filter(segment: str) -> FilterInvocation:
+    segment = segment.strip()
+    if not segment:
+        raise ValueError("Empty filter segment")
+    if ":" not in segment:
+        return FilterInvocation(segment, [])
+    name_part, args_part = segment.split(":", 1)
+    name = name_part.strip()
+
+    # Special handling for map filter: "code" => "text" pairs
+    if name == "map":
+        args: list[Any] = []
+        for token in _split_top_level(args_part, ","):
+            arrow_parts = _split_top_level(token, "=>")
+            if len(arrow_parts) == 2:
+                args.append(_parse_literal(arrow_parts[0]))
+                args.append(_parse_literal(arrow_parts[1]))
+            elif arrow_parts[0].strip():
+                args.append(_parse_literal(arrow_parts[0]))
+        return FilterInvocation(name, args)
+
+    args = [_parse_literal(a) for a in _split_top_level(args_part, ",")]
+    return FilterInvocation(name, args)
+
+
+def split_filters(inner: str) -> tuple[str, list[FilterInvocation]]:
+    segments = _split_top_level(inner, "||")
+    head = segments[0].strip()
+    filters = [_parse_filter(seg) for seg in segments[1:] if seg.strip()]
+    return head, filters
+
+
+def apply_filters(value: Any, filters: list[FilterInvocation]) -> Any:
+    for f in filters:
+        fn = FILTERS.get(f.name)
+        if fn is None:
+            continue
+        value = fn(value, *f.args)
+    return value
+
+
+# =============================================================================
+# FHIRPath evaluation
+# =============================================================================
 
 
 def _coding_equival(left: list, right: list) -> list:
@@ -72,12 +309,9 @@ def _rewrite_factory_calls(expression: str) -> tuple[str, dict[str, Any]]:
 
     def replacer(match: re.Match[str]) -> str:
         nonlocal counter
-        system = match.group(1)
         code = match.group(2)
         var_name = f"_coding_{counter}"
         counter += 1
-        # Provide code-only Coding so ~ equivalence works even when QR
-        # valueCoding lacks a system field (common with form-filler output)
         extra_context[var_name] = {"code": code}
         return f"%{var_name}"
 
@@ -155,10 +389,18 @@ def replace_placeholders(template: str, resource: dict[str, Any], base: str | No
     """Replace {{expression}} placeholders with evaluated FHIRPath values."""
 
     def replacer(match: re.Match[str]) -> str:
-        expression = match.group(1).strip()
+        inner = match.group(1).strip()
+        # Decode HTML entities (quotes get encoded in data attributes)
+        inner = html.unescape(inner)
+        head, filters = split_filters(inner)
         if base:
-            expression = combine_expression(base, expression)
-        result = evaluate_single(resource, expression)
+            head = combine_expression(base, head)
+        # Use evaluate (not evaluate_single) to get all results for filters like map
+        results = evaluate(resource, head)
+        # Unwrap single-element lists for simpler filter handling
+        result: Any = results[0] if len(results) == 1 else results if results else None
+        if filters:
+            result = apply_filters(result, filters)
         return html.escape(render_value(result))
 
     return PLACEHOLDER_PATTERN.sub(replacer, template)

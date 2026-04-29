@@ -116,16 +116,16 @@
   font-size: 10px;
 }
 
-.editor-section[data-context="always"] .editor-context-icon {
+.editor-section[data-context="always"] > .editor-context-icon-slot .editor-context-icon {
   background: var(--editor-context-always);
 }
-.editor-section[data-context="conditional"] .editor-context-icon {
+.editor-section[data-context="conditional"] > .editor-context-icon-slot .editor-context-icon {
   background: var(--editor-context-conditional);
 }
-.editor-section[data-context="repeating"] .editor-context-icon {
+.editor-section[data-context="repeating"] > .editor-context-icon-slot .editor-context-icon {
   background: var(--editor-context-repeating);
 }
-.editor-section[data-context="custom"] .editor-context-icon {
+.editor-section[data-context="custom"] > .editor-context-icon-slot .editor-context-icon {
   background: var(--editor-context-custom);
 }
 

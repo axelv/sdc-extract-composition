@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Context Condition Builder v2</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .mode-btn {
+      padding: 6px 12px;
+      border: 1px solid #e5e7eb;
+      font-size: 13px;
+      cursor: pointer;
+      background: white;
+    }
+    .mode-btn:first-child { border-radius: 6px 0 0 6px; }
+    .mode-btn:last-child { border-radius: 0 6px 6px 0; }
+    .mode-btn:not(:last-child) { border-right: none; }
+    .mode-btn.active {
+      background: #3b82f6;
+      color: white;
+      border-color: #3b82f6;
+    }
+    .field-select {
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-size: 13px;
+      background: white;
+      min-width: 140px;
+    }
+    .operator-select {
+      border: none;
+      background: transparent;
+      font-size: 12px;
+      color: #6b7280;
+      padding: 4px 8px;
+      cursor: pointer;
+    }
+    .operator-select:hover {
+      color: #374151;
+    }
+    .value-select {
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-size: 13px;
+      background: white;
+      min-width: 140px;
+    }
+    .condition-row {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 p-8">
+  <div class="max-w-2xl mx-auto space-y-8">
+    <h1 class="text-xl font-bold">Context Condition Builder v2</h1>
+
+    <!-- Clean version -->
+    <div class="bg-white rounded-lg border p-5">
+      <h2 class="font-semibold mb-4">If Conditions - Clean Layout</h2>
+
+      <div class="mb-4">
+        <div class="text-xs text-gray-500 mb-2">Context</div>
+        <div class="flex">
+          <button class="mode-btn">— Always</button>
+          <button class="mode-btn active">∟ If</button>
+          <button class="mode-btn">↻ For each</button>
+          <button class="mode-btn">{} Custom</button>
+        </div>
+      </div>
+
+      <div class="border rounded-lg p-4 bg-gray-50">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="text-sm text-gray-600">Show section when</span>
+          <select class="border rounded px-2 py-1 text-sm bg-white">
+            <option>all</option>
+            <option>any</option>
+          </select>
+          <span class="text-sm text-gray-600">conditions match:</span>
+        </div>
+
+        <div class="space-y-2">
+          <!-- Condition 1: exists -->
+          <div class="condition-row">
+            <select class="field-select">
+              <option>Allergie</option>
+              <option>Type opvolging</option>
+              <option>Bloedverdunners</option>
+            </select>
+            <select class="operator-select">
+              <option>exists</option>
+              <option>not exists</option>
+              <option>=</option>
+              <option>≠</option>
+            </select>
+            <button class="text-gray-300 hover:text-red-500 text-lg ml-2">×</button>
+          </div>
+
+          <!-- Condition 2: equals value -->
+          <div class="condition-row">
+            <select class="field-select">
+              <option>Type opvolging</option>
+              <option>Allergie</option>
+              <option>Bloedverdunners</option>
+            </select>
+            <select class="operator-select">
+              <option>=</option>
+              <option>exists</option>
+              <option>not exists</option>
+              <option>≠</option>
+            </select>
+            <select class="value-select">
+              <option>Sedatie</option>
+              <option>Algemene anesthesie</option>
+              <option>Lokale anesthesie</option>
+            </select>
+            <button class="text-gray-300 hover:text-red-500 text-lg ml-2">×</button>
+          </div>
+        </div>
+
+        <button class="mt-3 text-blue-600 text-sm hover:underline">+ Add condition</button>
+      </div>
+    </div>
+
+    <!-- Alternative: operator as text -->
+    <div class="bg-white rounded-lg border p-5">
+      <h2 class="font-semibold mb-4">Alternative: Operator as plain text</h2>
+
+      <div class="mb-4">
+        <div class="text-xs text-gray-500 mb-2">Context</div>
+        <div class="flex">
+          <button class="mode-btn">— Always</button>
+          <button class="mode-btn active">∟ If</button>
+          <button class="mode-btn">↻ For each</button>
+          <button class="mode-btn">{} Custom</button>
+        </div>
+      </div>
+
+      <div class="border rounded-lg p-4 bg-gray-50">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="text-sm text-gray-600">Show section when</span>
+          <select class="border rounded px-2 py-1 text-sm bg-white">
+            <option>all</option>
+            <option>any</option>
+          </select>
+          <span class="text-sm text-gray-600">conditions match:</span>
+        </div>
+
+        <div class="space-y-2">
+          <!-- Condition with text operator -->
+          <div class="flex items-center gap-2">
+            <select class="field-select">
+              <option>Allergie</option>
+            </select>
+            <span class="text-xs text-gray-400 uppercase tracking-wide px-2">exists</span>
+            <button class="text-gray-300 hover:text-red-500 text-lg ml-auto">×</button>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <select class="field-select">
+              <option>Type opvolging</option>
+            </select>
+            <span class="text-xs text-gray-400 uppercase tracking-wide px-2">=</span>
+            <select class="value-select">
+              <option>Sedatie</option>
+            </select>
+            <button class="text-gray-300 hover:text-red-500 text-lg ml-auto">×</button>
+          </div>
+        </div>
+
+        <button class="mt-3 text-blue-600 text-sm hover:underline">+ Add condition</button>
+      </div>
+    </div>
+
+    <!-- Alternative: operator as badge -->
+    <div class="bg-white rounded-lg border p-5">
+      <h2 class="font-semibold mb-4">Alternative: Operator as badge</h2>
+
+      <div class="mb-4">
+        <div class="text-xs text-gray-500 mb-2">Context</div>
+        <div class="flex">
+          <button class="mode-btn">— Always</button>
+          <button class="mode-btn active">∟ If</button>
+          <button class="mode-btn">↻ For each</button>
+          <button class="mode-btn">{} Custom</button>
+        </div>
+      </div>
+
+      <div class="border rounded-lg p-4 bg-gray-50">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="text-sm text-gray-600">Show section when</span>
+          <select class="border rounded px-2 py-1 text-sm bg-white">
+            <option>all</option>
+            <option>any</option>
+          </select>
+          <span class="text-sm text-gray-600">conditions match:</span>
+        </div>
+
+        <div class="space-y-2">
+          <div class="flex items-center gap-2">
+            <select class="field-select">
+              <option>Allergie</option>
+            </select>
+            <select class="bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded border-none cursor-pointer">
+              <option>EXISTS</option>
+              <option>NOT EXISTS</option>
+              <option>=</option>
+              <option>≠</option>
+            </select>
+            <button class="text-gray-300 hover:text-red-500 text-lg ml-auto">×</button>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <select class="field-select">
+              <option>Type opvolging</option>
+            </select>
+            <select class="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded border-none cursor-pointer">
+              <option>=</option>
+              <option>EXISTS</option>
+              <option>NOT EXISTS</option>
+              <option>≠</option>
+            </select>
+            <select class="value-select">
+              <option>Sedatie</option>
+            </select>
+            <button class="text-gray-300 hover:text-red-500 text-lg ml-auto">×</button>
+          </div>
+        </div>
+
+        <button class="mt-3 text-blue-600 text-sm hover:underline">+ Add condition</button>
+      </div>
+    </div>
+
+    <!-- Alternative: Three columns fixed -->
+    <div class="bg-white rounded-lg border p-5">
+      <h2 class="font-semibold mb-4">Alternative: Fixed 3-column grid</h2>
+
+      <div class="mb-4">
+        <div class="text-xs text-gray-500 mb-2">Context</div>
+        <div class="flex">
+          <button class="mode-btn">— Always</button>
+          <button class="mode-btn active">∟ If</button>
+          <button class="mode-btn">↻ For each</button>
+          <button class="mode-btn">{} Custom</button>
+        </div>
+      </div>
+
+      <div class="border rounded-lg p-4 bg-gray-50">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="text-sm text-gray-600">Show section when</span>
+          <select class="border rounded px-2 py-1 text-sm bg-white">
+            <option>all</option>
+            <option>any</option>
+          </select>
+          <span class="text-sm text-gray-600">conditions match:</span>
+        </div>
+
+        <!-- Header -->
+        <div class="grid grid-cols-[1fr_80px_1fr_24px] gap-2 mb-1 px-1">
+          <div class="text-[10px] text-gray-400 uppercase">Field</div>
+          <div class="text-[10px] text-gray-400 uppercase text-center">Op</div>
+          <div class="text-[10px] text-gray-400 uppercase">Value</div>
+          <div></div>
+        </div>
+
+        <div class="space-y-2">
+          <div class="grid grid-cols-[1fr_80px_1fr_24px] gap-2 items-center">
+            <select class="field-select">
+              <option>Allergie</option>
+            </select>
+            <select class="text-center text-xs text-gray-500 border rounded py-1 bg-white">
+              <option>exists</option>
+              <option>not exists</option>
+              <option>=</option>
+              <option>≠</option>
+            </select>
+            <div class="text-gray-300 text-sm px-2">—</div>
+            <button class="text-gray-300 hover:text-red-500 text-lg">×</button>
+          </div>
+
+          <div class="grid grid-cols-[1fr_80px_1fr_24px] gap-2 items-center">
+            <select class="field-select">
+              <option>Type opvolging</option>
+            </select>
+            <select class="text-center text-xs text-gray-500 border rounded py-1 bg-white">
+              <option>=</option>
+              <option>exists</option>
+              <option>not exists</option>
+              <option>≠</option>
+            </select>
+            <select class="value-select">
+              <option>Sedatie</option>
+            </select>
+            <button class="text-gray-300 hover:text-red-500 text-lg">×</button>
+          </div>
+        </div>
+
+        <button class="mt-3 text-blue-600 text-sm hover:underline">+ Add condition</button>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

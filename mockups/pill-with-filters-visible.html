@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pill With Filters Visible</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .editor-line {
+      font-size: 14px;
+      line-height: 1.8;
+      padding: 8px 12px;
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+    }
+    .pill-base {
+      font-family: 'IBM Plex Mono', ui-monospace, monospace;
+      font-size: 0.75em;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 p-8">
+  <div class="max-w-3xl mx-auto space-y-6">
+    <h1 class="text-xl font-bold">Pills With Filters Visible</h1>
+    <p class="text-gray-500 text-sm">Filters: default, prepend, join, map</p>
+
+    <!-- Option 1: Filter names only (no args) -->
+    <div class="bg-white rounded-lg border p-5">
+      <h2 class="font-semibold mb-2">Option 1: Filter names only (no arguments)</h2>
+      <p class="text-sm text-gray-500 mb-3">Show filter names but hide the argument values.</p>
+      <div class="editor-line">
+        Patiënt verwezen via <span class="pill-base bg-blue-50 border border-blue-200 px-2 py-0.5">Verwijzend ziekenhuis <span class="text-gray-400">||</span> default <span class="text-gray-400">||</span> prepend <span class="text-gray-400">||</span> join</span>.
+      </div>
+      <div class="text-xs text-gray-400 mt-2">You see what filters, but not the values</div>
+    </div>
+
+    <!-- Option 2: Abbreviated filter names -->
+    <div class="bg-white rounded-lg border p-5">
+      <h2 class="font-semibold mb-2">Option 2: Abbreviated filter names</h2>
+      <p class="text-sm text-gray-500 mb-3">Short codes for each filter.</p>
+      <div class="editor-line">
+        Patiënt verwezen via <span class="pill-base bg-blue-50 border border-blue-200 px-2 py-0.5">Verwijzend ziekenhuis <span class="text-blue-400 text-[10px]">DEF PRE JOIN</span></span>.
+      </div>
+      <div class="text-xs text-gray-400 mt-2">Compact but needs learning</div>
+    </div>
+
+    <!-- Option 3: Pipe-separated compact -->
+    <div class="bg-white rounded-lg border p-5">
+      <h2 class="font-semibold mb-2">Option 3: Compact pipe chain</h2>
+      <p class="text-sm text-gray-500 mb-3">Smaller text for filters, no arguments.</p>
+      <div class="editor-line">
+        Patiënt verwezen via <span class="pill-base bg-blue-50 border border-blue-200 px-2 py-0.5">Verwijzend ziekenhuis<span class="text-[10px] text-gray-400 ml-1">| default | prepend | join</span></span>.
+      </div>
+      <div class="text-xs text-gray-400 mt-2">Filters are secondary, field name is primary</div>
+    </div>
+
+    <!-- Option 4: Two parts with separator -->
+    <div class="bg-white rounded-lg border p-5">
+      <h2 class="font-semibold mb-2">Option 4: Field → Filters with arrow</h2>
+      <p class="text-sm text-gray-500 mb-3">Clear separation between field and processing.</p>
+      <div class="editor-line">
+        Patiënt verwezen via <span class="pill-base bg-blue-50 border border-blue-200 px-2 py-0.5">Verwijzend ziekenhuis <span class="text-gray-300">→</span> <span class="text-gray-500">default, prepend, join</span></span>.
+      </div>
+      <div class="text-xs text-gray-400 mt-2">Shows data flow direction</div>
+    </div>
+
+    <!-- Option 5: Filter badges -->
+    <div class="bg-white rounded-lg border p-5">
+      <h2 class="font-semibold mb-2">Option 5: Mini badges per filter</h2>
+      <p class="text-sm text-gray-500 mb-3">Each filter as a tiny colored badge.</p>
+      <div class="editor-line">
+        Patiënt verwezen via <span class="pill-base bg-blue-50 border border-blue-200 px-2 py-0.5">Verwijzend ziekenhuis
+          <span class="bg-gray-200 text-gray-600 text-[9px] px-1 rounded">def</span>
+          <span class="bg-gray-200 text-gray-600 text-[9px] px-1 rounded">pre</span>
+          <span class="bg-gray-200 text-gray-600 text-[9px] px-1 rounded">join</span>
+        </span>.
+      </div>
+      <div class="text-xs text-gray-400 mt-2">Scannable, each filter distinct</div>
+    </div>
+
+    <!-- Option 6: Subscript filters -->
+    <div class="bg-white rounded-lg border p-5">
+      <h2 class="font-semibold mb-2">Option 6: Filters as subscript</h2>
+      <p class="text-sm text-gray-500 mb-3">Filters below the baseline, like a footnote.</p>
+      <div class="editor-line leading-relaxed">
+        Patiënt verwezen via <span class="pill-base bg-blue-50 border border-blue-200 px-2 py-0.5 inline-block">Verwijzend ziekenhuis<sub class="text-[9px] text-gray-400 ml-0.5">default·prepend·join</sub></span>.
+      </div>
+      <div class="text-xs text-gray-400 mt-2">Field prominent, filters subtle</div>
+    </div>
+
+    <!-- Option 7: Wrap allowed -->
+    <div class="bg-white rounded-lg border p-5">
+      <h2 class="font-semibold mb-2">Option 7: Allow wrap (current but no truncate)</h2>
+      <p class="text-sm text-gray-500 mb-3">Just let long pills wrap to next line.</p>
+      <div class="editor-line">
+        Patiënt verwezen via <span class="pill-base bg-blue-50 border border-blue-200 px-2 py-0.5 inline whitespace-normal">Verwijzend ziekenhuis || default: "MM" || prepend: "azeaze" || join: ", "</span>.
+      </div>
+      <div class="text-xs text-gray-400 mt-2">Shows everything, takes more space</div>
+    </div>
+
+    <!-- Option 8: Max width but show filter names -->
+    <div class="bg-white rounded-lg border p-5">
+      <h2 class="font-semibold mb-2">Option 8: Truncate args only, keep filter names</h2>
+      <p class="text-sm text-gray-500 mb-3">Show filter names, truncate/hide their arguments.</p>
+      <div class="editor-line">
+        Patiënt verwezen via <span class="pill-base bg-blue-50 border border-blue-200 px-2 py-0.5">Verwijzend ziekenhuis || default || prepend || join</span>.
+      </div>
+      <div class="text-xs text-gray-400 mt-2">Best of both - you see what's applied</div>
+    </div>
+
+    <!-- Recommendation -->
+    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+      <div class="font-medium text-blue-900 mb-2">Recommendation</div>
+      <div class="text-sm text-blue-800">
+        <strong>Option 8</strong> or <strong>Option 3</strong> - keep filter names visible but strip arguments. You can see "this field has default, prepend, join" without the clutter of values.
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

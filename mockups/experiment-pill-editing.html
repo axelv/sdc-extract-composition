@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pill Editing UI Options</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .option-box {
+      background: #f9fafb;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 32px;
+    }
+    .option-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 4px;
+    }
+    .option-desc {
+      font-size: 12px;
+      color: #6b7280;
+      margin-bottom: 16px;
+    }
+    .pill {
+      display: inline-block;
+      background: #e8f2fc;
+      border: 1px solid #7eb3e0;
+      color: #2d6aa0;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .pill.selected {
+      background: #2d6aa0;
+      color: white;
+      box-shadow: 0 0 0 2px #bdd7f0;
+    }
+    .content-area {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 16px;
+      font-size: 14px;
+      color: #374151;
+      line-height: 1.8;
+    }
+    .modal {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    .modal-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid #e5e7eb;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-body {
+      padding: 20px;
+    }
+    .modal-footer {
+      padding: 16px 20px;
+      border-top: 1px solid #e5e7eb;
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+    .popover {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+      border: 1px solid #e5e7eb;
+      width: 280px;
+    }
+    .popover-arrow {
+      position: absolute;
+      top: -6px;
+      left: 20px;
+      width: 12px;
+      height: 12px;
+      background: white;
+      border-left: 1px solid #e5e7eb;
+      border-top: 1px solid #e5e7eb;
+      transform: rotate(45deg);
+    }
+    .filter-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #f3f4f6;
+      border: 1px solid #d1d5db;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      color: #374151;
+    }
+    .filter-chip .remove {
+      color: #9ca3af;
+      cursor: pointer;
+    }
+    .filter-chip .remove:hover {
+      color: #ef4444;
+    }
+    .pipeline-step {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .pipeline-arrow {
+      color: #9ca3af;
+      font-size: 14px;
+    }
+    .pipeline-node {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 12px;
+    }
+    .pipeline-node.source {
+      background: #e8f2fc;
+      border-color: #7eb3e0;
+      color: #2d6aa0;
+    }
+    .drag-handle {
+      color: #9ca3af;
+      cursor: grab;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen p-8">
+  <div class="max-w-3xl mx-auto">
+    <h1 class="text-xl font-bold text-gray-900 mb-2">Pill Editing UI</h1>
+    <p class="text-gray-500 text-sm mb-8">For non-technical users editing variable pills and formatting</p>
+
+    <!-- Current State (for reference) -->
+    <div class="option-box border-2 border-red-200">
+      <div class="option-label text-red-600">Current: Too Technical</div>
+      <div class="option-desc">Shows raw FHIRPath, confusing OPMAAK section at bottom</div>
+
+      <div class="content-area mb-4">
+        Patient: <span class="pill selected">Patient Name || downcase || default: "XXX"</span><br>
+        Date of birth: <span class="pill">Date of Birth</span>
+      </div>
+
+      <div class="bg-white border border-gray-200 rounded-lg p-4 mt-4">
+        <div class="text-xs font-medium text-gray-500 mb-2">FHIRPATH</div>
+        <code class="text-xs text-gray-700 block bg-gray-50 p-2 rounded font-mono">
+          %resource.item.where(linkId='patient-name').answer.value || downcase || default: "XXX"
+        </code>
+        <div class="text-xs font-medium text-gray-500 mt-4 mb-2">OPMAAK</div>
+        <div class="space-y-2">
+          <div class="flex justify-between items-center bg-gray-50 p-2 rounded">
+            <div>
+              <div class="font-medium text-sm">Lower case</div>
+              <div class="text-xs text-gray-500">Render text in lower case.</div>
+            </div>
+            <span class="text-blue-600 text-xs cursor-pointer">Remove</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Option 1: Inline Popover -->
+    <div class="option-box">
+      <div class="option-label">Option 1: Inline Popover</div>
+      <div class="option-desc">Click pill, popover appears right there. No scrolling needed.</div>
+
+      <div class="content-area relative">
+        Patient: <span class="pill selected">Patient Name</span><br>
+        Date of birth: <span class="pill">Date of Birth</span>
+
+        <!-- Popover positioned near pill -->
+        <div class="popover absolute top-10 left-12 z-10">
+          <div class="popover-arrow"></div>
+          <div class="p-3 border-b border-gray-100">
+            <div class="text-sm font-medium text-gray-900">Patient Name</div>
+            <div class="text-xs text-gray-500 mt-1">Text field from questionnaire</div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-medium text-gray-500 mb-2">Formatting</div>
+            <div class="flex flex-wrap gap-2 mb-3">
+              <span class="filter-chip">lowercase <span class="remove">&times;</span></span>
+              <span class="filter-chip">if empty: "XXX" <span class="remove">&times;</span></span>
+            </div>
+            <button class="text-xs text-blue-600 hover:text-blue-700">+ Add formatting</button>
+          </div>
+          <div class="p-3 bg-gray-50 rounded-b-lg border-t border-gray-100">
+            <div class="text-xs text-gray-500 mb-1">Preview</div>
+            <div class="text-sm font-medium text-gray-900">"john doe"</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Option 2: Friendly Field Picker -->
+    <div class="option-box">
+      <div class="option-label">Option 2: Friendly Field Picker</div>
+      <div class="option-desc">Replace raw FHIRPath with searchable dropdown of questionnaire fields</div>
+
+      <div class="modal">
+        <div class="modal-header">
+          Edit Field
+          <span class="text-gray-400 cursor-pointer">&times;</span>
+        </div>
+        <div class="modal-body space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Data Source</label>
+            <div class="relative">
+              <select class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm appearance-none bg-white">
+                <option selected>Patient Name</option>
+                <option>Date of Birth</option>
+                <option>Allergy Details</option>
+                <option>Medication Name</option>
+              </select>
+              <div class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Formatting</label>
+            <div class="space-y-2">
+              <label class="flex items-center gap-2 text-sm">
+                <input type="checkbox" checked class="rounded border-gray-300">
+                Convert to lowercase
+              </label>
+              <label class="flex items-center gap-2 text-sm">
+                <input type="checkbox" class="rounded border-gray-300">
+                Convert to UPPERCASE
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">If empty, show</label>
+            <input type="text" value="XXX" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" placeholder="Leave blank for nothing">
+          </div>
+
+          <div class="bg-gray-50 rounded-lg p-3">
+            <div class="text-xs text-gray-500 mb-1">Preview with current data</div>
+            <div class="text-base font-medium">"john doe"</div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="px-4 py-2 text-sm text-gray-600 hover:text-gray-800">Cancel</button>
+          <button class="px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Option 3: Visual Pipeline -->
+    <div class="option-box">
+      <div class="option-label">Option 3: Visual Pipeline</div>
+      <div class="option-desc">Show transformations as a visual flow. Drag to reorder.</div>
+
+      <div class="bg-white rounded-lg border border-gray-200 p-4">
+        <div class="text-sm font-medium text-gray-700 mb-4">Transformation Pipeline</div>
+
+        <div class="flex items-center gap-3 flex-wrap">
+          <div class="pipeline-node source">
+            <div class="text-xs text-gray-500 mb-1">Source</div>
+            <div class="font-medium">Patient Name</div>
+          </div>
+
+          <span class="pipeline-arrow">&rarr;</span>
+
+          <div class="pipeline-node flex items-center gap-2">
+            <span class="drag-handle">&#x2630;</span>
+            <div>
+              <div class="text-xs text-gray-500">Transform</div>
+              <div class="font-medium">lowercase</div>
+            </div>
+            <span class="text-gray-400 hover:text-red-500 cursor-pointer">&times;</span>
+          </div>
+
+          <span class="pipeline-arrow">&rarr;</span>
+
+          <div class="pipeline-node flex items-center gap-2">
+            <span class="drag-handle">&#x2630;</span>
+            <div>
+              <div class="text-xs text-gray-500">Fallback</div>
+              <div class="font-medium">"XXX"</div>
+            </div>
+            <span class="text-gray-400 hover:text-red-500 cursor-pointer">&times;</span>
+          </div>
+
+          <span class="pipeline-arrow">&rarr;</span>
+
+          <div class="pipeline-node bg-green-50 border-green-200">
+            <div class="text-xs text-gray-500">Output</div>
+            <div class="font-medium text-green-700">"john doe"</div>
+          </div>
+        </div>
+
+        <button class="mt-4 text-sm text-blue-600 hover:text-blue-700 flex items-center gap-1">
+          <span>+</span> Add transformation step
+        </button>
+      </div>
+    </div>
+
+    <!-- Option 4: Chip-based Compact -->
+    <div class="option-box">
+      <div class="option-label">Option 4: Chip-based Compact</div>
+      <div class="option-desc">Filters shown as removable chips. Add via dropdown.</div>
+
+      <div class="bg-white rounded-lg border border-gray-200 p-4">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="text-sm text-gray-600">Field:</span>
+          <select class="border border-gray-300 rounded-lg px-3 py-1.5 text-sm">
+            <option selected>Patient Name</option>
+            <option>Date of Birth</option>
+          </select>
+        </div>
+
+        <div class="flex items-center gap-2 flex-wrap mb-4">
+          <span class="text-sm text-gray-600">Format:</span>
+          <span class="filter-chip">
+            <span class="text-blue-600">abc</span> lowercase
+            <span class="remove">&times;</span>
+          </span>
+          <span class="filter-chip">
+            <span class="text-orange-500">?</span> default: "XXX"
+            <span class="remove">&times;</span>
+          </span>
+          <select class="border border-dashed border-gray-300 rounded-lg px-2 py-1 text-xs text-gray-500 bg-transparent">
+            <option>+ Add...</option>
+            <option>UPPERCASE</option>
+            <option>Date format</option>
+            <option>Prefix text</option>
+          </select>
+        </div>
+
+        <div class="flex items-center gap-3 pt-3 border-t border-gray-100">
+          <span class="text-sm text-gray-600">Preview:</span>
+          <span class="font-medium">"john doe"</span>
+          <span class="text-xs text-gray-400">(from current form)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Option 5: Wizard Flow -->
+    <div class="option-box">
+      <div class="option-label">Option 5: Step-by-step Wizard</div>
+      <div class="option-desc">Guided flow for inserting new fields. Best for first-time users.</div>
+
+      <div class="modal">
+        <div class="modal-header">
+          <div>
+            <span class="text-gray-900">Insert Field</span>
+            <span class="text-gray-400 text-sm ml-2">Step 2 of 3</span>
+          </div>
+          <span class="text-gray-400 cursor-pointer">&times;</span>
+        </div>
+        <div class="modal-body">
+          <!-- Progress bar -->
+          <div class="flex gap-1 mb-6">
+            <div class="h-1 flex-1 bg-blue-600 rounded"></div>
+            <div class="h-1 flex-1 bg-blue-600 rounded"></div>
+            <div class="h-1 flex-1 bg-gray-200 rounded"></div>
+          </div>
+
+          <div class="text-center mb-6">
+            <div class="text-lg font-medium text-gray-900 mb-1">How should it look?</div>
+            <div class="text-sm text-gray-500">Choose formatting options</div>
+          </div>
+
+          <div class="space-y-3">
+            <label class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50">
+              <input type="radio" name="case" class="text-blue-600">
+              <div>
+                <div class="font-medium text-sm">As entered</div>
+                <div class="text-xs text-gray-500">Show exactly as typed: "John Doe"</div>
+              </div>
+            </label>
+            <label class="flex items-center gap-3 p-3 border border-blue-500 bg-blue-50 rounded-lg cursor-pointer">
+              <input type="radio" name="case" checked class="text-blue-600">
+              <div>
+                <div class="font-medium text-sm">lowercase</div>
+                <div class="text-xs text-gray-500">Convert to lowercase: "john doe"</div>
+              </div>
+            </label>
+            <label class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50">
+              <input type="radio" name="case" class="text-blue-600">
+              <div>
+                <div class="font-medium text-sm">UPPERCASE</div>
+                <div class="text-xs text-gray-500">Convert to uppercase: "JOHN DOE"</div>
+              </div>
+            </label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="px-4 py-2 text-sm text-gray-600 hover:text-gray-800">&larr; Back</button>
+          <button class="px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700">Next &rarr;</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recommendation -->
+    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+      <div class="font-medium text-blue-900 mb-2">Recommendation</div>
+      <div class="text-sm text-blue-800">
+        <strong>Option 2 (Friendly Field Picker)</strong> for the main modal - covers 90% of use cases with simple checkboxes and dropdowns.
+        <br><br>
+        <strong>Option 1 (Inline Popover)</strong> for quick edits when clicking existing pills - faster than opening full modal.
+        <br><br>
+        Keep technical view hidden behind "Show advanced" toggle for power users.
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

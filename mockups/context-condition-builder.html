@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Context Condition Builder</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .mode-btn {
+      padding: 6px 12px;
+      border: 1px solid #e5e7eb;
+      font-size: 13px;
+      cursor: pointer;
+      background: white;
+    }
+    .mode-btn:first-child { border-radius: 6px 0 0 6px; }
+    .mode-btn:last-child { border-radius: 0 6px 6px 0; }
+    .mode-btn:not(:last-child) { border-right: none; }
+    .mode-btn.active {
+      background: #3b82f6;
+      color: white;
+      border-color: #3b82f6;
+    }
+    .condition-row {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto;
+      gap: 8px;
+      align-items: center;
+    }
+    .fhirpath-preview {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 4px;
+      padding: 8px;
+      color: #64748b;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 p-8">
+  <div class="max-w-2xl mx-auto space-y-8">
+    <h1 class="text-xl font-bold">Context Condition Builder</h1>
+
+    <!-- Option 1: Simple tabs + condition builder -->
+    <div class="bg-white rounded-lg border p-5">
+      <h2 class="font-semibold mb-4">Option 1: Tabs + Inline Builder</h2>
+
+      <div class="mb-4">
+        <div class="text-xs text-gray-500 mb-2">Context</div>
+        <div class="flex">
+          <button class="mode-btn">— Always</button>
+          <button class="mode-btn active">∟ If</button>
+          <button class="mode-btn">↻ For each</button>
+          <button class="mode-btn">{} Custom</button>
+        </div>
+      </div>
+
+      <!-- Condition builder (shown when "If" is selected) -->
+      <div class="border rounded-lg p-4 bg-gray-50">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-sm text-gray-600">Show section when</span>
+          <select class="border rounded px-2 py-1 text-sm">
+            <option>all</option>
+            <option>any</option>
+          </select>
+          <span class="text-sm text-gray-600">conditions are true:</span>
+        </div>
+
+        <div class="space-y-2">
+          <!-- Condition 1 -->
+          <div class="condition-row">
+            <select class="border rounded px-2 py-1 text-sm">
+              <option>Allergie</option>
+              <option>Type opvolging</option>
+              <option>Bloedverdunners</option>
+            </select>
+            <select class="border rounded px-2 py-1 text-sm">
+              <option>exists</option>
+              <option>not exists</option>
+              <option>=</option>
+              <option>≠</option>
+            </select>
+            <div></div>
+            <button class="text-gray-400 hover:text-red-500 text-lg">×</button>
+          </div>
+
+          <!-- Condition 2 (with value) -->
+          <div class="condition-row">
+            <select class="border rounded px-2 py-1 text-sm">
+              <option>Type opvolging</option>
+              <option>Allergie</option>
+              <option>Bloedverdunners</option>
+            </select>
+            <select class="border rounded px-2 py-1 text-sm">
+              <option>=</option>
+              <option>exists</option>
+              <option>not exists</option>
+              <option>≠</option>
+            </select>
+            <select class="border rounded px-2 py-1 text-sm">
+              <option>Sedatie</option>
+              <option>Algemene anesthesie</option>
+              <option>Lokale anesthesie</option>
+            </select>
+            <button class="text-gray-400 hover:text-red-500 text-lg">×</button>
+          </div>
+        </div>
+
+        <button class="mt-3 text-blue-600 text-sm hover:underline">+ Add condition</button>
+
+        <!-- FHIRPath preview -->
+        <div class="mt-4 pt-3 border-t">
+          <div class="text-xs text-gray-400 mb-1">Generated FHIRPath:</div>
+          <div class="fhirpath-preview">%context.where(
+  item.where(linkId='allergie').answer.exists() and
+  item.where(linkId='type-opvolging').answer.value ~ %factory.Coding('http://snomed.info/sct', 'sedatie')
+)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Option 2: More compact, single line per condition -->
+    <div class="bg-white rounded-lg border p-5">
+      <h2 class="font-semibold mb-4">Option 2: Compact Single-Line</h2>
+
+      <div class="mb-4">
+        <div class="text-xs text-gray-500 mb-2">Context</div>
+        <div class="flex">
+          <button class="mode-btn">— Always</button>
+          <button class="mode-btn active">∟ If</button>
+          <button class="mode-btn">↻ For each</button>
+          <button class="mode-btn">{} Custom</button>
+        </div>
+      </div>
+
+      <div class="border rounded-lg p-3 bg-gray-50 space-y-2">
+        <div class="flex items-center gap-2 text-sm">
+          <span class="text-gray-500">Show when</span>
+          <select class="border rounded px-2 py-0.5 text-sm bg-white">
+            <option>all</option>
+            <option>any</option>
+          </select>
+          <span class="text-gray-500">match:</span>
+        </div>
+
+        <!-- Compact conditions -->
+        <div class="flex items-center gap-2 text-sm bg-white border rounded px-2 py-1">
+          <select class="border-none bg-transparent text-sm flex-1">
+            <option>Allergie</option>
+          </select>
+          <select class="border-none bg-transparent text-sm text-gray-500">
+            <option>exists</option>
+          </select>
+          <button class="text-gray-300 hover:text-red-500">×</button>
+        </div>
+
+        <div class="flex items-center gap-2 text-sm bg-white border rounded px-2 py-1">
+          <select class="border-none bg-transparent text-sm flex-1">
+            <option>Type opvolging</option>
+          </select>
+          <select class="border-none bg-transparent text-sm text-gray-500">
+            <option>=</option>
+          </select>
+          <select class="border-none bg-transparent text-sm text-blue-600 flex-1">
+            <option>Sedatie</option>
+          </select>
+          <button class="text-gray-300 hover:text-red-500">×</button>
+        </div>
+
+        <button class="text-blue-600 text-xs hover:underline">+ Add</button>
+      </div>
+    </div>
+
+    <!-- Option 3: Natural language style -->
+    <div class="bg-white rounded-lg border p-5">
+      <h2 class="font-semibold mb-4">Option 3: Natural Language</h2>
+
+      <div class="mb-4">
+        <div class="text-xs text-gray-500 mb-2">Context</div>
+        <div class="flex">
+          <button class="mode-btn">— Always</button>
+          <button class="mode-btn active">∟ If</button>
+          <button class="mode-btn">↻ For each</button>
+          <button class="mode-btn">{} Custom</button>
+        </div>
+      </div>
+
+      <div class="border rounded-lg p-4 bg-gray-50">
+        <div class="text-sm leading-relaxed">
+          <span class="text-gray-600">Show this section when </span>
+          <select class="border rounded px-1 bg-white text-sm">
+            <option>all of</option>
+            <option>any of</option>
+          </select>
+          <span class="text-gray-600"> these are true:</span>
+        </div>
+
+        <div class="mt-3 space-y-2">
+          <div class="flex items-center gap-1 text-sm">
+            <span class="text-gray-400">•</span>
+            <select class="border rounded px-2 py-1 bg-white">
+              <option>Allergie</option>
+            </select>
+            <select class="border rounded px-2 py-1 bg-white">
+              <option>has an answer</option>
+              <option>has no answer</option>
+              <option>equals</option>
+              <option>does not equal</option>
+            </select>
+            <button class="text-gray-300 hover:text-red-500 ml-auto">×</button>
+          </div>
+
+          <div class="flex items-center gap-1 text-sm">
+            <span class="text-gray-400">•</span>
+            <select class="border rounded px-2 py-1 bg-white">
+              <option>Type opvolging</option>
+            </select>
+            <select class="border rounded px-2 py-1 bg-white">
+              <option>equals</option>
+            </select>
+            <select class="border rounded px-2 py-1 bg-white">
+              <option>Sedatie</option>
+            </select>
+            <button class="text-gray-300 hover:text-red-500 ml-auto">×</button>
+          </div>
+        </div>
+
+        <button class="mt-3 text-blue-600 text-sm hover:underline">+ Add condition</button>
+      </div>
+    </div>
+
+    <!-- Option 4: Visual blocks (like Notion filters) -->
+    <div class="bg-white rounded-lg border p-5">
+      <h2 class="font-semibold mb-4">Option 4: Filter Blocks (Notion-style)</h2>
+
+      <div class="mb-4">
+        <div class="text-xs text-gray-500 mb-2">Context</div>
+        <div class="flex">
+          <button class="mode-btn">— Always</button>
+          <button class="mode-btn active">∟ If</button>
+          <button class="mode-btn">↻ For each</button>
+          <button class="mode-btn">{} Custom</button>
+        </div>
+      </div>
+
+      <div class="border rounded-lg overflow-hidden">
+        <div class="bg-gray-100 px-3 py-2 flex items-center gap-2 text-sm border-b">
+          <span class="text-gray-600">Where</span>
+          <select class="border rounded px-2 py-0.5 text-sm bg-white">
+            <option>all</option>
+            <option>any</option>
+          </select>
+          <span class="text-gray-600">filters match</span>
+        </div>
+
+        <div class="divide-y">
+          <div class="px-3 py-2 flex items-center gap-3 text-sm hover:bg-gray-50">
+            <div class="w-32 font-medium text-gray-700">Allergie</div>
+            <div class="w-24 text-gray-500">exists</div>
+            <div class="flex-1 text-gray-400">—</div>
+            <button class="text-gray-300 hover:text-red-500">×</button>
+          </div>
+          <div class="px-3 py-2 flex items-center gap-3 text-sm hover:bg-gray-50">
+            <div class="w-32 font-medium text-gray-700">Type opvolging</div>
+            <div class="w-24 text-gray-500">=</div>
+            <div class="flex-1 text-blue-600">Sedatie</div>
+            <button class="text-gray-300 hover:text-red-500">×</button>
+          </div>
+        </div>
+
+        <div class="px-3 py-2 border-t bg-gray-50">
+          <button class="text-blue-600 text-sm hover:underline">+ Add filter</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- For Each mode -->
+    <div class="bg-white rounded-lg border p-5">
+      <h2 class="font-semibold mb-4">For Each Mode</h2>
+
+      <div class="mb-4">
+        <div class="text-xs text-gray-500 mb-2">Context</div>
+        <div class="flex">
+          <button class="mode-btn">— Always</button>
+          <button class="mode-btn">∟ If</button>
+          <button class="mode-btn active">↻ For each</button>
+          <button class="mode-btn">{} Custom</button>
+        </div>
+      </div>
+
+      <div class="border rounded-lg p-4 bg-gray-50">
+        <div class="text-sm text-gray-600 mb-2">Repeat this section for each:</div>
+        <select class="border rounded px-3 py-2 text-sm w-full bg-white">
+          <option>Bloedverdunners (repeating group)</option>
+          <option>Medicatie (repeating group)</option>
+          <option>Allergie items</option>
+        </select>
+
+        <div class="mt-4 pt-3 border-t">
+          <div class="text-xs text-gray-400 mb-1">Generated FHIRPath:</div>
+          <div class="fhirpath-preview">%context.item.where(linkId='bloedverdunners').answer</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recommendation -->
+    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+      <div class="font-medium text-blue-900 mb-2">Thoughts</div>
+      <div class="text-sm text-blue-800">
+        <strong>Option 1</strong> or <strong>Option 4</strong> feel clearest. Key decisions:
+        <ul class="list-disc ml-5 mt-2 space-y-1">
+          <li>Field dropdown populated from Questionnaire items in scope</li>
+          <li>Operator changes based on field type (coding → show answer options)</li>
+          <li>FHIRPath preview helps debug but could be collapsed/hidden</li>
+          <li>"For each" is separate mode - simpler, just pick a repeating item</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

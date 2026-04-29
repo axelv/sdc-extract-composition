@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Choice Mapping - Alternative Approaches</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .modal {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      width: 640px;
+      margin: 0 auto;
+    }
+    .modal-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid #e5e7eb;
+      font-weight: 600;
+    }
+    .modal-body {
+      padding: 20px;
+    }
+    .pill {
+      display: inline-block;
+      background: #e8f2fc;
+      border: 1px solid #7eb3e0;
+      color: #2d6aa0;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .pill.selected {
+      background: #2d6aa0;
+      color: white;
+      box-shadow: 0 0 0 2px #bdd7f0;
+    }
+    .content-wrapper {
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .formula-bar {
+      display: flex;
+      align-items: center;
+      background: #f9fafb;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 6px 10px;
+      min-height: 36px;
+    }
+    .formula-bar-label {
+      background: #dbeafe;
+      color: #1d4ed8;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      margin-right: 10px;
+    }
+    .formula-bar-input {
+      flex: 1;
+      font-family: ui-monospace, monospace;
+      font-size: 12px;
+      border: none;
+      outline: none;
+      background: transparent;
+    }
+    .format-row {
+      display: flex;
+      align-items: center;
+      background: #f9fafb;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 6px 10px;
+      gap: 8px;
+    }
+    .format-label {
+      font-size: 11px;
+      color: #6b7280;
+      font-weight: 500;
+    }
+    .content-area {
+      background: white;
+      padding: 16px;
+      font-size: 14px;
+      line-height: 2;
+      min-height: 60px;
+    }
+    .state-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: white;
+      border: 1px solid #e5e7eb;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+    .popover {
+      position: absolute;
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      padding: 12px;
+      width: 280px;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen p-8">
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-xl font-bold text-gray-900 mb-2">Choice Mapping - More Options</h1>
+    <p class="text-gray-500 text-sm mb-8">Alternative UI approaches for mapping coded answers.</p>
+
+    <!-- Option 4: Popover on chip click -->
+    <div class="mb-12">
+      <h2 class="text-lg font-semibold text-gray-800 mb-4">Option 4: Popover from Chip</h2>
+      <p class="text-sm text-gray-500 mb-4">Click "Map" chip to open a popover with mapping options. Minimal UI until needed.</p>
+
+      <div class="modal">
+        <div class="modal-body space-y-4">
+          <div style="position: relative;">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Content</label>
+            <div class="content-wrapper">
+              <div class="formula-bar">
+                <span class="formula-bar-label">fx</span>
+                <input type="text" class="formula-bar-input" value='%resource.item.where(linkId="grade").answer.valueCoding || map: ...'>
+              </div>
+              <div class="format-row">
+                <span class="format-label">Format:</span>
+                <span class="chip" style="background: #dbeafe; border-color: #3b82f6; cursor: pointer;">
+                  Map ▾
+                </span>
+              </div>
+              <div class="content-area">
+                Tumor grade: <span class="pill selected">Grade</span>
+              </div>
+            </div>
+
+            <!-- Popover -->
+            <div class="popover" style="top: 80px; left: 80px;">
+              <div style="font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 10px;">
+                Map: Grade
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 8px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span style="font-size: 11px; color: #6b7280; width: 60px; text-align: right;">G1 →</span>
+                  <input type="text" value="low grade" style="flex: 1; border: 1px solid #e5e7eb; border-radius: 4px; padding: 4px 8px; font-size: 12px;">
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span style="font-size: 11px; color: #6b7280; width: 60px; text-align: right;">G2 →</span>
+                  <input type="text" value="intermediate" style="flex: 1; border: 1px solid #e5e7eb; border-radius: 4px; padding: 4px 8px; font-size: 12px;">
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span style="font-size: 11px; color: #6b7280; width: 60px; text-align: right;">G3 →</span>
+                  <input type="text" value="high grade" style="flex: 1; border: 1px solid #e5e7eb; border-radius: 4px; padding: 4px 8px; font-size: 12px;">
+                </div>
+              </div>
+              <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #e5e7eb; display: flex; justify-content: flex-end; gap: 8px;">
+                <button style="font-size: 12px; color: #6b7280;">Cancel</button>
+                <button style="font-size: 12px; background: #3b82f6; color: white; padding: 4px 12px; border-radius: 4px;">Apply</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Option 5: Table-style in workspace -->
+    <div class="mb-12">
+      <h2 class="text-lg font-semibold text-gray-800 mb-4">Option 5: Table in Workspace</h2>
+      <p class="text-sm text-gray-500 mb-4">Full table view in the workspace area, showing all context: code, original display, and mapped text.</p>
+
+      <div class="modal" style="width: 720px;">
+        <div class="modal-body space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Content</label>
+            <div class="content-wrapper">
+              <div class="formula-bar">
+                <span class="formula-bar-label">fx</span>
+                <input type="text" class="formula-bar-input" value='%resource.item.where(linkId="tnm-stage").answer.valueCoding || map: ...'>
+              </div>
+              <div class="content-area">
+                Clinical stage: <span class="pill selected">TNM Stage</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Table workspace -->
+          <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden;">
+            <div style="padding: 10px 12px; border-bottom: 1px solid #e5e7eb; font-size: 11px; font-weight: 600; color: #6b7280; text-transform: uppercase;">
+              Answer Mappings for "TNM Stage"
+            </div>
+            <table style="width: 100%; font-size: 12px; border-collapse: collapse;">
+              <thead>
+                <tr style="background: #f3f4f6;">
+                  <th style="padding: 8px 12px; text-align: left; font-weight: 500; color: #6b7280; border-bottom: 1px solid #e5e7eb;">Code</th>
+                  <th style="padding: 8px 12px; text-align: left; font-weight: 500; color: #6b7280; border-bottom: 1px solid #e5e7eb;">Original Display</th>
+                  <th style="padding: 8px 12px; text-align: left; font-weight: 500; color: #6b7280; border-bottom: 1px solid #e5e7eb;">Narrative Text</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="background: white;">
+                  <td style="padding: 8px 12px; border-bottom: 1px solid #e5e7eb; font-family: monospace; color: #6b7280;">stage-1</td>
+                  <td style="padding: 8px 12px; border-bottom: 1px solid #e5e7eb;">Stage I - Localized</td>
+                  <td style="padding: 8px 12px; border-bottom: 1px solid #e5e7eb;">
+                    <input type="text" value="early stage" style="width: 100%; border: 1px solid #e5e7eb; border-radius: 4px; padding: 4px 8px;">
+                  </td>
+                </tr>
+                <tr style="background: white;">
+                  <td style="padding: 8px 12px; border-bottom: 1px solid #e5e7eb; font-family: monospace; color: #6b7280;">stage-2</td>
+                  <td style="padding: 8px 12px; border-bottom: 1px solid #e5e7eb;">Stage II - Regional</td>
+                  <td style="padding: 8px 12px; border-bottom: 1px solid #e5e7eb;">
+                    <input type="text" value="locally advanced" style="width: 100%; border: 1px solid #e5e7eb; border-radius: 4px; padding: 4px 8px;">
+                  </td>
+                </tr>
+                <tr style="background: white;">
+                  <td style="padding: 8px 12px; border-bottom: 1px solid #e5e7eb; font-family: monospace; color: #6b7280;">stage-3</td>
+                  <td style="padding: 8px 12px; border-bottom: 1px solid #e5e7eb;">Stage III - Advanced</td>
+                  <td style="padding: 8px 12px; border-bottom: 1px solid #e5e7eb;">
+                    <input type="text" placeholder="(use original)" style="width: 100%; border: 1px solid #e5e7eb; border-radius: 4px; padding: 4px 8px; color: #9ca3af;">
+                  </td>
+                </tr>
+                <tr style="background: white;">
+                  <td style="padding: 8px 12px; font-family: monospace; color: #6b7280;">stage-4</td>
+                  <td style="padding: 8px 12px;">Stage IV - Metastatic</td>
+                  <td style="padding: 8px 12px;">
+                    <input type="text" value="metastatic disease" style="width: 100%; border: 1px solid #e5e7eb; border-radius: 4px; padding: 4px 8px;">
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick comparison -->
+    <div class="grid grid-cols-2 gap-4 mb-8">
+      <div class="bg-white border border-gray-200 rounded-lg p-4">
+        <div class="font-medium text-gray-900 mb-2">Pros/Cons Summary</div>
+        <table class="text-xs w-full">
+          <tr class="border-b">
+            <td class="py-2 font-medium">Option 1 (Panel)</td>
+            <td class="py-2 text-green-700">Visible context</td>
+            <td class="py-2 text-red-700">Takes vertical space</td>
+          </tr>
+          <tr class="border-b">
+            <td class="py-2 font-medium">Option 2 (Expandable)</td>
+            <td class="py-2 text-green-700">Compact</td>
+            <td class="py-2 text-red-700">Limited space for text</td>
+          </tr>
+          <tr class="border-b">
+            <td class="py-2 font-medium">Option 3 (Workspace)</td>
+            <td class="py-2 text-green-700">Consistent with synonyms</td>
+            <td class="py-2 text-red-700">Separate from format row</td>
+          </tr>
+          <tr class="border-b">
+            <td class="py-2 font-medium">Option 4 (Popover)</td>
+            <td class="py-2 text-green-700">Minimal until clicked</td>
+            <td class="py-2 text-red-700">Can be dismissed accidentally</td>
+          </tr>
+          <tr>
+            <td class="py-2 font-medium">Option 5 (Table)</td>
+            <td class="py-2 text-green-700">Clear structure</td>
+            <td class="py-2 text-red-700">Most complex UI</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+        <div class="font-medium text-green-900 mb-2">Recommendation</div>
+        <div class="text-sm text-green-800">
+          <strong>Option 3 (Workspace)</strong> fits best with existing UI patterns:
+          <ul class="list-disc ml-5 mt-2 space-y-1">
+            <li>Consistent with SynonymsPanel placement</li>
+            <li>Enough space for readable mapping</li>
+            <li>Can show sync warnings clearly</li>
+            <li>Doesn't clutter the format row</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

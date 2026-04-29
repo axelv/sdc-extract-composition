@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Filter Reordering Options</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .format-row {
+      display: flex;
+      align-items: center;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      padding: 8px 12px;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .format-label {
+      font-size: 12px;
+      color: #6b7280;
+      font-weight: 500;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: white;
+      border: 1px solid #e5e7eb;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      cursor: default;
+    }
+    .chip-remove {
+      color: #9ca3af;
+      cursor: pointer;
+      font-size: 14px;
+      margin-left: 4px;
+    }
+    .chip-remove:hover {
+      color: #ef4444;
+    }
+    .difficulty {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .easy { background: #d1fae5; color: #065f46; }
+    .medium { background: #fef3c7; color: #92400e; }
+    .hard { background: #fee2e2; color: #991b1b; }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen p-8">
+  <div class="max-w-3xl mx-auto">
+    <h1 class="text-xl font-bold text-gray-900 mb-2">Filter Reordering Options</h1>
+    <p class="text-gray-500 text-sm mb-8">5 approaches to let users reorder filters in the pipeline.</p>
+
+    <!-- Option 1: Drag and Drop -->
+    <div class="bg-white rounded-lg border border-gray-200 p-5 mb-6">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="font-semibold text-gray-800">Option 1: Drag & Drop Chips</h2>
+        <span class="difficulty hard">Hard</span>
+      </div>
+      <p class="text-sm text-gray-500 mb-4">Drag chips to reorder. Most intuitive but requires drag-drop library (dnd-kit or similar).</p>
+
+      <div class="format-row">
+        <span class="format-label">Format:</span>
+        <span class="chip" style="cursor: grab;">
+          <span style="color: #9ca3af; margin-right: 4px;">⋮⋮</span>
+          Map answers
+          <span class="chip-remove">×</span>
+        </span>
+        <span class="chip" style="cursor: grab;">
+          <span style="color: #9ca3af; margin-right: 4px;">⋮⋮</span>
+          Suffix: !
+          <span class="chip-remove">×</span>
+        </span>
+        <span class="chip" style="cursor: grab;">
+          <span style="color: #9ca3af; margin-right: 4px;">⋮⋮</span>
+          Join: ", "
+          <span class="chip-remove">×</span>
+        </span>
+      </div>
+
+      <div class="text-xs text-gray-400 mt-2">
+        <strong>Pros:</strong> Most intuitive, works on touch<br>
+        <strong>Cons:</strong> Needs dnd-kit (~8KB), complex state management<br>
+        <strong>Effort:</strong> ~3-4 hours
+      </div>
+    </div>
+
+    <!-- Option 2: Arrow Buttons on Hover -->
+    <div class="bg-white rounded-lg border border-gray-200 p-5 mb-6">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="font-semibold text-gray-800">Option 2: Arrow Buttons on Hover</h2>
+        <span class="difficulty easy">Easy</span>
+      </div>
+      <p class="text-sm text-gray-500 mb-4">Show ← → arrows when hovering a chip. Click to move.</p>
+
+      <div class="format-row">
+        <span class="format-label">Format:</span>
+        <span class="chip">
+          Map answers
+          <span class="chip-remove">×</span>
+        </span>
+        <span class="chip" style="background: #eff6ff; border-color: #3b82f6;">
+          <span style="color: #3b82f6; cursor: pointer; margin-right: 2px;">←</span>
+          Suffix: !
+          <span style="color: #3b82f6; cursor: pointer; margin-left: 2px;">→</span>
+          <span class="chip-remove">×</span>
+        </span>
+        <span class="chip">
+          Join: ", "
+          <span class="chip-remove">×</span>
+        </span>
+      </div>
+
+      <div class="text-xs text-gray-400 mt-2">
+        <strong>Pros:</strong> No dependencies, simple to implement<br>
+        <strong>Cons:</strong> Hover doesn't work on touch, extra UI clutter<br>
+        <strong>Effort:</strong> ~30-45 minutes
+      </div>
+    </div>
+
+    <!-- Option 3: Click to Select + Arrow Keys -->
+    <div class="bg-white rounded-lg border border-gray-200 p-5 mb-6">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="font-semibold text-gray-800">Option 3: Select + Arrow Keys</h2>
+        <span class="difficulty easy">Easy</span>
+      </div>
+      <p class="text-sm text-gray-500 mb-4">Click chip to select, then use ← → arrow keys to move it.</p>
+
+      <div class="format-row">
+        <span class="format-label">Format:</span>
+        <span class="chip">
+          Map answers
+          <span class="chip-remove">×</span>
+        </span>
+        <span class="chip" style="background: #dbeafe; border-color: #3b82f6; box-shadow: 0 0 0 2px rgba(59,130,246,0.3);">
+          Suffix: !
+          <span class="chip-remove">×</span>
+        </span>
+        <span class="chip">
+          Join: ", "
+          <span class="chip-remove">×</span>
+        </span>
+      </div>
+      <div style="font-size: 11px; color: #6b7280; margin-top: 4px;">
+        Press ← or → to move selected filter
+      </div>
+
+      <div class="text-xs text-gray-400 mt-2">
+        <strong>Pros:</strong> Keyboard accessible, clean UI<br>
+        <strong>Cons:</strong> Not discoverable, needs hint text<br>
+        <strong>Effort:</strong> ~45 minutes
+      </div>
+    </div>
+
+    <!-- Option 4: Numbered Dropdown -->
+    <div class="bg-white rounded-lg border border-gray-200 p-5 mb-6">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="font-semibold text-gray-800">Option 4: Position Number Dropdown</h2>
+        <span class="difficulty easy">Easy</span>
+      </div>
+      <p class="text-sm text-gray-500 mb-4">Each chip shows its position. Click number to change position via dropdown.</p>
+
+      <div class="format-row">
+        <span class="format-label">Format:</span>
+        <span class="chip">
+          <select style="background: #f3f4f6; border: none; font-size: 10px; padding: 1px 2px; border-radius: 2px; margin-right: 4px;">
+            <option selected>1</option>
+            <option>2</option>
+            <option>3</option>
+          </select>
+          Map answers
+          <span class="chip-remove">×</span>
+        </span>
+        <span class="chip">
+          <select style="background: #f3f4f6; border: none; font-size: 10px; padding: 1px 2px; border-radius: 2px; margin-right: 4px;">
+            <option>1</option>
+            <option selected>2</option>
+            <option>3</option>
+          </select>
+          Suffix: !
+          <span class="chip-remove">×</span>
+        </span>
+        <span class="chip">
+          <select style="background: #f3f4f6; border: none; font-size: 10px; padding: 1px 2px; border-radius: 2px; margin-right: 4px;">
+            <option>1</option>
+            <option>2</option>
+            <option selected>3</option>
+          </select>
+          Join: ", "
+          <span class="chip-remove">×</span>
+        </span>
+      </div>
+
+      <div class="text-xs text-gray-400 mt-2">
+        <strong>Pros:</strong> Works everywhere, explicit<br>
+        <strong>Cons:</strong> Cluttered, not intuitive<br>
+        <strong>Effort:</strong> ~30 minutes
+      </div>
+    </div>
+
+    <!-- Option 5: Context Menu -->
+    <div class="bg-white rounded-lg border border-gray-200 p-5 mb-6">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="font-semibold text-gray-800">Option 5: Right-Click Context Menu</h2>
+        <span class="difficulty medium">Medium</span>
+      </div>
+      <p class="text-sm text-gray-500 mb-4">Right-click chip for "Move left" / "Move right" options.</p>
+
+      <div class="format-row" style="position: relative;">
+        <span class="format-label">Format:</span>
+        <span class="chip">
+          Map answers
+          <span class="chip-remove">×</span>
+        </span>
+        <span class="chip" style="background: #f3f4f6;">
+          Suffix: !
+          <span class="chip-remove">×</span>
+        </span>
+        <span class="chip">
+          Join: ", "
+          <span class="chip-remove">×</span>
+        </span>
+
+        <!-- Context menu mockup -->
+        <div style="position: absolute; top: 100%; left: 120px; background: white; border: 1px solid #e5e7eb; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); padding: 4px 0; font-size: 12px; z-index: 10;">
+          <div style="padding: 6px 12px; cursor: pointer;">← Move left</div>
+          <div style="padding: 6px 12px; cursor: pointer; background: #f3f4f6;">→ Move right</div>
+          <div style="border-top: 1px solid #e5e7eb; margin: 4px 0;"></div>
+          <div style="padding: 6px 12px; cursor: pointer; color: #ef4444;">Remove</div>
+        </div>
+      </div>
+
+      <div class="text-xs text-gray-400 mt-2">
+        <strong>Pros:</strong> Clean default UI, discoverable on right-click<br>
+        <strong>Cons:</strong> Hidden functionality, no touch support<br>
+        <strong>Effort:</strong> ~1-2 hours
+      </div>
+    </div>
+
+    <!-- Recommendation -->
+    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+      <div class="font-medium text-blue-900 mb-2">Recommendation</div>
+      <div class="text-sm text-blue-800">
+        <strong>Option 2 (Arrow Buttons)</strong> is the best balance:
+        <ul class="list-disc ml-5 mt-2 space-y-1">
+          <li>Simple to implement (~30 min)</li>
+          <li>No dependencies</li>
+          <li>Clear affordance - users see the arrows</li>
+          <li>Can combine with Option 3 (arrow keys) for accessibility</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

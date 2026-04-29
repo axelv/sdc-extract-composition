@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pill Truncation Options</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .editor-line {
+      font-size: 14px;
+      line-height: 1.6;
+      padding: 8px 12px;
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+    }
+    .pill-base {
+      font-family: 'IBM Plex Mono', ui-monospace, monospace;
+      font-size: 0.75em;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 p-8">
+  <div class="max-w-3xl mx-auto space-y-6">
+    <h1 class="text-xl font-bold">Pill Display Options</h1>
+    <p class="text-gray-500 text-sm">Expression: <code class="bg-gray-200 px-1 rounded text-xs">%context.item.where(linkId='verwijzend-ziekenhuis').answer.value || default: "MM" || prepend: "azeaze" || join: ", "</code></p>
+
+    <!-- Option 1: Show field name only -->
+    <div class="bg-white rounded-lg border p-5">
+      <h2 class="font-semibold mb-2">Option 1: Field name only</h2>
+      <p class="text-sm text-gray-500 mb-3">Just show the human-readable field name, hide all filters.</p>
+      <div class="editor-line">
+        Patiënt verwezen via <span class="pill-base bg-blue-50 border border-blue-200 px-2 py-0.5">Verwijzend ziekenhuis</span>, <span class="pill-base bg-blue-50 border border-blue-200 px-2 py-0.5">Verwijzende specialist</span>.
+      </div>
+      <div class="text-xs text-gray-400 mt-2">Cleanest, but hides that filters are applied</div>
+    </div>
+
+    <!-- Option 2: Field name + filter count badge -->
+    <div class="bg-white rounded-lg border p-5">
+      <h2 class="font-semibold mb-2">Option 2: Field name + filter badge</h2>
+      <p class="text-sm text-gray-500 mb-3">Show field name with a small badge indicating filters are applied.</p>
+      <div class="editor-line">
+        Patiënt verwezen via <span class="pill-base bg-blue-50 border border-blue-200 px-2 py-0.5">Verwijzend ziekenhuis <span class="bg-blue-200 text-blue-700 text-[10px] px-1 rounded">+4</span></span>, <span class="pill-base bg-blue-50 border border-blue-200 px-2 py-0.5">Verwijzende specialist</span>.
+      </div>
+      <div class="text-xs text-gray-400 mt-2">Shows something is configured without details</div>
+    </div>
+
+    <!-- Option 3: Field name + filter icons -->
+    <div class="bg-white rounded-lg border p-5">
+      <h2 class="font-semibold mb-2">Option 3: Field name + filter icons</h2>
+      <p class="text-sm text-gray-500 mb-3">Small icons/dots to indicate filters.</p>
+      <div class="editor-line">
+        Patiënt verwezen via <span class="pill-base bg-blue-50 border border-blue-200 px-2 py-0.5">Verwijzend ziekenhuis <span class="text-blue-400">••••</span></span>, <span class="pill-base bg-blue-50 border border-blue-200 px-2 py-0.5">Verwijzende specialist</span>.
+      </div>
+      <div class="text-xs text-gray-400 mt-2">Visual hint without text clutter</div>
+    </div>
+
+    <!-- Option 4: Field name + "formatted" label -->
+    <div class="bg-white rounded-lg border p-5">
+      <h2 class="font-semibold mb-2">Option 4: Field name + "formatted" tag</h2>
+      <p class="text-sm text-gray-500 mb-3">Simple indicator that formatting is applied.</p>
+      <div class="editor-line">
+        Patiënt verwezen via <span class="pill-base bg-blue-50 border border-blue-200 px-2 py-0.5">Verwijzend ziekenhuis <span class="text-[10px] text-blue-500 italic">formatted</span></span>, <span class="pill-base bg-blue-50 border border-blue-200 px-2 py-0.5">Verwijzende specialist</span>.
+      </div>
+      <div class="text-xs text-gray-400 mt-2">Explicit but wordy</div>
+    </div>
+
+    <!-- Option 5: Field name || ... -->
+    <div class="bg-white rounded-lg border p-5">
+      <h2 class="font-semibold mb-2">Option 5: Field name || ...</h2>
+      <p class="text-sm text-gray-500 mb-3">Show field + hint that there's more with the || syntax.</p>
+      <div class="editor-line">
+        Patiënt verwezen via <span class="pill-base bg-blue-50 border border-blue-200 px-2 py-0.5">Verwijzend ziekenhuis <span class="text-gray-400">|| ...</span></span>, <span class="pill-base bg-blue-50 border border-blue-200 px-2 py-0.5">Verwijzende specialist</span>.
+      </div>
+      <div class="text-xs text-gray-400 mt-2">Familiar syntax for those who know it</div>
+    </div>
+
+    <!-- Option 6: Two-line pill -->
+    <div class="bg-white rounded-lg border p-5">
+      <h2 class="font-semibold mb-2">Option 6: Two-line pill (field + filters below)</h2>
+      <p class="text-sm text-gray-500 mb-3">Stack field name and filter summary.</p>
+      <div class="editor-line">
+        Patiënt verwezen via <span class="pill-base bg-blue-50 border border-blue-200 px-2 py-0.5 inline-flex flex-col items-start leading-tight">
+          <span>Verwijzend ziekenhuis</span>
+          <span class="text-[9px] text-gray-400">default · prefix · join</span>
+        </span>, <span class="pill-base bg-blue-50 border border-blue-200 px-2 py-0.5">Verwijzende specialist</span>.
+      </div>
+      <div class="text-xs text-gray-400 mt-2">More info visible but takes more space</div>
+    </div>
+
+    <!-- Option 7: Color-coded border -->
+    <div class="bg-white rounded-lg border p-5">
+      <h2 class="font-semibold mb-2">Option 7: Color indicates filters</h2>
+      <p class="text-sm text-gray-500 mb-3">Different border/background color when filters are applied.</p>
+      <div class="editor-line">
+        Patiënt verwezen via <span class="pill-base bg-amber-50 border border-amber-300 px-2 py-0.5">Verwijzend ziekenhuis</span>, <span class="pill-base bg-blue-50 border border-blue-200 px-2 py-0.5">Verwijzende specialist</span>.
+      </div>
+      <div class="text-xs text-gray-400 mt-2">Amber = has filters, Blue = plain field. Subtle but learnable</div>
+    </div>
+
+    <!-- Recommendation -->
+    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+      <div class="font-medium text-blue-900 mb-2">My pick</div>
+      <div class="text-sm text-blue-800">
+        <strong>Option 1</strong> (field name only) or <strong>Option 2</strong> (with badge) - cleanest while still indicating there's more to see. The full details are in the formula bar when selected anyway.
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formula Bar - Simple fx Only</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .modal {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      width: 600px;
+      margin: 0 auto;
+    }
+    .modal-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid #e5e7eb;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-body {
+      padding: 20px;
+    }
+    .modal-footer {
+      padding: 16px 20px;
+      border-top: 1px solid #e5e7eb;
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+    .pill {
+      display: inline-block;
+      background: #e8f2fc;
+      border: 1px solid #7eb3e0;
+      color: #2d6aa0;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .pill:hover {
+      background: #d0e6f7;
+    }
+    .pill.selected {
+      background: #2d6aa0;
+      color: white;
+      box-shadow: 0 0 0 2px #bdd7f0;
+    }
+    .content-wrapper {
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .formula-bar {
+      display: flex;
+      align-items: center;
+      background: #f9fafb;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 6px 10px;
+      min-height: 36px;
+    }
+    .formula-bar.disabled {
+      background: #f3f4f6;
+    }
+    .formula-bar-label {
+      background: #e5e7eb;
+      color: #6b7280;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
+    .formula-bar.active .formula-bar-label {
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+    .formula-bar-input {
+      flex: 1;
+      font-family: ui-monospace, monospace;
+      font-size: 12px;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: #374151;
+    }
+    .formula-bar-input:disabled {
+      color: #9ca3af;
+      font-family: system-ui, sans-serif;
+      font-style: italic;
+    }
+    .content-area {
+      background: white;
+      padding: 16px;
+      font-size: 14px;
+      color: #374151;
+      line-height: 2;
+      min-height: 120px;
+    }
+    .context-btn {
+      padding: 6px 14px;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      font-size: 13px;
+      background: white;
+      cursor: pointer;
+    }
+    .context-btn:hover {
+      background: #f9fafb;
+    }
+    .context-btn.active {
+      background: #eff6ff;
+      border-color: #3b82f6;
+      color: #1d4ed8;
+    }
+    .state-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen p-8">
+  <div class="max-w-3xl mx-auto">
+    <h1 class="text-xl font-bold text-gray-900 mb-2">Formula Bar - Simple fx</h1>
+    <p class="text-gray-500 text-sm mb-8">Just [fx] + expression. No redundant field name - you already see which pill is selected.</p>
+
+    <!-- State 1: Nothing selected -->
+    <div class="mb-10">
+      <div class="state-label">State 1: No field selected</div>
+      <div class="modal">
+        <div class="modal-header">
+          Edit Section
+          <span class="text-gray-400 cursor-pointer">&times;</span>
+        </div>
+        <div class="modal-body space-y-4">
+          <!-- Context -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Context</label>
+            <div class="flex gap-2">
+              <button class="context-btn active">— Always</button>
+              <button class="context-btn">&#x2387; Conditional</button>
+              <button class="context-btn">&#x21bb; For each</button>
+              <button class="context-btn">{} Custom</button>
+            </div>
+          </div>
+
+          <!-- Title -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Title</label>
+            <input type="text" value="Patient Info (Always)" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+          </div>
+
+          <!-- Content -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Content</label>
+            <div class="content-wrapper">
+              <div class="formula-bar disabled">
+                <span class="formula-bar-label">fx</span>
+                <input type="text" class="formula-bar-input" disabled value="Select a field to edit">
+              </div>
+              <div class="content-area">
+                Patient: <span class="pill">Patient Name</span><br>
+                Date of birth: <span class="pill">Date of Birth</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="px-4 py-2 text-sm text-gray-600">Cancel</button>
+          <button class="px-4 py-2 text-sm bg-blue-600 text-white rounded-lg">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- State 2: Field selected -->
+    <div class="mb-10">
+      <div class="state-label">State 2: Field selected (Patient Name clicked)</div>
+      <div class="modal">
+        <div class="modal-header">
+          Edit Section
+          <span class="text-gray-400 cursor-pointer">&times;</span>
+        </div>
+        <div class="modal-body space-y-4">
+          <!-- Context -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Context</label>
+            <div class="flex gap-2">
+              <button class="context-btn active">— Always</button>
+              <button class="context-btn">&#x2387; Conditional</button>
+              <button class="context-btn">&#x21bb; For each</button>
+              <button class="context-btn">{} Custom</button>
+            </div>
+          </div>
+
+          <!-- Title -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Title</label>
+            <input type="text" value="Patient Info (Always)" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+          </div>
+
+          <!-- Content -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Content</label>
+            <div class="content-wrapper">
+              <div class="formula-bar active">
+                <span class="formula-bar-label">fx</span>
+                <input type="text" class="formula-bar-input" value="%resource.item.where(linkId='patient-name').answer.value || downcase || default: &quot;XXX&quot;">
+              </div>
+              <div class="content-area">
+                Patient: <span class="pill selected">Patient Name</span><br>
+                Date of birth: <span class="pill">Date of Birth</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="px-4 py-2 text-sm text-gray-600">Cancel</button>
+          <button class="px-4 py-2 text-sm bg-blue-600 text-white rounded-lg">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- State 3: Different field selected -->
+    <div class="mb-10">
+      <div class="state-label">State 3: Different field selected (Date of Birth clicked)</div>
+      <div class="modal">
+        <div class="modal-header">
+          Edit Section
+          <span class="text-gray-400 cursor-pointer">&times;</span>
+        </div>
+        <div class="modal-body space-y-4">
+          <!-- Context -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Context</label>
+            <div class="flex gap-2">
+              <button class="context-btn active">— Always</button>
+              <button class="context-btn">&#x2387; Conditional</button>
+              <button class="context-btn">&#x21bb; For each</button>
+              <button class="context-btn">{} Custom</button>
+            </div>
+          </div>
+
+          <!-- Title -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Title</label>
+            <input type="text" value="Patient Info (Always)" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+          </div>
+
+          <!-- Content -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Content</label>
+            <div class="content-wrapper">
+              <div class="formula-bar active">
+                <span class="formula-bar-label">fx</span>
+                <input type="text" class="formula-bar-input" value="%resource.item.where(linkId='date-of-birth').answer.value">
+              </div>
+              <div class="content-area">
+                Patient: <span class="pill">Patient Name</span><br>
+                Date of birth: <span class="pill selected">Date of Birth</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="px-4 py-2 text-sm text-gray-600">Cancel</button>
+          <button class="px-4 py-2 text-sm bg-blue-600 text-white rounded-lg">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Summary -->
+    <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+      <div class="font-medium text-green-900 mb-2">Simple & Clean</div>
+      <div class="text-sm text-green-800">
+        <ul class="list-disc ml-5 space-y-1">
+          <li><strong>fx</strong> badge highlights blue when active</li>
+          <li>No redundant field name - the selected pill is already highlighted</li>
+          <li>Placeholder text when nothing selected</li>
+          <li>Expression editable directly in the bar</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

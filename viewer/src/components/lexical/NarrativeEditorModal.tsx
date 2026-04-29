@@ -102,7 +102,7 @@ export function NarrativeEditorModal({
             <FhirPathAutocompletePlugin
               contextExpression={contextExpression}
             />
-            <PillEditingWorkspace contextExpression={contextExpression} />
+            <PillEditingWorkspace />
             <EditorRefPlugin editorRef={editorRef} />
           </LexicalComposer>
         </div>

@@ -12,7 +12,7 @@ export function RenderedOutputPanel({
   return (
     <div className="panel-container">
       <div className="panel-header">
-        <h2 className="panel-title">Rendered</h2>
+        <h2 className="panel-title">Narrative</h2>
         {loading && (
           <span className="text-xs text-gray-400 animate-pulse">
             rendering...

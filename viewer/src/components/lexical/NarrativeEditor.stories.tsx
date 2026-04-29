@@ -175,7 +175,7 @@ function NarrativeEditorHarness({
               <HistoryPlugin />
               <HtmlImportPlugin divHtml={divHtml} />
               <FhirPathAutocompletePlugin contextExpression={contextExpression} />
-              <PillEditingWorkspace contextExpression={contextExpression} />
+              <PillEditingWorkspace />
             </LexicalComposer>
             <p className="text-xs text-gray-500">
               Tip: type <code className="bg-gray-100 px-1 rounded">%</code> to

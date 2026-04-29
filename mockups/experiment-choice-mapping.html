@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Choice Mapping - Map Filter UI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .modal {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      width: 640px;
+      margin: 0 auto;
+    }
+    .modal-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid #e5e7eb;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-body {
+      padding: 20px;
+    }
+    .pill {
+      display: inline-block;
+      background: #e8f2fc;
+      border: 1px solid #7eb3e0;
+      color: #2d6aa0;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .pill.selected {
+      background: #2d6aa0;
+      color: white;
+      box-shadow: 0 0 0 2px #bdd7f0;
+    }
+    .content-wrapper {
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .formula-bar {
+      display: flex;
+      align-items: center;
+      background: #f3f4f6;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 6px 10px;
+      min-height: 36px;
+    }
+    .formula-bar.active {
+      background: #f9fafb;
+    }
+    .formula-bar-label {
+      background: #e5e7eb;
+      color: #6b7280;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
+    .formula-bar.active .formula-bar-label {
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+    .formula-bar-input {
+      flex: 1;
+      font-family: ui-monospace, monospace;
+      font-size: 12px;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: #374151;
+    }
+    .format-row {
+      display: flex;
+      align-items: center;
+      background: #f3f4f6;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 6px 10px;
+      gap: 8px;
+    }
+    .format-row.active {
+      background: #f9fafb;
+    }
+    .format-label {
+      font-size: 11px;
+      color: #6b7280;
+      font-weight: 500;
+    }
+    .content-area {
+      background: white;
+      padding: 16px;
+      font-size: 14px;
+      color: #374151;
+      line-height: 2;
+      min-height: 80px;
+    }
+    .state-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+    }
+    .mapping-panel {
+      background: #fefce8;
+      border: 1px solid #fde047;
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 12px;
+    }
+    .mapping-panel-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #854d0e;
+      margin-bottom: 10px;
+    }
+    .mapping-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 0;
+      border-bottom: 1px solid #fef3c7;
+    }
+    .mapping-row:last-child {
+      border-bottom: none;
+    }
+    .mapping-option {
+      flex: 1;
+      font-size: 13px;
+      color: #374151;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .mapping-option-code {
+      font-family: ui-monospace, monospace;
+      font-size: 11px;
+      color: #6b7280;
+      background: #f3f4f6;
+      padding: 1px 4px;
+      border-radius: 3px;
+    }
+    .mapping-arrow {
+      color: #9ca3af;
+      font-size: 14px;
+    }
+    .mapping-input {
+      flex: 1;
+      font-size: 13px;
+      border: 1px solid #e5e7eb;
+      border-radius: 4px;
+      padding: 4px 8px;
+      background: white;
+    }
+    .mapping-input:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+    }
+    .mapping-input::placeholder {
+      color: #9ca3af;
+      font-style: italic;
+    }
+    .warning-badge {
+      background: #fef3c7;
+      color: #92400e;
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+    .error-badge {
+      background: #fee2e2;
+      color: #991b1b;
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+    .new-badge {
+      background: #dbeafe;
+      color: #1e40af;
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+    .orphan-row {
+      background: #fef2f2;
+      padding: 6px 8px;
+      border-radius: 4px;
+      margin-top: 8px;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: white;
+      border: 1px solid #e5e7eb;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+    .chip-remove {
+      color: #9ca3af;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .chip-remove:hover {
+      color: #ef4444;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen p-8">
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-xl font-bold text-gray-900 mb-2">Choice Mapping UI</h1>
+    <p class="text-gray-500 text-sm mb-8">How to map coded answer options to narrative-friendly text, stored as a <code class="bg-gray-200 px-1 rounded">|| map:</code> filter.</p>
+
+    <!-- Option 1: Inline mapping panel -->
+    <div class="mb-12">
+      <h2 class="text-lg font-semibold text-gray-800 mb-4">Option 1: Mapping Panel (Below Format Row)</h2>
+      <p class="text-sm text-gray-500 mb-4">When a choice-type pill is selected, show mapping UI below the format chips. Compact and contextual.</p>
+
+      <div class="modal">
+        <div class="modal-header">
+          Edit Section
+          <span class="text-gray-400 cursor-pointer">&times;</span>
+        </div>
+        <div class="modal-body space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Content</label>
+            <div class="content-wrapper">
+              <div class="formula-bar active">
+                <span class="formula-bar-label">fx</span>
+                <input type="text" class="formula-bar-input" value='%resource.item.where(linkId="diabetes-status").answer.valueCoding || map: "yes" => "diabetic", "no" => "non-diabetic"'>
+              </div>
+              <div class="format-row active">
+                <span class="format-label">Format:</span>
+                <span class="chip">Map <span class="chip-remove">&times;</span></span>
+              </div>
+
+              <!-- Mapping panel appears when "Map" chip is present and pill is selected -->
+              <div class="mapping-panel" style="margin: 0; border-radius: 0; border-left: 0; border-right: 0; border-bottom: 0;">
+                <div class="mapping-panel-header">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+                  </svg>
+                  Answer Mappings (Diabetes Status)
+                </div>
+                <div class="mapping-row">
+                  <div class="mapping-option">
+                    <span class="mapping-option-code">yes</span>
+                    Yes - Confirmed diagnosis
+                  </div>
+                  <span class="mapping-arrow">→</span>
+                  <input type="text" class="mapping-input" value="diabetic">
+                </div>
+                <div class="mapping-row">
+                  <div class="mapping-option">
+                    <span class="mapping-option-code">no</span>
+                    No - Ruled out
+                  </div>
+                  <span class="mapping-arrow">→</span>
+                  <input type="text" class="mapping-input" value="non-diabetic">
+                </div>
+                <div class="mapping-row">
+                  <div class="mapping-option">
+                    <span class="mapping-option-code">unknown</span>
+                    Unknown
+                  </div>
+                  <span class="mapping-arrow">→</span>
+                  <input type="text" class="mapping-input" placeholder="(use original display)">
+                </div>
+              </div>
+
+              <div class="content-area">
+                The patient is <span class="pill selected">Diabetes Status</span> with HbA1c of <span class="pill">HbA1c Value</span>.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Option 2: Format chip with dropdown -->
+    <div class="mb-12">
+      <h2 class="text-lg font-semibold text-gray-800 mb-4">Option 2: Expandable Chip</h2>
+      <p class="text-sm text-gray-500 mb-4">Map chip expands inline to show mappings. More compact, less visual noise.</p>
+
+      <div class="modal">
+        <div class="modal-header">
+          Edit Section
+          <span class="text-gray-400 cursor-pointer">&times;</span>
+        </div>
+        <div class="modal-body space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Content</label>
+            <div class="content-wrapper">
+              <div class="formula-bar active">
+                <span class="formula-bar-label">fx</span>
+                <input type="text" class="formula-bar-input" value='%resource.item.where(linkId="severity").answer.valueCoding || map: ...'>
+              </div>
+              <div class="format-row active">
+                <span class="format-label">Format:</span>
+                <!-- Expanded chip showing mappings inline -->
+                <div style="background: white; border: 1px solid #e5e7eb; border-radius: 6px; padding: 8px 12px; flex: 1;">
+                  <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                    <span style="font-size: 12px; font-weight: 500; color: #374151;">Map answers:</span>
+                    <span class="chip-remove" style="margin-left: auto;">&times;</span>
+                  </div>
+                  <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 6px; align-items: center; font-size: 12px;">
+                    <span style="color: #6b7280;">mild → </span>
+                    <input type="text" value="minor" style="border: 1px solid #e5e7eb; border-radius: 3px; padding: 2px 6px; font-size: 12px; width: 80px;">
+                    <span></span>
+
+                    <span style="color: #6b7280;">moderate → </span>
+                    <input type="text" value="significant" style="border: 1px solid #e5e7eb; border-radius: 3px; padding: 2px 6px; font-size: 12px; width: 80px;">
+                    <span></span>
+
+                    <span style="color: #6b7280;">severe → </span>
+                    <input type="text" value="critical" style="border: 1px solid #e5e7eb; border-radius: 3px; padding: 2px 6px; font-size: 12px; width: 80px;">
+                    <span></span>
+                  </div>
+                </div>
+              </div>
+              <div class="content-area">
+                Condition severity: <span class="pill selected">Severity</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sync Issues -->
+    <div class="mb-12">
+      <h2 class="text-lg font-semibold text-gray-800 mb-4">Sync Issues: When Questionnaire Changes</h2>
+      <p class="text-sm text-gray-500 mb-4">How we handle when answerOptions are added, removed, or changed in the Questionnaire.</p>
+
+      <div class="modal">
+        <div class="modal-header">
+          Edit Section
+          <span class="text-gray-400 cursor-pointer">&times;</span>
+        </div>
+        <div class="modal-body space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Content</label>
+            <div class="content-wrapper">
+              <div class="formula-bar active">
+                <span class="formula-bar-label">fx</span>
+                <input type="text" class="formula-bar-input" value='%resource.item.where(linkId="status").answer.valueCoding || map: "active" => "ongoing", "deleted_code" => "old text"'>
+              </div>
+
+              <div class="mapping-panel" style="margin: 0; border-radius: 0; border-left: 0; border-right: 0; border-top: 0; border-bottom: 0;">
+                <div class="mapping-panel-header">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                  </svg>
+                  Answer Mappings (Status)
+                  <span class="warning-badge">1 issue</span>
+                </div>
+
+                <!-- Existing option - all good -->
+                <div class="mapping-row">
+                  <div class="mapping-option">
+                    <span class="mapping-option-code">active</span>
+                    Active - In treatment
+                  </div>
+                  <span class="mapping-arrow">→</span>
+                  <input type="text" class="mapping-input" value="ongoing">
+                </div>
+
+                <!-- NEW option added to Questionnaire - no mapping yet -->
+                <div class="mapping-row" style="background: #eff6ff; margin: 0 -12px; padding: 6px 12px;">
+                  <div class="mapping-option">
+                    <span class="mapping-option-code">inactive</span>
+                    Inactive - Completed
+                    <span class="new-badge">NEW</span>
+                  </div>
+                  <span class="mapping-arrow">→</span>
+                  <input type="text" class="mapping-input" placeholder="Add mapping...">
+                </div>
+
+                <!-- ORPHANED mapping - code no longer in Questionnaire -->
+                <div class="orphan-row">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <span class="error-badge">ORPHANED</span>
+                    <span style="font-size: 12px; color: #991b1b;">
+                      <code style="background: #fee2e2; padding: 1px 4px; border-radius: 3px;">deleted_code</code> → "old text"
+                    </span>
+                    <span style="font-size: 11px; color: #6b7280; margin-left: auto;">Option removed from Questionnaire</span>
+                    <button style="color: #ef4444; font-size: 12px; text-decoration: underline;">Remove</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="content-area">
+                Treatment status: <span class="pill selected">Status</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Option 3: Side panel -->
+    <div class="mb-12">
+      <h2 class="text-lg font-semibold text-gray-800 mb-4">Option 3: Side Panel (Like Synonyms)</h2>
+      <p class="text-sm text-gray-500 mb-4">Show mappings in the workspace area below content, similar to existing Synonyms panel.</p>
+
+      <div class="modal" style="width: 700px;">
+        <div class="modal-header">
+          Edit Section
+          <span class="text-gray-400 cursor-pointer">&times;</span>
+        </div>
+        <div class="modal-body space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Content</label>
+            <div class="content-wrapper">
+              <div class="formula-bar active">
+                <span class="formula-bar-label">fx</span>
+                <input type="text" class="formula-bar-input" value='%resource.item.where(linkId="risk").answer.valueCoding'>
+              </div>
+              <div class="format-row active">
+                <span class="format-label">Format:</span>
+                <span class="chip">Map <span class="chip-remove">&times;</span></span>
+                <span class="chip">Lowercase <span class="chip-remove">&times;</span></span>
+              </div>
+              <div class="content-area">
+                Risk assessment: <span class="pill selected">Risk Level</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Workspace area - shows when pill selected -->
+          <div style="display: flex; gap: 12px;">
+            <!-- Mappings panel -->
+            <div style="flex: 1; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px;">
+              <div style="font-size: 11px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 10px;">
+                Answer Mappings
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 6px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span style="font-size: 12px; color: #6b7280; width: 100px;">low</span>
+                  <input type="text" value="minimal" style="flex: 1; border: 1px solid #e5e7eb; border-radius: 4px; padding: 4px 8px; font-size: 12px;">
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span style="font-size: 12px; color: #6b7280; width: 100px;">medium</span>
+                  <input type="text" value="moderate" style="flex: 1; border: 1px solid #e5e7eb; border-radius: 4px; padding: 4px 8px; font-size: 12px;">
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span style="font-size: 12px; color: #6b7280; width: 100px;">high</span>
+                  <input type="text" value="elevated" style="flex: 1; border: 1px solid #e5e7eb; border-radius: 4px; padding: 4px 8px; font-size: 12px;">
+                </div>
+              </div>
+            </div>
+
+            <!-- Synonyms panel (existing) -->
+            <div style="flex: 1; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px;">
+              <div style="font-size: 11px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 10px;">
+                Display Synonyms
+              </div>
+              <div style="font-size: 12px; color: #6b7280; font-style: italic;">
+                No synonyms available for coded answers
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Generated expression example -->
+    <div class="bg-white border border-gray-200 rounded-lg p-4 mb-8">
+      <div class="font-medium text-gray-900 mb-3">Generated Expression</div>
+      <div class="text-sm text-gray-600 mb-2">The mapping UI generates this filter syntax:</div>
+      <pre class="bg-gray-900 text-green-400 p-3 rounded text-xs overflow-x-auto">{{ %resource.item.where(linkId='diabetes').answer.valueCoding || map: "yes" => "diabetic", "no" => "non-diabetic", "unknown" => "" }}</pre>
+      <div class="text-xs text-gray-500 mt-2">
+        Empty string <code class="bg-gray-100 px-1 rounded">""</code> = use original display.
+        Unmapped codes also fall back to original display.
+      </div>
+    </div>
+
+    <!-- Summary -->
+    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+      <div class="font-medium text-blue-900 mb-2">Sync Strategy</div>
+      <div class="text-sm text-blue-800">
+        <ul class="list-disc ml-5 space-y-1">
+          <li><strong>New option added:</strong> Show with "NEW" badge, empty mapping field</li>
+          <li><strong>Option removed:</strong> Show as "ORPHANED" with option to delete from mapping</li>
+          <li><strong>Option display changed:</strong> Show updated display, keep existing mapping</li>
+          <li><strong>Code changed:</strong> Treated as remove + add (orphan old, new unmapped)</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

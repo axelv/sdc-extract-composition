@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formatting Panel UI Options</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .option-box {
+      background: #f9fafb;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 32px;
+    }
+    .option-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 4px;
+    }
+    .option-desc {
+      font-size: 12px;
+      color: #6b7280;
+      margin-bottom: 20px;
+    }
+    .panel {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      overflow: hidden;
+      max-width: 500px;
+    }
+    .panel-header {
+      background: #f9fafb;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 8px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #6b7280;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .type-badge {
+      font-size: 11px;
+      font-weight: 500;
+      color: #3b82f6;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+    .filter-card {
+      padding: 12px;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    .filter-card:last-child {
+      border-bottom: none;
+    }
+    .drag-handle {
+      color: #d1d5db;
+      cursor: grab;
+      margin-right: 8px;
+    }
+    .drag-handle:hover {
+      color: #9ca3af;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      background: #f3f4f6;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      font-size: 12px;
+      color: #374151;
+    }
+    .chip-remove {
+      color: #9ca3af;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .chip-remove:hover {
+      color: #ef4444;
+    }
+    .pipeline-node {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 10px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      font-size: 12px;
+    }
+    .pipeline-arrow {
+      color: #d1d5db;
+      margin: 0 6px;
+    }
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    .toggle-row:last-child {
+      border-bottom: none;
+    }
+    .toggle {
+      width: 36px;
+      height: 20px;
+      background: #e5e7eb;
+      border-radius: 10px;
+      position: relative;
+      cursor: pointer;
+    }
+    .toggle.on {
+      background: #3b82f6;
+    }
+    .toggle::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      background: white;
+      border-radius: 50%;
+      top: 2px;
+      left: 2px;
+      transition: transform 0.15s;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+    .toggle.on::after {
+      transform: translateX(16px);
+    }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen p-8">
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-xl font-bold text-gray-900 mb-2">Formatting Panel UI</h1>
+    <p class="text-gray-500 text-sm mb-8">5 options for the "OPMAAK" / formatting filters section</p>
+
+    <!-- Current state reference -->
+    <div class="option-box border-2 border-red-200">
+      <div class="option-label text-red-600">Current: Verbose Cards</div>
+      <div class="option-desc">Each filter is a full card with description. Takes lots of space, hard to reorder.</div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <span>OPMAAK</span>
+          <span class="type-badge">date</span>
+        </div>
+        <div class="filter-card">
+          <div class="flex justify-between items-start mb-2">
+            <div class="font-medium text-sm">Default</div>
+            <div class="flex gap-2 text-xs">
+              <span class="text-blue-600">default</span>
+              <span class="text-red-500 cursor-pointer">Remove</span>
+            </div>
+          </div>
+          <div class="text-xs text-gray-500 mb-2">Render this value when the answer is empty.</div>
+          <input type="text" value="/" class="px-2 py-1 text-sm border border-gray-200 rounded w-48">
+        </div>
+        <div class="p-3 border-t border-gray-100">
+          <div class="flex gap-2">
+            <select class="flex-1 px-2 py-1.5 text-sm border border-gray-200 rounded">
+              <option>Add format...</option>
+            </select>
+            <button class="px-3 py-1.5 text-sm border border-gray-200 rounded text-gray-500">Add</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Option 1: Compact Chips -->
+    <div class="option-box">
+      <div class="option-label">Option 1: Compact Chips with Inline Edit</div>
+      <div class="option-desc">Filters as small chips. Click to expand/edit. Drag to reorder.</div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <span>Formatting</span>
+          <span class="type-badge">date</span>
+        </div>
+        <div class="p-3">
+          <div class="flex flex-wrap gap-2 mb-3">
+            <div class="chip">
+              <span class="drag-handle cursor-grab">⋮⋮</span>
+              <span class="font-medium">lowercase</span>
+              <span class="chip-remove">&times;</span>
+            </div>
+            <div class="chip bg-blue-50 border-blue-200">
+              <span class="drag-handle cursor-grab">⋮⋮</span>
+              <span class="font-medium">default:</span>
+              <input type="text" value="/" class="w-12 bg-transparent border-none outline-none text-sm">
+              <span class="chip-remove">&times;</span>
+            </div>
+          </div>
+          <select class="w-full px-2 py-1.5 text-sm border border-dashed border-gray-300 rounded text-gray-500 bg-transparent">
+            <option>+ Add formatting...</option>
+            <option>uppercase</option>
+            <option>lowercase</option>
+            <option>date format</option>
+            <option>default value</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Option 2: Visual Pipeline -->
+    <div class="option-box">
+      <div class="option-label">Option 2: Visual Pipeline Flow</div>
+      <div class="option-desc">Shows data transformation as a left-to-right flow. Clear order.</div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <span>Formatting Pipeline</span>
+          <span class="type-badge">date</span>
+        </div>
+        <div class="p-4">
+          <div class="flex items-center flex-wrap gap-1 mb-4">
+            <div class="pipeline-node bg-blue-50 border-blue-200 text-blue-700">
+              <span class="text-xs text-blue-500 mr-1">📅</span>
+              Date of Birth
+            </div>
+            <span class="pipeline-arrow">→</span>
+            <div class="pipeline-node group relative">
+              <span class="drag-handle">⋮⋮</span>
+              lowercase
+              <span class="ml-2 text-gray-400 hover:text-red-500 cursor-pointer">&times;</span>
+            </div>
+            <span class="pipeline-arrow">→</span>
+            <div class="pipeline-node group relative">
+              <span class="drag-handle">⋮⋮</span>
+              default: "/"
+              <span class="ml-2 text-gray-400 hover:text-red-500 cursor-pointer">&times;</span>
+            </div>
+            <span class="pipeline-arrow">→</span>
+            <div class="pipeline-node bg-green-50 border-green-200 text-green-700">
+              output
+            </div>
+          </div>
+          <button class="text-sm text-blue-600 hover:text-blue-700">+ Add step</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Option 3: Toggle List -->
+    <div class="option-box">
+      <div class="option-label">Option 3: Toggle List with Common Options</div>
+      <div class="option-desc">Pre-defined options as toggles. Most common use cases, no learning curve.</div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <span>Format Options</span>
+          <span class="type-badge">date</span>
+        </div>
+        <div class="toggle-row">
+          <div>
+            <div class="text-sm font-medium">Convert to lowercase</div>
+            <div class="text-xs text-gray-500">abc → abc</div>
+          </div>
+          <div class="toggle on"></div>
+        </div>
+        <div class="toggle-row">
+          <div>
+            <div class="text-sm font-medium">Convert to UPPERCASE</div>
+            <div class="text-xs text-gray-500">abc → ABC</div>
+          </div>
+          <div class="toggle"></div>
+        </div>
+        <div class="toggle-row bg-gray-50">
+          <div class="flex-1">
+            <div class="text-sm font-medium">Show this if empty</div>
+            <div class="text-xs text-gray-500">Fallback value when no data</div>
+          </div>
+          <input type="text" value="/" class="w-20 px-2 py-1 text-sm border border-gray-200 rounded mr-2">
+          <div class="toggle on"></div>
+        </div>
+        <div class="toggle-row">
+          <div>
+            <div class="text-sm font-medium">Format as date</div>
+            <div class="text-xs text-gray-500">2024-01-15 → 15/01/2024</div>
+          </div>
+          <div class="toggle"></div>
+        </div>
+        <div class="p-3 border-t border-gray-100">
+          <button class="text-xs text-gray-500 hover:text-gray-700">+ More options...</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Option 4: Stacked Cards with Drag -->
+    <div class="option-box">
+      <div class="option-label">Option 4: Draggable Stacked Cards</div>
+      <div class="option-desc">Compact cards with drag handles. Order is top-to-bottom.</div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <span>Formatting (2 active)</span>
+          <span class="type-badge">date</span>
+        </div>
+        <div class="p-2 space-y-1">
+          <div class="flex items-center gap-2 p-2 bg-gray-50 rounded border border-gray-200 group">
+            <span class="drag-handle text-gray-300 group-hover:text-gray-400">⋮⋮</span>
+            <span class="text-xs bg-gray-200 text-gray-600 px-1.5 py-0.5 rounded font-mono">1</span>
+            <span class="text-sm flex-1">lowercase</span>
+            <span class="text-gray-400 hover:text-red-500 cursor-pointer opacity-0 group-hover:opacity-100">&times;</span>
+          </div>
+          <div class="flex items-center gap-2 p-2 bg-gray-50 rounded border border-gray-200 group">
+            <span class="drag-handle text-gray-300 group-hover:text-gray-400">⋮⋮</span>
+            <span class="text-xs bg-gray-200 text-gray-600 px-1.5 py-0.5 rounded font-mono">2</span>
+            <span class="text-sm flex-1">default: <input type="text" value="/" class="w-16 px-1 py-0.5 text-sm border border-gray-200 rounded bg-white"></span>
+            <span class="text-gray-400 hover:text-red-500 cursor-pointer opacity-0 group-hover:opacity-100">&times;</span>
+          </div>
+        </div>
+        <div class="p-2 border-t border-gray-100">
+          <button class="w-full py-1.5 text-sm text-gray-500 hover:text-gray-700 hover:bg-gray-50 rounded border border-dashed border-gray-300">
+            + Add formatting
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Option 5: Minimal Inline -->
+    <div class="option-box">
+      <div class="option-label">Option 5: Minimal Inline Below Formula Bar</div>
+      <div class="option-desc">Formatting shown directly under the formula bar as inline chips. No separate panel.</div>
+
+      <div class="panel">
+        <!-- Simulated formula bar + formatting together -->
+        <div class="bg-gray-50 border-b border-gray-200">
+          <div class="flex items-center px-3 py-2 border-b border-gray-100">
+            <span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-xs font-semibold mr-3">fx</span>
+            <code class="text-xs text-gray-600 flex-1 font-mono">%resource.item.where(linkId='patient-dob').answer.value</code>
+          </div>
+          <div class="flex items-center gap-2 px-3 py-2">
+            <span class="text-xs text-gray-500">Format:</span>
+            <div class="flex flex-wrap gap-1">
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-white border border-gray-200 rounded text-xs">
+                lowercase
+                <span class="text-gray-400 hover:text-red-500 cursor-pointer">&times;</span>
+              </span>
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-white border border-gray-200 rounded text-xs">
+                default: "/"
+                <span class="text-gray-400 hover:text-red-500 cursor-pointer">&times;</span>
+              </span>
+              <select class="px-1 py-0.5 text-xs border border-dashed border-gray-300 rounded text-gray-400 bg-transparent">
+                <option>+</option>
+              </select>
+            </div>
+            <span class="ml-auto text-xs text-gray-400">→</span>
+            <span class="text-xs font-medium text-green-600">"15/01/2024"</span>
+          </div>
+        </div>
+        <div class="p-4 text-sm text-gray-500">
+          (Content editor would be here)
+        </div>
+      </div>
+    </div>
+
+    <!-- Recommendation -->
+    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+      <div class="font-medium text-blue-900 mb-2">Recommendation</div>
+      <div class="text-sm text-blue-800">
+        <strong>Option 5 (Minimal Inline)</strong> integrates best with the new formula bar - keeps everything together, shows preview.
+        <br><br>
+        <strong>Option 3 (Toggle List)</strong> is best for non-technical users - familiar toggle UI, pre-defined options, no confusing terminology.
+        <br><br>
+        <strong>Option 1 (Compact Chips)</strong> is a good middle ground - less space than current, supports reordering via drag.
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

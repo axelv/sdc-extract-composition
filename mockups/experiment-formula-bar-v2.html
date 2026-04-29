@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formula Bar - Attached to Content</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .modal {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      width: 600px;
+      margin: 0 auto;
+    }
+    .modal-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid #e5e7eb;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-body {
+      padding: 20px;
+    }
+    .modal-footer {
+      padding: 16px 20px;
+      border-top: 1px solid #e5e7eb;
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+    .pill {
+      display: inline-block;
+      background: #e8f2fc;
+      border: 1px solid #7eb3e0;
+      color: #2d6aa0;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .pill:hover {
+      background: #d0e6f7;
+    }
+    .pill.selected {
+      background: #2d6aa0;
+      color: white;
+      box-shadow: 0 0 0 2px #bdd7f0;
+    }
+    .content-wrapper {
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .formula-bar {
+      display: flex;
+      align-items: center;
+      background: #f9fafb;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 6px 10px;
+      min-height: 36px;
+    }
+    .formula-bar.disabled {
+      background: #f3f4f6;
+    }
+    .formula-bar-label {
+      background: #e5e7eb;
+      color: #6b7280;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
+    .formula-bar-label.active {
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+    .formula-bar-input {
+      flex: 1;
+      font-family: ui-monospace, monospace;
+      font-size: 12px;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: #374151;
+    }
+    .formula-bar-input:disabled {
+      color: #9ca3af;
+    }
+    .formula-bar-input::placeholder {
+      color: #9ca3af;
+      font-family: system-ui, sans-serif;
+      font-style: italic;
+    }
+    .content-area {
+      background: white;
+      padding: 16px;
+      font-size: 14px;
+      color: #374151;
+      line-height: 2;
+      min-height: 120px;
+    }
+    .context-btn {
+      padding: 6px 14px;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      font-size: 13px;
+      background: white;
+      cursor: pointer;
+    }
+    .context-btn:hover {
+      background: #f9fafb;
+    }
+    .context-btn.active {
+      background: #eff6ff;
+      border-color: #3b82f6;
+      color: #1d4ed8;
+    }
+    .option-box {
+      background: #f9fafb;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 32px;
+    }
+    .option-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 4px;
+    }
+    .option-desc {
+      font-size: 12px;
+      color: #6b7280;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen p-8">
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-xl font-bold text-gray-900 mb-2">Formula Bar - Attached to Content</h1>
+    <p class="text-gray-500 text-sm mb-8">Formula bar sits directly on top of content area, like Excel's formula bar above the grid</p>
+
+    <!-- Option 1: Simple integrated bar -->
+    <div class="option-box">
+      <div class="option-label">Option 1: Simple Integrated Bar</div>
+      <div class="option-desc">Formula bar is part of the content container. Shows field name when selected.</div>
+
+      <div class="modal">
+        <div class="modal-header">
+          Edit Section
+          <span class="text-gray-400 cursor-pointer">&times;</span>
+        </div>
+        <div class="modal-body space-y-4">
+          <!-- Context buttons -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Context</label>
+            <div class="flex gap-2">
+              <button class="context-btn active">— Always</button>
+              <button class="context-btn">&#x2387; Conditional</button>
+              <button class="context-btn">&#x21bb; For each</button>
+              <button class="context-btn">{} Custom</button>
+            </div>
+          </div>
+
+          <!-- Title -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Title</label>
+            <input type="text" value="Patient Info (Always)" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+          </div>
+
+          <!-- Content with integrated formula bar -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Content</label>
+            <div class="content-wrapper">
+              <div class="formula-bar">
+                <span class="formula-bar-label active">Patient Name</span>
+                <input type="text" class="formula-bar-input" value="%resource.item.where(linkId='patient-name').answer.value || downcase || default: &quot;XXX&quot;">
+              </div>
+              <div class="content-area">
+                Patient: <span class="pill selected">Patient Name</span><br>
+                Date of birth: <span class="pill">Date of Birth</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="px-4 py-2 text-sm text-gray-600">Cancel</button>
+          <button class="px-4 py-2 text-sm bg-blue-600 text-white rounded-lg">Save</button>
+        </div>
+      </div>
+
+      <!-- Empty state -->
+      <div class="mt-4 text-xs text-gray-500 mb-2">Empty state (no pill selected):</div>
+      <div class="content-wrapper" style="max-width: 400px;">
+        <div class="formula-bar disabled">
+          <span class="formula-bar-label">fx</span>
+          <input type="text" class="formula-bar-input" disabled placeholder="Select a field to edit">
+        </div>
+        <div class="content-area" style="min-height: 60px;">
+          Patient: <span class="pill">Patient Name</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Option 2: Bar with type indicator and preview -->
+    <div class="option-box">
+      <div class="option-label">Option 2: With Type + Preview</div>
+      <div class="option-desc">Shows field name, type badge, and live preview of result</div>
+
+      <div class="modal">
+        <div class="modal-header">
+          Edit Section
+          <span class="text-gray-400 cursor-pointer">&times;</span>
+        </div>
+        <div class="modal-body space-y-4">
+          <!-- Context buttons -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Context</label>
+            <div class="flex gap-2">
+              <button class="context-btn active">— Always</button>
+              <button class="context-btn">&#x2387; Conditional</button>
+              <button class="context-btn">&#x21bb; For each</button>
+              <button class="context-btn">{} Custom</button>
+            </div>
+          </div>
+
+          <!-- Title -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Title</label>
+            <input type="text" value="Patient Info (Always)" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+          </div>
+
+          <!-- Content with formula bar -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Content</label>
+            <div class="content-wrapper">
+              <!-- Formula bar with more info -->
+              <div class="formula-bar" style="flex-wrap: wrap; gap: 8px;">
+                <div class="flex items-center gap-2 flex-shrink-0">
+                  <span class="formula-bar-label active">Patient Name</span>
+                  <span class="text-xs text-gray-400">string</span>
+                </div>
+                <input type="text" class="formula-bar-input" style="min-width: 200px;" value="%resource.item.where(linkId='patient-name').answer.value || downcase">
+                <div class="flex items-center gap-2 flex-shrink-0 ml-auto border-l border-gray-200 pl-3">
+                  <span class="text-xs text-gray-500">=</span>
+                  <span class="text-sm font-medium text-green-600">"john doe"</span>
+                </div>
+              </div>
+              <div class="content-area">
+                Patient: <span class="pill selected">Patient Name</span><br>
+                Date of birth: <span class="pill">Date of Birth</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="px-4 py-2 text-sm text-gray-600">Cancel</button>
+          <button class="px-4 py-2 text-sm bg-blue-600 text-white rounded-lg">Save</button>
+        </div>
+      </div>
+
+      <!-- Empty state -->
+      <div class="mt-4 text-xs text-gray-500 mb-2">Empty state:</div>
+      <div class="content-wrapper" style="max-width: 400px;">
+        <div class="formula-bar disabled">
+          <span class="formula-bar-label">fx</span>
+          <span class="text-sm text-gray-400 italic">Click a field to edit</span>
+        </div>
+        <div class="content-area" style="min-height: 60px;">
+          Patient: <span class="pill">Patient Name</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Option 3: Two-row expandable -->
+    <div class="option-box">
+      <div class="option-label">Option 3: Two-Row Expandable</div>
+      <div class="option-desc">Collapses to single row when empty, expands to show expression + formatting when selected</div>
+
+      <div class="modal">
+        <div class="modal-header">
+          Edit Section
+          <span class="text-gray-400 cursor-pointer">&times;</span>
+        </div>
+        <div class="modal-body space-y-4">
+          <!-- Context buttons -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Context</label>
+            <div class="flex gap-2">
+              <button class="context-btn active">— Always</button>
+              <button class="context-btn">&#x2387; Conditional</button>
+              <button class="context-btn">&#x21bb; For each</button>
+              <button class="context-btn">{} Custom</button>
+            </div>
+          </div>
+
+          <!-- Title -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Title</label>
+            <input type="text" value="Patient Info (Always)" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+          </div>
+
+          <!-- Content with expanded formula bar -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Content</label>
+            <div class="content-wrapper">
+              <!-- Expanded state: two rows -->
+              <div class="bg-gray-50 border-b border-gray-200">
+                <!-- Row 1: Field info -->
+                <div class="flex items-center px-3 py-2 border-b border-gray-100">
+                  <span class="formula-bar-label active">Patient Name</span>
+                  <span class="text-xs text-gray-400 ml-2">string</span>
+                  <span class="text-xs text-gray-400 mx-2">|</span>
+                  <span class="text-xs text-green-600 font-medium">= "john doe"</span>
+                </div>
+                <!-- Row 2: Expression -->
+                <div class="flex items-center px-3 py-2">
+                  <span class="text-xs text-gray-500 mr-2 font-medium">fx</span>
+                  <input type="text" class="flex-1 font-mono text-xs border-none outline-none bg-transparent" value="%resource.item.where(linkId='patient-name').answer.value || downcase || default: &quot;XXX&quot;">
+                </div>
+              </div>
+              <div class="content-area">
+                Patient: <span class="pill selected">Patient Name</span><br>
+                Date of birth: <span class="pill">Date of Birth</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="px-4 py-2 text-sm text-gray-600">Cancel</button>
+          <button class="px-4 py-2 text-sm bg-blue-600 text-white rounded-lg">Save</button>
+        </div>
+      </div>
+
+      <!-- Collapsed state -->
+      <div class="mt-4 text-xs text-gray-500 mb-2">Collapsed state (no selection):</div>
+      <div class="content-wrapper" style="max-width: 400px;">
+        <div class="formula-bar disabled" style="padding: 8px 12px;">
+          <span class="text-xs text-gray-500 mr-2">fx</span>
+          <span class="text-sm text-gray-400 italic">Select a field to edit expression</span>
+        </div>
+        <div class="content-area" style="min-height: 60px;">
+          Patient: <span class="pill">Patient Name</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Comparison side by side -->
+    <div class="bg-white border border-gray-200 rounded-lg p-6 mb-8">
+      <div class="font-medium text-gray-900 mb-4">Quick Comparison</div>
+      <div class="grid grid-cols-3 gap-4 text-sm">
+        <div class="text-center">
+          <div class="font-medium mb-2">Option 1</div>
+          <div class="text-gray-500 text-xs">Minimal, field name in badge</div>
+        </div>
+        <div class="text-center">
+          <div class="font-medium mb-2">Option 2</div>
+          <div class="text-gray-500 text-xs">Inline preview on right</div>
+        </div>
+        <div class="text-center">
+          <div class="font-medium mb-2">Option 3</div>
+          <div class="text-gray-500 text-xs">Two rows, most info</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recommendation -->
+    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+      <div class="font-medium text-blue-900 mb-2">Recommendation</div>
+      <div class="text-sm text-blue-800">
+        <strong>Option 1</strong> for simplicity - most Excel-like, minimal space used.
+        <br><br>
+        <strong>Option 2</strong> if you want to show the preview inline (helps users see what the expression evaluates to).
+        <br><br>
+        All options keep the formula bar attached to the content area, so it's clear what you're editing.
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

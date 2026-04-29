@@ -46,7 +46,7 @@ export function QuestionnaireFormPanel({
           )}
           <button
             onClick={() => fileInputRef.current?.click()}
-            className="text-xs text-gray-500 hover:text-gray-700 border border-gray-300 rounded px-2 py-0.5"
+            className="panel-header-btn"
           >
             Load QR
           </button>
