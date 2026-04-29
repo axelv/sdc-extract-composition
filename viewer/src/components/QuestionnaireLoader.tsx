@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Questionnaire } from "../types";
 
 const iterationModules = import.meta.glob(
@@ -113,7 +113,6 @@ function IterationDropdown({
 }
 
 export function QuestionnaireLoader({ onLoad }: QuestionnaireLoaderProps) {
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const [initialSelection, setInitialSelection] = useState<string>();
 
   // Auto-load from URL param or default on mount
@@ -127,43 +126,9 @@ export function QuestionnaireLoader({ onLoad }: QuestionnaireLoaderProps) {
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleFileUpload = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e.target.files?.[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = () => {
-        try {
-          const parsed = JSON.parse(reader.result as string);
-          if (parsed.resourceType !== "Questionnaire") return;
-          onLoad(parsed as Questionnaire);
-        } catch {
-          // ignore invalid JSON
-        }
-      };
-      reader.readAsText(file);
-    },
-    [onLoad]
-  );
-
   return (
     <div className="flex items-center gap-3">
       <IterationDropdown onSelect={onLoad} initialSelection={initialSelection} />
-      {/* Upload JSON hidden for now
-      <button
-        onClick={() => fileInputRef.current?.click()}
-        className="border border-gray-300 rounded px-3 py-1.5 text-sm bg-white hover:bg-gray-50"
-      >
-        Upload JSON
-      </button>
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept=".json"
-        onChange={handleFileUpload}
-        className="hidden"
-      />
-      */}
     </div>
   );
 }
