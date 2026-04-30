@@ -62,7 +62,28 @@ Embed values using double curly braces:
 {{%context.item.where(linkId='LINK_ID').answer.value}}
 ```
 
-Use `%resource` for root-level items, `%context` within repeating/conditional sections.
+### CRITICAL: Understanding %context vs %resource paths
+
+`%context` is NOT automatically inside a parent group. It depends on the PARENT section's context expression:
+
+1. **Parent has NO context expression (always)**: `%context` = `%resource` (root level)
+   → You MUST use the FULL path: `%resource.item.where(linkId='PARENT_GROUP').item.where(linkId='CHILD')...`
+
+2. **Parent HAS a context expression**: `%context` = whatever that expression resolves to
+   → You can use relative paths: `%context.item.where(linkId='CHILD')...`
+
+EXAMPLE - Parent section has no context (always visible):
+```
+WRONG:  %context.where(%context.item.where(linkId='child-item').answer.exists())
+RIGHT:  %context.where(%resource.item.where(linkId='parent-group').item.where(linkId='child-item').answer.exists())
+```
+
+EXAMPLE - Parent section has context `%resource.item.where(linkId='parent-group')`:
+```
+RIGHT:  %context.where(%context.item.where(linkId='child-item').answer.exists())
+```
+
+Always check the questionnaire structure to build the correct path from root.
 
 ### Value Access Patterns
 

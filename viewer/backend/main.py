@@ -18,18 +18,20 @@ _generate_composition = None
 def get_google_provider():
     global _google_provider
     if _google_provider is None:
-        if not os.environ.get("GOOGLE_API_KEY"):
-            raise HTTPException(status_code=500, detail="GOOGLE_API_KEY not configured")
+        api_key = os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY")
+        if not api_key:
+            raise HTTPException(status_code=500, detail="GOOGLE_API_KEY or GEMINI_API_KEY not configured")
         from pydantic_ai.providers.google import GoogleProvider
-        _google_provider = GoogleProvider()
+        _google_provider = GoogleProvider(api_key=api_key)
     return _google_provider
 
 
 def get_generate_composition():
     global _generate_composition
     if _generate_composition is None:
-        if not os.environ.get("GOOGLE_API_KEY"):
-            raise HTTPException(status_code=500, detail="GOOGLE_API_KEY not configured")
+        api_key = os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY")
+        if not api_key:
+            raise HTTPException(status_code=500, detail="GOOGLE_API_KEY or GEMINI_API_KEY not configured")
         from agent import generate_composition
         _generate_composition = generate_composition
     return _generate_composition
