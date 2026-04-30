@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Empty State - 5 Mockups</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #e5e7eb; padding: 40px; }
+
+    h1 { text-align: center; color: #1f2937; margin-bottom: 40px; font-size: 24px; }
+
+    .mockup-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 60px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .mockup-section {
+      background: #f5f5f5;
+      border-radius: 16px;
+      padding: 32px;
+    }
+
+    .mockup-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #6b7280;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ===== MOCKUP 1: Centered Cards ===== */
+    .m1-empty-state {
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+      padding: 48px 32px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+
+    .m1-ai-icon {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, #1e3a5f 0%, #3b82f6 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+    }
+
+    .m1-ai-icon svg { width: 28px; height: 28px; color: white; }
+    .m1-title { font-size: 18px; font-weight: 600; color: #1e3a5f; margin-bottom: 8px; }
+    .m1-subtitle { font-size: 14px; color: #6b7280; margin-bottom: 24px; }
+
+    .m1-presets {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .m1-preset {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 16px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-align: left;
+    }
+
+    .m1-preset:hover {
+      background: #eff6ff;
+      border-color: #3b82f6;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+    }
+
+    .m1-preset-title { font-size: 14px; font-weight: 600; color: #1e3a5f; margin-bottom: 4px; }
+    .m1-preset-desc { font-size: 12px; color: #64748b; }
+
+    .m1-custom-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 20px;
+      background: transparent;
+      border: 1px dashed #3b82f6;
+      border-radius: 8px;
+      color: #3b82f6;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .m1-custom-btn:hover { background: #eff6ff; }
+
+    .m1-divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 24px 0;
+      color: #9ca3af;
+      font-size: 13px;
+    }
+
+    .m1-divider::before, .m1-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #e5e7eb;
+    }
+
+    .m1-manual-btn {
+      padding: 12px 24px;
+      background: white;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      color: #374151;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .m1-manual-btn:hover { background: #f9fafb; border-color: #9ca3af; }
+
+    /* ===== MOCKUP 2: Horizontal Pills ===== */
+    .m2-empty-state {
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+      padding: 56px 40px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+
+    .m2-sparkle { font-size: 32px; margin-bottom: 16px; }
+    .m2-title { font-size: 20px; font-weight: 600; color: #111827; margin-bottom: 8px; }
+    .m2-subtitle { font-size: 14px; color: #6b7280; margin-bottom: 32px; }
+
+    .m2-presets {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .m2-preset {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
+      border: none;
+      border-radius: 999px;
+      color: white;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .m2-preset:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.35);
+    }
+
+    .m2-preset svg { width: 16px; height: 16px; }
+
+    .m2-custom-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 18px;
+      background: white;
+      border: 2px solid #e5e7eb;
+      border-radius: 999px;
+      color: #4b5563;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .m2-custom-btn:hover { border-color: #2563eb; color: #2563eb; }
+
+    .m2-divider {
+      margin: 32px 0;
+      color: #9ca3af;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .m2-manual-btn {
+      padding: 14px 28px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      color: #475569;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .m2-manual-btn:hover { background: #f1f5f9; border-color: #cbd5e1; }
+
+    /* ===== MOCKUP 3: Minimal Sidebar ===== */
+    .m3-empty-state {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 32px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+
+    .m3-ai-section {
+      background: linear-gradient(135deg, #f0f7ff 0%, #e8f4ff 100%);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .m3-ai-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .m3-ai-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      background: #1e3a5f;
+      border-radius: 6px;
+      color: white;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .m3-ai-title { font-size: 15px; font-weight: 600; color: #1e3a5f; }
+    .m3-presets { display: flex; flex-direction: column; gap: 8px; }
+
+    .m3-preset {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .m3-preset:hover {
+      border-color: #3b82f6;
+      box-shadow: 0 2px 8px rgba(59, 130, 246, 0.12);
+    }
+
+    .m3-preset-left { display: flex; flex-direction: column; }
+    .m3-preset-title { font-size: 13px; font-weight: 600; color: #1e293b; }
+    .m3-preset-desc { font-size: 11px; color: #64748b; margin-top: 2px; }
+    .m3-preset-arrow { color: #94a3b8; font-size: 18px; transition: transform 0.15s; }
+    .m3-preset:hover .m3-preset-arrow { transform: translateX(3px); color: #3b82f6; }
+
+    .m3-custom-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      margin-top: 8px;
+    }
+
+    .m3-custom-link { color: #3b82f6; font-size: 13px; text-decoration: none; cursor: pointer; }
+    .m3-custom-link:hover { text-decoration: underline; }
+
+    .m3-manual-section {
+      text-align: center;
+      padding-top: 20px;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    .m3-manual-label { font-size: 12px; color: #9ca3af; margin-bottom: 12px; }
+
+    .m3-manual-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 20px;
+      background: white;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      color: #374151;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .m3-manual-btn:hover { background: #f9fafb; border-color: #9ca3af; }
+    .m3-manual-btn svg { width: 14px; height: 14px; }
+
+    /* ===== MOCKUP 4: Split Action ===== */
+    .m4-empty-state {
+      max-width: 640px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+
+    .m4-header {
+      text-align: center;
+      padding: 32px 32px 24px;
+    }
+
+    .m4-header-title { font-size: 16px; font-weight: 500; color: #6b7280; }
+
+    .m4-split { display: grid; grid-template-columns: 1fr 1fr; }
+
+    .m4-ai-side {
+      padding: 28px;
+      background: linear-gradient(180deg, #1e3a5f 0%, #2d4a6f 100%);
+      color: white;
+    }
+
+    .m4-manual-side { padding: 28px; background: #fafafa; }
+
+    .m4-side-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    .m4-ai-side .m4-side-icon { background: rgba(255,255,255,0.15); }
+    .m4-manual-side .m4-side-icon { background: white; border: 1px solid #e5e7eb; }
+    .m4-side-icon svg { width: 22px; height: 22px; }
+    .m4-ai-side .m4-side-icon svg { color: white; }
+    .m4-manual-side .m4-side-icon svg { color: #6b7280; }
+
+    .m4-side-title { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+    .m4-side-desc { font-size: 13px; margin-bottom: 20px; opacity: 0.85; }
+    .m4-manual-side .m4-side-title { color: #1f2937; }
+    .m4-manual-side .m4-side-desc { color: #6b7280; }
+
+    .m4-ai-presets { display: flex; flex-direction: column; gap: 8px; }
+
+    .m4-ai-preset {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 8px;
+      color: white;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .m4-ai-preset:hover {
+      background: rgba(255,255,255,0.2);
+      border-color: rgba(255,255,255,0.4);
+    }
+
+    .m4-ai-preset-icon {
+      width: 24px;
+      height: 24px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+    }
+
+    .m4-ai-custom { margin-top: 12px; text-align: center; }
+    .m4-ai-custom a { color: rgba(255,255,255,0.7); font-size: 12px; text-decoration: none; cursor: pointer; }
+    .m4-ai-custom a:hover { color: white; text-decoration: underline; }
+
+    .m4-manual-btn {
+      width: 100%;
+      padding: 14px;
+      background: white;
+      border: 2px dashed #d1d5db;
+      border-radius: 10px;
+      color: #6b7280;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .m4-manual-btn:hover { background: #f9fafb; border-color: #9ca3af; color: #374151; }
+
+    /* ===== MOCKUP 5: Floating Tiles ===== */
+    .m5-empty-state {
+      max-width: 580px;
+      margin: 0 auto;
+      text-align: center;
+      padding: 48px 32px;
+      background: white;
+      border-radius: 16px;
+    }
+
+    .m5-empty-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 20px;
+      background: #f0f0f0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .m5-empty-icon svg { width: 28px; height: 28px; color: #9ca3af; }
+    .m5-title { font-size: 18px; font-weight: 500; color: #374151; margin-bottom: 32px; }
+
+    .m5-presets {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .m5-preset {
+      padding: 20px 12px;
+      background: #f8fafc;
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .m5-preset:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(30, 58, 95, 0.15), 0 0 0 2px #2563eb;
+    }
+
+    .m5-preset-emoji {
+      font-size: 28px;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .m5-preset-title { display: block; font-size: 13px; font-weight: 600; color: #1e3a5f; margin-bottom: 4px; }
+    .m5-preset-desc { display: block; font-size: 11px; color: #6b7280; line-height: 1.4; }
+    .m5-custom-row { margin-bottom: 28px; }
+
+    .m5-custom-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .m5-custom-btn:hover {
+      transform: scale(1.02);
+      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.35);
+    }
+
+    .m5-custom-btn svg { width: 18px; height: 18px; }
+
+    .m5-divider {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin: 24px 0;
+    }
+
+    .m5-divider::before, .m5-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #e5e7eb;
+    }
+
+    .m5-divider-text { color: #9ca3af; font-size: 12px; font-weight: 500; }
+
+    .m5-manual-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 28px;
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      color: #4b5563;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .m5-manual-btn:hover { background: #f9fafb; border-color: #d1d5db; }
+    .m5-manual-btn svg { width: 16px; height: 16px; }
+    .m5-powered { margin-top: 24px; font-size: 11px; color: #9ca3af; }
+    .m5-powered span { color: #6b7280; font-weight: 500; }
+  </style>
+</head>
+<body>
+  <h1>AI Empty State — 5 Design Options</h1>
+
+  <div class="mockup-grid">
+    <!-- MOCKUP 1 -->
+    <section class="mockup-section">
+      <div class="mockup-label">1. Centered Cards with Icon</div>
+      <div class="m1-empty-state">
+        <div class="m1-ai-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/>
+            <circle cx="8.5" cy="14.5" r="1.5"/><circle cx="15.5" cy="14.5" r="1.5"/>
+          </svg>
+        </div>
+        <h2 class="m1-title">Generate with Tiro AI</h2>
+        <p class="m1-subtitle">Choose a style to get started instantly</p>
+        <div class="m1-presets">
+          <button class="m1-preset"><span class="m1-preset-title">Compact</span><span class="m1-preset-desc">Short, condensed text</span></button>
+          <button class="m1-preset"><span class="m1-preset-title">Bullets</span><span class="m1-preset-desc">Structured with bullet points</span></button>
+          <button class="m1-preset"><span class="m1-preset-title">Elaborate</span><span class="m1-preset-desc">Detailed full sentences</span></button>
+          <button class="m1-preset"><span class="m1-preset-title">Laymen</span><span class="m1-preset-desc">Simple, patient-friendly</span></button>
+        </div>
+        <button class="m1-custom-btn">Custom instructions...</button>
+        <div class="m1-divider">or</div>
+        <button class="m1-manual-btn">Add section</button>
+      </div>
+    </section>
+
+    <!-- MOCKUP 2 -->
+    <section class="mockup-section">
+      <div class="mockup-label">2. Horizontal Pills</div>
+      <div class="m2-empty-state">
+        <div class="m2-sparkle">✨</div>
+        <h2 class="m2-title">Start with AI</h2>
+        <p class="m2-subtitle">Pick a style and Tiro AI will generate your composition</p>
+        <div class="m2-presets">
+          <button class="m2-preset">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="7" y1="8" x2="17" y2="8"/><line x1="7" y1="12" x2="13" y2="12"/></svg>
+            Compact
+          </button>
+          <button class="m2-preset">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="4" cy="6" r="1" fill="currentColor"/><circle cx="4" cy="12" r="1" fill="currentColor"/><circle cx="4" cy="18" r="1" fill="currentColor"/></svg>
+            Bullets
+          </button>
+          <button class="m2-preset">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+            Elaborate
+          </button>
+          <button class="m2-preset">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            Laymen
+          </button>
+          <button class="m2-custom-btn">Custom...</button>
+        </div>
+        <div class="m2-divider">— or build from scratch —</div>
+        <button class="m2-manual-btn">+ Add section manually</button>
+      </div>
+    </section>
+
+    <!-- MOCKUP 3 -->
+    <section class="mockup-section">
+      <div class="mockup-label">3. Minimal List with AI Badge</div>
+      <div class="m3-empty-state">
+        <div class="m3-ai-section">
+          <div class="m3-ai-header">
+            <span class="m3-ai-badge">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              AI
+            </span>
+            <span class="m3-ai-title">Quick Start</span>
+          </div>
+          <div class="m3-presets">
+            <button class="m3-preset"><div class="m3-preset-left"><span class="m3-preset-title">Compact</span><span class="m3-preset-desc">Short, condensed text</span></div><span class="m3-preset-arrow">→</span></button>
+            <button class="m3-preset"><div class="m3-preset-left"><span class="m3-preset-title">Bullets</span><span class="m3-preset-desc">Structured with bullet points</span></div><span class="m3-preset-arrow">→</span></button>
+            <button class="m3-preset"><div class="m3-preset-left"><span class="m3-preset-title">Elaborate</span><span class="m3-preset-desc">Detailed full sentences</span></div><span class="m3-preset-arrow">→</span></button>
+            <button class="m3-preset"><div class="m3-preset-left"><span class="m3-preset-title">Laymen</span><span class="m3-preset-desc">Simple, patient-friendly</span></div><span class="m3-preset-arrow">→</span></button>
+          </div>
+          <div class="m3-custom-row"><a class="m3-custom-link">Or describe your own style...</a></div>
+        </div>
+        <div class="m3-manual-section">
+          <p class="m3-manual-label">Prefer manual control?</p>
+          <button class="m3-manual-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add section
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- MOCKUP 4 -->
+    <section class="mockup-section">
+      <div class="mockup-label">4. Split Panel (AI vs Manual)</div>
+      <div class="m4-empty-state">
+        <div class="m4-header"><h2 class="m4-header-title">No sections yet — how would you like to start?</h2></div>
+        <div class="m4-split">
+          <div class="m4-ai-side">
+            <div class="m4-side-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+            <h3 class="m4-side-title">Generate with AI</h3>
+            <p class="m4-side-desc">Let Tiro AI create a composition based on your questionnaire</p>
+            <div class="m4-ai-presets">
+              <button class="m4-ai-preset"><span class="m4-ai-preset-icon">📝</span><span>Compact — short & condensed</span></button>
+              <button class="m4-ai-preset"><span class="m4-ai-preset-icon">•</span><span>Bullets — structured lists</span></button>
+              <button class="m4-ai-preset"><span class="m4-ai-preset-icon">📄</span><span>Elaborate — full detail</span></button>
+              <button class="m4-ai-preset"><span class="m4-ai-preset-icon">👤</span><span>Laymen — patient-friendly</span></button>
+            </div>
+            <div class="m4-ai-custom"><a>Custom instructions...</a></div>
+          </div>
+          <div class="m4-manual-side">
+            <div class="m4-side-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+            <h3 class="m4-side-title">Build manually</h3>
+            <p class="m4-side-desc">Create sections one by one with full control over structure</p>
+            <button class="m4-manual-btn">+ Add your first section</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MOCKUP 5 -->
+    <section class="mockup-section">
+      <div class="mockup-label">5. Floating Tiles with Emoji</div>
+      <div class="m5-empty-state">
+        <div class="m5-empty-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="14" y2="12"/><line x1="8" y1="16" x2="10" y2="16"/></svg>
+        </div>
+        <h2 class="m5-title">Your composition is empty</h2>
+        <div class="m5-presets">
+          <button class="m5-preset"><span class="m5-preset-emoji">⚡️</span><span class="m5-preset-title">Compact</span><span class="m5-preset-desc">Short & condensed</span></button>
+          <button class="m5-preset"><span class="m5-preset-emoji">📋</span><span class="m5-preset-title">Bullets</span><span class="m5-preset-desc">Structured lists</span></button>
+          <button class="m5-preset"><span class="m5-preset-emoji">📝</span><span class="m5-preset-title">Elaborate</span><span class="m5-preset-desc">Full detail</span></button>
+          <button class="m5-preset"><span class="m5-preset-emoji">💬</span><span class="m5-preset-title">Laymen</span><span class="m5-preset-desc">Patient-friendly</span></button>
+        </div>
+        <div class="m5-custom-row">
+          <button class="m5-custom-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/><circle cx="8.5" cy="14.5" r="1.5"/><circle cx="15.5" cy="14.5" r="1.5"/></svg>
+            Generate with custom instructions
+          </button>
+        </div>
+        <div class="m5-divider"><span class="m5-divider-text">OR</span></div>
+        <button class="m5-manual-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add section manually
+        </button>
+        <p class="m5-powered">AI powered by <span>Tiro AI</span></p>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

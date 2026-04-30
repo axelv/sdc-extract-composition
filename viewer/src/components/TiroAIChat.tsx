@@ -1,6 +1,10 @@
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback, forwardRef, useImperativeHandle } from "react";
 import type { Composition, CompositionSection, Questionnaire, AnimationState } from "../types";
 import "./tiro-ai-chat.css";
+
+export interface TiroAIChatHandle {
+  openWithPrompt: (prompt?: string) => void;
+}
 
 const THINKING_MESSAGES = [
   "Thinking...",
@@ -159,11 +163,11 @@ function removeDeletedSections(comp: Composition): Composition {
   return updated;
 }
 
-export function TiroAIChat({
+export const TiroAIChat = forwardRef<TiroAIChatHandle, TiroAIChatProps>(function TiroAIChat({
   questionnaire,
   composition,
   onCompositionChange,
-}: TiroAIChatProps) {
+}, ref) {
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -172,9 +176,19 @@ export function TiroAIChat({
   const [currentAction, setCurrentAction] = useState<string | null>(null);
   const [thinkingStatus, setThinkingStatus] = useState(THINKING_MESSAGES[0]);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [pendingPrompt, setPendingPrompt] = useState<string | null>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const chatBoxRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useImperativeHandle(ref, () => ({
+    openWithPrompt: (prompt?: string) => {
+      setIsOpen(true);
+      if (prompt) {
+        setPendingPrompt(prompt);
+      }
+    },
+  }));
 
   useEffect(() => {
     if (isOpen && inputRef.current) {
@@ -207,6 +221,7 @@ export function TiroAIChat({
       return () => document.removeEventListener("mousedown", handleClickOutside);
     }
   }, [isOpen]);
+
 
   const playbackActions = useCallback(
     async (actions: AgentAction[], startComposition: Composition) => {
@@ -307,6 +322,13 @@ export function TiroAIChat({
       handleSubmit();
     }
   };
+
+  useEffect(() => {
+    if (pendingPrompt && isOpen && !isLoading) {
+      handleSubmit(pendingPrompt);
+      setPendingPrompt(null);
+    }
+  }, [pendingPrompt, isOpen, isLoading]);
 
   return (
     <>
@@ -456,4 +478,4 @@ export function TiroAIChat({
       )}
     </>
   );
-}
+});
