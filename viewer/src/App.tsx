@@ -15,6 +15,7 @@ import { QuestionnaireFormPanel } from "./components/QuestionnaireFormPanel";
 import { CompositionTemplatePanel } from "./components/CompositionTemplatePanel";
 import { RenderedOutputPanel } from "./components/RenderedOutputPanel";
 import { TutorialModal } from "./components/TutorialModal";
+import { TiroAIChat } from "./components/TiroAIChat";
 import { WasmQuestionnaireIndexProvider } from "./components/lexical/WasmQuestionnaireIndexContext";
 import { DebugContext } from "./contexts/DebugContext";
 
@@ -325,6 +326,11 @@ function App() {
               </Panel>
             </PanelGroup>
           </WasmQuestionnaireIndexProvider>
+          <TiroAIChat
+            questionnaire={questionnaire}
+            composition={composition}
+            onCompositionChange={setComposition}
+          />
         </DebugContext.Provider>
       )}
     </div>

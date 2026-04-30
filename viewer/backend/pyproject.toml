@@ -5,6 +5,10 @@ description = "FastAPI backend for SDC Composition template rendering"
 requires-python = ">=3.12"
 dependencies = [
     "fastapi>=0.115",
-    "uvicorn>=0.34",
+    "uvicorn>=0.34,<0.45",
     "fhirpathpy>=1.1",
+    "pydantic-ai-slim[google,logfire]>=1.87.0,<1.88.0",
+    "pydantic-ai-harness[code-mode]>=0.2.0",
+    "pydantic-ai[google,logfire]>=1.87.0,<1.88.0",
+    "mammoth>=1.12.0",
 ]

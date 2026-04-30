@@ -419,7 +419,12 @@ def _render_single(
     """Render one section instance with a resolved base path."""
     section_text = section.get("text", {}).get("div", "")
     rendered = replace_placeholders(section_text, resource, base)
-    inner = extract_div_content(rendered)
+    inner = extract_div_content(rendered).strip()
+
+    # Wrap non-empty content in <p> if it doesn't already contain block elements
+    has_block = any(tag in inner.lower() for tag in ["<p", "<div", "<h1", "<h2", "<h3", "<h4", "<h5", "<h6", "<ul", "<ol", "<table"])
+    if inner and not has_block:
+        inner = f"<p>{inner}</p>"
 
     # Recursively render child sections
     child_parts = []

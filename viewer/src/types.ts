@@ -10,6 +10,8 @@ export interface Narrative {
   div: string;
 }
 
+export type AnimationState = "adding" | "updating" | "deleting";
+
 export interface CompositionSection {
   title?: string;
   code?: {
@@ -18,6 +20,8 @@ export interface CompositionSection {
   text?: Narrative;
   extension?: Extension[];
   section?: CompositionSection[];
+  _id?: string;
+  _animationState?: AnimationState;
 }
 
 export interface Composition {
