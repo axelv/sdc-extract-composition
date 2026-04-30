@@ -15,6 +15,7 @@ import { QuestionnaireFormPanel } from "./components/QuestionnaireFormPanel";
 import { CompositionTemplatePanel } from "./components/CompositionTemplatePanel";
 import { RenderedOutputPanel } from "./components/RenderedOutputPanel";
 import { TutorialModal } from "./components/TutorialModal";
+import { TiroAIChat, type TiroAIChatHandle } from "./components/TiroAIChat";
 import { WasmQuestionnaireIndexProvider } from "./components/lexical/WasmQuestionnaireIndexContext";
 import { DebugContext } from "./contexts/DebugContext";
 
@@ -32,6 +33,11 @@ function App() {
   const [renderLoading, setRenderLoading] = useState(false);
   const [debugMode, setDebugMode] = useState(false);
   const [showTutorial, setShowTutorial] = useState(true);
+  const tiroAIChatRef = useRef<TiroAIChatHandle>(null);
+
+  const handleAIQuickStart = useCallback((preset?: string) => {
+    tiroAIChatRef.current?.openWithPrompt(preset);
+  }, []);
 
   // Derive composition from questionnaire
   useEffect(() => {
@@ -313,6 +319,7 @@ function App() {
                   onClearSections={handleClearSections}
                   onImportComposition={setComposition}
                   onSectionChange={handleSectionChange}
+                  onAIQuickStart={handleAIQuickStart}
                 />
               </Panel>
               <PanelResizeHandle className="panel-resize-handle" />
@@ -325,6 +332,12 @@ function App() {
               </Panel>
             </PanelGroup>
           </WasmQuestionnaireIndexProvider>
+          <TiroAIChat
+            ref={tiroAIChatRef}
+            questionnaire={questionnaire}
+            composition={composition}
+            onCompositionChange={setComposition}
+          />
         </DebugContext.Provider>
       )}
     </div>

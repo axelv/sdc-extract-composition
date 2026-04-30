@@ -25,6 +25,7 @@ interface CompositionTemplatePanelProps {
     newTitle: string,
     newContextExpression: string
   ) => void;
+  onAIQuickStart?: (preset?: string) => void;
 }
 
 function downloadJson(data: unknown, filename: string) {
@@ -51,6 +52,7 @@ export function CompositionTemplatePanel({
   onClearSections,
   onImportComposition,
   onSectionChange,
+  onAIQuickStart,
 }: CompositionTemplatePanelProps) {
   const [showJson, setShowJson] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -145,6 +147,7 @@ export function CompositionTemplatePanel({
               onSectionChange={onSectionChange}
               onAddSection={onAddSection}
               onRemoveSection={onRemoveSection}
+              onAIQuickStart={onAIQuickStart}
             />
           )
         )}

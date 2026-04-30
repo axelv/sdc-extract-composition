@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Agent Animation States</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .option-box {
+      background: #f9fafb;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 32px;
+    }
+    .option-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 4px;
+    }
+    .option-desc {
+      font-size: 12px;
+      color: #6b7280;
+      margin-bottom: 16px;
+    }
+
+    /* Base section styles */
+    .section {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-left: 3px solid #a78bfa;
+      border-radius: 8px;
+      padding: 12px 16px;
+      position: relative;
+      margin-bottom: 8px;
+    }
+    .section.none { border-left-color: #60a5fa; }
+    .section.repeating { border-left-color: #4ade80; }
+    .section-title {
+      font-weight: 500;
+      color: #111827;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+    .section-content {
+      color: #6b7280;
+      font-size: 13px;
+    }
+    .context-icon {
+      position: absolute;
+      left: -11px;
+      top: 12px;
+      width: 18px;
+      height: 18px;
+      background: #a78bfa;
+      color: white;
+      border-radius: 50%;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .section.none .context-icon { background: #60a5fa; }
+    .section.repeating .context-icon { background: #4ade80; }
+    .pill {
+      display: inline-block;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1d4ed8;
+      padding: 0px 6px;
+      border-radius: 10px;
+      font-size: 11px;
+    }
+
+    /* Animation states */
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes pulseGreen {
+      0%, 100% {
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4);
+      }
+      50% {
+        box-shadow: 0 0 0 8px rgba(34, 197, 94, 0);
+      }
+    }
+
+    @keyframes pulseYellow {
+      0%, 100% {
+        box-shadow: 0 0 0 0 rgba(234, 179, 8, 0.4);
+      }
+      50% {
+        box-shadow: 0 0 0 8px rgba(234, 179, 8, 0);
+      }
+    }
+
+    @keyframes shrinkOut {
+      from {
+        opacity: 1;
+        transform: scaleY(1);
+        max-height: 100px;
+      }
+      to {
+        opacity: 0;
+        transform: scaleY(0);
+        max-height: 0;
+        padding: 0;
+        margin: 0;
+      }
+    }
+
+    .section.adding {
+      animation: slideIn 0.3s ease-out, pulseGreen 0.6s ease-in-out;
+      border-color: #22c55e;
+      background: linear-gradient(90deg, #f0fdf4 0%, white 50%);
+    }
+
+    .section.updating {
+      animation: pulseYellow 0.6s ease-in-out;
+      border-color: #eab308;
+      background: linear-gradient(90deg, #fefce8 0%, white 50%);
+    }
+
+    .section.deleting {
+      animation: shrinkOut 0.4s ease-in forwards;
+      border-color: #ef4444;
+      background: linear-gradient(90deg, #fef2f2 0%, white 50%);
+      opacity: 0.6;
+    }
+
+    /* Status indicator */
+    .ai-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .ai-status.adding {
+      background: #dcfce7;
+      color: #166534;
+    }
+    .ai-status.updating {
+      background: #fef9c3;
+      color: #854d0e;
+    }
+    .ai-status.deleting {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+    .ai-status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      animation: pulse 1s infinite;
+    }
+    .ai-status.adding .ai-status-dot { background: #22c55e; }
+    .ai-status.updating .ai-status-dot { background: #eab308; }
+    .ai-status.deleting .ai-status-dot { background: #ef4444; }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    /* Demo button */
+    .demo-btn {
+      padding: 8px 16px;
+      background: #6366f1;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      cursor: pointer;
+      margin-right: 8px;
+    }
+    .demo-btn:hover {
+      background: #4f46e5;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 p-8">
+  <div class="max-w-3xl mx-auto">
+    <h1 class="text-2xl font-bold text-gray-900 mb-2">AI Agent Animation States</h1>
+    <p class="text-gray-600 mb-8">How sections animate when the AI adds, updates, or deletes them.</p>
+
+    <!-- Option 1: Adding -->
+    <div class="option-box">
+      <div class="option-label">Adding Section</div>
+      <div class="option-desc">Section slides in from left with green highlight pulse</div>
+
+      <div class="mb-4">
+        <span class="ai-status adding">
+          <span class="ai-status-dot"></span>
+          Adding: Patient Information
+        </span>
+      </div>
+
+      <div class="bg-white rounded-lg border border-gray-200 p-4">
+        <div class="section none">
+          <span class="context-icon">—</span>
+          <div class="section-title">Header</div>
+          <div class="section-content">Static header content</div>
+        </div>
+
+        <div class="section none adding" id="add-demo">
+          <span class="context-icon">—</span>
+          <div class="section-title">Patient Information</div>
+          <div class="section-content">Name: <span class="pill">{{patient-name}}</span>, DOB: <span class="pill">{{patient-dob}}</span></div>
+        </div>
+
+        <div class="section none">
+          <span class="context-icon">—</span>
+          <div class="section-title">Footer</div>
+          <div class="section-content">Static footer</div>
+        </div>
+      </div>
+
+      <button class="demo-btn mt-4" onclick="replayAdd()">Replay Animation</button>
+    </div>
+
+    <!-- Option 2: Updating -->
+    <div class="option-box">
+      <div class="option-label">Updating Section</div>
+      <div class="option-desc">Section pulses yellow to highlight the change</div>
+
+      <div class="mb-4">
+        <span class="ai-status updating">
+          <span class="ai-status-dot"></span>
+          Updating: Medications
+        </span>
+      </div>
+
+      <div class="bg-white rounded-lg border border-gray-200 p-4">
+        <div class="section none">
+          <span class="context-icon">—</span>
+          <div class="section-title">Patient Information</div>
+          <div class="section-content">Name: <span class="pill">{{patient-name}}</span></div>
+        </div>
+
+        <div class="section repeating updating" id="update-demo">
+          <span class="context-icon">↻</span>
+          <div class="section-title">Medications</div>
+          <div class="section-content"><span class="pill">{{med-name}}</span> - <span class="pill">{{med-dose}}</span> <span class="pill" style="background:#fef9c3; border-color:#fde047; color:#854d0e;">{{med-frequency}}</span></div>
+        </div>
+
+        <div class="section none">
+          <span class="context-icon">—</span>
+          <div class="section-title">Notes</div>
+          <div class="section-content">Additional notes here</div>
+        </div>
+      </div>
+
+      <button class="demo-btn mt-4" onclick="replayUpdate()">Replay Animation</button>
+    </div>
+
+    <!-- Option 3: Deleting -->
+    <div class="option-box">
+      <div class="option-label">Deleting Section</div>
+      <div class="option-desc">Section shrinks and fades out with red tint</div>
+
+      <div class="mb-4">
+        <span class="ai-status deleting">
+          <span class="ai-status-dot"></span>
+          Removing section...
+        </span>
+      </div>
+
+      <div class="bg-white rounded-lg border border-gray-200 p-4">
+        <div class="section none">
+          <span class="context-icon">—</span>
+          <div class="section-title">Patient Information</div>
+          <div class="section-content">Name: <span class="pill">{{patient-name}}</span></div>
+        </div>
+
+        <div class="section deleting" id="delete-demo">
+          <span class="context-icon" style="background:#ef4444;">?</span>
+          <div class="section-title">Old Section (Being Removed)</div>
+          <div class="section-content">This content is being deleted...</div>
+        </div>
+
+        <div class="section none">
+          <span class="context-icon">—</span>
+          <div class="section-title">Notes</div>
+          <div class="section-content">This stays</div>
+        </div>
+      </div>
+
+      <button class="demo-btn mt-4" onclick="replayDelete()">Replay Animation</button>
+    </div>
+
+    <!-- Full sequence demo -->
+    <div class="option-box">
+      <div class="option-label">Full Sequence Demo</div>
+      <div class="option-desc">Shows multiple operations in sequence with 300ms delay between each</div>
+
+      <div class="mb-4" id="sequence-status">
+        <span class="ai-status adding">
+          <span class="ai-status-dot"></span>
+          Ready to start
+        </span>
+      </div>
+
+      <div class="bg-white rounded-lg border border-gray-200 p-4" id="sequence-container">
+        <div class="section none">
+          <span class="context-icon">—</span>
+          <div class="section-title">Existing Section</div>
+          <div class="section-content">This was already here</div>
+        </div>
+      </div>
+
+      <button class="demo-btn mt-4" onclick="runSequence()">Run Full Sequence</button>
+      <button class="demo-btn mt-4" style="background:#6b7280;" onclick="resetSequence()">Reset</button>
+    </div>
+
+  </div>
+
+  <script>
+    function replayAdd() {
+      const el = document.getElementById('add-demo');
+      el.classList.remove('adding');
+      void el.offsetWidth; // trigger reflow
+      el.classList.add('adding');
+    }
+
+    function replayUpdate() {
+      const el = document.getElementById('update-demo');
+      el.classList.remove('updating');
+      void el.offsetWidth;
+      el.classList.add('updating');
+    }
+
+    function replayDelete() {
+      const el = document.getElementById('delete-demo');
+      el.style.display = 'block';
+      el.classList.remove('deleting');
+      void el.offsetWidth;
+      el.classList.add('deleting');
+    }
+
+    async function runSequence() {
+      const container = document.getElementById('sequence-container');
+      const status = document.getElementById('sequence-status');
+
+      // Reset
+      container.innerHTML = `
+        <div class="section none">
+          <span class="context-icon">—</span>
+          <div class="section-title">Existing Section</div>
+          <div class="section-content">This was already here</div>
+        </div>
+      `;
+
+      const delay = ms => new Promise(r => setTimeout(r, ms));
+
+      // Add first section
+      status.innerHTML = `<span class="ai-status adding"><span class="ai-status-dot"></span>Adding: Patient Info</span>`;
+      await delay(300);
+      container.insertAdjacentHTML('beforeend', `
+        <div class="section none adding" id="seq-1">
+          <span class="context-icon">—</span>
+          <div class="section-title">Patient Info</div>
+          <div class="section-content">Name: <span class="pill">{{patient-name}}</span></div>
+        </div>
+      `);
+
+      // Add second section
+      await delay(500);
+      status.innerHTML = `<span class="ai-status adding"><span class="ai-status-dot"></span>Adding: Medications</span>`;
+      await delay(300);
+      container.insertAdjacentHTML('beforeend', `
+        <div class="section repeating adding" id="seq-2">
+          <span class="context-icon">↻</span>
+          <div class="section-title">Medications</div>
+          <div class="section-content"><span class="pill">{{med-name}}</span> - <span class="pill">{{med-dose}}</span></div>
+        </div>
+      `);
+
+      // Update first section
+      await delay(500);
+      status.innerHTML = `<span class="ai-status updating"><span class="ai-status-dot"></span>Updating: Patient Info</span>`;
+      await delay(300);
+      const seq1 = document.getElementById('seq-1');
+      seq1.classList.remove('adding');
+      seq1.classList.add('updating');
+      seq1.querySelector('.section-content').innerHTML = 'Name: <span class="pill">{{patient-name}}</span>, DOB: <span class="pill" style="background:#fef9c3; border-color:#fde047; color:#854d0e;">{{patient-dob}}</span>';
+
+      // Done
+      await delay(500);
+      status.innerHTML = `<span class="ai-status" style="background:#dcfce7; color:#166534;">Done! Created 2 sections.</span>`;
+
+      // Clean up animation classes
+      await delay(600);
+      document.querySelectorAll('#sequence-container .section').forEach(s => {
+        s.classList.remove('adding', 'updating', 'deleting');
+      });
+    }
+
+    function resetSequence() {
+      document.getElementById('sequence-container').innerHTML = `
+        <div class="section none">
+          <span class="context-icon">—</span>
+          <div class="section-title">Existing Section</div>
+          <div class="section-content">This was already here</div>
+        </div>
+      `;
+      document.getElementById('sequence-status').innerHTML = `
+        <span class="ai-status adding">
+          <span class="ai-status-dot"></span>
+          Ready to start
+        </span>
+      `;
+    }
+  </script>
+</body>
+</html>

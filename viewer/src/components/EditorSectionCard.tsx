@@ -80,6 +80,7 @@ export function EditorSectionCard({
         <div
           className="editor-section"
           data-context={contextType}
+          data-animation={section._animationState}
           onClick={handleCardClick}
         >
           {contextExpr ? (
