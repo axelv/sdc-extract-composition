@@ -50,7 +50,7 @@ interface TiroAIChatProps {
   onCompositionChange: (composition: Composition) => void;
 }
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "";
 const TEMPLATE_EXTRACT_CONTEXT_URL =
   "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext";
 
