@@ -3,6 +3,7 @@ import os
 import tempfile
 from typing import Any
 
+import mammoth
 from fastapi import FastAPI, File, Form, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
@@ -36,7 +37,6 @@ def get_generate_composition():
 
 def convert_docx_to_markdown(file_path: str) -> str:
     """Convert DOCX file to markdown text."""
-    import mammoth
     with open(file_path, "rb") as f:
         result = mammoth.convert_to_markdown(f)
         return result.value
