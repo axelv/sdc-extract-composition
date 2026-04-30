@@ -4,15 +4,35 @@ import tempfile
 from typing import Any
 
 import mammoth
-from fastapi import FastAPI, File, Form, UploadFile
+from fastapi import FastAPI, File, Form, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
-from pydantic_ai.providers.google import GoogleProvider
 
-from agent import generate_composition
 from renderer import render_composition
 
-google_provider = GoogleProvider()
+# Lazy-loaded AI components (require GOOGLE_API_KEY)
+_google_provider = None
+_generate_composition = None
+
+
+def get_google_provider():
+    global _google_provider
+    if _google_provider is None:
+        if not os.environ.get("GOOGLE_API_KEY"):
+            raise HTTPException(status_code=500, detail="GOOGLE_API_KEY not configured")
+        from pydantic_ai.providers.google import GoogleProvider
+        _google_provider = GoogleProvider()
+    return _google_provider
+
+
+def get_generate_composition():
+    global _generate_composition
+    if _generate_composition is None:
+        if not os.environ.get("GOOGLE_API_KEY"):
+            raise HTTPException(status_code=500, detail="GOOGLE_API_KEY not configured")
+        from agent import generate_composition
+        _generate_composition = generate_composition
+    return _generate_composition
 
 
 def convert_docx_to_markdown(file_path: str) -> str:
@@ -88,6 +108,7 @@ class AgentResponse(BaseModel):
 
 @app.post("/api/agent/generate")
 async def agent_generate(request: AgentRequest) -> AgentResponse:
+    generate_composition = get_generate_composition()
     actions, composition, message = await generate_composition(
         request.prompt,
         request.questionnaire,
@@ -143,7 +164,8 @@ async def agent_generate_with_file(
         if file.content_type == DOCX_MIME:
             file_text = convert_docx_to_markdown(tmp_path)
         else:
-            uploaded = google_provider.client.files.upload(file=tmp_path)
+            provider = get_google_provider()
+            uploaded = provider.client.files.upload(file=tmp_path)
             file_uri = uploaded.uri
             file_mime = uploaded.mime_type
 
@@ -151,6 +173,7 @@ async def agent_generate_with_file(
     if not effective_prompt and has_file:
         effective_prompt = "Create a composition based on this document."
 
+    generate_composition = get_generate_composition()
     actions, composition_result, message = await generate_composition(
         effective_prompt,
         questionnaire_data,
