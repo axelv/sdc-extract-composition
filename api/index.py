@@ -44,8 +44,15 @@ def render(request: RenderRequest) -> RenderResponse:
 
 
 @app.get("/api/health")
-def health() -> dict[str, str]:
-    return {"status": "ok"}
+def health():
+    import os
+    return {
+        "status": "ok",
+        "GOOGLE_API_KEY": bool(os.environ.get("GOOGLE_API_KEY")),
+        "LOGFIRE_TOKEN": bool(os.environ.get("LOGFIRE_TOKEN")),
+        "env_with_google": [k for k in os.environ.keys() if "GOOGLE" in k.upper()],
+        "env_with_logfire": [k for k in os.environ.keys() if "LOGFIRE" in k.upper()],
+    }
 
 
 @app.post("/api/agent/generate")
