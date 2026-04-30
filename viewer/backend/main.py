@@ -1,8 +1,8 @@
 import json
+import os
 import tempfile
 from typing import Any
 
-import logfire
 import mammoth
 from fastapi import FastAPI, File, Form, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
@@ -21,8 +21,11 @@ def convert_docx_to_markdown(file_path: str) -> str:
         result = mammoth.convert_to_markdown(f)
         return result.value
 
-logfire.configure()
-logfire.instrument_pydantic_ai()
+
+if os.environ.get("LOGFIRE_TOKEN"):
+    import logfire
+    logfire.configure()
+    logfire.instrument_pydantic_ai()
 
 app = FastAPI(title="SDC Composition Viewer Backend")
 
