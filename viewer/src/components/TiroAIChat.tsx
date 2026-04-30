@@ -461,7 +461,7 @@ export const TiroAIChat = forwardRef<TiroAIChatHandle, TiroAIChatProps>(function
               />
               <button
                 className="tiro-ai-send"
-                onClick={handleSubmit}
+                onClick={() => handleSubmit()}
                 disabled={isLoading || (!message.trim() && !selectedFile)}
               >
                 {isLoading ? (
